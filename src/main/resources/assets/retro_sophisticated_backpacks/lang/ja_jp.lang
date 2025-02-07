@@ -1,0 +1,31 @@
+#ブロック
+tile.retro_sophisticated_backpacks.backpack_leather.name=レザーバックパック
+tile.retro_sophisticated_backpacks.backpack_iron.name=アイアンバックパック
+tile.retro_sophisticated_backpacks.backpack_gold.name=ゴールドバックパック
+tile.retro_sophisticated_backpacks.backpack_diamond.name=ダイヤモンドバックパック
+tile.retro_sophisticated_backpacks.backpack_obsidian.name=オブシディアンバックパック
+
+#アイテム
+item.retro_sophisticated_backpacks.upgrade_base.name=アップグレードベース
+item.retro_sophisticated_backpacks.stack_upgrade_starter_tier.name=スタックアップグレード スターターティア
+item.retro_sophisticated_backpacks.stack_upgrade_tier_1.name=スタックアップグレード ティア1
+item.retro_sophisticated_backpacks.stack_upgrade_tier_2.name=スタックアップグレード ティア2
+item.retro_sophisticated_backpacks.stack_upgrade_tier_3.name=スタックアップグレード ティア3
+item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=スタックアップグレード ティア4
+
+#クリエイティブタブ
+itemGroup.retro_sophisticated_backpacks.creative_tab=レトロ洗練されたバックパック
+
+#ツールチップ
+retro_sophisticated_backpacks.tooltip.backpack.inventory_size=インベントリサイズ: %d
+retro_sophisticated_backpacks.tooltip.backpack.upgrade_slots_size=アップグレードスロット: %d
+retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> スタック倍率: %d
+
+retro_sophisticated_backpacks.tooltip.upgrade_base=何もしません！アップグレードスロットに入れて使ってください！
+
+retro_sophisticated_backpacks.tooltip.stack_upgrade=スタックサイズを%d倍にします
+
+retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Shiftで表示>
+
+#GUI要素
+retro_sophisticated_backpacks.container.backpack=バックパック
