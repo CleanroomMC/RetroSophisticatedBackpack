@@ -1,0 +1,219 @@
+package com.cleanroommc.retrosophisticatedbackpack.blocks
+
+import com.cleanroommc.retrosophisticatedbackpack.RetroSophisticatedBackpacks
+import com.cleanroommc.retrosophisticatedbackpack.backpack.BackpackTier
+import com.cleanroommc.retrosophisticatedbackpack.handlers.CapabilityHandler
+import com.cleanroommc.retrosophisticatedbackpack.handlers.RegistryHandler
+import com.cleanroommc.retrosophisticatedbackpack.tileentity.BackpackTileEntity
+import com.cleanroommc.retrosophisticatedbackpack.utils.IModelRegister
+import com.cleanroommc.retrosophisticatedbackpack.utils.Utils.asTranslationKey
+import net.minecraft.block.Block
+import net.minecraft.block.ITileEntityProvider
+import net.minecraft.block.SoundType
+import net.minecraft.block.material.EnumPushReaction
+import net.minecraft.block.material.Material
+import net.minecraft.block.properties.PropertyBool
+import net.minecraft.block.properties.PropertyDirection
+import net.minecraft.block.state.BlockFaceShape
+import net.minecraft.block.state.BlockStateContainer
+import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.EntityLivingBase
+import net.minecraft.entity.item.EntityItem
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.Item
+import net.minecraft.item.ItemStack
+import net.minecraft.tileentity.TileEntity
+import net.minecraft.util.*
+import net.minecraft.util.math.AxisAlignedBB
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.IBlockAccess
+import net.minecraft.world.World
+
+class BackpackBlock(
+    registryName: String,
+    explosionResistance: Float,
+    val tier: BackpackTier,
+) : Block(Material.CARPET), ITileEntityProvider, IModelRegister.Block {
+    companion object {
+        val LEFT_TANK = PropertyBool.create("left_tank")
+        val RIGHT_TANK = PropertyBool.create("right_tank")
+        val BATTERY = PropertyBool.create("battery")
+        val FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL)
+        val BEDROCK_RESISTANCE = 3600000
+
+        private val BOOL_PROPERTIES = arrayOf(LEFT_TANK, RIGHT_TANK, BATTERY)
+    }
+
+    constructor(
+        registryName: String,
+        tier: BackpackTier,
+    ) : this(registryName, 0.8f, tier)
+
+    init {
+        setRegistryName(registryName)
+        setTranslationKey(registryName.asTranslationKey())
+        setCreativeTab(RetroSophisticatedBackpacks.CREATIVE_TAB)
+
+        setResistance(explosionResistance)
+        setHardness(0.8f)
+        setSoundType(SoundType.CLOTH)
+        setLightOpacity(0)
+        defaultState = blockState.baseState
+            .withProperty(LEFT_TANK, false)
+            .withProperty(RIGHT_TANK, false)
+            .withProperty(BATTERY, false)
+            .withProperty(FACING, EnumFacing.NORTH)
+
+        Blocks.BLOCKS.add(this)
+        Blocks.BACKPACK_BLOCKS.add(this)
+        RegistryHandler.MODELS.add(this)
+    }
+
+    override fun getBlockFaceShape(
+        worldIn: IBlockAccess,
+        state: IBlockState,
+        pos: BlockPos,
+        face: EnumFacing
+    ): BlockFaceShape =
+        BlockFaceShape.UNDEFINED
+
+    override fun isFullCube(state: IBlockState): Boolean =
+        false
+
+    override fun isOpaqueCube(state: IBlockState): Boolean =
+        false
+
+    override fun getRenderLayer(): BlockRenderLayer =
+        BlockRenderLayer.CUTOUT
+
+    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
+        return AxisAlignedBB(1 / 16.0, 0.0, 4 / 16.0, 15 / 16.0, 14 / 16.0, 12 / 16.0)
+    }
+
+    override fun createBlockState(): BlockStateContainer =
+        BlockStateContainer(this, *arrayOf(LEFT_TANK, RIGHT_TANK, BATTERY, FACING))
+
+    override fun getStateForPlacement(
+        world: World,
+        pos: BlockPos,
+        facing: EnumFacing,
+        hitX: Float,
+        hitY: Float,
+        hitZ: Float,
+        meta: Int,
+        placer: EntityLivingBase,
+        hand: EnumHand
+    ): IBlockState =
+        defaultState.withProperty(FACING, placer.horizontalFacing.opposite)
+
+    override fun withRotation(state: IBlockState, rot: Rotation): IBlockState =
+        state.withProperty(FACING, rot.rotate(state.getValue(FACING)))
+
+    override fun withMirror(state: IBlockState, mirrorIn: Mirror): IBlockState =
+        state.withProperty(FACING, mirrorIn.mirror(state.getValue(FACING)))
+
+    override fun getStateFromMeta(meta: Int): IBlockState {
+        val leftTank = (meta and 0b10000) shr 4 == 1
+        val rightTank = (meta and 0b01000) shr 3 == 1
+        val battery = (meta and 0b00100) shr 2 == 1
+        val facing = EnumFacing.byHorizontalIndex(meta and 0b00011)
+
+        return defaultState
+            .withProperty(LEFT_TANK, leftTank)
+            .withProperty(RIGHT_TANK, rightTank)
+            .withProperty(BATTERY, battery)
+            .withProperty(FACING, facing)
+    }
+
+    override fun getMetaFromState(state: IBlockState): Int {
+        var meta = 0
+
+        for (boolProp in BOOL_PROPERTIES) {
+            if (state.getValue(boolProp))
+                meta = meta or 1
+            meta = meta shl 1
+        }
+
+        meta = meta or state.getValue(FACING).horizontalIndex
+        return meta
+    }
+
+    override fun getPushReaction(state: IBlockState): EnumPushReaction {
+        return EnumPushReaction.DESTROY
+    }
+
+    override fun canProvidePower(state: IBlockState): Boolean {
+        return true
+    }
+
+    override fun getWeakPower(
+        blockState: IBlockState,
+        blockAccess: IBlockAccess,
+        pos: BlockPos,
+        side: EnumFacing
+    ): Int {
+        // TODO: Return power once tile entity is created
+        return super.getWeakPower(blockState, blockAccess, pos, side)
+    }
+
+    override fun onBlockPlacedBy(
+        worldIn: World,
+        pos: BlockPos,
+        state: IBlockState,
+        placer: EntityLivingBase,
+        stack: ItemStack
+    ) {
+        val backpackInventory =
+            stack.getCapability(CapabilityHandler.BACKPACK_ITEM_HANDLER_CAPABILITY!!, null) ?: return
+        val tileEntity = worldIn.getTileEntity(pos) as BackpackTileEntity? ?: return
+
+        tileEntity.backpackWrapper.deserializeNBT(backpackInventory.serializeNBT())
+    }
+
+    override fun onBlockActivated(
+        worldIn: World,
+        pos: BlockPos,
+        state: IBlockState,
+        playerIn: EntityPlayer,
+        hand: EnumHand,
+        facing: EnumFacing,
+        hitX: Float,
+        hitY: Float,
+        hitZ: Float
+    ): Boolean {
+        if (!worldIn.isRemote) {
+            val tileEntity = worldIn.getTileEntity(pos) as BackpackTileEntity? ?: return true
+            
+            tileEntity.openGui(playerIn)
+        }
+
+        return true
+    }
+
+    override fun hasTileEntity(state: IBlockState): Boolean =
+        true
+
+    override fun createNewTileEntity(
+        worldIn: World,
+        meta: Int
+    ): TileEntity =
+        BackpackTileEntity()
+
+    override fun onBlockHarvested(worldIn: World, pos: BlockPos, state: IBlockState, player: EntityPlayer) {
+        if (!worldIn.isRemote) {
+            if (player.capabilities.isCreativeMode) {
+                val tileEntity = worldIn.getTileEntity(pos) as BackpackTileEntity? ?: return
+                val stack = ItemStack(Item.getItemFromBlock(this))
+                val tileEntityBackpackInventory =
+                    tileEntity.getCapability(CapabilityHandler.BACKPACK_ITEM_HANDLER_CAPABILITY!!, null) ?: return
+                val stackBackpackInventory =
+                    stack.getCapability(CapabilityHandler.BACKPACK_ITEM_HANDLER_CAPABILITY, null) ?: return
+                stackBackpackInventory.deserializeNBT(tileEntityBackpackInventory.serializeNBT())
+
+                worldIn.spawnEntity(EntityItem(worldIn, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), stack))
+            }
+        }
+
+        super.onBlockHarvested(worldIn, pos, state, player)
+    }
+}

@@ -2,6 +2,7 @@ import org.jetbrains.gradle.ext.Gradle
 import org.jetbrains.gradle.ext.compiler
 import org.jetbrains.gradle.ext.runConfigurations
 import org.jetbrains.gradle.ext.settings
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript { 
     repositories {
@@ -29,6 +30,8 @@ val mod_version: String by project
 @Suppress("PropertyName")
 val maven_group: String by project
 @Suppress("PropertyName")
+val mod_id: String by project
+@Suppress("PropertyName")
 val archives_base_name: String by project
 
 @Suppress("PropertyName")
@@ -45,6 +48,9 @@ val use_assetmover: String by project
 val include_mod: String by project
 @Suppress("PropertyName")
 val coremod_plugin_class_name: String by project
+
+@Suppress("PropertyName")
+val forgelin_continuous_version: String by project
 
 java {
     toolchain {
@@ -99,14 +105,15 @@ minecraft {
     // Add any properties you want to swap out for a dynamic value at build time here
     // Any properties here will be added to a class at build time, the name can be configured below
     // Example:
-    // injectedTags.put("VERSION", project.version)
-    // injectedTags.put("MOD_ID", project.archives_base_name)
+    injectedTags.put("VERSION", mod_version)
+    injectedTags.put("MOD_NAME", archives_base_name.split("(?=\\\\p{Upper})").joinToString(" "))
+    injectedTags.put("MOD_ID", mod_id)
 }
 
 // Generate a group.archives_base_name.Tags class
 tasks.injectTags.configure {
     // Change Tags class' name here:
-    outputClassName.set("${maven_group}.${archives_base_name}.Tags")
+    outputClassName.set("${maven_group}.Tags")
 }
 
 repositories {
@@ -125,19 +132,22 @@ repositories {
             includeGroup("curse.maven")
         }
     }
+    maven {
+        name = "BlameJared Maven"
+        url = uri("https://maven.blamejared.com")
+    }
     mavenLocal() // Must be last for caching to work
 }
 
 dependencies {
-    implementation("io.github.chaosunity.forgelin:Forgelin-Continuous::${libs.versions.forgelinContinuousVersion}") {
+    implementation("io.github.chaosunity.forgelin:Forgelin-Continuous:${forgelin_continuous_version}") {
         exclude("net.minecraftforge")
     }
+
+    implementation("com.cleanroommc:modularui:2.5.0-rc3")
     
     if (use_assetmover.toBoolean()) {
         implementation("com.cleanroommc:assetmover:2.5")
-    }
-    if (use_mixins.toBoolean()) {
-        implementation("zone.rong:mixinbooter:7.1")
     }
 
     // Example of deobfuscating a dependency
@@ -146,9 +156,9 @@ dependencies {
     if (use_mixins.toBoolean()) {
         // Change your mixin refmap name here:
         val mixin =
-            modUtils.enableMixins("org.spongepowered:mixin:0.8.3", "mixins.${archives_base_name}.refmap.json") as String
+            modUtils.enableMixins("zone.rong:mixinbooter:9.1", "mixins.${archives_base_name}.refmap.json") as String
         api(mixin) {
-            isTransitive = true
+            isTransitive = false
         }
         annotationProcessor("org.ow2.asm:asm-debug-all:5.2")
         annotationProcessor("com.google.guava:guava:24.1.1-jre")
@@ -159,7 +169,7 @@ dependencies {
     }
 }
 
-// Adds Access Transformer files to tasks
+// Adds Access Transformer files to tasksS
 @Suppress("Deprecation")
 if (use_access_transformer.toBoolean()) {
     for (at in sourceSets.getByName("main").resources.files) {
@@ -168,6 +178,10 @@ if (use_access_transformer.toBoolean()) {
             tasks.srgifyBinpatchedJar.get().accessTransformerFiles.from(at)
         }
     }
+}
+
+tasks.withType<KotlinCompile> {
+    compilerOptions.freeCompilerArgs.add("-Xmulti-dollar-interpolation")
 }
 
 @Suppress("UnstableApiUsage")

@@ -24,7 +24,7 @@ dependencyResolutionManagement {
     versionCatalogs { 
         create("libs") {
             version("kotlinVersion", settings.extra.properties["kotlin_version"].toString())
-            version("forgelinContinuousVersion", settings.extra.properties["forgelin_continuous_version"].toString())
+            version("forgelinContinuousVersion", "2.1.0.0")
         }
     }
 }

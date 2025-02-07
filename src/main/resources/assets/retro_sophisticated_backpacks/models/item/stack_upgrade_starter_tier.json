@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "retro_sophisticated_backpacks:item/stack_upgrade_starter_tier"
+  }
+}

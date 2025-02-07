@@ -1,0 +1,31 @@
+# Blocks
+tile.retro_sophisticated_backpacks.backpack_leather.name=皮革背包
+tile.retro_sophisticated_backpacks.backpack_iron.name=鐵背包
+tile.retro_sophisticated_backpacks.backpack_gold.name=黃金背包
+tile.retro_sophisticated_backpacks.backpack_diamond.name=鑽石背包
+tile.retro_sophisticated_backpacks.backpack_obsidian.name=黑曜石背包
+
+# Items
+item.retro_sophisticated_backpacks.upgrade_base.name=基礎升級
+item.retro_sophisticated_backpacks.stack_upgrade_starter_tier.name=初級堆疊升級
+item.retro_sophisticated_backpacks.stack_upgrade_tier_1.name=堆疊升級 T1
+item.retro_sophisticated_backpacks.stack_upgrade_tier_2.name=堆疊升級 T2
+item.retro_sophisticated_backpacks.stack_upgrade_tier_3.name=堆疊升級 T3
+item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=堆疊升級 T4
+
+# Creative Tabs
+itemGroup.retro_sophisticated_backpacks.creative_tab=復古精緻背包
+
+# Tooltips
+retro_sophisticated_backpacks.tooltip.backpack.inventory_size=背包容量: %d
+retro_sophisticated_backpacks.tooltip.backpack.upgrade_slots_size=升級插槽: %d
+retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> 當前堆疊倍率: %d
+
+retro_sophisticated_backpacks.tooltip.upgrade_base=沒有效果！你大可放在升級插槽！
+
+retro_sophisticated_backpacks.tooltip.stack_upgrade=提供堆疊倍率 x%d 
+
+retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Shift 以顯示>
+
+# Gui Elements
+retro_sophisticated_backpacks.container.backpack=背包

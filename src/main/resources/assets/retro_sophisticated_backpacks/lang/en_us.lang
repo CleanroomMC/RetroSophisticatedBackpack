@@ -1,0 +1,31 @@
+# Blocks
+tile.retro_sophisticated_backpacks.backpack_leather.name=Leather Backpack
+tile.retro_sophisticated_backpacks.backpack_iron.name=Iron Backpack
+tile.retro_sophisticated_backpacks.backpack_gold.name=Gold Backpack
+tile.retro_sophisticated_backpacks.backpack_diamond.name=Diamond Backpack
+tile.retro_sophisticated_backpacks.backpack_obsidian.name=Obsidian Backpack
+
+# Items
+item.retro_sophisticated_backpacks.upgrade_base.name=Upgrade Base
+item.retro_sophisticated_backpacks.stack_upgrade_starter_tier.name=Stack Upgrade Starter Tier
+item.retro_sophisticated_backpacks.stack_upgrade_tier_1.name=Stack Upgrade Tier 1
+item.retro_sophisticated_backpacks.stack_upgrade_tier_2.name=Stack Upgrade Tier 2
+item.retro_sophisticated_backpacks.stack_upgrade_tier_3.name=Stack Upgrade Tier 3
+item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=Stack Upgrade Tier 4
+
+# Creative Tabs
+itemGroup.retro_sophisticated_backpacks.creative_tab=Retro Sophisticated Backpack
+
+# Tooltips
+retro_sophisticated_backpacks.tooltip.backpack.inventory_size=Inventory size: %d
+retro_sophisticated_backpacks.tooltip.backpack.upgrade_slots_size=Upgrade slots: %d
+retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> Stack multiplier: %d
+
+retro_sophisticated_backpacks.tooltip.upgrade_base=It does nothing! Feel free to put it in your upgrade slots!
+
+retro_sophisticated_backpacks.tooltip.stack_upgrade=Multiplies stack size by %d
+
+retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Shift to reveal>
+
+# Gui Elements
+retro_sophisticated_backpacks.container.backpack=Backpack

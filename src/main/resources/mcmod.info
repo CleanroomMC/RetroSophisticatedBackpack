@@ -1,13 +1,13 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
+  "modid": "retro_sophisticated_backpacks",
+  "name": "Retro Sophisticated Backpacks",
   "description": "Example placeholder mod.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["CleanroomMC"],
+  "authorList": ["ChAoS_UnItY"],
   "credits": "Authors of this project",
   "logoFile": "",
   "screenshots": [],
