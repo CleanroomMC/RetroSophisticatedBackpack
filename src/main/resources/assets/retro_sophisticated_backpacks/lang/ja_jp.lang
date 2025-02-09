@@ -12,6 +12,8 @@ item.retro_sophisticated_backpacks.stack_upgrade_tier_1.name=スタックアッ�
 item.retro_sophisticated_backpacks.stack_upgrade_tier_2.name=スタックアップグレード ティア2
 item.retro_sophisticated_backpacks.stack_upgrade_tier_3.name=スタックアップグレード ティア3
 item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=スタックアップグレード ティア4
+item.retro_sophisticated_backpacks.crafting_upgrade.name=クラフティングアップグレード
+item.retro_sophisticated_backpacks.inception_upgrade.name=インセプションアップグレード
 
 #クリエイティブタブ
 itemGroup.retro_sophisticated_backpacks.creative_tab=レトロ洗練されたバックパック
