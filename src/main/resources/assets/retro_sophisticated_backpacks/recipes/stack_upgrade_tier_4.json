@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "U": {
+      "item": "minecraft:obsidian"
+    },
+    "B": {
+      "item": "retro_sophisticated_backpacks:stack_upgrade_tier_3"
+    }
+  },
+  "pattern": [
+    "UUU",
+    "UBU",
+    "UUU"
+  ],
+  "result": {
+    "item": "retro_sophisticated_backpacks:stack_upgrade_tier_4"
+  }
+}

@@ -2,13 +2,13 @@
 {
   "modid": "retro_sophisticated_backpacks",
   "name": "Retro Sophisticated Backpacks",
-  "description": "Example placeholder mod.",
+  "description": "A backported and recreated version of Sophisticated Backpacks, adds several backpacks and upgrades to customize your storage strategy.",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
   "authorList": ["ChAoS_UnItY"],
-  "credits": "Authors of this project",
+  "credits": "P3pp3rF1y, the original creator of Sophisticated Backpacks",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

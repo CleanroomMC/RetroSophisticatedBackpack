@@ -1,7 +1,8 @@
 package com.cleanroommc.retrosophisticatedbackpack.backpack
 
-import com.cleanroommc.retrosophisticatedbackpack.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpack.handlers.CapabilityHandler
+import com.cleanroommc.retrosophisticatedbackpack.items.BackpackItem
+import com.cleanroommc.retrosophisticatedbackpack.items.InceptionUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpack.items.StackUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpack.utils.BackpackItemStackHelper
 import com.cleanroommc.retrosophisticatedbackpack.utils.Utils.asTranslationKey
@@ -9,13 +10,11 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.text.ITextComponent
-import net.minecraft.util.text.TextComponentString
 import net.minecraft.util.text.TextComponentTranslation
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.ICapabilityProvider
 import net.minecraftforge.common.util.INBTSerializable
 import java.util.*
-import kotlin.math.min
 
 class BackpackWrapper(
     var backpackInventorySize: () -> Int = { 27 },
@@ -34,20 +33,31 @@ class BackpackWrapper(
     }
 
     var isCached: Boolean = false
-    var customName: String? = null
-    var backpackItemStackHandler = BackpackItemStackHandler(backpackInventorySize(), ::getTotalStackMultiplier)
+    var backpackItemStackHandler = BackpackItemStackHandler(backpackInventorySize())
     var upgradeItemStackHandler = UpgradeItemStackHandler(upgradeSlotsSize())
     var mainColor = DEFAULT_MAIN_COLOR
     var accentColor = DEFAULT_ACCENT_COLOR
-    
+
     fun getTotalStackMultiplier(): Int =
         upgradeItemStackHandler.inventory.map(ItemStack::getItem).filterIsInstance<StackUpgradeItem>()
             .fold(1) { acc, item -> acc * item.multiplier() }
-    
-    fun canRemoveStackUpgrade(originalMultiplier: Int): Boolean {
-        return canReplaceStackUpgrade(originalMultiplier, 1)
+
+    fun canAddStackUpgrade(newMultiplier: Int): Boolean {
+        // Ensures no overflow for vanilla itemstack, no guarantee for modded itemstack
+        val currentMultiplier = getTotalStackMultiplier() * 64
+
+        try {
+            Math.multiplyExact(currentMultiplier, newMultiplier)
+
+            return true
+        } catch (_: ArithmeticException) {
+            return false
+        }
     }
-    
+
+    fun canRemoveStackUpgrade(originalMultiplier: Int): Boolean =
+        canReplaceStackUpgrade(originalMultiplier, 1)
+
     fun canReplaceStackUpgrade(oldMultiplier: Int, newMultiplier: Int): Boolean {
         val newStackMultiplier = getTotalStackMultiplier() / oldMultiplier * newMultiplier
 
@@ -61,9 +71,17 @@ class BackpackWrapper(
 
         return true
     }
-    
+
+    fun canNestBackpack(): Boolean =
+        upgradeItemStackHandler.inventory.map(ItemStack::getItem).filterIsInstance<InceptionUpgradeItem>().any()
+
+    fun canRemoveInceptionUpgrade(): Boolean =
+        !backpackItemStackHandler.inventory.map(ItemStack::getItem).filterIsInstance<BackpackItem>().any() ||
+                upgradeItemStackHandler.inventory.map(ItemStack::getItem).filterIsInstance<InceptionUpgradeItem>()
+                    .count() > 1
+
     fun getDisplayName(): ITextComponent =
-        customName?.let(::TextComponentString) ?: TextComponentTranslation("container.backpack".asTranslationKey())
+        TextComponentTranslation("container.backpack".asTranslationKey())
 
     override fun hasCapability(
         capability: Capability<*>,
@@ -71,7 +89,6 @@ class BackpackWrapper(
     ): Boolean =
         facing == null && capability == CapabilityHandler.BACKPACK_ITEM_HANDLER_CAPABILITY
 
-    @Suppress("UNCHECKED_CAST")
     override fun <T> getCapability(
         capability: Capability<T>,
         facing: EnumFacing?
@@ -99,14 +116,20 @@ class BackpackWrapper(
             upgradeSlotsSize = { nbt.getInteger(UPGRADE_SLOTS_SIZE_TAG) }
 
         uuid = nbt.getUniqueId(UUID_TAG)!!
-        
-        backpackItemStackHandler = BackpackItemStackHandler(backpackInventorySize(), ::getTotalStackMultiplier)
+
+        backpackItemStackHandler = BackpackItemStackHandler(backpackInventorySize())
         upgradeItemStackHandler = UpgradeItemStackHandler(upgradeSlotsSize())
 
         if (nbt.hasKey(BACKPACK_INVENTORY_TAG))
-            BackpackItemStackHelper.loadAllItemsExtended(nbt.getCompoundTag(BACKPACK_INVENTORY_TAG), backpackItemStackHandler.inventory)
+            BackpackItemStackHelper.loadAllItemsExtended(
+                nbt.getCompoundTag(BACKPACK_INVENTORY_TAG),
+                backpackItemStackHandler.inventory
+            )
 
         if (nbt.hasKey(UPGRADE_SLOTS_TAG))
-            BackpackItemStackHelper.loadAllItemsExtended(nbt.getCompoundTag(UPGRADE_SLOTS_TAG), upgradeItemStackHandler.inventory)
+            BackpackItemStackHelper.loadAllItemsExtended(
+                nbt.getCompoundTag(UPGRADE_SLOTS_TAG),
+                upgradeItemStackHandler.inventory
+            )
     }
 }

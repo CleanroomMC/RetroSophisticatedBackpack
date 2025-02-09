@@ -12,6 +12,8 @@ item.retro_sophisticated_backpacks.stack_upgrade_tier_1.name=Stack Upgrade Tier 
 item.retro_sophisticated_backpacks.stack_upgrade_tier_2.name=Stack Upgrade Tier 2
 item.retro_sophisticated_backpacks.stack_upgrade_tier_3.name=Stack Upgrade Tier 3
 item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=Stack Upgrade Tier 4
+item.retro_sophisticated_backpacks.crafting_upgrade.name=Crafting Upgrade
+item.retro_sophisticated_backpacks.inception_upgrade.name=Inception Upgrade
 
 # Creative Tabs
 itemGroup.retro_sophisticated_backpacks.creative_tab=Retro Sophisticated Backpack
@@ -24,6 +26,10 @@ retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> Stack multipl
 retro_sophisticated_backpacks.tooltip.upgrade_base=It does nothing! Feel free to put it in your upgrade slots!
 
 retro_sophisticated_backpacks.tooltip.stack_upgrade=Multiplies stack size by %d
+
+retro_sophisticated_backpacks.tooltip.crafting_upgrade=Adds additional crafting grid to side of backpack
+
+retro_sophisticated_backpacks.tooltip.inception_upgrade=Allows backpacks to be stored inside backpack
 
 retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Shift to reveal>
 

@@ -18,7 +18,8 @@ import org.apache.logging.log4j.LogManager
     modid = Tags.MOD_ID,
     name = Tags.MOD_NAME,
     version = Tags.MOD_ID,
-    modLanguageAdapter = "io.github.chaosunity.forgelin.KotlinAdapter"
+    modLanguageAdapter = "io.github.chaosunity.forgelin.KotlinAdapter",
+    dependencies = "required-after:mixinbooter@[8.0,);required-after:forgelin_continuous@[2.0.0.0,)"
 )
 object RetroSophisticatedBackpacks {
     val LOGGER = LogManager.getLogger(Tags.MOD_NAME)

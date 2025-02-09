@@ -15,9 +15,9 @@ object Items {
     // Backpacks
     @JvmField
     val backpackLeather = BackpackItem(
-        "backpack_leather", 
-        Blocks.leatherBackpack, 
-        Config.leatherBackpack::slots, 
+        "backpack_leather",
+        Blocks.leatherBackpack,
+        Config.leatherBackpack::slots,
         Config.leatherBackpack::upgradeSlots,
         BackpackTier.LEATHER
     )
@@ -60,8 +60,8 @@ object Items {
 
     // Upgrades
     @JvmField
-    val upgradeBase = UpgradeBase("upgrade_base")
-    
+    val upgradeBase = UpgradeBaseItem("upgrade_base")
+
     @JvmField
     val stackUpgradeTierStarter = StackUpgradeItem("stack_upgrade_starter_tier", Config.stackUpgrade::leatherMultiplier)
 
@@ -76,4 +76,10 @@ object Items {
 
     @JvmField
     val stackUpgradeTier4 = StackUpgradeItem("stack_upgrade_tier_4", Config.stackUpgrade::obsidianMultiplier)
+
+    @JvmField
+    val craftingUpgrade = CraftingUpgradeItem("crafting_upgrade")
+
+    @JvmField
+    val inceptionUpgrade = InceptionUpgradeItem("inception_upgrade")
 }

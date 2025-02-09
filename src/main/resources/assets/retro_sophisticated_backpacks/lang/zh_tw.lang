@@ -12,6 +12,8 @@ item.retro_sophisticated_backpacks.stack_upgrade_tier_1.name=堆疊升級 T1
 item.retro_sophisticated_backpacks.stack_upgrade_tier_2.name=堆疊升級 T2
 item.retro_sophisticated_backpacks.stack_upgrade_tier_3.name=堆疊升級 T3
 item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=堆疊升級 T4
+item.retro_sophisticated_backpacks.crafting_upgrade.name=合成升級
+item.retro_sophisticated_backpacks.inception_upgrade.name=嵌套升級
 
 # Creative Tabs
 itemGroup.retro_sophisticated_backpacks.creative_tab=復古精緻背包
@@ -23,7 +25,11 @@ retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> 當前堆疊�
 
 retro_sophisticated_backpacks.tooltip.upgrade_base=沒有效果！你大可放在升級插槽！
 
-retro_sophisticated_backpacks.tooltip.stack_upgrade=提供堆疊倍率 x%d 
+retro_sophisticated_backpacks.tooltip.stack_upgrade=提供堆疊倍率 x%d
+
+retro_sophisticated_backpacks.tooltip.crafting_upgrade=在背包旁增加額外的合成欄
+
+retro_sophisticated_backpacks.tooltip.inception_upgrade=允許將背包放入背包
 
 retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Shift 以顯示>
 
