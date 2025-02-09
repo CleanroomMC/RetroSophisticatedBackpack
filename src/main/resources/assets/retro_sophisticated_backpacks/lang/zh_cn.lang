@@ -27,6 +27,10 @@ retro_sophisticated_backpacks.tooltip.upgrade_base=没有效果！你可以放�
 
 retro_sophisticated_backpacks.tooltip.stack_upgrade=提供堆叠倍率 x%d
 
+retro_sophisticated_backpacks.tooltip.crafting_upgrade=在背包旁边增加额外合成栏
+
+retro_sophisticated_backpacks.tooltip.inception_upgrade=允许背包背包放入背包
+
 retro_sophisticated_backpacks.tooltip.shift_to_reveal=<按Shift显示>
 
 # Gui Elements

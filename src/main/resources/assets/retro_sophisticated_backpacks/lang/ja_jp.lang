@@ -27,6 +27,10 @@ retro_sophisticated_backpacks.tooltip.upgrade_base=何もしません！アッ�
 
 retro_sophisticated_backpacks.tooltip.stack_upgrade=スタックサイズを%d倍にします
 
+retro_sophisticated_backpacks.tooltip.crafting_upgrade=バックパックの側面に追加のクラフトグリッドを追加します
+
+retro_sophisticated_backpacks.tooltip.inception_upgrade=バックパックの中にバックパックを収納できるようにします
+
 retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Shiftで表示>
 
 #GUI要素
