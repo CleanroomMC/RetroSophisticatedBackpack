@@ -1,0 +1,37 @@
+#Bloques
+tile.retro_sophisticated_backpacks.backpack_leather.name=Mochila de Cuero
+tile.retro_sophisticated_backpacks.backpack_iron.name=Mochila de Hierro
+tile.retro_sophisticated_backpacks.backpack_gold.name=Mochila de Oro
+tile.retro_sophisticated_backpacks.backpack_diamond.name=Mochila de Diamante
+tile.retro_sophisticated_backpacks.backpack_obsidian.name=Mochila de Obsidiana
+
+#Objetos
+item.retro_sophisticated_backpacks.upgrade_base.name=Base de Mejora
+item.retro_sophisticated_backpacks.stack_upgrade_starter_tier.name=Mejora de Apilado Nivel Inicial
+item.retro_sophisticated_backpacks.stack_upgrade_tier_1.name=Mejora de Apilado Nivel 1
+item.retro_sophisticated_backpacks.stack_upgrade_tier_2.name=Mejora de Apilado Nivel 2
+item.retro_sophisticated_backpacks.stack_upgrade_tier_3.name=Mejora de Apilado Nivel 3
+item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=Mejora de Apilado Nivel 4
+item.retro_sophisticated_backpacks.crafting_upgrade.name=Mejora de Artesanía
+item.retro_sophisticated_backpacks.inception_upgrade.name=Mejora de Incepción
+
+#Pestañas Creativas
+itemGroup.retro_sophisticated_backpacks.creative_tab=Mochila Sofisticada Retro
+
+#Descripciones emergentes (Tooltips)
+retro_sophisticated_backpacks.tooltip.backpack.inventory_size=Tamaño de inventario: %d
+retro_sophisticated_backpacks.tooltip.backpack.upgrade_slots_size=Tamaño de ranuras de mejora: %d
+retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> Multiplicador de apilado: %d
+
+retro_sophisticated_backpacks.tooltip.upgrade_base=¡No hace nada! Siéntete libre de ponerlo en tus ranuras de mejora.
+
+retro_sophisticated_backpacks.tooltip.stack_upgrade=Multiplica el tamaño del apilado por %d
+
+retro_sophisticated_backpacks.tooltip.crafting_upgrade=Añade una cuadrícula de fabricación adicional al lado de la mochila
+
+retro_sophisticated_backpacks.tooltip.inception_upgrade=Permite que las mochilas se guarden dentro de otras mochilas
+
+retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Shift para revelar>
+
+#Elementos de GUI
+retro_sophisticated_backpacks.container.backpack=Mochila
