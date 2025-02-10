@@ -41,7 +41,6 @@ class BackpackItem(
         setCreativeTab(RetroSophisticatedBackpacks.CREATIVE_TAB)
         setRegistryName(registryName)
         setTranslationKey(registryName.asTranslationKey())
-        tileEntityItemStackRenderer = BackpackItemStackRenderer()
 
         Items.ITEMS.add(this)
         Items.BACKPACK_ITEMS.add(this)
