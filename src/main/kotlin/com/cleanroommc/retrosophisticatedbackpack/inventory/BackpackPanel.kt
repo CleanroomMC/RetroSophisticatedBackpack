@@ -76,7 +76,7 @@ class BackpackPanel(private val backpackWrapper: BackpackWrapper) : ModularPanel
             )
         }
 
-        syncManager.registerSlotGroup(SlotGroup("backpack_inventory", rowSize))
+        syncManager.registerSlotGroup(SlotGroup("backpack_inventory", rowSize, 100, true))
 
         val backpackSlotGroupWidget = SlotGroupWidget().debugName("backpack_inventory")
         backpackSlotGroupWidget.flex().coverChildren().leftRel(0.5F).top(17)
@@ -110,7 +110,7 @@ class BackpackPanel(private val backpackWrapper: BackpackWrapper) : ModularPanel
             syncManager.itemSlot("upgrades", i, upgradeSlot)
         }
 
-        syncManager.registerSlotGroup(SlotGroup("upgrade_inventory", 1))
+        syncManager.registerSlotGroup(SlotGroup("upgrade_inventory", 1, 99, true))
 
         val upgradesSlotGroupWidget =
             UpgradeSlotGroupWidget(backpackWrapper.upgradeSlotsSize()).debugName("upgrade_inventory")
