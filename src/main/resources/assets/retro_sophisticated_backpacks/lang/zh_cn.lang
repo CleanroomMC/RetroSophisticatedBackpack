@@ -1,0 +1,37 @@
+# Blocks
+tile.retro_sophisticated_backpacks.backpack_leather.name=皮革背包
+tile.retro_sophisticated_backpacks.backpack_iron.name=铁背包
+tile.retro_sophisticated_backpacks.backpack_gold.name=黃金背包
+tile.retro_sophisticated_backpacks.backpack_diamond.name=钻石背包
+tile.retro_sophisticated_backpacks.backpack_obsidian.name=黑曜石背包
+
+# Items
+item.retro_sophisticated_backpacks.upgrade_base.name=基础升级
+item.retro_sophisticated_backpacks.stack_upgrade_starter_tier.name=初级堆叠升级
+item.retro_sophisticated_backpacks.stack_upgrade_tier_1.name=堆叠升级 T1
+item.retro_sophisticated_backpacks.stack_upgrade_tier_2.name=堆叠升级 T2
+item.retro_sophisticated_backpacks.stack_upgrade_tier_3.name=堆叠升级 T3
+item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=堆叠升级 T4
+item.retro_sophisticated_backpacks.crafting_upgrade.name=合成升级
+item.retro_sophisticated_backpacks.inception_upgrade.name=嵌套升级
+
+# Creative Tabs
+itemGroup.retro_sophisticated_backpacks.creative_tab=复古精妙背包
+
+# Tooltips
+retro_sophisticated_backpacks.tooltip.backpack.inventory_size=背包容量: %d
+retro_sophisticated_backpacks.tooltip.backpack.upgrade_slots_size=升级插槽: %d
+retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> 当前堆叠倍率：%d
+
+retro_sophisticated_backpacks.tooltip.upgrade_base=没有效果！你可以放在升级插槽！
+
+retro_sophisticated_backpacks.tooltip.stack_upgrade=提供堆叠倍率 x%d
+
+retro_sophisticated_backpacks.tooltip.crafting_upgrade=在背包旁边增加额外合成栏
+
+retro_sophisticated_backpacks.tooltip.inception_upgrade=允许背包背包放入背包
+
+retro_sophisticated_backpacks.tooltip.shift_to_reveal=<按Shift显示>
+
+# Gui Elements
+retro_sophisticated_backpacks.container.backpack=背包
