@@ -7,7 +7,7 @@ import net.minecraftforge.common.config.Config.RequiresMcRestart
 object Config {
     @JvmField
     val leatherBackpack = LeatherBackpackConfig()
-    
+
     @JvmField
     val ironBackpack = IronBackpackConfig()
 
@@ -19,7 +19,7 @@ object Config {
 
     @JvmField
     val obsidianBackpack = ObsidianBackpackConfig()
-    
+
     @JvmField
     val stackUpgrade = StackUpgradeConfig()
 
@@ -32,7 +32,7 @@ object Config {
         @RequiresMcRestart
         var upgradeSlots = 1
     }
-    
+
     class IronBackpackConfig {
         @JvmField
         @RequiresMcRestart
@@ -42,17 +42,17 @@ object Config {
         @RequiresMcRestart
         var upgradeSlots = 2
     }
-    
+
     class GoldBackpackConfig {
         @JvmField
         @RequiresMcRestart
         var slots = 81
-        
+
         @JvmField
         @RequiresMcRestart
         var upgradeSlots = 3
     }
-    
+
     class DiamondBackpackConfig {
         @JvmField
         @RequiresMcRestart
@@ -62,7 +62,7 @@ object Config {
         @RequiresMcRestart
         var upgradeSlots = 5
     }
-    
+
     class ObsidianBackpackConfig {
         @JvmField
         @RequiresMcRestart

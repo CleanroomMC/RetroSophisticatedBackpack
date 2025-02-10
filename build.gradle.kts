@@ -52,6 +52,8 @@ val coremod_plugin_class_name: String by project
 @Suppress("PropertyName")
 val forgelin_continuous_version: String by project
 
+version = mod_version
+
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(8))

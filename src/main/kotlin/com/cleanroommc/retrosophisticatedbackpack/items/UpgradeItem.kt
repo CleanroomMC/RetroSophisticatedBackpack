@@ -4,7 +4,7 @@ import com.cleanroommc.retrosophisticatedbackpack.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpack.handlers.RegistryHandler
 import com.cleanroommc.retrosophisticatedbackpack.utils.Utils.asTranslationKey
 
-sealed class UpgradeItem(registryName: String): ItemBase() {
+sealed class UpgradeItem(registryName: String, val hasTab: Boolean) : ItemBase() {
     init {
         setMaxStackSize(1)
         setCreativeTab(RetroSophisticatedBackpacks.CREATIVE_TAB)

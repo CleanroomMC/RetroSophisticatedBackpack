@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "U": {
+      "item": "minecraft:coal_block"
+    },
+    "B": {
+      "item": "retro_sophisticated_backpacks:upgrade_base"
+    }
+  },
+  "pattern": [
+    "UUU",
+    "UBU",
+    "UUU"
+  ],
+  "result": {
+    "item": "retro_sophisticated_backpacks:stack_upgrade_starter_tier"
+  }
+}

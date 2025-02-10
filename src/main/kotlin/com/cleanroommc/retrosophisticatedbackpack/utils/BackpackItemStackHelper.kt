@@ -21,13 +21,13 @@ object BackpackItemStackHelper {
         nbt.setTag("Items", list)
         return nbt
     }
-    
+
     fun ItemStack.writeToNBTExtended(nbt: NBTTagCompound): NBTTagCompound {
         val nbt = writeToNBT(nbt)
         nbt.setInteger("Count", count)
         return nbt
     }
-    
+
     fun loadAllItemsExtended(nbt: NBTTagCompound, inventory: NonNullList<ItemStack>) {
         val list: NBTTagList = nbt.getTagList("Items", 10)
 
@@ -40,7 +40,7 @@ object BackpackItemStackHelper {
             }
         }
     }
-    
+
     fun loadItemStackExtended(nbt: NBTTagCompound): ItemStack {
         val stack = ItemStack(nbt)
         stack.count = nbt.getInteger("Count")

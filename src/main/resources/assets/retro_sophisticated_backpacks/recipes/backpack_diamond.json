@@ -1,0 +1,19 @@
+{
+  "type": "retro_sophisticated_backpacks:backpack_upgrade_shaped",
+  "key": {
+    "U": {
+      "item": "minecraft:diamond"
+    },
+    "B": {
+      "item": "retro_sophisticated_backpacks:backpack_gold"
+    }
+  },
+  "pattern": [
+    "UUU",
+    "UBU",
+    "UUU"
+  ],
+  "result": {
+    "item": "retro_sophisticated_backpacks:backpack_diamond"
+  }
+}

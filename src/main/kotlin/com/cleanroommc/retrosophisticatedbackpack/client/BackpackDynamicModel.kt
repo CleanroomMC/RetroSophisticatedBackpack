@@ -18,14 +18,14 @@ import net.minecraft.world.World
 import net.minecraftforge.client.model.ICustomModelLoader
 import net.minecraftforge.client.model.IModel
 import net.minecraftforge.client.model.ModelLoaderRegistry
-import net.minecraftforge.client.model.pipeline.TRSRTransformer
-import net.minecraftforge.client.model.pipeline.VertexBufferConsumer
 import net.minecraftforge.common.model.IModelState
-import net.minecraftforge.common.model.TRSRTransformation
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 import org.lwjgl.util.vector.Vector3f
 import java.util.*
 import java.util.function.Function
 
+@SideOnly(Side.CLIENT)
 class BackpackDynamicModel private constructor(
     private val modelParts: Map<ModelPart, IModel>,
     private val tier: BackpackTier
@@ -120,9 +120,17 @@ class BackpackDynamicModel private constructor(
         ): List<BakedQuad> {
             val ret = models[ModelPart.BASE]!!.getQuads(state, side, rand).toMutableList()
 
+            models[ModelPart.BASE]!!
+
             ret.addAll(models[ModelPart.FRONT_POUCH]!!.getQuads(state, side, rand))
             ret.addAll(models[ModelPart.LEFT_POUCH]!!.getQuads(state, side, rand))
             ret.addAll(models[ModelPart.RIGHT_POUCH]!!.getQuads(state, side, rand))
+
+            if (state != null) {
+                val facing = state.getValue(BackpackBlock.FACING)
+
+                return BakedQuadHelper.rotateQuadsCentered(ret, facing)
+            }
 
             return ret
         }

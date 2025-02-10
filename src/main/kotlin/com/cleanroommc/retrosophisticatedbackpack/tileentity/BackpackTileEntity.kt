@@ -9,22 +9,29 @@ import com.cleanroommc.retrosophisticatedbackpack.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpack.backpack.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpack.handlers.CapabilityHandler
 import com.cleanroommc.retrosophisticatedbackpack.inventory.BackpackGuiHolder
+import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.NetworkManager
 import net.minecraft.network.play.server.SPacketUpdateTileEntity
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
+import net.minecraft.util.math.BlockPos
+import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 
-class BackpackTileEntity(val backpackWrapper: BackpackWrapper = BackpackWrapper()) : TileEntity(), IGuiHolder<PosGuiData> {
+class BackpackTileEntity(val backpackWrapper: BackpackWrapper = BackpackWrapper()) : TileEntity(),
+    IGuiHolder<PosGuiData> {
     companion object {
         private const val BACKPACK_INVENTORY_TAG = "backpackInventory"
     }
-    
+
     fun openGui(player: EntityPlayer) {
         TileEntityGuiFactory.INSTANCE.open(player, pos)
     }
+
+    override fun shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newSate: IBlockState): Boolean =
+        oldState.block != newSate.block
 
     override fun getUpdatePacket(): SPacketUpdateTileEntity =
         SPacketUpdateTileEntity(pos, 3, updateTag)

@@ -7,7 +7,6 @@ import com.cleanroommc.modularui.factory.ItemGuiFactory
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.retrosophisticatedbackpack.RetroSophisticatedBackpacks
-import com.cleanroommc.retrosophisticatedbackpack.Tags
 import com.cleanroommc.retrosophisticatedbackpack.backpack.BackpackTier
 import com.cleanroommc.retrosophisticatedbackpack.backpack.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpack.blocks.BackpackBlock
@@ -26,7 +25,6 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.ActionResult
 import net.minecraft.util.EnumHand
-import net.minecraft.util.ResourceLocation
 import net.minecraft.util.text.TextComponentTranslation
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.ICapabilityProvider

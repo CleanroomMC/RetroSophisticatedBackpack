@@ -18,7 +18,6 @@ import net.minecraft.block.state.BlockFaceShape
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
-import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -86,9 +85,20 @@ class BackpackBlock(
     override fun getRenderLayer(): BlockRenderLayer =
         BlockRenderLayer.CUTOUT
 
-    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB {
-        return AxisAlignedBB(1 / 16.0, 0.0, 4 / 16.0, 15 / 16.0, 14 / 16.0, 12 / 16.0)
-    }
+    override fun getBoundingBox(state: IBlockState, source: IBlockAccess, pos: BlockPos): AxisAlignedBB =
+        when (val facing = state.getValue(FACING)) {
+            EnumFacing.NORTH, EnumFacing.SOUTH -> AxisAlignedBB(
+                1 / 16.0,
+                0.0,
+                4 / 16.0,
+                15 / 16.0,
+                14 / 16.0,
+                12 / 16.0
+            )
+
+            EnumFacing.WEST, EnumFacing.EAST -> AxisAlignedBB(4 / 16.0, 0.0, 1 / 16.0, 12 / 16.0, 14 / 16.0, 15 / 16.0)
+            EnumFacing.DOWN, EnumFacing.UP -> throw IllegalStateException("Backpack block does not have $facing side")
+        }
 
     override fun createBlockState(): BlockStateContainer =
         BlockStateContainer(this, *arrayOf(LEFT_TANK, RIGHT_TANK, BATTERY, FACING))
@@ -183,7 +193,7 @@ class BackpackBlock(
     ): Boolean {
         if (!worldIn.isRemote) {
             val tileEntity = worldIn.getTileEntity(pos) as BackpackTileEntity? ?: return true
-            
+
             tileEntity.openGui(playerIn)
         }
 
@@ -200,20 +210,26 @@ class BackpackBlock(
         BackpackTileEntity()
 
     override fun onBlockHarvested(worldIn: World, pos: BlockPos, state: IBlockState, player: EntityPlayer) {
-        if (!worldIn.isRemote) {
-            if (player.capabilities.isCreativeMode) {
-                val tileEntity = worldIn.getTileEntity(pos) as BackpackTileEntity? ?: return
-                val stack = ItemStack(Item.getItemFromBlock(this))
-                val tileEntityBackpackInventory =
-                    tileEntity.getCapability(CapabilityHandler.BACKPACK_ITEM_HANDLER_CAPABILITY!!, null) ?: return
-                val stackBackpackInventory =
-                    stack.getCapability(CapabilityHandler.BACKPACK_ITEM_HANDLER_CAPABILITY, null) ?: return
-                stackBackpackInventory.deserializeNBT(tileEntityBackpackInventory.serializeNBT())
-
-                worldIn.spawnEntity(EntityItem(worldIn, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble(), stack))
-            }
-        }
+        dropBlockAsItem(worldIn, pos, state, 0)
 
         super.onBlockHarvested(worldIn, pos, state, player)
+    }
+
+    override fun getDrops(
+        drops: NonNullList<ItemStack>,
+        world: IBlockAccess,
+        pos: BlockPos,
+        state: IBlockState,
+        fortune: Int
+    ) {
+        val tileEntity = world.getTileEntity(pos) as BackpackTileEntity? ?: return
+        val stack = ItemStack(Item.getItemFromBlock(this))
+        val tileEntityBackpackInventory =
+            tileEntity.getCapability(CapabilityHandler.BACKPACK_ITEM_HANDLER_CAPABILITY!!, null) ?: return
+        val stackBackpackInventory =
+            stack.getCapability(CapabilityHandler.BACKPACK_ITEM_HANDLER_CAPABILITY, null) ?: return
+        stackBackpackInventory.deserializeNBT(tileEntityBackpackInventory.serializeNBT())
+
+        drops.add(stack)
     }
 }

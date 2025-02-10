@@ -6,8 +6,8 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.text.TextComponentTranslation
 import net.minecraft.world.World
 
-class UpgradeBase(registryName: String) : UpgradeItem(registryName) {
+class InceptionUpgradeItem(registryName: String) : UpgradeItem(registryName, false) {
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
-        tooltip.add(TextComponentTranslation("tooltip.upgrade_base".asTranslationKey()).formattedText)
+        tooltip.add(TextComponentTranslation("tooltip.inception_upgrade".asTranslationKey()).formattedText)
     }
 }
