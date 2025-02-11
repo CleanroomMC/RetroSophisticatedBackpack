@@ -1,5 +1,6 @@
 package com.cleanroommc.retrosophisticatedbackpack.inventory
 
+import com.cleanroommc.modularui.api.widget.IWidget
 import com.cleanroommc.modularui.drawable.AdaptableUITexture
 import com.cleanroommc.modularui.drawable.ItemDrawable
 import com.cleanroommc.modularui.drawable.UITexture
@@ -25,10 +26,13 @@ import com.cleanroommc.retrosophisticatedbackpack.items.CraftingUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpack.items.UpgradeItem
 import com.cleanroommc.retrosophisticatedbackpack.utils.Utils.ceilDiv
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.inventory.InventoryCrafting
 import net.minecraft.util.EnumHand
+import net.minecraftforge.items.wrapper.InvWrapper
 import net.minecraftforge.items.wrapper.PlayerMainInvWrapper
 
-class BackpackPanel(private val backpackWrapper: BackpackWrapper) : ModularPanel("backpack_gui") {
+class BackpackPanel(private val backpackWrapper: BackpackWrapper, private val backpackContainer: BackpackContainer) :
+    ModularPanel("backpack_gui") {
     companion object {
         private const val SLOT_SIZE = 18
         private val LAYERED_TAB_TEXTURE = UITexture.builder()
@@ -39,14 +43,27 @@ class BackpackPanel(private val backpackWrapper: BackpackWrapper) : ModularPanel
             .tiled()
             .build() as AdaptableUITexture
 
-        fun defaultPanel(backpackWrapper: BackpackWrapper, width: Int, height: Int): BackpackPanel =
-            BackpackPanel(backpackWrapper).size(width, height) as BackpackPanel
+        internal fun defaultPanel(
+            syncManager: PanelSyncManager,
+            player: EntityPlayer,
+            backpackWrapper: BackpackWrapper,
+            width: Int,
+            height: Int
+        ): BackpackPanel {
+            val panel = BackpackPanel(backpackWrapper, BackpackContainer()).size(width, height) as BackpackPanel
+            syncManager.containerCustomizer = panel.backpackContainer
+            syncManager.bindPlayerInventory(player)
+            panel.bindPlayerInventory()
+
+            return panel
+        }
     }
 
     val upgradeSlotWidgets = mutableListOf<ItemSlot>()
     val tabWidgets = mutableListOf<TabWidget>()
     val rowSize = if (backpackWrapper.backpackInventorySize() > 81) 12 else 9
     val colSize = backpackWrapper.backpackInventorySize().ceilDiv(rowSize)
+
 
     internal fun modifyPlayerSlot(syncManager: PanelSyncManager, hand: EnumHand, player: EntityPlayer) {
         if (hand == EnumHand.MAIN_HAND) {
@@ -62,7 +79,8 @@ class BackpackPanel(private val backpackWrapper: BackpackWrapper) : ModularPanel
         }
     }
 
-    internal fun addBackpackInventorySlots(syncManager: PanelSyncManager) {
+    internal fun registerSlots(syncManager: PanelSyncManager) {
+        // Backpack slots
         for (i in 0 until backpackWrapper.backpackInventorySize()) {
             syncManager.itemSlot(
                 "backpack",
@@ -78,6 +96,42 @@ class BackpackPanel(private val backpackWrapper: BackpackWrapper) : ModularPanel
 
         syncManager.registerSlotGroup(SlotGroup("backpack_inventory", rowSize, 100, true))
 
+        // Upgrade slots
+        for (i in 0 until backpackWrapper.upgradeSlotsSize()) {
+            val upgradeSlot = UpgradeSlot(
+                backpackWrapper.upgradeItemStackHandler,
+                i,
+                backpackWrapper::canAddStackUpgrade,
+                backpackWrapper::canRemoveStackUpgrade,
+                backpackWrapper::canReplaceStackUpgrade,
+                backpackWrapper::canRemoveInceptionUpgrade
+            ).slotGroup("upgrade_inventory")
+
+            upgradeSlot.changeListener { _, _, isClient, _ ->
+                if (isClient)
+                    updateUpgradeTabs()
+            }
+
+            syncManager.itemSlot("upgrades", i, upgradeSlot)
+        }
+
+        syncManager.registerSlotGroup(SlotGroup("upgrade_inventory", 1, 99, true))
+
+        // Crafting inventories for crafting upgrades
+        val craftingInventory = InvWrapper(backpackContainer.craftingInventory)
+
+        for (i in 0 until 9) {
+            syncManager.itemSlot(
+                "crafting",
+                i,
+                ModularSlot(craftingInventory, i).slotGroup("crafting_matrix")
+            )
+        }
+
+        syncManager.registerSlotGroup(SlotGroup("crafting_matrix", 3))
+    }
+
+    internal fun addBackpackInventorySlots() {
         val backpackSlotGroupWidget = SlotGroupWidget().debugName("backpack_inventory")
         backpackSlotGroupWidget.flex().coverChildren().leftRel(0.5F).top(17)
 
@@ -91,27 +145,7 @@ class BackpackPanel(private val backpackWrapper: BackpackWrapper) : ModularPanel
         child(backpackSlotGroupWidget)
     }
 
-    internal fun addUpgradeSlots(syncManager: PanelSyncManager) {
-        for (i in 0 until backpackWrapper.upgradeSlotsSize()) {
-            val upgradeSlot = UpgradeSlot(
-                backpackWrapper.upgradeItemStackHandler,
-                i,
-                backpackWrapper::canAddStackUpgrade,
-                backpackWrapper::canRemoveStackUpgrade,
-                backpackWrapper::canReplaceStackUpgrade,
-                backpackWrapper::canRemoveInceptionUpgrade
-            ).slotGroup("upgrade_inventory")
-
-            upgradeSlot.changeListener { _, _, isClient, _ ->
-                if (isClient)
-                    updateUpgradeTabs(syncManager)
-            }
-
-            syncManager.itemSlot("upgrades", i, upgradeSlot)
-        }
-
-        syncManager.registerSlotGroup(SlotGroup("upgrade_inventory", 1, 99, true))
-
+    internal fun addUpgradeSlots() {
         val upgradesSlotGroupWidget =
             UpgradeSlotGroupWidget(backpackWrapper.upgradeSlotsSize()).debugName("upgrade_inventory")
         upgradesSlotGroupWidget.flex().size(23, 10 + backpackWrapper.upgradeSlotsSize() * 18).left(-21)
@@ -148,7 +182,7 @@ class BackpackPanel(private val backpackWrapper: BackpackWrapper) : ModularPanel
         child(TextWidget(StringKey(player.inventory.displayName.formattedText)).pos(8, 18 + colSize * 18))
     }
 
-    internal fun updateUpgradeTabs(syncManager: PanelSyncManager) {
+    internal fun updateUpgradeTabs() {
         var tabIndex = 0
 
         for (slotIndex in 0 until backpackWrapper.upgradeSlotsSize()) {
@@ -165,7 +199,7 @@ class BackpackPanel(private val backpackWrapper: BackpackWrapper) : ModularPanel
 
             when (item) {
                 is CraftingUpgradeItem -> {
-                    tabWidget.expandedWidget = CraftingTableWidget(syncManager)
+                    tabWidget.expandedWidget = CraftingTableWidget()
                 }
 
                 else -> {}

@@ -1,17 +1,19 @@
 package com.cleanroommc.retrosophisticatedbackpack.inventory
 
 import com.cleanroommc.modularui.screen.ContainerCustomizer
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.inventory.Container
 import net.minecraft.inventory.InventoryCrafting
 
 class BackpackContainer() : ContainerCustomizer() {
-    val craftingInventory: InventoryCrafting by lazy {
-        InventoryCrafting(container, 3, 3)
-    }
+    internal val craftingInventory: InventoryCrafting = InventoryCrafting(object : Container() {
+        override fun canInteractWith(playerIn: EntityPlayer): Boolean =
+            true
+    }, 3, 3)
 
     override fun onContainerClosed() {
-        val syncManager = container.syncManager
+        super.onContainerClosed()
 
-        if (!syncManager.isClient)
-            container.superClearContainer(syncManager.player, syncManager.player.world, craftingInventory)
+        container.superClearContainer(container.player, container.player.world, craftingInventory)
     }
 }

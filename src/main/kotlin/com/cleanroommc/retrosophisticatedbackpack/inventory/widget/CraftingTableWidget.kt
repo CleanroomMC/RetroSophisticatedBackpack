@@ -10,31 +10,15 @@ import com.cleanroommc.modularui.widgets.slot.SlotGroup
 import com.cleanroommc.retrosophisticatedbackpack.inventory.BackpackContainer
 import net.minecraftforge.items.wrapper.InvWrapper
 
-class CraftingTableWidget(
-    syncManager: PanelSyncManager
-) : ExpandedTabWidget() {
+class CraftingTableWidget() : ExpandedTabWidget() {
     companion object {
         private const val SLOT_SIZE = 18
     }
 
-
     private val craftingMatrix: Array<ItemSlot>
 
     init {
-        val backpackContainer = syncManager.containerCustomizer as BackpackContainer
-        val craftingInv = InvWrapper(backpackContainer.craftingInventory)
-
         size(70, 150)
-
-        for (i in 0 until 9) {
-            syncManager.itemSlot(
-                "crafting",
-                i,
-                ModularSlot(craftingInv, i).slotGroup("crafting_matrix")
-            )
-        }
-
-        syncManager.registerSlotGroup(SlotGroup("crafting_matrix", 3))
 
         val craftingMatrixSlotGroupsWidget = SlotGroupWidget().debugName("crafting_matrix")
         craftingMatrixSlotGroupsWidget.flex().coverChildren().leftRel(0.5F).top(36)

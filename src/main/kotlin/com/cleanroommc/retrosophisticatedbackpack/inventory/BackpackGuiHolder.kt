@@ -17,18 +17,19 @@ sealed class BackpackGuiHolder(protected val backpackWrapper: BackpackWrapper) {
     protected val rowSize = if (backpackWrapper.backpackInventorySize() > 81) 12 else 9
     protected val colSize = backpackWrapper.backpackInventorySize().ceilDiv(rowSize)
 
-    protected fun createPanel(syncManager: PanelSyncManager, player: EntityPlayer): BackpackPanel {
-        val panel = BackpackPanel.defaultPanel(backpackWrapper, 14 + rowSize * SLOT_SIZE, 112 + colSize * SLOT_SIZE)
-        syncManager.containerCustomizer = BackpackContainer()
-        syncManager.bindPlayerInventory(player)
-        panel.bindPlayerInventory()
-
-        return panel
-    }
+    protected fun createPanel(syncManager: PanelSyncManager, player: EntityPlayer): BackpackPanel =
+        BackpackPanel.defaultPanel(
+            syncManager,
+            player,
+            backpackWrapper,
+            14 + rowSize * SLOT_SIZE,
+            112 + colSize * SLOT_SIZE
+        )
 
     protected fun addCommonWidgets(panel: BackpackPanel, syncManager: PanelSyncManager, player: EntityPlayer) {
-        panel.addBackpackInventorySlots(syncManager)
-        panel.addUpgradeSlots(syncManager)
+        panel.registerSlots(syncManager)
+        panel.addBackpackInventorySlots()
+        panel.addUpgradeSlots()
         panel.addUpgradeTabs()
         panel.addTexts(player)
     }
