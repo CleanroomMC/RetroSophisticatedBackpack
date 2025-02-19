@@ -11,17 +11,19 @@ import com.cleanroommc.retrosophisticatedbackpacks.backpack.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.BackpackGuiHolder
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.inventory.IInventory
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.NetworkManager
 import net.minecraft.network.play.server.SPacketUpdateTileEntity
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.text.ITextComponent
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 
 class BackpackTileEntity(val backpackWrapper: BackpackWrapper = BackpackWrapper()) : TileEntity(),
-    IGuiHolder<PosGuiData> {
+    IInventory by backpackWrapper, IGuiHolder<PosGuiData> {
     companion object {
         private const val BACKPACK_INVENTORY_TAG = "backpackInventory"
     }
@@ -71,4 +73,11 @@ class BackpackTileEntity(val backpackWrapper: BackpackWrapper = BackpackWrapper(
         val backpackInv = getCapability(Capabilities.BACKPACK_CAPABILITY, null)!!
         return BackpackGuiHolder.TileEntityGuiHolder(backpackInv).buildUI(data, syncManager)
     }
+
+    override fun markDirty() {
+        backpackWrapper.markDirty()
+    }
+
+    override fun getDisplayName(): ITextComponent =
+        backpackWrapper.getDisplayName()
 }
