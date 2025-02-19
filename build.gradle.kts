@@ -1,8 +1,8 @@
+
 import org.jetbrains.gradle.ext.Gradle
 import org.jetbrains.gradle.ext.compiler
 import org.jetbrains.gradle.ext.runConfigurations
 import org.jetbrains.gradle.ext.settings
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript { 
     repositories {
@@ -146,7 +146,7 @@ dependencies {
         exclude("net.minecraftforge")
     }
 
-    implementation("com.cleanroommc:modularui:2.5.0-rc3")
+    implementation("com.cleanroommc:modularui:2.5.0-rc4")
     
     if (use_assetmover.toBoolean()) {
         implementation("com.cleanroommc:assetmover:2.5")
@@ -180,10 +180,6 @@ if (use_access_transformer.toBoolean()) {
             tasks.srgifyBinpatchedJar.get().accessTransformerFiles.from(at)
         }
     }
-}
-
-tasks.withType<KotlinCompile> {
-    compilerOptions.freeCompilerArgs.add("-Xmulti-dollar-interpolation")
 }
 
 @Suppress("UnstableApiUsage")

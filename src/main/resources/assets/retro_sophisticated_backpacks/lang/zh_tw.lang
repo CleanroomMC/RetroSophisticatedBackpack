@@ -14,6 +14,7 @@ item.retro_sophisticated_backpacks.stack_upgrade_tier_3.name=堆疊升級 T3
 item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=堆疊升級 T4
 item.retro_sophisticated_backpacks.crafting_upgrade.name=合成升級
 item.retro_sophisticated_backpacks.inception_upgrade.name=嵌套升級
+item.retro_sophisticated_backpacks.pickup_upgrade.name=拾取升級
 
 # Creative Tabs
 itemGroup.retro_sophisticated_backpacks.creative_tab=復古精緻背包
@@ -31,7 +32,15 @@ retro_sophisticated_backpacks.tooltip.crafting_upgrade=在背包旁增加額外�
 
 retro_sophisticated_backpacks.tooltip.inception_upgrade=允許將背包放入背包
 
+retro_sophisticated_backpacks.tooltip.pickup_upgrade=允許背包拾取並存入背包
+
 retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Shift 以顯示>
 
 # Gui Elements
 retro_sophisticated_backpacks.container.backpack=背包
+
+retro_sophisticated_backpacks.gui.pickup_settings=拾取設定
+
+retro_sophisticated_backpacks.gui.whitelist=白名單
+
+retro_sophisticated_backpacks.gui.blacklist=黑名單

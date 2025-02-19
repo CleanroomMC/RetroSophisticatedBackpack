@@ -14,6 +14,7 @@ item.retro_sophisticated_backpacks.stack_upgrade_tier_3.name=Stack Upgrade Tier 
 item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=Stack Upgrade Tier 4
 item.retro_sophisticated_backpacks.crafting_upgrade.name=Crafting Upgrade
 item.retro_sophisticated_backpacks.inception_upgrade.name=Inception Upgrade
+item.retro_sophisticated_backpacks.pickup_upgrade.name=Pickup Upgrade
 
 # Creative Tabs
 itemGroup.retro_sophisticated_backpacks.creative_tab=Retro Sophisticated Backpack
@@ -31,7 +32,15 @@ retro_sophisticated_backpacks.tooltip.crafting_upgrade=Adds additional crafting 
 
 retro_sophisticated_backpacks.tooltip.inception_upgrade=Allows backpacks to be stored inside backpack
 
+retro_sophisticated_backpacks.tooltip.pickup_upgrade=Allows backpacks to pickup items
+
 retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Shift to reveal>
 
 # Gui Elements
 retro_sophisticated_backpacks.container.backpack=Backpack
+
+retro_sophisticated_backpacks.gui.pickup_settings=Pickup Settings
+
+retro_sophisticated_backpacks.gui.whitelist=Whitelist
+
+retro_sophisticated_backpacks.gui.blacklist=Blacklist
