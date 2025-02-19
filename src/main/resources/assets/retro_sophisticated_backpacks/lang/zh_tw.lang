@@ -57,7 +57,7 @@ retro_sophisticated_backpacks.gui.match_item=根據物品屬性
 
 retro_sophisticated_backpacks.gui.match_mod_id=根據模組 ID
 
-retro_sophisticated_backpacks.gui.match_ore_dict=根據礦物字典
+retro_sophisticated_backpacks.gui.match_ore_dict=根據礦物詞典
 
 retro_sophisticated_backpacks.gui.consider_durability=考慮耐久
 
@@ -66,3 +66,9 @@ retro_sophisticated_backpacks.gui.ignore_durability=無視耐久
 retro_sophisticated_backpacks.gui.consider_nbt=考慮 NBT
 
 retro_sophisticated_backpacks.gui.ignore_nbt=無視 NBT
+
+retro_sophisticated_backpacks.gui.add_ore_dict_entry=新增礦物詞典
+
+retro_sophisticated_backpacks.gui.remove_ore_dict_entry=移除礦物詞典
+
+retro_sophisticated_backpacks.gui.ore_dict_input_help=可以在這裡輸入礦物詞典，支援正規表示式

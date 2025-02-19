@@ -10,10 +10,11 @@ import com.cleanroommc.retrosophisticatedbackpacks.utils.Utils.asTranslationKey
 
 class CyclicVariantButtonWidget(
     private val variants: List<Variant>,
-    internal var inEffect: Boolean,
     private var index: Int = 0,
     private val mousePressedUpdater: CyclicVariantButtonWidget.(Int) -> Unit,
 ) : ButtonWidget<CyclicVariantButtonWidget>() {
+    var inEffect: Boolean = true
+
     init {
         size(20, 20)
             .onMousePressed {

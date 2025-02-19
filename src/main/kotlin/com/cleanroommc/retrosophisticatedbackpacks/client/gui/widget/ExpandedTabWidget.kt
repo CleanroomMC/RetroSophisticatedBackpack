@@ -6,7 +6,6 @@ import com.cleanroommc.modularui.drawable.UITexture
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 
 sealed class ExpandedTabWidget(val coveredTabSize: Int) : ParentWidget<ExpandedTabWidget>() {
@@ -21,9 +20,6 @@ sealed class ExpandedTabWidget(val coveredTabSize: Int) : ParentWidget<ExpandedT
     }
 
     internal var tabIcon: IDrawable? = null
-
-    open fun getIngredientSlots(): List<ItemSlot> =
-        listOf()
 
     override fun onInit() {
         context.jeiSettings.addJeiExclusionArea(this)

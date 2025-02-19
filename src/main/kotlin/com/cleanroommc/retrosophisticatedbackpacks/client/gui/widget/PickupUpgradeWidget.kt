@@ -6,14 +6,12 @@ import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.PickupUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
 import com.cleanroommc.retrosophisticatedbackpacks.utils.Utils.asTranslationKey
 import com.cleanroommc.retrosophisticatedbackpacks.value.sync.UpgradeSlotSH
 
 class PickupUpgradeWidget(
-    private val panel: BackpackPanel,
-    private val slotIndex: Int,
+    slotIndex: Int,
     private val wrapper: PickupUpgradeWrapper
 ) : ExpandedTabWidget(3) {
     companion object {
@@ -32,7 +30,6 @@ class PickupUpgradeWidget(
 
         filterTypeButton = CyclicVariantButtonWidget(
             FILTER_TYPE_VARIANTS,
-            true,
             wrapper.filterType.ordinal
         ) { index ->
             wrapper.filterType = PickupUpgradeWrapper.FilterType.entries[index]
@@ -57,11 +54,13 @@ class PickupUpgradeWidget(
 
         child(filterTypeButton)
             .child(slotGroup)
-            .child(TextWidget(IKey.lang("gui.pickup_settings".asTranslationKey())).leftRel(0.85f).topRelAnchor(0.125f, 0.5f))
+            .child(
+                TextWidget(IKey.lang("gui.pickup_settings".asTranslationKey()))
+                    .size(30, 20)
+                    .leftRel(0.85f)
+                    .topRelAnchor(0.125f, 0.5f)
+            )
     }
-
-    override fun getIngredientSlots(): List<ItemSlot> =
-        filterSlots
 
     override fun isValidSyncHandler(syncHandler: SyncHandler?): Boolean {
         if (syncHandler is UpgradeSlotSH)

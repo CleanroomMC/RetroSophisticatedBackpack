@@ -46,5 +46,13 @@ class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
         wrapper.matchType = buf.readEnumValue(AdvancedPickupUpgradeWrapper.MatchType::class.java)
         wrapper.ignoreDurability = buf.readBoolean()
         wrapper.ignoreNBT = buf.readBoolean()
+
+        val size = buf.readInt()
+
+        wrapper.oreDictEntries.clear()
+
+        for (i in 0 until size) {
+            wrapper.oreDictEntries.add(buf.readString(100))
+        }
     }
 }

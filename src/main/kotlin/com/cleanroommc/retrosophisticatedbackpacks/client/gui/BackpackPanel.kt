@@ -214,10 +214,10 @@ class BackpackPanel(
 
                     tabWidget.expandedWidget = if (wrapper is AdvancedPickupUpgradeWrapper) {
                         upgradeSlotGroups[slotIndex].updateAdvancedPickupFilterDelegate(wrapper)
-                        AdvancedPickupUpgradeWidget(this, slotIndex, wrapper)
+                        AdvancedPickupUpgradeWidget(slotIndex, wrapper)
                     } else {
                         upgradeSlotGroups[slotIndex].updatePickupFilterDelegate(wrapper)
-                        PickupUpgradeWidget(this, slotIndex, wrapper)
+                        PickupUpgradeWidget(slotIndex, wrapper)
                     }
                 }
 

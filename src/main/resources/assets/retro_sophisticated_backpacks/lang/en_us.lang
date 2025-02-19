@@ -66,3 +66,9 @@ retro_sophisticated_backpacks.gui.ignore_durability=Ignore Durability
 retro_sophisticated_backpacks.gui.consider_nbt=Consider NBT
 
 retro_sophisticated_backpacks.gui.ignore_nbt=Ignore NBT
+
+retro_sophisticated_backpacks.gui.add_ore_dict_entry=Add Ore Dict.
+
+retro_sophisticated_backpacks.gui.remove_ore_dict_entry=Remove Ore Dict.
+
+retro_sophisticated_backpacks.gui.ore_dict_input_help=You can input ore dictionary here, regex is supported

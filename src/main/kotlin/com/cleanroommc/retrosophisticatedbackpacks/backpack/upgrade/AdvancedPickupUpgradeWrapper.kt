@@ -4,13 +4,18 @@ import com.cleanroommc.retrosophisticatedbackpacks.backpack.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.ExposedItemStackHandler
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.nbt.NBTTagList
+import net.minecraft.nbt.NBTTagString
 import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.common.util.Constants
+import net.minecraftforge.oredict.OreDictionary
 
 class AdvancedPickupUpgradeWrapper : PickupUpgradeWrapper() {
     companion object {
         private const val MATCH_TYPE_TAG = "MatchType"
         private const val IGNORE_DURABILITY_TAG = "IgnoreDurability"
         private const val IGNORE_NBT_TAG = "IgnoreNbt"
+        private const val ORE_DICT_LIST_TAG = "OreDict"
     }
 
     override val filterItems: ExposedItemStackHandler = ExposedItemStackHandler(16)
@@ -29,7 +34,7 @@ class AdvancedPickupUpgradeWrapper : PickupUpgradeWrapper() {
         return when (matchType) {
             MatchType.ITEM -> matchItem(stack)
             MatchType.MOD -> matchMod(stack)
-            MatchType.ORE_DICT -> true
+            MatchType.ORE_DICT -> matchNBT(stack)
         }
     }
 
@@ -62,6 +67,22 @@ class AdvancedPickupUpgradeWrapper : PickupUpgradeWrapper() {
         }
     }
 
+    private fun matchNBT(stack: ItemStack): Boolean {
+        val stackOreDictionaries = OreDictionary.getOreIDs(stack).map { OreDictionary.getOreName(it) }
+
+        for (oreDictEntry in oreDictEntries) {
+            val regex = Regex(oreDictEntry)
+            val matchResult = stackOreDictionaries.any { regex.matches(it) }
+
+            if (filterType == FilterType.WHITELIST && matchResult)
+                return true
+            if (filterType == FilterType.BLACKLIST && !matchResult)
+                return true
+        }
+
+        return false
+    }
+
     private fun matchItemInfo(stack: ItemStack, filterStack: ItemStack): Boolean {
         if (filterStack.isEmpty)
             return false
@@ -86,6 +107,13 @@ class AdvancedPickupUpgradeWrapper : PickupUpgradeWrapper() {
         nbt.setByte(MATCH_TYPE_TAG, matchType.ordinal.toByte())
         nbt.setBoolean(IGNORE_DURABILITY_TAG, ignoreDurability)
         nbt.setBoolean(IGNORE_NBT_TAG, ignoreNBT)
+
+        val oreDictList = NBTTagList()
+
+        for (entry in oreDictEntries)
+            oreDictList.appendTag(NBTTagString(entry))
+
+        nbt.setTag(ORE_DICT_LIST_TAG, oreDictList)
         return nbt
     }
 
@@ -94,6 +122,11 @@ class AdvancedPickupUpgradeWrapper : PickupUpgradeWrapper() {
         matchType = MatchType.entries[nbt.getByte(MATCH_TYPE_TAG).toInt()]
         ignoreDurability = nbt.getBoolean(IGNORE_DURABILITY_TAG)
         ignoreNBT = nbt.getBoolean(IGNORE_NBT_TAG)
+
+        val oreDictList = nbt.getTagList(ORE_DICT_LIST_TAG, Constants.NBT.TAG_STRING)
+
+        for (stringNBT in oreDictList)
+            oreDictEntries.add((stringNBT as NBTTagString).string)
     }
 
     enum class MatchType {
