@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.INBTSerializable
 
-class PickupUpgradeWrapper : UpgradeWrapper<PickupUpgradeItem>(), IToggleable, ISidelessCapabilityProvider,
+open class PickupUpgradeWrapper : UpgradeWrapper<PickupUpgradeItem>(), IToggleable, ISidelessCapabilityProvider,
     INBTSerializable<NBTTagCompound> {
     companion object {
         private const val FILTER_ITEMS_TAG = "FilterItems"
@@ -21,15 +21,15 @@ class PickupUpgradeWrapper : UpgradeWrapper<PickupUpgradeItem>(), IToggleable, I
 
     override var enabled = true
     var filterType = FilterType.WHITELIST
-    val filterItems = ExposedItemStackHandler(9)
+    open val filterItems = ExposedItemStackHandler(9)
 
-    fun canPickup(stack: ItemStack): Boolean {
+    open fun canPickup(stack: ItemStack): Boolean {
         if (!enabled)
             return false
 
         return when (filterType) {
-            FilterType.WHITELIST -> filterItems.inventory.any { it.isItemEqual(stack) }
-            FilterType.BLACKLIST -> filterItems.inventory.none { it.isItemEqual(stack) }
+            FilterType.WHITELIST -> filterItems.inventory.any { ItemStack.areItemsEqualIgnoreDurability(it, stack) }
+            FilterType.BLACKLIST -> filterItems.inventory.none { ItemStack.areItemsEqualIgnoreDurability(it, stack) }
         }
     }
 

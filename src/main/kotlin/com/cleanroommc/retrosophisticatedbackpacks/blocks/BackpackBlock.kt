@@ -28,6 +28,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 
+@Suppress("OVERRIDE_DEPRECATION", "DEPRECATION")
 class BackpackBlock(
     registryName: String,
     explosionResistance: Float,

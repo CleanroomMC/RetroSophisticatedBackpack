@@ -29,8 +29,8 @@ sealed class ExpandedTabWidget(val coveredTabSize: Int) : ParentWidget<ExpandedT
         context.jeiSettings.addJeiExclusionArea(this)
     }
 
-    override fun drawOverlay(context: ModularGuiContext, widgetTheme: WidgetTheme) {
-        super.drawOverlay(context, widgetTheme)
+    override fun draw(context: ModularGuiContext, widgetTheme: WidgetTheme) {
+        super.draw(context, widgetTheme)
 
         tabIcon?.draw(context, 8, 6, 16, 16, widgetTheme)
     }

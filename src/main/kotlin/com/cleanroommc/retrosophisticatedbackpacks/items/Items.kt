@@ -85,4 +85,7 @@ object Items {
 
     @JvmField
     val pickupUpgrade = PickupUpgradeItem("pickup_upgrade")
+
+    @JvmField
+    val advancedPickupUpgrade = PickupUpgradeItem("advanced_pickup_upgrade", true)
 }

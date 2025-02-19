@@ -1,9 +1,6 @@
 package com.cleanroommc.retrosophisticatedbackpacks.backpack;
 
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.CraftingUpgradeWrapper;
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.IToggleable;
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.PickupUpgradeWrapper;
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.UpgradeWrapper;
+import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.*;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +18,10 @@ public final class Capabilities {
     @SuppressWarnings("DataFlowIssue")
     @CapabilityInject(PickupUpgradeWrapper.class)
     public static final @NotNull Capability<PickupUpgradeWrapper> PICKUP_UPGRADE_CAPABILITY = null;
+
+    @SuppressWarnings("DataFlowIssue")
+    @CapabilityInject(AdvancedPickupUpgradeWrapper.class)
+    public static final @NotNull Capability<AdvancedPickupUpgradeWrapper> ADVANCED_PICKUP_UPGRADE_CAPABILITY = null;
 
     // Abstract capabilities
     @SuppressWarnings("DataFlowIssue")

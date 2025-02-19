@@ -35,15 +35,8 @@ class TabWidget(
                 if (!value) {
                     expandedWidget.let(context.jeiSettings::removeJeiExclusionArea)
 
-                    for (slot in expandedWidget.getIngredientSlots()) {
-                        context.jeiSettings.removeJeiGhostIngredientSlot(slot)
-                    }
                 } else {
                     expandedWidget.let(context.jeiSettings::addJeiExclusionArea)
-
-                    for (slot in expandedWidget.getIngredientSlots()) {
-                        context.jeiSettings.addJeiGhostIngredientSlot(slot)
-                    }
                 }
             }
 
@@ -84,8 +77,11 @@ class TabWidget(
         return Interactable.Result.ACCEPT
     }
 
-    override fun drawOverlay(context: ModularGuiContext?, widgetTheme: WidgetTheme?) {
-        super.drawOverlay(context, widgetTheme)
+    override fun draw(context: ModularGuiContext, widgetTheme: WidgetTheme) {
+        super.draw(context, widgetTheme)
+
+        if (showExpanded || !clickable)
+            return
 
         tabIcon?.draw(context, 8, 6, 16, 16, widgetTheme)
     }
@@ -93,7 +89,7 @@ class TabWidget(
     override fun drawBackground(context: ModularGuiContext, widgetTheme: WidgetTheme) {
         super.drawBackground(context, widgetTheme)
 
-        if (showExpanded)
+        if (showExpanded || !clickable)
             return
 
         val index = if (tabIndex == 0) -1 else 0

@@ -15,6 +15,7 @@ item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=堆疊升級 T4
 item.retro_sophisticated_backpacks.crafting_upgrade.name=合成升級
 item.retro_sophisticated_backpacks.inception_upgrade.name=嵌套升級
 item.retro_sophisticated_backpacks.pickup_upgrade.name=拾取升級
+item.retro_sophisticated_backpacks.advanced_pickup_upgrade.name=進階拾取升級
 
 # Creative Tabs
 itemGroup.retro_sophisticated_backpacks.creative_tab=復古精緻背包
@@ -34,6 +35,8 @@ retro_sophisticated_backpacks.tooltip.inception_upgrade=允許將背包放入背
 
 retro_sophisticated_backpacks.tooltip.pickup_upgrade=允許背包拾取並存入背包
 
+retro_sophisticated_backpacks.tooltip.advanced_pickup_upgrade=允許背包根據更多配置拾取並存入背包
+
 retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Shift 以顯示>
 
 # Gui Elements
@@ -41,6 +44,25 @@ retro_sophisticated_backpacks.container.backpack=背包
 
 retro_sophisticated_backpacks.gui.pickup_settings=拾取設定
 
+retro_sophisticated_backpacks.gui.advanced_pickup_settings=進階拾取設定
+
+# Gui Tooltips
+retro_sophisticated_backpacks.gui.not_in_effect=未生效
+
 retro_sophisticated_backpacks.gui.whitelist=白名單
 
 retro_sophisticated_backpacks.gui.blacklist=黑名單
+
+retro_sophisticated_backpacks.gui.match_item=根據物品屬性
+
+retro_sophisticated_backpacks.gui.match_mod_id=根據模組 ID
+
+retro_sophisticated_backpacks.gui.match_ore_dict=根據礦物字典
+
+retro_sophisticated_backpacks.gui.consider_durability=考慮耐久
+
+retro_sophisticated_backpacks.gui.ignore_durability=無視耐久
+
+retro_sophisticated_backpacks.gui.consider_nbt=考慮 NBT
+
+retro_sophisticated_backpacks.gui.ignore_nbt=無視 NBT

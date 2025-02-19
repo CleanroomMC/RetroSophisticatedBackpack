@@ -15,6 +15,7 @@ item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=Stack Upgrade Tier 
 item.retro_sophisticated_backpacks.crafting_upgrade.name=Crafting Upgrade
 item.retro_sophisticated_backpacks.inception_upgrade.name=Inception Upgrade
 item.retro_sophisticated_backpacks.pickup_upgrade.name=Pickup Upgrade
+item.retro_sophisticated_backpacks.advanced_pickup_upgrade.name=Advanced Pickup Upgrade
 
 # Creative Tabs
 itemGroup.retro_sophisticated_backpacks.creative_tab=Retro Sophisticated Backpack
@@ -34,6 +35,8 @@ retro_sophisticated_backpacks.tooltip.inception_upgrade=Allows backpacks to be s
 
 retro_sophisticated_backpacks.tooltip.pickup_upgrade=Allows backpacks to pickup items
 
+retro_sophisticated_backpacks.tooltip.advanced_pickup_upgrade=Allows backpack to pickup items with more configurations
+
 retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Shift to reveal>
 
 # Gui Elements
@@ -41,6 +44,25 @@ retro_sophisticated_backpacks.container.backpack=Backpack
 
 retro_sophisticated_backpacks.gui.pickup_settings=Pickup Settings
 
+retro_sophisticated_backpacks.gui.advanced_pickup_settings=Adv. Pickup Settings
+
+# Gui Tooltips
+retro_sophisticated_backpacks.gui.not_in_effect=Not in effect
+
 retro_sophisticated_backpacks.gui.whitelist=Whitelist
 
 retro_sophisticated_backpacks.gui.blacklist=Blacklist
+
+retro_sophisticated_backpacks.gui.match_item=By Item
+
+retro_sophisticated_backpacks.gui.match_mod_id=By Mod ID
+
+retro_sophisticated_backpacks.gui.match_ore_dict=By Ore Dictionary
+
+retro_sophisticated_backpacks.gui.consider_durability=Consider Durability
+
+retro_sophisticated_backpacks.gui.ignore_durability=Ignore Durability
+
+retro_sophisticated_backpacks.gui.consider_nbt=Consider NBT
+
+retro_sophisticated_backpacks.gui.ignore_nbt=Ignore NBT

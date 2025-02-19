@@ -6,21 +6,29 @@ import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.widgets.ButtonWidget
+import com.cleanroommc.retrosophisticatedbackpacks.utils.Utils.asTranslationKey
 
 class CyclicVariantButtonWidget(
     private val variants: List<Variant>,
-    private val mousePressedUpdater: CyclicVariantButtonWidget.(Int) -> Unit,
+    internal var inEffect: Boolean,
     private var index: Int = 0,
+    private val mousePressedUpdater: CyclicVariantButtonWidget.(Int) -> Unit,
 ) : ButtonWidget<CyclicVariantButtonWidget>() {
     init {
-        onMousePressed {
-            index = (index + 1) % variants.size
-            mousePressedUpdater(index)
-            true
-        }.tooltip {
-            it.add(variants[index].name)
-                .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
-        }
+        size(20, 20)
+            .onMousePressed {
+                index = (index + 1) % variants.size
+                mousePressedUpdater(index)
+                true
+            }.tooltipDynamic {
+                it.addLine(variants[index].name)
+
+                if (!inEffect) {
+                    it.addLine(IKey.lang("gui.not_in_effect".asTranslationKey()).style(IKey.RED))
+                }
+
+                it.pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+            }
     }
 
     override fun drawOverlay(context: ModularGuiContext, widgetTheme: WidgetTheme) {

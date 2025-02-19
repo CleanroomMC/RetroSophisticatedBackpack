@@ -1,7 +1,10 @@
 package com.cleanroommc.retrosophisticatedbackpacks.client.gui
 
+import com.cleanroommc.modularui.drawable.ItemDrawable
 import com.cleanroommc.modularui.drawable.UITexture
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
+import net.minecraft.init.Items
+import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
 
 object RSBTextures {
@@ -9,6 +12,18 @@ object RSBTextures {
 
     val CHECK_ICON = icon("check", 0, 0)
     val CROSS_ICON = icon("cross", 16, 0)
+
+    val CONSIDER_NBT_ICON = icon("consider_nbt", 32, 0)
+    val IGNORE_NBT_ICON = icon("ignore_nbt", 48, 0)
+
+    val CONSIDER_ORE_DICT_ICON = icon("consider_ore_dict", 112, 96)
+    val IGNORE_ORE_DICT_ICON = icon("ignore_ore_dict", 128, 96)
+
+    val CONSIDER_DURABILITY_ICON = icon("consider_duration", 0, 16)
+    val IGNORE_DURABILITY_ICON = icon("ignore_duration", 16, 16)
+
+    val BY_MOD_ID_ICON = icon("by_mod_id", 32, 16)
+    val BY_ITEM_ICON = ItemDrawable(ItemStack(Items.APPLE))
 
     val TOGGLE_DISABLE_ICON = icon("disable", 0, 128, 4, 10)
     val TOGGLE_ENABLE_ICON = icon("enable", 4, 128, 4, 10)

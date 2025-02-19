@@ -2,6 +2,7 @@ package com.cleanroommc.retrosophisticatedbackpacks.handlers
 
 import com.cleanroommc.retrosophisticatedbackpacks.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.AdvancedPickupUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.CraftingUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.IToggleable
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.PickupUpgradeWrapper
@@ -48,6 +49,12 @@ object CapabilityHandler {
             PickupUpgradeWrapper::class.java,
             CapabilityStorageProvider<PickupUpgradeWrapper>(),
             ::PickupUpgradeWrapper
+        )
+
+        instance.register(
+            AdvancedPickupUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AdvancedPickupUpgradeWrapper>(),
+            ::AdvancedPickupUpgradeWrapper
         )
 
         instance.register(

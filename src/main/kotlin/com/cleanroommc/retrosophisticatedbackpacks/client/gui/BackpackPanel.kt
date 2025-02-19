@@ -17,25 +17,18 @@ import com.cleanroommc.modularui.widgets.slot.SlotGroup
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.Capabilities
-import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget.CraftingUpgradeWidget
-import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget.PickupUpgradeWidget
-import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget.TabWidget
-import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget.UpgradeSlotGroupWidget
+import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.AdvancedPickupUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget.*
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.BackpackContainer
-import com.cleanroommc.retrosophisticatedbackpacks.inventory.slot.*
+import com.cleanroommc.retrosophisticatedbackpacks.inventory.slot.BackpackSlot
+import com.cleanroommc.retrosophisticatedbackpacks.inventory.slot.UpgradeSlot
 import com.cleanroommc.retrosophisticatedbackpacks.items.CraftingUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.items.PickupUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.items.UpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.utils.Utils.ceilDiv
-import com.cleanroommc.retrosophisticatedbackpacks.value.sync.DelegatedStackHandlerSH
-import com.cleanroommc.retrosophisticatedbackpacks.value.sync.FilterSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.value.sync.UpgradeSlotSH
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.entity.player.EntityPlayerMP
-import net.minecraft.item.ItemStack
-import net.minecraft.item.crafting.CraftingManager
 import net.minecraft.util.EnumHand
-import net.minecraftforge.items.wrapper.InvWrapper
 import net.minecraftforge.items.wrapper.PlayerMainInvWrapper
 
 class BackpackPanel(
@@ -77,11 +70,7 @@ class BackpackPanel(
     val rowSize = if (backpackWrapper.backpackInventorySize() > 81) 12 else 9
     val colSize = backpackWrapper.backpackInventorySize().ceilDiv(rowSize)
 
-    val craftingMatrix: Array<CraftingInputSlot>
-    val craftingOutputSlot: CraftingOutputSlot
-
-    var pickupFilterStackHandler = DelegatedStackHandlerSH(backpackWrapper)
-    val pickupFilterSlots: Array<ModularSlot>
+    val upgradeSlotGroups: Array<UpgradeSlotUpdateGroup>
 
     init {
         // Backpack slots
@@ -121,55 +110,10 @@ class BackpackPanel(
 
         syncManager.registerSlotGroup(SlotGroup("upgrade_inventory", 1, 99, true))
 
-        // Crafting inventories for crafting upgrades
-        val craftingInventory = InvWrapper(backpackContainer.craftingInventory)
-        craftingMatrix = Array(9) {
-            val slot = CraftingInputSlot(::updateCraftingOutputSlot, craftingInventory, it)
-            slot.slotGroup("crafting_matrix")
-
-            syncManager.itemSlot(
-                "crafting",
-                it,
-                slot
-            )
-
-            slot
+        // Upgrade slot inventory pre register
+        upgradeSlotGroups = Array(backpackWrapper.upgradeSlotsSize()) {
+            UpgradeSlotUpdateGroup(syncManager, backpackWrapper, it)
         }
-
-        syncManager.registerSlotGroup(SlotGroup("crafting_matrix", 3, false))
-
-        craftingOutputSlot =
-            CraftingOutputSlot(
-                player,
-                backpackContainer.craftingInventory,
-                backpackContainer.craftingResult,
-                0
-            )
-        craftingOutputSlot.slotGroup("crafting_result_slot")
-
-        syncManager.itemSlot(
-            "crafting_result",
-            0,
-            craftingOutputSlot
-        )
-        syncManager.registerSlotGroup(SlotGroup("crafting_result_slot", 1, false))
-
-        syncManager.syncValue("pickup_filter_delegation", pickupFilterStackHandler)
-
-        pickupFilterSlots = Array(9) {
-            val slot = FilterSlot(pickupFilterStackHandler.delegatedStackHandler, it)
-            slot.slotGroup("pickup_filters")
-
-            syncManager.syncValue(
-                PickupUpgradeWidget.PICKUP_FILTER_SYNC_HANDLER,
-                it,
-                FilterSlotSH(slot)
-            )
-
-            slot
-        }
-
-        syncManager.registerSlotGroup(SlotGroup("pickup_filters", 3, false))
     }
 
     internal fun modifyPlayerSlot(syncManager: PanelSyncManager, hand: EnumHand, player: EntityPlayer) {
@@ -237,6 +181,16 @@ class BackpackPanel(
     internal fun updateUpgradeWidgets() {
         var tabIndex = 0
 
+        for (slotIndex in 0 until backpackWrapper.upgradeSlotsSize()) {
+            val tabWidget = tabWidgets[slotIndex]
+
+            if (!tabWidget.isEnabled)
+                continue
+
+            if (tabWidget.expandedWidget != null)
+                context.jeiSettings.removeJeiExclusionArea(tabWidget.expandedWidget!!)
+        }
+
         // Sync all tabs to their corresponding upgrade
         for (slotIndex in 0 until backpackWrapper.upgradeSlotsSize()) {
             val slot = upgradeSlotWidgets[slotIndex]
@@ -258,7 +212,13 @@ class BackpackPanel(
                 is PickupUpgradeItem -> {
                     val wrapper = stack.getCapability(Capabilities.PICKUP_UPGRADE_CAPABILITY, null)!!
 
-                    tabWidget.expandedWidget = PickupUpgradeWidget(this, slotIndex, wrapper)
+                    tabWidget.expandedWidget = if (wrapper is AdvancedPickupUpgradeWrapper) {
+                        upgradeSlotGroups[slotIndex].updateAdvancedPickupFilterDelegate(wrapper)
+                        AdvancedPickupUpgradeWidget(this, slotIndex, wrapper)
+                    } else {
+                        upgradeSlotGroups[slotIndex].updatePickupFilterDelegate(wrapper)
+                        PickupUpgradeWidget(this, slotIndex, wrapper)
+                    }
                 }
 
                 else -> {}
@@ -288,29 +248,6 @@ class BackpackPanel(
         }
 
         WidgetTree.resize(this)
-    }
-
-    private fun updateCraftingOutputSlot() {
-        if (player.world.isRemote) return
-
-        val player = player as EntityPlayerMP
-        val world = player.world
-        var stack = ItemStack.EMPTY
-        val recipe = CraftingManager.findMatchingRecipe(backpackContainer.craftingInventory, world)
-
-        if (recipe != null && (recipe.isDynamic || !world.gameRules
-                .getBoolean("doLimitedCrafting") || player.recipeBook.isUnlocked(recipe))
-        ) {
-            stack = recipe.getCraftingResult(backpackContainer.craftingInventory)
-        }
-
-        val wrapper = craftingOutputSlot.itemHandler as InvWrapper
-        wrapper.setStackInSlot(0, stack)
-        syncManager.getSyncHandler("crafting_result:0").syncToClient(1) {
-            it.writeBoolean(false)
-            it.writeItemStack(stack)
-            it.writeBoolean(true)
-        }
     }
 
     override fun postDraw(context: ModularGuiContext, transformed: Boolean) {
