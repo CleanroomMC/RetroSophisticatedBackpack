@@ -19,6 +19,8 @@ import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.init.SoundEvents
+import net.minecraft.inventory.Container
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
@@ -39,7 +41,7 @@ class BackpackBlock(
         val RIGHT_TANK = PropertyBool.create("right_tank")
         val BATTERY = PropertyBool.create("battery")
         val FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL)
-        val BEDROCK_RESISTANCE = 3600000
+        const val BEDROCK_RESISTANCE = 3600000
 
         private val BOOL_PROPERTIES = arrayOf(LEFT_TANK, RIGHT_TANK, BATTERY)
     }
@@ -153,18 +155,13 @@ class BackpackBlock(
         return EnumPushReaction.DESTROY
     }
 
-    override fun canProvidePower(state: IBlockState): Boolean {
-        return true
-    }
+    override fun hasComparatorInputOverride(state: IBlockState): Boolean =
+        true
 
-    override fun getWeakPower(
-        blockState: IBlockState,
-        blockAccess: IBlockAccess,
-        pos: BlockPos,
-        side: EnumFacing
-    ): Int {
-        // TODO: Return power once tile entity is created
-        return super.getWeakPower(blockState, blockAccess, pos, side)
+    override fun getComparatorInputOverride(blockState: IBlockState, worldIn: World, pos: BlockPos): Int {
+        val tileEntity = worldIn.getTileEntity(pos) as? BackpackTileEntity ?: return 0
+
+        return Container.calcRedstoneFromInventory(tileEntity)
     }
 
     override fun onBlockPlacedBy(
@@ -175,7 +172,7 @@ class BackpackBlock(
         stack: ItemStack
     ) {
         val backpackInventory = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return
-        val tileEntity = worldIn.getTileEntity(pos) as BackpackTileEntity? ?: return
+        val tileEntity = worldIn.getTileEntity(pos) as? BackpackTileEntity ?: return
 
         tileEntity.backpackWrapper.deserializeNBT(backpackInventory.serializeNBT())
     }
@@ -192,9 +189,21 @@ class BackpackBlock(
         hitZ: Float
     ): Boolean {
         if (!worldIn.isRemote) {
-            val tileEntity = worldIn.getTileEntity(pos) as BackpackTileEntity? ?: return true
+            if (playerIn.isSneaking) {
+                worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_CLOTH_BREAK, SoundCategory.BLOCKS, 1f, 0.5f)
+                dropBlockAsItem(worldIn, pos, state, 0)
+                worldIn.setBlockState(pos, net.minecraft.init.Blocks.AIR.defaultState)
+
+                return true
+            }
+
+            val tileEntity = worldIn.getTileEntity(pos) as? BackpackTileEntity ?: return true
 
             tileEntity.openGui(playerIn)
+        } else {
+            if (playerIn.isSneaking) {
+                worldIn.playSound(playerIn, pos, SoundEvents.BLOCK_CLOTH_BREAK, SoundCategory.BLOCKS, 1f, 0.5f)
+            }
         }
 
         return true
@@ -222,7 +231,7 @@ class BackpackBlock(
         state: IBlockState,
         fortune: Int
     ) {
-        val tileEntity = world.getTileEntity(pos) as BackpackTileEntity? ?: return
+        val tileEntity = world.getTileEntity(pos) as? BackpackTileEntity ?: return
         val stack = ItemStack(Item.getItemFromBlock(this))
         val tileEntityBackpackInventory = tileEntity.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return
         val stackBackpackInventory = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return

@@ -34,7 +34,7 @@ class AdvancedPickupUpgradeWrapper : PickupUpgradeWrapper() {
         return when (matchType) {
             MatchType.ITEM -> matchItem(stack)
             MatchType.MOD -> matchMod(stack)
-            MatchType.ORE_DICT -> matchNBT(stack)
+            MatchType.ORE_DICT -> matchOreDict(stack)
         }
     }
 
@@ -67,7 +67,7 @@ class AdvancedPickupUpgradeWrapper : PickupUpgradeWrapper() {
         }
     }
 
-    private fun matchNBT(stack: ItemStack): Boolean {
+    private fun matchOreDict(stack: ItemStack): Boolean {
         val stackOreDictionaries = OreDictionary.getOreIDs(stack).map { OreDictionary.getOreName(it) }
 
         for (oreDictEntry in oreDictEntries) {
@@ -76,8 +76,8 @@ class AdvancedPickupUpgradeWrapper : PickupUpgradeWrapper() {
 
             if (filterType == FilterType.WHITELIST && matchResult)
                 return true
-            if (filterType == FilterType.BLACKLIST && !matchResult)
-                return true
+            if (filterType == FilterType.BLACKLIST && matchResult)
+                return false
         }
 
         return false

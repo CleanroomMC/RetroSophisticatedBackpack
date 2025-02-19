@@ -38,7 +38,7 @@ class PickupUpgradeWidget(
             }
         }
             .size(20, 20)
-            .leftRel(0.2F)
+            .leftRelOffset(0.2F, -2)
             .top(36)
 
         val slotGroup = SlotGroupWidget().debugName("pickup_filters")
@@ -56,7 +56,7 @@ class PickupUpgradeWidget(
             .child(slotGroup)
             .child(
                 TextWidget(IKey.lang("gui.pickup_settings".asTranslationKey()))
-                    .size(30, 20)
+                    .size(40, 20)
                     .leftRel(0.85f)
                     .topRelAnchor(0.125f, 0.5f)
             )
