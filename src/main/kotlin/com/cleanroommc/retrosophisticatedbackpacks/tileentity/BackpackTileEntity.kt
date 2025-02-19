@@ -35,6 +35,10 @@ class BackpackTileEntity(val backpackWrapper: BackpackWrapper = BackpackWrapper(
     override fun shouldRefresh(world: World, pos: BlockPos, oldState: IBlockState, newSate: IBlockState): Boolean =
         oldState.block != newSate.block
 
+    override fun closeInventory(player: EntityPlayer) {
+        world.notifyNeighborsOfStateChange(pos, world.getBlockState(pos).block, false)
+    }
+
     override fun getUpdatePacket(): SPacketUpdateTileEntity =
         SPacketUpdateTileEntity(pos, 3, updateTag)
 

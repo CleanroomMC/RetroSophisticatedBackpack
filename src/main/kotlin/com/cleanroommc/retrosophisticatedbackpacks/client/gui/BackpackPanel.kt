@@ -25,6 +25,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.inventory.slot.UpgradeSlot
 import com.cleanroommc.retrosophisticatedbackpacks.items.CraftingUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.items.PickupUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.items.UpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.tileentity.BackpackTileEntity
 import com.cleanroommc.retrosophisticatedbackpacks.utils.Utils.ceilDiv
 import com.cleanroommc.retrosophisticatedbackpacks.value.sync.UpgradeSlotSH
 import net.minecraft.entity.player.EntityPlayer
@@ -33,6 +34,7 @@ import net.minecraftforge.items.wrapper.PlayerMainInvWrapper
 
 class BackpackPanel(
     internal val player: EntityPlayer,
+    internal val tileEntity: BackpackTileEntity?,
     internal val syncManager: PanelSyncManager,
     internal val backpackWrapper: BackpackWrapper,
     internal val backpackContainer: BackpackContainer
@@ -50,11 +52,12 @@ class BackpackPanel(
         internal fun defaultPanel(
             syncManager: PanelSyncManager,
             player: EntityPlayer,
+            tileEntity: BackpackTileEntity?,
             backpackWrapper: BackpackWrapper,
             width: Int,
             height: Int
         ): BackpackPanel {
-            val panel = BackpackPanel(player, syncManager, backpackWrapper, BackpackContainer())
+            val panel = BackpackPanel(player, tileEntity, syncManager, backpackWrapper, BackpackContainer())
                 .size(width, height) as BackpackPanel
             syncManager.containerCustomizer = panel.backpackContainer
             syncManager.bindPlayerInventory(player)
@@ -248,6 +251,11 @@ class BackpackPanel(
         }
 
         WidgetTree.resize(this)
+    }
+
+    override fun onClose() {
+        super.onClose()
+        tileEntity?.closeInventory(player)
     }
 
     override fun postDraw(context: ModularGuiContext, transformed: Boolean) {
