@@ -1,6 +1,7 @@
 package com.cleanroommc.retrosophisticatedbackpacks.crafting
 
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.items.PickupUpgradeItem
 import com.google.gson.JsonObject
 import net.minecraft.inventory.InventoryCrafting
 import net.minecraft.item.ItemStack
@@ -13,7 +14,7 @@ import net.minecraftforge.common.crafting.JsonContext
 import net.minecraftforge.oredict.ShapedOreRecipe
 
 @Suppress("UNUSED")
-class ShapedBackpackUpgradeRecipe(
+class ShapedUpgradeRecipe (
     group: ResourceLocation?,
     result: ItemStack,
     primer: CraftingHelper.ShapedPrimer
@@ -22,20 +23,22 @@ class ShapedBackpackUpgradeRecipe(
         val outputStack = super.getCraftingResult(inventory)
 
         if (!outputStack.isEmpty) {
-            val backpackStack = inventory.getStackInSlot(4)
-            val backpackWrapper =
-                backpackStack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return outputStack
-            val newBackpackWrapper =
-                outputStack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return outputStack
+            val stack = inventory.getStackInSlot(4)
 
-            for (i in 0 until backpackWrapper.backpackInventorySize()) {
-                newBackpackWrapper.backpackItemStackHandler.inventory[i] =
-                    backpackWrapper.backpackItemStackHandler.inventory[i]
-            }
+            when (stack.item) {
+                is PickupUpgradeItem -> {
+                    val wrapper =
+                        stack.getCapability(Capabilities.PICKUP_UPGRADE_CAPABILITY, null) ?: return outputStack
+                    val newWrapper =
+                        outputStack.getCapability(Capabilities.ADVANCED_PICKUP_UPGRADE_CAPABILITY, null) ?: return outputStack
 
-            for (i in 0 until backpackWrapper.upgradeSlotsSize()) {
-                newBackpackWrapper.upgradeItemStackHandler.inventory[i] =
-                    backpackWrapper.upgradeItemStackHandler.inventory[i]
+                    // Clones item filter settings, retains their relative position
+                    newWrapper.filterType = wrapper.filterType
+
+                    for (i in 0 until 9) {
+                        newWrapper.filterItems.inventory[i / 3 + i] = wrapper.filterItems.inventory[i]
+                    }
+                }
             }
         }
 
@@ -51,7 +54,8 @@ class ShapedBackpackUpgradeRecipe(
             val primer = RecipeUtil.parseShaped(context, json)
             val result = CraftingHelper.getItemStack(JsonUtils.getJsonObject(json, "result"), context)
 
-            return ShapedBackpackUpgradeRecipe(if (group.isEmpty()) null else ResourceLocation(group), result, primer)
+            return ShapedUpgradeRecipe(if (group.isEmpty()) null else ResourceLocation(group), result, primer)
         }
+
     }
 }

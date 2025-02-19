@@ -1,5 +1,6 @@
 {
   "recipes": {
-    "backpack_upgrade_shaped": "com.cleanroommc.retrosophisticatedbackpacks.crafting.ShapedBackpackUpgradeRecipe$Factory"
+    "backpack_upgrade_shaped": "com.cleanroommc.retrosophisticatedbackpacks.crafting.ShapedBackpackUpgradeRecipe$Factory",
+    "upgrade_shaped": "com.cleanroommc.retrosophisticatedbackpacks.crafting.ShapedUpgradeRecipe$Factory"
   }
 }
