@@ -16,9 +16,15 @@ item.retro_sophisticated_backpacks.crafting_upgrade.name=Ulepszenie rzemieślnic
 item.retro_sophisticated_backpacks.inception_upgrade.name=Ulepszenie incepcyjne
 item.retro_sophisticated_backpacks.pickup_upgrade.name=Ulepszenie zbierające
 item.retro_sophisticated_backpacks.advanced_pickup_upgrade.name=Zaawansowane ulepszenie zbierające
+item.retro_sophisticated_backpacks.feeding_upgrade.name=Ulepszenie karmiące
+item.retro_sophisticated_backpacks.advanced_feeding_upgrade.name=Zaawansoawane ulepszenie karmiące
 
 # Zakładki trybu kreatywnego
 itemGroup.retro_sophisticated_backpacks.creative_tab=Retro Sophisticated Backpack
+
+# Keybinds
+retro_sophisticated_backpacks.key.open_backpack.desc=Otwiera plecak w ekwipunku
+retro_sophisticated_backpacks.key.category=Retro Sophisticated Backpack
 
 # Podpowiedzi
 retro_sophisticated_backpacks.tooltip.backpack.inventory_size=Rozmiar ekwipunku: %d
@@ -37,6 +43,10 @@ retro_sophisticated_backpacks.tooltip.pickup_upgrade=Pozwala plecakom podnosić 
 
 retro_sophisticated_backpacks.tooltip.advanced_pickup_upgrade=Pozwala plecakom podnosić przedmioty z większą ilością konfiguracji
 
+retro_sophisticated_backpacks.tooltip.feeding_upgrade=Pozwala plecakom automatycznie karmić gracza
+
+retro_sophisticated_backpacks.tooltip.advanced_feeding_upgrade=Pozwala plecakom automatycznie karmić z większą ilością konfiguracji
+
 retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Kliknij Shift aby odkryć>
 
 # Elementy interfejsu
@@ -44,31 +54,35 @@ retro_sophisticated_backpacks.container.backpack=Plecak
 
 retro_sophisticated_backpacks.gui.pickup_settings=Ustawienia zbierania
 
-retro_sophisticated_backpacks.gui.advanced_pickup_settings=Zaawansowane ustawienia zbierania
+retro_sophisticated_backpacks.gui.advanced_pickup_settings=Zaaw. ustawienia zbierania
+
+retro_sophisticated_backpacks.gui.feeding_settings=Ustawienia karmienia
+
+retro_sophisticated_backpacks.gui.advanced_feeding_settings=Zaaw. ustawienia karmienia
 
 # Podpowiedzi interfejsu
 retro_sophisticated_backpacks.gui.not_in_effect=Wyłączone
 
 retro_sophisticated_backpacks.gui.whitelist=Biała lista
-
 retro_sophisticated_backpacks.gui.blacklist=Czarna lista
 
 retro_sophisticated_backpacks.gui.match_item=Po przedmiocie
-
 retro_sophisticated_backpacks.gui.match_mod_id=Po Mod ID
-
 retro_sophisticated_backpacks.gui.match_ore_dict=Po Ore Dictionary
 
-retro_sophisticated_backpacks.gui.consider_durability=Rozważ zużycie
-
+retro_sophisticated_backpacks.gui.consider_durability=Dopasuj zużycie
 retro_sophisticated_backpacks.gui.ignore_durability=Ignoruj zużycie
 
-retro_sophisticated_backpacks.gui.consider_nbt=Rozważ NBT
-
+retro_sophisticated_backpacks.gui.consider_nbt=Dopasuj NBT
 retro_sophisticated_backpacks.gui.ignore_nbt=Ignoruj NBT
 
 retro_sophisticated_backpacks.gui.add_ore_dict_entry=Dodaj Ore Dict.
-
 retro_sophisticated_backpacks.gui.remove_ore_dict_entry=Usuń Ore Dict.
-
 retro_sophisticated_backpacks.gui.ore_dict_input_help=Tu możesz wprowadzić ore dictionary, regex jest wspierany
+
+retro_sophisticated_backpacks.gui.complete_hunger=Karm gracza tylko jeśli jest wystarczająco głodny\naby nie marnować żadnych punktów głodu jedzenia
+retro_sophisticated_backpacks.gui.half_hunger=Karm gracza tylko jeśli jest wystarczająco głodny\naby marnować co najwyżej połowę punktów głodu jedzenia
+retro_sophisticated_backpacks.gui.immediate_hunger=Karm gracza kiedy tylko stanie się głodny\nmarnuje sporo punktów głodu jedzenia
+
+retro_sophisticated_backpacks.gui.ignore_health=Nie bierz pod uwagę zdrowia\nIgnoruje punkty zdrowia gracza i karmi go tylko na podstawie ustawienia głodu
+retro_sophisticated_backpacks.gui.consider_health=Karm gracza natychmiast po otrzymaniu obrażeń\nIgnoruje ustawienia głodu kiedy gracz nie ma wszystkich punktów zdrowia
