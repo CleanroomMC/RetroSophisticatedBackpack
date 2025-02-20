@@ -15,8 +15,7 @@ import net.minecraftforge.items.wrapper.EmptyHandler
  */
 class DelegatedStackHandlerSH(private val wrapper: BackpackWrapper, private val slotIndex: Int) : SyncHandler() {
     companion object {
-        const val UPDATE_PICKUP_FILTER = 0
-        const val UPDATE_ADVANCED_PICKUP_FILTER = 1
+        const val UPDATE_FILTERABLE = 0
     }
 
     var delegatedStackHandler: DelegatedItemHandler = DelegatedItemHandler(EmptyHandler::INSTANCE)
@@ -32,13 +31,8 @@ class DelegatedStackHandlerSH(private val wrapper: BackpackWrapper, private val 
         val stack = wrapper.upgradeItemStackHandler.getStackInSlot(slotIndex)
 
         when (id) {
-            UPDATE_PICKUP_FILTER -> {
-                val wrapper = stack.getCapability(Capabilities.PICKUP_UPGRADE_CAPABILITY, null) ?: return
-
-                setDelegatedStackHandler(wrapper::filterItems)
-            }
-            UPDATE_ADVANCED_PICKUP_FILTER -> {
-                val wrapper = stack.getCapability(Capabilities.ADVANCED_PICKUP_UPGRADE_CAPABILITY, null) ?: return
+            UPDATE_FILTERABLE -> {
+                val wrapper = stack.getCapability(Capabilities.BASIC_FILTERABLE_CAPABILITY, null) ?: return
 
                 setDelegatedStackHandler(wrapper::filterItems)
             }

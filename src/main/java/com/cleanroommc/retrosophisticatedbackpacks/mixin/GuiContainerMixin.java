@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GuiContainer.class)
 public class GuiContainerMixin extends GuiScreen {
-    @Inject(at = @At("TAIL"), method = "keyTyped")
+    @Inject(method = "keyTyped", at = @At("TAIL"))
     private void keyTyped(char typedChar, int keyCode, CallbackInfo info) {
         KeyInputHandler.onKeyInputInGuiScreen(keyCode);
     }

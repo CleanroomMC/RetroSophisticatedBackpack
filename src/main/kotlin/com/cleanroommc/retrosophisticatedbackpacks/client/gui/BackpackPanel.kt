@@ -18,7 +18,9 @@ import com.cleanroommc.retrosophisticatedbackpacks.Config
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedFeedingUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedPickupUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.FeedingUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.PickupUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget.*
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackContainer
@@ -26,6 +28,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGui
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.BackpackSlot
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.UpgradeSlot
 import com.cleanroommc.retrosophisticatedbackpacks.item.CraftingUpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.item.FeedingUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.PickupUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.UpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
@@ -221,14 +224,34 @@ class BackpackPanel(
                 }
 
                 is PickupUpgradeItem -> {
-                    val wrapper = stack.getCapability(Capabilities.BASIC_FILTERABLE_CAPABILITY, null)!!
+                    val wrapper = stack.getCapability(Capabilities.IPICKUP_UPGRADE_CAPABILITY, null)!!
 
-                    if (wrapper is AdvancedPickupUpgradeWrapper) {
-                        upgradeSlotGroups[slotIndex].updateAdvancedPickupFilterDelegate(wrapper)
-                        tabWidget.expandedWidget = AdvancedPickupUpgradeWidget(syncManager, slotIndex, wrapper)
-                    } else if (wrapper is PickupUpgradeWrapper) {
-                        upgradeSlotGroups[slotIndex].updatePickupFilterDelegate(wrapper)
-                        tabWidget.expandedWidget = PickupUpgradeWidget(slotIndex, wrapper)
+                    tabWidget.expandedWidget = when (wrapper) {
+                        is AdvancedPickupUpgradeWrapper -> {
+                            upgradeSlotGroups[slotIndex].updateAdvancedFilterDelegate(wrapper)
+                            AdvancedPickupUpgradeWidget(syncManager, slotIndex, wrapper)
+                        }
+
+                        is PickupUpgradeWrapper -> {
+                            upgradeSlotGroups[slotIndex].updateFilterDelegate(wrapper)
+                            PickupUpgradeWidget(slotIndex, wrapper)
+                        }
+                    }
+                }
+
+                is FeedingUpgradeItem -> {
+                    val wrapper = stack.getCapability(Capabilities.IFEEDING_UPGRADE_CAPABILITY, null)!!
+
+                    tabWidget.expandedWidget = when (wrapper) {
+                        is AdvancedFeedingUpgradeWrapper -> {
+                            upgradeSlotGroups[slotIndex].updateAdvancedFilterDelegate(wrapper)
+                            AdvancedFeedingUpgradeWidget(syncManager, slotIndex, wrapper)
+                        }
+
+                        is FeedingUpgradeWrapper -> {
+                            upgradeSlotGroups[slotIndex].updateFilterDelegate(wrapper)
+                            FeedingUpgradeWidget(slotIndex, wrapper)
+                        }
                     }
                 }
 

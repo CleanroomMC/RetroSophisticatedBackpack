@@ -11,7 +11,7 @@ interface IToggleable {
         enabled = !enabled
     }
 
-    object Impl: IToggleable {
+    object Impl : IToggleable {
         override var enabled: Boolean
             get() = false
             set(_) {}

@@ -13,11 +13,18 @@ object RSBTextures {
     val CHECK_ICON = icon("check", 0, 0)
     val CROSS_ICON = icon("cross", 16, 0)
 
+    val MATCH_NBT_ICON = icon("consider_nbt", 32, 0)
     val IGNORE_NBT_ICON = icon("ignore_nbt", 48, 0)
-    val CONSIDER_NBT_ICON = icon("consider_nbt", 32, 0)
 
-    val CONSIDER_DURABILITY_ICON = icon("consider_duration", 0, 16)
+    val COMPLETE_HUNGER_ICON = icon("complete_hunger", 96, 0)
+    val HALF_HUNGER_ICON = icon("half_hunger", 112, 0)
+    val IMMEDIATE_HUNGER_ICON = icon("impose_hunger", 128, 0)
+
+    val MATCH_DURABILITY_ICON = icon("consider_duration", 0, 16)
     val IGNORE_DURABILITY_ICON = icon("ignore_duration", 16, 16)
+
+    val HALF_HEART_ICON = icon("half_heart", 96, 16)
+    val IGNORE_HALF_HEART_ICON = icon("ignore_half_heart", 112, 16)
 
     val BY_MOD_ID_ICON = icon("by_mod_id", 32, 16)
     val BY_ITEM_ICON = ItemDrawable(ItemStack(Items.APPLE))
@@ -25,7 +32,7 @@ object RSBTextures {
     val ADD_ICON = icon("add", 96, 32)
     val REMOVE_ICON = icon("remove", 112, 32)
 
-    val CONSIDER_ORE_DICT_ICON = icon("consider_ore_dict", 112, 96)
+    val MATCH_ORE_DICT_ICON = icon("consider_ore_dict", 112, 96)
     val IGNORE_ORE_DICT_ICON = icon("ignore_ore_dict", 128, 96)
 
     val TOGGLE_DISABLE_ICON = icon("disable", 0, 128, 4, 10)

@@ -89,6 +89,20 @@ class BackpackWrapper(
             .mapNotNull { it.getCapability(Capabilities.BASIC_FILTERABLE_CAPABILITY, null) }
             .any { it.checkFilter(stack) }
 
+    fun getFeedingStack(foodLevel: Int, health: Float, maxHealth: Float): ItemStack {
+        val feedingUpgrades = upgradeItemStackHandler.inventory
+            .mapNotNull { it.getCapability(Capabilities.IFEEDING_UPGRADE_CAPABILITY, null) }
+
+        for (upgrade in feedingUpgrades) {
+            val feedingStack = upgrade.getFeedingStack(this, foodLevel, health, maxHealth)
+
+            if (!feedingStack.isEmpty)
+                return feedingStack
+        }
+
+        return ItemStack.EMPTY
+    }
+
     override fun getSizeInventory(): Int =
         backpackInventorySize()
 

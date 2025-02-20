@@ -25,12 +25,18 @@ import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import net.minecraftforge.oredict.OreDictionary
 
-class AdvanceFilterWidget(
+class AdvancedFilterWidget(
     private val syncManager: PanelSyncManager,
     slotIndex: Int,
     private val filterableWrapper: IAdvanceFilterable,
-) : ParentWidget<AdvanceFilterWidget>() {
+    syncKey: String = "adv_common_filter",
+) : ParentWidget<AdvancedFilterWidget>() {
     companion object {
+        private val FILTER_TYPE_VARIANTS = listOf(
+            CyclicVariantButtonWidget.Variant(IKey.lang("gui.whitelist".asTranslationKey()), RSBTextures.CHECK_ICON),
+            CyclicVariantButtonWidget.Variant(IKey.lang("gui.blacklist".asTranslationKey()), RSBTextures.CROSS_ICON),
+        )
+
         private val MATCH_TYPE_VARIANTS = listOf(
             CyclicVariantButtonWidget.Variant(
                 IKey.lang("gui.match_item".asTranslationKey()),
@@ -42,14 +48,14 @@ class AdvanceFilterWidget(
             ),
             CyclicVariantButtonWidget.Variant(
                 IKey.lang("gui.match_ore_dict".asTranslationKey()),
-                RSBTextures.CONSIDER_ORE_DICT_ICON
+                RSBTextures.MATCH_ORE_DICT_ICON
             ),
         )
 
         private val IGNORE_DURABILITY_VARIANTS = listOf(
             CyclicVariantButtonWidget.Variant(
-                IKey.lang("gui.consider_durability".asTranslationKey()),
-                RSBTextures.CONSIDER_DURABILITY_ICON
+                IKey.lang("gui.match_durability".asTranslationKey()),
+                RSBTextures.MATCH_DURABILITY_ICON
             ),
             CyclicVariantButtonWidget.Variant(
                 IKey.lang("gui.ignore_durability".asTranslationKey()),
@@ -59,8 +65,8 @@ class AdvanceFilterWidget(
 
         private val IGNORE_NBT_VARIANTS = listOf(
             CyclicVariantButtonWidget.Variant(
-                IKey.lang("gui.consider_nbt".asTranslationKey()),
-                RSBTextures.CONSIDER_NBT_ICON
+                IKey.lang("gui.match_nbt".asTranslationKey()),
+                RSBTextures.MATCH_NBT_ICON
             ),
             CyclicVariantButtonWidget.Variant(
                 IKey.lang("gui.ignore_nbt".asTranslationKey()),
@@ -82,13 +88,14 @@ class AdvanceFilterWidget(
     private val oreDictList: OreDictRegexListWidget
 
     private var focusedOreDictEntry: OreDictEntryWidget? = null
-    private var slotSyncHandler: UpgradeSlotSH? = null
+    var slotSyncHandler: UpgradeSlotSH? = null
+        private set
 
     init {
         coverChildren().syncHandler("upgrades", slotIndex)
 
         filterTypeButton = CyclicVariantButtonWidget(
-            PickupUpgradeWidget.FILTER_TYPE_VARIANTS,
+            FILTER_TYPE_VARIANTS,
             filterableWrapper.filterType.ordinal
         ) { index ->
             filterableWrapper.filterType = IBasicFilterable.FilterType.entries[index]
@@ -198,13 +205,13 @@ class AdvanceFilterWidget(
             .debugName("button_list")
 
         // Item-based configuration widgets
-        val slotGroup = SlotGroupWidget().debugName("adv_pickup_filters")
+        val slotGroup = SlotGroupWidget().debugName("${syncKey}s")
         slotGroup.coverChildren().leftRel(0.5f)
 
         filterSlots = mutableListOf<ItemSlot>()
 
         for (i in 0 until 16) {
-            val slot = ItemSlot().syncHandler("adv_pickup_filter_$slotIndex", i).pos(i % 4 * 18, i / 4 * 18)
+            val slot = ItemSlot().syncHandler("${syncKey}_$slotIndex", i).pos(i % 4 * 18, i / 4 * 18)
 
             filterSlots.add(slot)
             slotGroup.child(slot)
@@ -288,7 +295,7 @@ class AdvanceFilterWidget(
             remove(widget)
     }
 
-    private class OreDictEntryWidget(val parent: AdvanceFilterWidget, val text: String, width: Int) :
+    private class OreDictEntryWidget(val parent: AdvancedFilterWidget, val text: String, width: Int) :
         TextWidget(IKey.str(" $text")), Interactable {
         companion object {
             private const val PAUSE_TIME = 60
@@ -340,9 +347,7 @@ class AdvanceFilterWidget(
             scroll = 0
             time = 0
             markTooltipDirty()
-
-            if (!selected)
-                overlay(Outline(Color.WHITE.main))
+            overlay(Outline(Color.WHITE.main))
         }
 
         override fun onUpdate() {
@@ -374,7 +379,6 @@ class AdvanceFilterWidget(
             } else {
                 selected = true
                 parent.focusedOreDictEntry = this
-                overlay(Outline(Color.WHITE.main))
             }
 
             return Interactable.Result.SUCCESS

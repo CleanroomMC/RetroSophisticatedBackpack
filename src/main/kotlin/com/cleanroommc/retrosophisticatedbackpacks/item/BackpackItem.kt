@@ -8,14 +8,14 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.retrosophisticatedbackpacks.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackTier
+import com.cleanroommc.retrosophisticatedbackpacks.block.BackpackBlock
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
-import com.cleanroommc.retrosophisticatedbackpacks.block.BackpackBlock
-import com.cleanroommc.retrosophisticatedbackpacks.handler.CapabilityHandler
-import com.cleanroommc.retrosophisticatedbackpacks.handler.RegistryHandler
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackGuiHolder
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiData
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiFactory
+import com.cleanroommc.retrosophisticatedbackpacks.handler.CapabilityHandler
+import com.cleanroommc.retrosophisticatedbackpacks.handler.RegistryHandler
 import com.cleanroommc.retrosophisticatedbackpacks.util.IModelRegister
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import net.minecraft.client.util.ITooltipFlag

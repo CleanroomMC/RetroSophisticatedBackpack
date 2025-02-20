@@ -88,4 +88,10 @@ object Items {
 
     @JvmField
     val advancedPickupUpgrade = PickupUpgradeItem("advanced_pickup_upgrade", true)
+
+    @JvmField
+    val feedingUpgrade = FeedingUpgradeItem("feeding_upgrade")
+
+    @JvmField
+    val advancedFeedingUpgrade = FeedingUpgradeItem("advanced_feeding_upgrade", true)
 }

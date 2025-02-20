@@ -12,7 +12,10 @@ interface IBasicFilterable {
     val filterItems: ExposedItemStackHandler
     var filterType: FilterType
 
-    fun checkFilter(itemStack: ItemStack): Boolean
+    fun checkFilter(stack: ItemStack): Boolean = when (filterType) {
+        FilterType.WHITELIST -> filterItems.inventory.any { ItemStack.areItemsEqualIgnoreDurability(it, stack) }
+        FilterType.BLACKLIST -> filterItems.inventory.none { ItemStack.areItemsEqualIgnoreDurability(it, stack) }
+    }
 
     enum class FilterType {
         WHITELIST,

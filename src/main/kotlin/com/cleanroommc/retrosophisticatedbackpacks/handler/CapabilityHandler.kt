@@ -55,6 +55,19 @@ object CapabilityHandler {
         )
 
         instance.register(
+            FeedingUpgradeWrapper::class.java,
+            CapabilityStorageProvider<FeedingUpgradeWrapper>(),
+            ::FeedingUpgradeWrapper
+        )
+
+        instance.register(
+            AdvancedFeedingUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AdvancedFeedingUpgradeWrapper>(),
+            ::AdvancedFeedingUpgradeWrapper
+        )
+
+        // Interfaces
+        instance.register(
             IToggleable::class.java,
             NOPCapabilityStorage<IToggleable>()
         ) { IToggleable.Impl }
@@ -68,6 +81,18 @@ object CapabilityHandler {
             IAdvanceFilterable::class.java,
             NOPCapabilityStorage<IAdvanceFilterable>()
         ) { IAdvanceFilterable.Impl }
+
+        instance.register(
+            IPickupUpgrade::class.java,
+            NOPCapabilityStorage<IPickupUpgrade>(),
+            ::PickupUpgradeWrapper
+        )
+
+        instance.register(
+            IFeedingUpgrade::class.java,
+            NOPCapabilityStorage<IFeedingUpgrade>(),
+            ::FeedingUpgradeWrapper
+        )
     }
 
     fun cacheBackpackInventory(backpackWrapper: BackpackWrapper) {
@@ -119,7 +144,8 @@ object CapabilityHandler {
             instance: T,
             side: EnumFacing?,
             nbt: NBTBase
-        ) {}
+        ) {
+        }
     }
 
     private open class CapabilityStorageProvider<T> :

@@ -23,6 +23,14 @@ public final class Capabilities {
     @CapabilityInject(AdvancedPickupUpgradeWrapper.class)
     public static final @NotNull Capability<AdvancedPickupUpgradeWrapper> ADVANCED_PICKUP_UPGRADE_CAPABILITY = null;
 
+    @SuppressWarnings("DataFlowIssue")
+    @CapabilityInject(PickupUpgradeWrapper.class)
+    public static final @NotNull Capability<FeedingUpgradeWrapper> FEEDING_UPGRADE_CAPABILITY = null;
+
+    @SuppressWarnings("DataFlowIssue")
+    @CapabilityInject(AdvancedPickupUpgradeWrapper.class)
+    public static final @NotNull Capability<AdvancedFeedingUpgradeWrapper> ADVANCED_FEEDING_UPGRADE_CAPABILITY = null;
+
     // Abstract capabilities
     @SuppressWarnings("DataFlowIssue")
     @CapabilityInject(IToggleable.class)
@@ -35,4 +43,12 @@ public final class Capabilities {
     @SuppressWarnings("DataFlowIssue")
     @CapabilityInject(IAdvanceFilterable.class)
     public static final @NotNull Capability<IAdvanceFilterable> ADVANCE_FILTERABLE_CAPABILITY = null;
+
+    @SuppressWarnings("DataFlowIssue")
+    @CapabilityInject(IBasicFilterable.class)
+    public static final @NotNull Capability<IPickupUpgrade> IPICKUP_UPGRADE_CAPABILITY = null;
+
+    @SuppressWarnings("DataFlowIssue")
+    @CapabilityInject(IFeedingUpgrade.class)
+    public static final @NotNull Capability<IFeedingUpgrade> IFEEDING_UPGRADE_CAPABILITY = null;
 }

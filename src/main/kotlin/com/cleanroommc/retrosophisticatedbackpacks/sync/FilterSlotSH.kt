@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack
 /**
  * Used to prevent phantom items (or ingredients) from overflowing, which has undefined meaning for filter action.
  */
-class FilterSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
+open class FilterSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
     override fun phantomClick(mouseData: MouseData, cursorStack: ItemStack) {
         super.phantomClick(mouseData, cursorStack)
         clampStackCount()

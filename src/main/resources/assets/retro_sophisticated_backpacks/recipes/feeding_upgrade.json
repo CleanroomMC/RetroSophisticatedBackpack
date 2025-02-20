@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "minecraft:golden_carrot"
+    },
+    "P": {
+      "item": "minecraft:golden_apple",
+      "data": 0
+    },
+    "W": {
+      "item": "minecraft:speckled_melon"
+    },
+    "E": {
+      "item": "minecraft:ender_pearl"
+    },
+    "B": {
+      "item": "retro_sophisticated_backpacks:upgrade_base"
+    }
+  },
+  "pattern": [
+    " C ",
+    "PBW",
+    " E "
+  ],
+  "result": {
+    "item": "retro_sophisticated_backpacks:feeding_upgrade"
+  }
+}

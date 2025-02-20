@@ -1,9 +1,9 @@
 package com.cleanroommc.retrosophisticatedbackpacks.handler
 
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
-import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.block.BackpackBlock
 import com.cleanroommc.retrosophisticatedbackpacks.block.Blocks
+import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.Items
 import com.cleanroommc.retrosophisticatedbackpacks.tileentity.BackpackTileEntity
@@ -54,7 +54,11 @@ object ColorHandler {
                 if (tintIndex > 1 || state.block !is BackpackBlock || pos == null)
                     return -1
 
-                val tileEntity = worldIn?.getTileEntity(pos) as BackpackTileEntity? ?: return -1
+                val tileEntity = worldIn?.getTileEntity(pos)
+
+                if (tileEntity !is BackpackTileEntity)
+                    return -1
+
                 val backpackInventory = tileEntity.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return -1
 
                 return when (tintIndex) {

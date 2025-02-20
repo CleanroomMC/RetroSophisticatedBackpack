@@ -26,7 +26,7 @@ abstract class RSBProxy {
 
     open fun registerItemRenderer(item: Item, meta: Int, id: String) {}
 
-    class ServerProxy : RSBProxy() {}
+    class ServerProxy : RSBProxy()
 
     class ClientProxy : RSBProxy() {
         companion object {

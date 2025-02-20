@@ -11,12 +11,12 @@ class AdvancedPickupUpgradeWidget(
     slotIndex: Int,
     advWrapper: AdvancedPickupUpgradeWrapper
 ) : ExpandedTabWidget(4) {
-    val filterWidget: AdvanceFilterWidget
+    val filterWidget: AdvancedFilterWidget
 
     init {
         size(100, 150)
 
-        filterWidget = AdvanceFilterWidget(syncManager, slotIndex, advWrapper)
+        filterWidget = AdvancedFilterWidget(syncManager, slotIndex, advWrapper)
             .leftRel(0.5f)
             .top(36)
 
