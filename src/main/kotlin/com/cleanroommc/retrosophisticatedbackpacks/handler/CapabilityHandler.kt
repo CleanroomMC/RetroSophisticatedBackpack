@@ -2,15 +2,12 @@ package com.cleanroommc.retrosophisticatedbackpacks.handler
 
 import com.cleanroommc.retrosophisticatedbackpacks.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedPickupUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.CraftingUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IToggleable
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.PickupUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.*
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import net.minecraft.nbt.NBTBase
-import net.minecraft.nbt.NBTTagByte
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.nbt.NBTTagEnd
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.CapabilityManager
@@ -59,25 +56,18 @@ object CapabilityHandler {
 
         instance.register(
             IToggleable::class.java,
-            object : RefinedStorage<IToggleable> {
-                override fun writeNBT(
-                    capability: Capability<IToggleable>,
-                    instance: IToggleable,
-                    side: EnumFacing?
-                ): NBTBase {
-                    return NBTTagByte(if (instance.enabled) 1 else 0)
-                }
-
-                override fun readNBT(
-                    capability: Capability<IToggleable>,
-                    instance: IToggleable,
-                    side: EnumFacing?,
-                    nbt: NBTBase
-                ) {
-                    instance.enabled = (nbt as NBTTagByte).byte == 1.toByte()
-                }
-            }
+            NOPCapabilityStorage<IToggleable>()
         ) { IToggleable.Impl }
+
+        instance.register(
+            IBasicFilterable::class.java,
+            NOPCapabilityStorage<IBasicFilterable>()
+        ) { IBasicFilterable.Impl }
+
+        instance.register(
+            IAdvanceFilterable::class.java,
+            NOPCapabilityStorage<IAdvanceFilterable>()
+        ) { IAdvanceFilterable.Impl }
     }
 
     fun cacheBackpackInventory(backpackWrapper: BackpackWrapper) {
@@ -115,6 +105,21 @@ object CapabilityHandler {
             side: EnumFacing?,
             nbt: NBTBase
         )
+    }
+
+    private class NOPCapabilityStorage<T> : RefinedStorage<T> {
+        override fun writeNBT(
+            capability: Capability<T>,
+            instance: T,
+            side: EnumFacing?
+        ): NBTBase = NBTTagEnd()
+
+        override fun readNBT(
+            capability: Capability<T>,
+            instance: T,
+            side: EnumFacing?,
+            nbt: NBTBase
+        ) {}
     }
 
     private open class CapabilityStorageProvider<T> :

@@ -3,8 +3,8 @@ package com.cleanroommc.retrosophisticatedbackpacks.sync
 import com.cleanroommc.modularui.value.sync.ItemSlotSH
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedPickupUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.PickupUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvanceFilterable
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
 import net.minecraft.network.PacketBuffer
 
 /**
@@ -14,8 +14,8 @@ import net.minecraft.network.PacketBuffer
 class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
     companion object {
         const val UPDATE_UPGRADE_TOGGLE = 6
-        const val UPDATE_PICKUP_UPGRADE_PICKUP_TYPE = 7
-        const val UPDATE_ADVANCED_PICKUP_UPGRADE_TYPE = 8
+        const val UPDATE_BASIC_FILTERABLE = 7
+        const val UPDATE_ADVANCED_FILTERABLE = 8
     }
 
     override fun readOnServer(id: Int, buf: PacketBuffer) {
@@ -23,8 +23,8 @@ class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
 
         when (id) {
             UPDATE_UPGRADE_TOGGLE -> updateToggleable(buf)
-            UPDATE_PICKUP_UPGRADE_PICKUP_TYPE -> updatePickupUpgrade(buf)
-            UPDATE_ADVANCED_PICKUP_UPGRADE_TYPE -> updateAdvancedPickupUpgrade(buf)
+            UPDATE_BASIC_FILTERABLE -> updateBasicFilterable(buf)
+            UPDATE_ADVANCED_FILTERABLE -> updateAdvancedFilterable(buf)
         }
     }
 
@@ -33,17 +33,17 @@ class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
         wrapper.toggle()
     }
 
-    private fun updatePickupUpgrade(buf: PacketBuffer) {
-        val wrapper = slot.stack.getCapability(Capabilities.PICKUP_UPGRADE_CAPABILITY, null) ?: return
+    private fun updateBasicFilterable(buf: PacketBuffer) {
+        val wrapper = slot.stack.getCapability(Capabilities.BASIC_FILTERABLE_CAPABILITY, null) ?: return
 
-        wrapper.filterType = buf.readEnumValue(PickupUpgradeWrapper.FilterType::class.java)
+        wrapper.filterType = buf.readEnumValue(IBasicFilterable.FilterType::class.java)
     }
 
-    private fun updateAdvancedPickupUpgrade(buf: PacketBuffer) {
-        val wrapper = slot.stack.getCapability(Capabilities.ADVANCED_PICKUP_UPGRADE_CAPABILITY, null) ?: return
+    private fun updateAdvancedFilterable(buf: PacketBuffer) {
+        val wrapper = slot.stack.getCapability(Capabilities.ADVANCE_FILTERABLE_CAPABILITY, null) ?: return
 
-        wrapper.filterType = buf.readEnumValue(PickupUpgradeWrapper.FilterType::class.java)
-        wrapper.matchType = buf.readEnumValue(AdvancedPickupUpgradeWrapper.MatchType::class.java)
+        wrapper.filterType = buf.readEnumValue(IBasicFilterable.FilterType::class.java)
+        wrapper.matchType = buf.readEnumValue(IAdvanceFilterable.MatchType::class.java)
         wrapper.ignoreDurability = buf.readBoolean()
         wrapper.ignoreNBT = buf.readBoolean()
 

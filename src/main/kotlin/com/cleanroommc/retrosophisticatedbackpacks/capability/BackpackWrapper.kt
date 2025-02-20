@@ -85,14 +85,9 @@ class BackpackWrapper(
                     .count() > 1
 
     fun canPickupItem(stack: ItemStack): Boolean =
-        upgradeItemStackHandler.inventory.mapNotNull {
-            it.getCapability(
-                Capabilities.PICKUP_UPGRADE_CAPABILITY,
-                null
-            )
-        }.any {
-            it.canPickup(stack)
-        }
+        upgradeItemStackHandler.inventory
+            .mapNotNull { it.getCapability(Capabilities.BASIC_FILTERABLE_CAPABILITY, null) }
+            .any { it.checkFilter(stack) }
 
     override fun getSizeInventory(): Int =
         backpackInventorySize()

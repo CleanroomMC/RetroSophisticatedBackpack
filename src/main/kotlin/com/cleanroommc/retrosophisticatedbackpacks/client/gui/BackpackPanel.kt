@@ -19,6 +19,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedPickupUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.PickupUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget.*
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackContainer
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiData
@@ -220,14 +221,14 @@ class BackpackPanel(
                 }
 
                 is PickupUpgradeItem -> {
-                    val wrapper = stack.getCapability(Capabilities.PICKUP_UPGRADE_CAPABILITY, null)!!
+                    val wrapper = stack.getCapability(Capabilities.BASIC_FILTERABLE_CAPABILITY, null)!!
 
-                    tabWidget.expandedWidget = if (wrapper is AdvancedPickupUpgradeWrapper) {
+                    if (wrapper is AdvancedPickupUpgradeWrapper) {
                         upgradeSlotGroups[slotIndex].updateAdvancedPickupFilterDelegate(wrapper)
-                        AdvancedPickupUpgradeWidget(syncManager, slotIndex, wrapper)
-                    } else {
+                        tabWidget.expandedWidget = AdvancedPickupUpgradeWidget(syncManager, slotIndex, wrapper)
+                    } else if (wrapper is PickupUpgradeWrapper) {
                         upgradeSlotGroups[slotIndex].updatePickupFilterDelegate(wrapper)
-                        PickupUpgradeWidget(slotIndex, wrapper)
+                        tabWidget.expandedWidget = PickupUpgradeWidget(slotIndex, wrapper)
                     }
                 }
 

@@ -27,4 +27,12 @@ public final class Capabilities {
     @SuppressWarnings("DataFlowIssue")
     @CapabilityInject(IToggleable.class)
     public static final @NotNull Capability<IToggleable> TOGGLEABLE_CAPABILITY = null;
+
+    @SuppressWarnings("DataFlowIssue")
+    @CapabilityInject(IBasicFilterable.class)
+    public static final @NotNull Capability<IBasicFilterable> BASIC_FILTERABLE_CAPABILITY = null;
+
+    @SuppressWarnings("DataFlowIssue")
+    @CapabilityInject(IAdvanceFilterable.class)
+    public static final @NotNull Capability<IAdvanceFilterable> ADVANCE_FILTERABLE_CAPABILITY = null;
 }
