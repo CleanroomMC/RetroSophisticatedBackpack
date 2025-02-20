@@ -1,0 +1,74 @@
+# Blocks
+tile.retro_sophisticated_backpacks.backpack_leather.name=Skórzany plecak
+tile.retro_sophisticated_backpacks.backpack_iron.name=Żelazny plecak
+tile.retro_sophisticated_backpacks.backpack_gold.name=Złoty plecak
+tile.retro_sophisticated_backpacks.backpack_diamond.name=Diamentowy plecak
+tile.retro_sophisticated_backpacks.backpack_obsidian.name=Obsydianowy plecak
+
+# Items
+item.retro_sophisticated_backpacks.upgrade_base.name=Upgrade Base
+item.retro_sophisticated_backpacks.stack_upgrade_starter_tier.name=Stack Upgrade Starter Tier
+item.retro_sophisticated_backpacks.stack_upgrade_tier_1.name=Stack Upgrade Tier 1
+item.retro_sophisticated_backpacks.stack_upgrade_tier_2.name=Stack Upgrade Tier 2
+item.retro_sophisticated_backpacks.stack_upgrade_tier_3.name=Stack Upgrade Tier 3
+item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=Stack Upgrade Tier 4
+item.retro_sophisticated_backpacks.crafting_upgrade.name=Crafting Upgrade
+item.retro_sophisticated_backpacks.inception_upgrade.name=Inception Upgrade
+item.retro_sophisticated_backpacks.pickup_upgrade.name=Pickup Upgrade
+item.retro_sophisticated_backpacks.advanced_pickup_upgrade.name=Advanced Pickup Upgrade
+
+# Creative Tabs
+itemGroup.retro_sophisticated_backpacks.creative_tab=Retro Sophisticated Backpack
+
+# Tooltips
+retro_sophisticated_backpacks.tooltip.backpack.inventory_size=Rozmiar ekwipunku: %d
+retro_sophisticated_backpacks.tooltip.backpack.upgrade_slots_size=Upgrade slots: %d
+retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> Stack multiplier: %d
+
+retro_sophisticated_backpacks.tooltip.upgrade_base=It does nothing! Feel free to put it in your upgrade slots!
+
+retro_sophisticated_backpacks.tooltip.stack_upgrade=Multiplies stack size by %d
+
+retro_sophisticated_backpacks.tooltip.crafting_upgrade=Adds additional crafting grid to side of backpack
+
+retro_sophisticated_backpacks.tooltip.inception_upgrade=Allows backpacks to be stored inside backpack
+
+retro_sophisticated_backpacks.tooltip.pickup_upgrade=Pozwala plecakom podnośic przedmioty
+
+retro_sophisticated_backpacks.tooltip.advanced_pickup_upgrade=Allows backpack to pickup items with more configurations
+
+retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Kliknij Shift aby odkryć>
+
+# Gui Elements
+retro_sophisticated_backpacks.container.backpack=Plecak
+
+retro_sophisticated_backpacks.gui.pickup_settings=Ustawienia podnoszenia
+
+retro_sophisticated_backpacks.gui.advanced_pickup_settings=Zaawansowane ustawienia podnoszenia
+
+# Gui Tooltips
+retro_sophisticated_backpacks.gui.not_in_effect=Not in effect
+
+retro_sophisticated_backpacks.gui.whitelist=Biała lista
+
+retro_sophisticated_backpacks.gui.blacklist=Czarna lista
+
+retro_sophisticated_backpacks.gui.match_item=By Item
+
+retro_sophisticated_backpacks.gui.match_mod_id=By Mod ID
+
+retro_sophisticated_backpacks.gui.match_ore_dict=By Ore Dictionary
+
+retro_sophisticated_backpacks.gui.consider_durability=Consider Durability
+
+retro_sophisticated_backpacks.gui.ignore_durability=Ignore Durability
+
+retro_sophisticated_backpacks.gui.consider_nbt=Consider NBT
+
+retro_sophisticated_backpacks.gui.ignore_nbt=Ignoruj NBT
+
+retro_sophisticated_backpacks.gui.add_ore_dict_entry=Add Ore Dict.
+
+retro_sophisticated_backpacks.gui.remove_ore_dict_entry=Remove Ore Dict.
+
+retro_sophisticated_backpacks.gui.ore_dict_input_help=You can input ore dictionary here, regex is supported
