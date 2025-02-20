@@ -8,8 +8,8 @@ import com.cleanroommc.modularui.value.sync.SyncHandler
 import com.cleanroommc.modularui.widget.Widget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.Capabilities
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.IToggleable
+import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IToggleable
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH

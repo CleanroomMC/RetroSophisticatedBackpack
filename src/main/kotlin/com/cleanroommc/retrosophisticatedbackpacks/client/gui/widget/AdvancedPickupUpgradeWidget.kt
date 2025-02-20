@@ -11,10 +11,10 @@ import com.cleanroommc.modularui.widgets.*
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.AdvancedPickupUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.PickupUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedPickupUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.PickupUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
-import com.cleanroommc.retrosophisticatedbackpacks.utils.Utils.asTranslationKey
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import net.minecraft.util.text.TextFormatting
 

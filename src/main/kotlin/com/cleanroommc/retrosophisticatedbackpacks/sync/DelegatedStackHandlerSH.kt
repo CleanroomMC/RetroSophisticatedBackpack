@@ -1,9 +1,9 @@
 package com.cleanroommc.retrosophisticatedbackpacks.sync
 
 import com.cleanroommc.modularui.value.sync.SyncHandler
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.Capabilities
-import com.cleanroommc.retrosophisticatedbackpacks.items.DelegatedItemHandler
+import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.inventory.DelegatedItemHandler
 import net.minecraft.network.PacketBuffer
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.wrapper.EmptyHandler

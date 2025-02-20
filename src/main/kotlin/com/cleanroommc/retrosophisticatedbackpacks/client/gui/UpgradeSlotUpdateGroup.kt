@@ -3,10 +3,10 @@ package com.cleanroommc.retrosophisticatedbackpacks.client.gui
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.modularui.widgets.slot.SlotGroup
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.AdvancedPickupUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.PickupUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.inventory.slot.FilterSlot
+import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedPickupUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.PickupUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.FilterSlot
 import com.cleanroommc.retrosophisticatedbackpacks.sync.DelegatedStackHandlerSH
 import com.cleanroommc.retrosophisticatedbackpacks.sync.FilterSlotSH
 

@@ -6,9 +6,9 @@ import com.cleanroommc.modularui.factory.TileEntityGuiFactory
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.retrosophisticatedbackpacks.RetroSophisticatedBackpacks
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.Capabilities
-import com.cleanroommc.retrosophisticatedbackpacks.inventory.BackpackGuiHolder
+import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackGuiHolder
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IInventory

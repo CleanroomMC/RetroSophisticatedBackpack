@@ -2,8 +2,8 @@ package com.cleanroommc.retrosophisticatedbackpacks.client
 
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackTier
-import com.cleanroommc.retrosophisticatedbackpacks.blocks.BackpackBlock
-import com.cleanroommc.retrosophisticatedbackpacks.blocks.Blocks
+import com.cleanroommc.retrosophisticatedbackpacks.block.BackpackBlock
+import com.cleanroommc.retrosophisticatedbackpacks.block.Blocks
 import com.google.common.collect.ImmutableMap
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.*

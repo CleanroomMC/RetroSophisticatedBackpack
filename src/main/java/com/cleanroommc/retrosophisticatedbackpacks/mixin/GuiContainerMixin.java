@@ -1,6 +1,6 @@
 package com.cleanroommc.retrosophisticatedbackpacks.mixin;
 
-import com.cleanroommc.retrosophisticatedbackpacks.handlers.KeyInputHandler;
+import com.cleanroommc.retrosophisticatedbackpacks.handler.KeyInputHandler;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import org.spongepowered.asm.mixin.Mixin;

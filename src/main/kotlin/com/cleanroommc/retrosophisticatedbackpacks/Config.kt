@@ -23,6 +23,9 @@ object Config {
     @JvmField
     val stackUpgrade = StackUpgradeConfig()
 
+    @JvmField
+    val clientConfig = ClientConfig()
+
     class LeatherBackpackConfig {
         @JvmField
         @RequiresMcRestart
@@ -93,5 +96,10 @@ object Config {
         @JvmField
         @RequiresMcRestart
         var obsidianMultiplier = 32
+    }
+
+    class ClientConfig {
+        @JvmField
+        var enableAnimation = true
     }
 }

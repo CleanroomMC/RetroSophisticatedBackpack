@@ -14,21 +14,22 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.modularui.widgets.slot.SlotGroup
+import com.cleanroommc.retrosophisticatedbackpacks.Config
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.Capabilities
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.AdvancedPickupUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedPickupUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget.*
-import com.cleanroommc.retrosophisticatedbackpacks.inventory.BackpackContainer
-import com.cleanroommc.retrosophisticatedbackpacks.inventory.PlayerInventoryGuiData
-import com.cleanroommc.retrosophisticatedbackpacks.inventory.slot.BackpackSlot
-import com.cleanroommc.retrosophisticatedbackpacks.inventory.slot.UpgradeSlot
-import com.cleanroommc.retrosophisticatedbackpacks.items.CraftingUpgradeItem
-import com.cleanroommc.retrosophisticatedbackpacks.items.PickupUpgradeItem
-import com.cleanroommc.retrosophisticatedbackpacks.items.UpgradeItem
-import com.cleanroommc.retrosophisticatedbackpacks.tileentity.BackpackTileEntity
-import com.cleanroommc.retrosophisticatedbackpacks.utils.Utils.ceilDiv
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackContainer
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiData
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.BackpackSlot
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.UpgradeSlot
+import com.cleanroommc.retrosophisticatedbackpacks.item.CraftingUpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.item.PickupUpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.item.UpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
+import com.cleanroommc.retrosophisticatedbackpacks.tileentity.BackpackTileEntity
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.ceilDiv
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraftforge.items.wrapper.PlayerInvWrapper
 
@@ -258,6 +259,9 @@ class BackpackPanel(
 
         WidgetTree.resize(this)
     }
+
+    override fun shouldAnimate(): Boolean =
+        Config.clientConfig.enableAnimation
 
     override fun onClose() {
         super.onClose()

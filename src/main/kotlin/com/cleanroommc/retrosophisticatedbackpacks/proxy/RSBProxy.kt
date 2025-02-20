@@ -2,8 +2,8 @@ package com.cleanroommc.retrosophisticatedbackpacks.proxy
 
 import com.cleanroommc.modularui.factory.GuiManager
 import com.cleanroommc.retrosophisticatedbackpacks.client.BackpackDynamicModel
-import com.cleanroommc.retrosophisticatedbackpacks.inventory.PlayerInventoryGuiFactory
-import com.cleanroommc.retrosophisticatedbackpacks.utils.Utils.asTranslationKey
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiFactory
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.settings.KeyBinding
 import net.minecraft.item.Item

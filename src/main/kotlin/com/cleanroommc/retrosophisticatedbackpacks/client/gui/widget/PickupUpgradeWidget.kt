@@ -5,9 +5,9 @@ import com.cleanroommc.modularui.value.sync.SyncHandler
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.PickupUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.PickupUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
-import com.cleanroommc.retrosophisticatedbackpacks.utils.Utils.asTranslationKey
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 
 class PickupUpgradeWidget(

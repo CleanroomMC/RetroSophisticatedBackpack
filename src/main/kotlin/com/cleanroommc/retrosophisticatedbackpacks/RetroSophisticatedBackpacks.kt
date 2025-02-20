@@ -1,10 +1,10 @@
 package com.cleanroommc.retrosophisticatedbackpacks
 
-import com.cleanroommc.retrosophisticatedbackpacks.handlers.CapabilityHandler
-import com.cleanroommc.retrosophisticatedbackpacks.handlers.NetworkHandler
-import com.cleanroommc.retrosophisticatedbackpacks.items.Items
+import com.cleanroommc.retrosophisticatedbackpacks.handler.CapabilityHandler
+import com.cleanroommc.retrosophisticatedbackpacks.handler.NetworkHandler
+import com.cleanroommc.retrosophisticatedbackpacks.item.Items
 import com.cleanroommc.retrosophisticatedbackpacks.proxy.RSBProxy
-import com.cleanroommc.retrosophisticatedbackpacks.utils.Utils.asTranslationKey
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fml.common.Loader

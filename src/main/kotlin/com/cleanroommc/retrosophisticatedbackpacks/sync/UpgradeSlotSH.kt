@@ -2,9 +2,9 @@ package com.cleanroommc.retrosophisticatedbackpacks.sync
 
 import com.cleanroommc.modularui.value.sync.ItemSlotSH
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.Capabilities
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.AdvancedPickupUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.PickupUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedPickupUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.PickupUpgradeWrapper
 import net.minecraft.network.PacketBuffer
 
 /**

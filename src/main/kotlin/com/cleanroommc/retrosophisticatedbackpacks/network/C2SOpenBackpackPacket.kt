@@ -1,7 +1,7 @@
 package com.cleanroommc.retrosophisticatedbackpacks.network
 
-import com.cleanroommc.retrosophisticatedbackpacks.inventory.PlayerInventoryGuiData
-import com.cleanroommc.retrosophisticatedbackpacks.inventory.PlayerInventoryGuiFactory
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiData
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiFactory
 import io.netty.buffer.ByteBuf
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext
 

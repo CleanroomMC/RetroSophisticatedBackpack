@@ -6,7 +6,7 @@ import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.widgets.ButtonWidget
-import com.cleanroommc.retrosophisticatedbackpacks.utils.Utils.asTranslationKey
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 
 class CyclicVariantButtonWidget(
     private val variants: List<Variant>,
