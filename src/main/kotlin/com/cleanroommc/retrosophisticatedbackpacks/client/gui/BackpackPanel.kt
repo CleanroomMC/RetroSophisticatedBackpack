@@ -14,23 +14,28 @@ import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.modularui.widgets.slot.SlotGroup
+import com.cleanroommc.retrosophisticatedbackpacks.Config
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.Capabilities
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.AdvancedPickupUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedFeedingUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedPickupUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.FeedingUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.PickupUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget.*
-import com.cleanroommc.retrosophisticatedbackpacks.inventory.BackpackContainer
-import com.cleanroommc.retrosophisticatedbackpacks.inventory.slot.BackpackSlot
-import com.cleanroommc.retrosophisticatedbackpacks.inventory.slot.UpgradeSlot
-import com.cleanroommc.retrosophisticatedbackpacks.items.CraftingUpgradeItem
-import com.cleanroommc.retrosophisticatedbackpacks.items.PickupUpgradeItem
-import com.cleanroommc.retrosophisticatedbackpacks.items.UpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackContainer
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiData
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.BackpackSlot
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.UpgradeSlot
+import com.cleanroommc.retrosophisticatedbackpacks.item.CraftingUpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.item.FeedingUpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.item.PickupUpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.item.UpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.tileentity.BackpackTileEntity
-import com.cleanroommc.retrosophisticatedbackpacks.utils.Utils.ceilDiv
-import com.cleanroommc.retrosophisticatedbackpacks.value.sync.UpgradeSlotSH
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.ceilDiv
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.util.EnumHand
-import net.minecraftforge.items.wrapper.PlayerMainInvWrapper
+import net.minecraftforge.items.wrapper.PlayerInvWrapper
 
 class BackpackPanel(
     internal val player: EntityPlayer,
@@ -119,18 +124,24 @@ class BackpackPanel(
         }
     }
 
-    internal fun modifyPlayerSlot(syncManager: PanelSyncManager, hand: EnumHand, player: EntityPlayer) {
-        if (hand == EnumHand.MAIN_HAND) {
-            val currentItemSlotIndex = player.inventory.currentItem
+    // Currently only main hand slot will be locked if it's the backpack being opened
+    internal fun modifyPlayerSlot(
+        syncManager: PanelSyncManager,
+        inventoryType: PlayerInventoryGuiData.InventoryType,
+        slotIndex: Int,
+        player: EntityPlayer
+    ) {
+        // Bauble slot does not exist in backpack screen
+        if (inventoryType == PlayerInventoryGuiData.InventoryType.PLAYER_BAUBLES)
+            return
 
-            syncManager.itemSlot(
-                "player",
-                currentItemSlotIndex,
-                object : ModularSlot(PlayerMainInvWrapper(player.inventory), currentItemSlotIndex) {
-                    override fun canTakeStack(playerIn: EntityPlayer): Boolean = false
-                }.slotGroup("player_inventory")
-            )
-        }
+        syncManager.itemSlot(
+            "player",
+            slotIndex,
+            object : ModularSlot(PlayerInvWrapper(player.inventory), slotIndex) {
+                override fun canTakeStack(playerIn: EntityPlayer): Boolean = false
+            }.slotGroup("player_inventory")
+        )
     }
 
     internal fun addBackpackInventorySlots() {
@@ -213,14 +224,34 @@ class BackpackPanel(
                 }
 
                 is PickupUpgradeItem -> {
-                    val wrapper = stack.getCapability(Capabilities.PICKUP_UPGRADE_CAPABILITY, null)!!
+                    val wrapper = stack.getCapability(Capabilities.IPICKUP_UPGRADE_CAPABILITY, null)!!
 
-                    tabWidget.expandedWidget = if (wrapper is AdvancedPickupUpgradeWrapper) {
-                        upgradeSlotGroups[slotIndex].updateAdvancedPickupFilterDelegate(wrapper)
-                        AdvancedPickupUpgradeWidget(slotIndex, wrapper)
-                    } else {
-                        upgradeSlotGroups[slotIndex].updatePickupFilterDelegate(wrapper)
-                        PickupUpgradeWidget(slotIndex, wrapper)
+                    tabWidget.expandedWidget = when (wrapper) {
+                        is AdvancedPickupUpgradeWrapper -> {
+                            upgradeSlotGroups[slotIndex].updateAdvancedFilterDelegate(wrapper)
+                            AdvancedPickupUpgradeWidget(syncManager, slotIndex, wrapper)
+                        }
+
+                        is PickupUpgradeWrapper -> {
+                            upgradeSlotGroups[slotIndex].updateFilterDelegate(wrapper)
+                            PickupUpgradeWidget(slotIndex, wrapper)
+                        }
+                    }
+                }
+
+                is FeedingUpgradeItem -> {
+                    val wrapper = stack.getCapability(Capabilities.IFEEDING_UPGRADE_CAPABILITY, null)!!
+
+                    tabWidget.expandedWidget = when (wrapper) {
+                        is AdvancedFeedingUpgradeWrapper -> {
+                            upgradeSlotGroups[slotIndex].updateAdvancedFilterDelegate(wrapper)
+                            AdvancedFeedingUpgradeWidget(syncManager, slotIndex, wrapper)
+                        }
+
+                        is FeedingUpgradeWrapper -> {
+                            upgradeSlotGroups[slotIndex].updateFilterDelegate(wrapper)
+                            FeedingUpgradeWidget(slotIndex, wrapper)
+                        }
                     }
                 }
 
@@ -252,6 +283,9 @@ class BackpackPanel(
 
         WidgetTree.resize(this)
     }
+
+    override fun shouldAnimate(): Boolean =
+        Config.clientConfig.enableAnimation
 
     override fun onClose() {
         super.onClose()

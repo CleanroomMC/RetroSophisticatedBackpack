@@ -3,33 +3,39 @@ package com.cleanroommc.retrosophisticatedbackpacks.client.gui
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.modularui.widgets.slot.SlotGroup
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.AdvancedPickupUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.PickupUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.inventory.slot.FilterSlot
-import com.cleanroommc.retrosophisticatedbackpacks.value.sync.DelegatedStackHandlerSH
-import com.cleanroommc.retrosophisticatedbackpacks.value.sync.FilterSlotSH
+import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvanceFilterable
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.FilterSlot
+import com.cleanroommc.retrosophisticatedbackpacks.sync.DelegatedStackHandlerSH
+import com.cleanroommc.retrosophisticatedbackpacks.sync.FilterSlotSH
+import com.cleanroommc.retrosophisticatedbackpacks.sync.FoodFilterSlotSH
 
 class UpgradeSlotUpdateGroup(
     private val syncManager: PanelSyncManager,
     private val wrapper: BackpackWrapper,
     private val slotIndex: Int
 ) {
-    var pickupFilterStackHandler = DelegatedStackHandlerSH(wrapper, slotIndex)
-    val pickupFilterSlots: Array<ModularSlot>
+    // Common Filters
+    var commonFilterStackHandler = DelegatedStackHandlerSH(wrapper, slotIndex)
+    val commonFilterSlots: Array<ModularSlot>
 
-    var advancedFilterStackHandler = DelegatedStackHandlerSH(wrapper, slotIndex)
-    val advancedFilterSlots: Array<ModularSlot>
+    var advancedCommonFilterStackHandler = DelegatedStackHandlerSH(wrapper, slotIndex)
+    val advancedCommonFilterSlots: Array<ModularSlot>
+
+    // Feeding filters
+    val feedingFilterSlots: Array<ModularSlot>
+    val advancedFeedingFilterSlots: Array<ModularSlot>
 
     init {
-        syncManager.syncValue("pickup_filter_delegation_$slotIndex", pickupFilterStackHandler)
+        syncManager.syncValue("common_filter_delegation_$slotIndex", commonFilterStackHandler)
 
-        pickupFilterSlots = Array(9) {
-            val slot = FilterSlot(pickupFilterStackHandler.delegatedStackHandler, it)
-            slot.slotGroup("pickup_filters_$slotIndex")
+        commonFilterSlots = Array(9) {
+            val slot = FilterSlot(commonFilterStackHandler.delegatedStackHandler, it)
+            slot.slotGroup("common_filters_$slotIndex")
 
             syncManager.syncValue(
-                "pickup_filter_$slotIndex",
+                "common_filter_$slotIndex",
                 it,
                 FilterSlotSH(slot)
             )
@@ -37,16 +43,16 @@ class UpgradeSlotUpdateGroup(
             slot
         }
 
-        syncManager.registerSlotGroup(SlotGroup("pickup_filters_$slotIndex", 4, false))
+        syncManager.registerSlotGroup(SlotGroup("common_filters_$slotIndex", 4, false))
 
-        syncManager.syncValue("adv_pickup_filter_delegation_$slotIndex", advancedFilterStackHandler)
+        syncManager.syncValue("adv_common_filter_delegation_$slotIndex", advancedCommonFilterStackHandler)
 
-        advancedFilterSlots = Array(16) {
-            val slot = FilterSlot(advancedFilterStackHandler.delegatedStackHandler, it)
-            slot.slotGroup("adv_pickup_filters_$slotIndex")
+        advancedCommonFilterSlots = Array(16) {
+            val slot = FilterSlot(advancedCommonFilterStackHandler.delegatedStackHandler, it)
+            slot.slotGroup("adv_common_filters_$slotIndex")
 
             syncManager.syncValue(
-                "adv_pickup_filter_$slotIndex",
+                "adv_common_filter_$slotIndex",
                 it,
                 FilterSlotSH(slot)
             )
@@ -54,16 +60,47 @@ class UpgradeSlotUpdateGroup(
             slot
         }
 
-        syncManager.registerSlotGroup(SlotGroup("adv_pickup_filters_$slotIndex", 4, false))
+        syncManager.registerSlotGroup(SlotGroup("adv_common_filters_$slotIndex", 4, false))
+
+        // Feeding Filter Slots
+        feedingFilterSlots = Array(9) {
+            val slot = FilterSlot(commonFilterStackHandler.delegatedStackHandler, it)
+            slot.slotGroup("feeding_filters_$slotIndex")
+
+            syncManager.syncValue(
+                "feeding_filter_$slotIndex",
+                it,
+                FoodFilterSlotSH(slot)
+            )
+
+            slot
+        }
+
+        syncManager.registerSlotGroup(SlotGroup("feeding_filters_$slotIndex", 4, false))
+
+        advancedFeedingFilterSlots = Array(16) {
+            val slot = FilterSlot(advancedCommonFilterStackHandler.delegatedStackHandler, it)
+            slot.slotGroup("adv_feeding_filters_$slotIndex")
+
+            syncManager.syncValue(
+                "adv_feeding_filter_$slotIndex",
+                it,
+                FoodFilterSlotSH(slot)
+            )
+
+            slot
+        }
+
+        syncManager.registerSlotGroup(SlotGroup("adv_feeding_filters_$slotIndex", 4, false))
     }
 
-    fun updatePickupFilterDelegate(pickupWrapper: PickupUpgradeWrapper) {
-        pickupFilterStackHandler.setDelegatedStackHandler(pickupWrapper::filterItems)
-        pickupFilterStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_PICKUP_FILTER)
+    fun updateFilterDelegate(wrapper: IBasicFilterable) {
+        commonFilterStackHandler.setDelegatedStackHandler(wrapper::filterItems)
+        commonFilterStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_FILTERABLE)
     }
 
-    fun updateAdvancedPickupFilterDelegate(pickupWrapper: AdvancedPickupUpgradeWrapper) {
-        advancedFilterStackHandler.setDelegatedStackHandler(pickupWrapper::filterItems)
-        advancedFilterStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_ADVANCED_PICKUP_FILTER)
+    fun updateAdvancedFilterDelegate(wrapper: IAdvanceFilterable) {
+        advancedCommonFilterStackHandler.setDelegatedStackHandler(wrapper::filterItems)
+        advancedCommonFilterStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_FILTERABLE)
     }
 }

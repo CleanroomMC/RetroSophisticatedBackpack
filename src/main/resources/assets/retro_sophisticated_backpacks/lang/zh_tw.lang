@@ -16,9 +16,15 @@ item.retro_sophisticated_backpacks.crafting_upgrade.name=合成升級
 item.retro_sophisticated_backpacks.inception_upgrade.name=嵌套升級
 item.retro_sophisticated_backpacks.pickup_upgrade.name=拾取升級
 item.retro_sophisticated_backpacks.advanced_pickup_upgrade.name=進階拾取升級
+item.retro_sophisticated_backpacks.feeding_upgrade.name=餵食升級
+item.retro_sophisticated_backpacks.advanced_feeding_upgrade.name=進階餵食升級
 
 # Creative Tabs
 itemGroup.retro_sophisticated_backpacks.creative_tab=復古精緻背包
+
+# Keybinds
+retro_sophisticated_backpacks.key.open_backpack.desc=開啟玩家身上的背包
+retro_sophisticated_backpacks.key.category=復古精緻背包
 
 # Tooltips
 retro_sophisticated_backpacks.tooltip.backpack.inventory_size=背包容量: %d
@@ -37,6 +43,10 @@ retro_sophisticated_backpacks.tooltip.pickup_upgrade=允許背包拾取並存入
 
 retro_sophisticated_backpacks.tooltip.advanced_pickup_upgrade=允許背包根據更多配置拾取並存入背包
 
+retro_sophisticated_backpacks.tooltip.feeding_upgrade=允許背包自動餵食玩家
+
+retro_sophisticated_backpacks.tooltip.advanced_feeding_upgrade=允許背包根據更多配置自動餵食玩家
+
 retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Shift 以顯示>
 
 # Gui Elements
@@ -46,29 +56,34 @@ retro_sophisticated_backpacks.gui.pickup_settings=拾取設定
 
 retro_sophisticated_backpacks.gui.advanced_pickup_settings=進階拾取設定
 
+retro_sophisticated_backpacks.gui.feeding_settings=餵食設定
+
+retro_sophisticated_backpacks.gui.advanced_feeding_settings=進階餵食設定
+
+
 # Gui Tooltips
 retro_sophisticated_backpacks.gui.not_in_effect=未生效
 
 retro_sophisticated_backpacks.gui.whitelist=白名單
-
 retro_sophisticated_backpacks.gui.blacklist=黑名單
 
 retro_sophisticated_backpacks.gui.match_item=根據物品屬性
-
 retro_sophisticated_backpacks.gui.match_mod_id=根據模組 ID
-
 retro_sophisticated_backpacks.gui.match_ore_dict=根據礦物詞典
 
-retro_sophisticated_backpacks.gui.consider_durability=考慮耐久
-
+retro_sophisticated_backpacks.gui.match_durability=考慮耐久
 retro_sophisticated_backpacks.gui.ignore_durability=無視耐久
 
-retro_sophisticated_backpacks.gui.consider_nbt=考慮 NBT
-
+retro_sophisticated_backpacks.gui.match_nbt=考慮 NBT
 retro_sophisticated_backpacks.gui.ignore_nbt=無視 NBT
 
 retro_sophisticated_backpacks.gui.add_ore_dict_entry=新增礦物詞典
-
 retro_sophisticated_backpacks.gui.remove_ore_dict_entry=移除礦物詞典
-
 retro_sophisticated_backpacks.gui.ore_dict_input_help=可以在這裡輸入礦物詞典，支援正規表示式
+
+retro_sophisticated_backpacks.gui.complete_hunger=只在玩家夠餓時餵食\n不會浪費食物提供的任何飢餓值
+retro_sophisticated_backpacks.gui.half_hunger=只在玩家夠餓時餵食\n最多浪費食物提供的一半飢餓值
+retro_sophisticated_backpacks.gui.immediate_hunger=當玩家飢餓時立即餵食\n浪費食物提供的大部分飢餓值
+
+retro_sophisticated_backpacks.gui.ignore_health=忽略生命值\n忽略玩家的生命值，僅基於飢餓值設定餵食玩家
+retro_sophisticated_backpacks.gui.consider_health=當玩家受傷時立即餵食\n在玩家生命值未滿時忽略飢餓值設定

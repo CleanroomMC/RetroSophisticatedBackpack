@@ -16,9 +16,15 @@ item.retro_sophisticated_backpacks.crafting_upgrade.name=Crafting Upgrade
 item.retro_sophisticated_backpacks.inception_upgrade.name=Inception Upgrade
 item.retro_sophisticated_backpacks.pickup_upgrade.name=Pickup Upgrade
 item.retro_sophisticated_backpacks.advanced_pickup_upgrade.name=Advanced Pickup Upgrade
+item.retro_sophisticated_backpacks.feeding_upgrade.name=Feeding Upgrade
+item.retro_sophisticated_backpacks.advanced_feeding_upgrade.name=Advanced Feeding Upgrade
 
 # Creative Tabs
 itemGroup.retro_sophisticated_backpacks.creative_tab=Retro Sophisticated Backpack
+
+# Keybinds
+retro_sophisticated_backpacks.key.open_backpack.desc=Opens Backpack in Inventory
+retro_sophisticated_backpacks.key.category=Retro Sophisticated Backpack
 
 # Tooltips
 retro_sophisticated_backpacks.tooltip.backpack.inventory_size=Inventory size: %d
@@ -37,6 +43,10 @@ retro_sophisticated_backpacks.tooltip.pickup_upgrade=Allows backpacks to pickup 
 
 retro_sophisticated_backpacks.tooltip.advanced_pickup_upgrade=Allows backpack to pickup items with more configurations
 
+retro_sophisticated_backpacks.tooltip.feeding_upgrade=Allows backpacks to automatically feed player
+
+retro_sophisticated_backpacks.tooltip.advanced_feeding_upgrade=Allows backpack to automatically feed player with more configurations
+
 retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Shift to reveal>
 
 # Gui Elements
@@ -46,29 +56,33 @@ retro_sophisticated_backpacks.gui.pickup_settings=Pickup Settings
 
 retro_sophisticated_backpacks.gui.advanced_pickup_settings=Adv. Pickup Settings
 
+retro_sophisticated_backpacks.gui.feeding_settings=Feeding Settings
+
+retro_sophisticated_backpacks.gui.advanced_feeding_settings=Adv. Feeding Settings
+
 # Gui Tooltips
 retro_sophisticated_backpacks.gui.not_in_effect=Not in effect
 
 retro_sophisticated_backpacks.gui.whitelist=Whitelist
-
 retro_sophisticated_backpacks.gui.blacklist=Blacklist
 
 retro_sophisticated_backpacks.gui.match_item=By Item
-
 retro_sophisticated_backpacks.gui.match_mod_id=By Mod ID
-
 retro_sophisticated_backpacks.gui.match_ore_dict=By Ore Dictionary
 
-retro_sophisticated_backpacks.gui.consider_durability=Consider Durability
-
+retro_sophisticated_backpacks.gui.match_durability=Match Durability
 retro_sophisticated_backpacks.gui.ignore_durability=Ignore Durability
 
-retro_sophisticated_backpacks.gui.consider_nbt=Consider NBT
-
+retro_sophisticated_backpacks.gui.match_nbt=match NBT
 retro_sophisticated_backpacks.gui.ignore_nbt=Ignore NBT
 
 retro_sophisticated_backpacks.gui.add_ore_dict_entry=Add Ore Dict.
-
 retro_sophisticated_backpacks.gui.remove_ore_dict_entry=Remove Ore Dict.
-
 retro_sophisticated_backpacks.gui.ore_dict_input_help=You can input ore dictionary here, regex is supported
+
+retro_sophisticated_backpacks.gui.complete_hunger=Only feed when player is hungry enough\nto not waste any hunger points of the food at all
+retro_sophisticated_backpacks.gui.half_hunger=Only feed when player is hungry enough\nto only waste half hunger points of the food at most
+retro_sophisticated_backpacks.gui.immediate_hunger=Feed as soon as player is tiny bit hungry\nwastes quite a few hunger points of the food
+
+retro_sophisticated_backpacks.gui.ignore_health=Do not consider health\nIgnores player's health and only feeds based on hunger setting
+retro_sophisticated_backpacks.gui.consider_health=Feed player immediately when hurt\nIgnores hunger setting when player is not at max health

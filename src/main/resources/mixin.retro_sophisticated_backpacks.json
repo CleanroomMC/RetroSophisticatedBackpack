@@ -1,0 +1,11 @@
+{
+  "package": "com.cleanroommc.retrosophisticatedbackpacks.mixin",
+  "refmap": "mixins.retro_sophisticated_backpacks.refmap.json",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [],
+  "client": [
+    "GuiContainerMixin"
+  ]
+}

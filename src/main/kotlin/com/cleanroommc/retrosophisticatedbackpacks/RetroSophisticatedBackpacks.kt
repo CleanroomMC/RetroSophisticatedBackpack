@@ -1,11 +1,13 @@
 package com.cleanroommc.retrosophisticatedbackpacks
 
-import com.cleanroommc.retrosophisticatedbackpacks.handlers.CapabilityHandler
-import com.cleanroommc.retrosophisticatedbackpacks.items.Items
+import com.cleanroommc.retrosophisticatedbackpacks.handler.CapabilityHandler
+import com.cleanroommc.retrosophisticatedbackpacks.handler.NetworkHandler
+import com.cleanroommc.retrosophisticatedbackpacks.item.Items
 import com.cleanroommc.retrosophisticatedbackpacks.proxy.RSBProxy
-import com.cleanroommc.retrosophisticatedbackpacks.utils.Utils.asTranslationKey
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import net.minecraft.creativetab.CreativeTabs
 import net.minecraft.item.ItemStack
+import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.SidedProxy
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
@@ -34,6 +36,9 @@ object RetroSophisticatedBackpacks {
     @Mod.Instance
     lateinit var instance: RetroSophisticatedBackpacks
 
+    var baublesLoaded = false
+        private set
+
     val CREATIVE_TAB = object : CreativeTabs("creative_tab".asTranslationKey()) {
         override fun createIcon(): ItemStack =
             ItemStack(Items.backpackLeather)
@@ -42,11 +47,17 @@ object RetroSophisticatedBackpacks {
     @Mod.EventHandler
     fun preInit(event: FMLPreInitializationEvent) {
         CapabilityHandler.register()
+
+        baublesLoaded = Loader.isModLoaded("baubles")
+
         proxy.preInit(event)
     }
 
     @Mod.EventHandler
     fun init(event: FMLInitializationEvent) {
+        NetworkHandler.register()
+
+        proxy.init(event)
     }
 
     @Mod.EventHandler

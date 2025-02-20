@@ -1,6 +1,6 @@
 package com.cleanroommc.retrosophisticatedbackpacks.crafting
 
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.google.gson.JsonObject
 import net.minecraft.inventory.InventoryCrafting
 import net.minecraft.item.ItemStack

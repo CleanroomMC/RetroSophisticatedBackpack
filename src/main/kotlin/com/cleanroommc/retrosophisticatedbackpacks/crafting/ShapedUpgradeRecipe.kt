@@ -1,7 +1,7 @@
 package com.cleanroommc.retrosophisticatedbackpacks.crafting
 
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.Capabilities
-import com.cleanroommc.retrosophisticatedbackpacks.items.PickupUpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.item.PickupUpgradeItem
 import com.google.gson.JsonObject
 import net.minecraft.inventory.InventoryCrafting
 import net.minecraft.item.ItemStack
@@ -14,7 +14,7 @@ import net.minecraftforge.common.crafting.JsonContext
 import net.minecraftforge.oredict.ShapedOreRecipe
 
 @Suppress("UNUSED")
-class ShapedUpgradeRecipe (
+class ShapedUpgradeRecipe(
     group: ResourceLocation?,
     result: ItemStack,
     primer: CraftingHelper.ShapedPrimer
@@ -30,7 +30,8 @@ class ShapedUpgradeRecipe (
                     val wrapper =
                         stack.getCapability(Capabilities.PICKUP_UPGRADE_CAPABILITY, null) ?: return outputStack
                     val newWrapper =
-                        outputStack.getCapability(Capabilities.ADVANCED_PICKUP_UPGRADE_CAPABILITY, null) ?: return outputStack
+                        outputStack.getCapability(Capabilities.ADVANCED_PICKUP_UPGRADE_CAPABILITY, null)
+                            ?: return outputStack
 
                     // Clones item filter settings, retains their relative position
                     newWrapper.filterType = wrapper.filterType
