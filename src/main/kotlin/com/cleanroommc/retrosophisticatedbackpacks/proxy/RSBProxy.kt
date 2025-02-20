@@ -1,15 +1,26 @@
 package com.cleanroommc.retrosophisticatedbackpacks.proxy
 
+import com.cleanroommc.modularui.factory.GuiManager
 import com.cleanroommc.retrosophisticatedbackpacks.client.BackpackDynamicModel
+import com.cleanroommc.retrosophisticatedbackpacks.inventory.PlayerInventoryGuiFactory
+import com.cleanroommc.retrosophisticatedbackpacks.utils.Utils.asTranslationKey
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
+import net.minecraft.client.settings.KeyBinding
 import net.minecraft.item.Item
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.client.model.ModelLoaderRegistry
+import net.minecraftforge.fml.client.registry.ClientRegistry
+import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
+import org.lwjgl.input.Keyboard
 
 abstract class RSBProxy {
-    open fun preInit(event: FMLPreInitializationEvent) {}
+    open fun preInit(event: FMLPreInitializationEvent) {
+        GuiManager.registerFactory(PlayerInventoryGuiFactory)
+    }
+
+    open fun init(event: FMLInitializationEvent) {}
 
     open fun postInit(event: FMLPostInitializationEvent) {}
 
@@ -18,6 +29,20 @@ abstract class RSBProxy {
     class ServerProxy : RSBProxy() {}
 
     class ClientProxy : RSBProxy() {
+        companion object {
+            private val KEYBINDS: List<KeyBinding> by lazy {
+                listOf(OPEN_BACKPACK_KEYBIND)
+            }
+            private val KEY_CATEGORY = "".asTranslationKey()
+
+            val OPEN_BACKPACK_KEYBIND = KeyBinding(
+                "key.open_backpack.desc".asTranslationKey(),
+                Keyboard.KEY_B,
+                "key.category".asTranslationKey()
+            )
+        }
+
+
         override fun registerItemRenderer(item: Item, meta: Int, id: String) {
             ModelLoader.setCustomModelResourceLocation(
                 item,
@@ -29,8 +54,16 @@ abstract class RSBProxy {
             )
         }
 
+        override fun init(event: FMLInitializationEvent) {
+            super.init(event)
+
+            for (keyBinding in KEYBINDS)
+                ClientRegistry.registerKeyBinding(keyBinding)
+        }
+
         override fun preInit(event: FMLPreInitializationEvent) {
             super.preInit(event)
+
             ModelLoaderRegistry.registerLoader(BackpackDynamicModel.Loader())
         }
     }

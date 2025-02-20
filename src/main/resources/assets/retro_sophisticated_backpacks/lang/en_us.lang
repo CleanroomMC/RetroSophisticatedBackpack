@@ -20,6 +20,10 @@ item.retro_sophisticated_backpacks.advanced_pickup_upgrade.name=Advanced Pickup 
 # Creative Tabs
 itemGroup.retro_sophisticated_backpacks.creative_tab=Retro Sophisticated Backpack
 
+# Keybinds
+retro_sophisticated_backpacks.key.open_backpack.desc=Opens Backpack in Inventory
+retro_sophisticated_backpacks.key.category=Retro Sophisticated Backpack
+
 # Tooltips
 retro_sophisticated_backpacks.tooltip.backpack.inventory_size=Inventory size: %d
 retro_sophisticated_backpacks.tooltip.backpack.upgrade_slots_size=Upgrade slots: %d

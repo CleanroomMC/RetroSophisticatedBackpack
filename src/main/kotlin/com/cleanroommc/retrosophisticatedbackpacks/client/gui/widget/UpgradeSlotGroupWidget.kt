@@ -12,7 +12,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.backpack.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.IToggleable
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
-import com.cleanroommc.retrosophisticatedbackpacks.value.sync.UpgradeSlotSH
+import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import net.minecraft.item.ItemStack
 
 class UpgradeSlotGroupWidget(private val panel: BackpackPanel, private val slotSize: Int) : SlotGroupWidget() {

@@ -1,4 +1,4 @@
-package com.cleanroommc.retrosophisticatedbackpacks.value.sync
+package com.cleanroommc.retrosophisticatedbackpacks.sync
 
 import com.cleanroommc.modularui.utils.MouseData
 import com.cleanroommc.modularui.value.sync.ItemSlotSH

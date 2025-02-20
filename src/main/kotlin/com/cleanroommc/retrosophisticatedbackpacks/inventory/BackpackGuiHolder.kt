@@ -1,7 +1,6 @@
 package com.cleanroommc.retrosophisticatedbackpacks.inventory
 
 import com.cleanroommc.modularui.api.IGuiHolder
-import com.cleanroommc.modularui.factory.HandGuiData
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
@@ -19,7 +18,11 @@ sealed class BackpackGuiHolder(protected val backpackWrapper: BackpackWrapper) {
     protected val rowSize = if (backpackWrapper.backpackInventorySize() > 81) 12 else 9
     protected val colSize = backpackWrapper.backpackInventorySize().ceilDiv(rowSize)
 
-    protected fun createPanel(syncManager: PanelSyncManager, player: EntityPlayer, tileEntity: BackpackTileEntity?): BackpackPanel =
+    protected fun createPanel(
+        syncManager: PanelSyncManager,
+        player: EntityPlayer,
+        tileEntity: BackpackTileEntity?
+    ): BackpackPanel =
         BackpackPanel.defaultPanel(
             syncManager,
             player,
@@ -50,14 +53,14 @@ sealed class BackpackGuiHolder(protected val backpackWrapper: BackpackWrapper) {
     }
 
     class ItemStackGuiHolder(backpackWrapper: BackpackWrapper) : BackpackGuiHolder(backpackWrapper),
-        IGuiHolder<HandGuiData> {
+        IGuiHolder<PlayerInventoryGuiData> {
         override fun buildUI(
-            data: HandGuiData,
+            data: PlayerInventoryGuiData,
             syncManager: PanelSyncManager
         ): ModularPanel {
             val panel = createPanel(syncManager, data.player, null)
             addCommonWidgets(panel, syncManager, data.player)
-            panel.modifyPlayerSlot(syncManager, data.hand, data.player)
+            panel.modifyPlayerSlot(syncManager, data.inventoryType, data.slotIndex, data.player)
             return panel
         }
     }

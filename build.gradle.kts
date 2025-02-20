@@ -147,6 +147,7 @@ dependencies {
     }
 
     implementation("com.cleanroommc:modularui:2.5.0-rc4")
+    implementation(rfg.deobf("curse.maven:baubles-227083:2518667"))
     
     if (use_assetmover.toBoolean()) {
         implementation("com.cleanroommc:assetmover:2.5")
@@ -158,7 +159,7 @@ dependencies {
     if (use_mixins.toBoolean()) {
         // Change your mixin refmap name here:
         val mixin =
-            modUtils.enableMixins("zone.rong:mixinbooter:9.1", "mixins.${archives_base_name}.refmap.json") as String
+            modUtils.enableMixins("zone.rong:mixinbooter:9.1", "mixins.${mod_id}.refmap.json") as String
         api(mixin) {
             isTransitive = false
         }
@@ -208,7 +209,7 @@ tasks.withType<Jar> {
             attributeMap["FMLCorePlugin"] = coremod_plugin_class_name
             if (include_mod.toBoolean()) {
                 attributeMap["FMLCorePluginContainsFMLMod"] = true.toString()
-                attributeMap["ForceLoadAsMod"] = (project.gradle.startParameter.taskNames[0] == "build").toString()
+                attributeMap["ForceLoadAsMod"] = true.toString()
             }
         }
         if (use_access_transformer.toBoolean()) {

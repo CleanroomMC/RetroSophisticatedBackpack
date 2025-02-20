@@ -20,6 +20,10 @@ item.retro_sophisticated_backpacks.advanced_pickup_upgrade.name=進階拾取升�
 # Creative Tabs
 itemGroup.retro_sophisticated_backpacks.creative_tab=復古精緻背包
 
+# Keybinds
+retro_sophisticated_backpacks.key.open_backpack.desc=開啟玩家身上的背包
+retro_sophisticated_backpacks.key.category=復古精緻背包
+
 # Tooltips
 retro_sophisticated_backpacks.tooltip.backpack.inventory_size=背包容量: %d
 retro_sophisticated_backpacks.tooltip.backpack.upgrade_slots_size=升級插槽: %d

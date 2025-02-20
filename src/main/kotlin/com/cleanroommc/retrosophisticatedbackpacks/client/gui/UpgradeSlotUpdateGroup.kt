@@ -7,8 +7,8 @@ import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.AdvancedPickupUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.PickupUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.slot.FilterSlot
-import com.cleanroommc.retrosophisticatedbackpacks.value.sync.DelegatedStackHandlerSH
-import com.cleanroommc.retrosophisticatedbackpacks.value.sync.FilterSlotSH
+import com.cleanroommc.retrosophisticatedbackpacks.sync.DelegatedStackHandlerSH
+import com.cleanroommc.retrosophisticatedbackpacks.sync.FilterSlotSH
 
 class UpgradeSlotUpdateGroup(
     private val syncManager: PanelSyncManager,

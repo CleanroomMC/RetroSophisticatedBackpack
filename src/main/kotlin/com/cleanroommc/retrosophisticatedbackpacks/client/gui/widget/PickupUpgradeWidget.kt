@@ -8,7 +8,7 @@ import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.upgrade.PickupUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
 import com.cleanroommc.retrosophisticatedbackpacks.utils.Utils.asTranslationKey
-import com.cleanroommc.retrosophisticatedbackpacks.value.sync.UpgradeSlotSH
+import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 
 class PickupUpgradeWidget(
     slotIndex: Int,
