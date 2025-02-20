@@ -2,23 +2,30 @@ package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.api.widget.Interactable
-import com.cleanroommc.modularui.drawable.Rectangle
+import com.cleanroommc.modularui.drawable.UITexture
+import com.cleanroommc.modularui.drawable.text.TextRenderer
 import com.cleanroommc.modularui.screen.RichTooltip
+import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
+import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.utils.Color
+import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandler
 import com.cleanroommc.modularui.widget.WidgetTree
 import com.cleanroommc.modularui.widgets.*
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget
+import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedPickupUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.PickupUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
-import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
+import com.cleanroommc.retrosophisticatedbackpacks.client.gui.drawable.Outline
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
-import net.minecraft.util.text.TextFormatting
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
+import net.minecraftforge.oredict.OreDictionary
 
 class AdvancedPickupUpgradeWidget(
+    private val syncManager: PanelSyncManager,
     slotIndex: Int,
     private val advWrapper: AdvancedPickupUpgradeWrapper
 ) : ExpandedTabWidget(4) {
@@ -141,7 +148,7 @@ class AdvancedPickupUpgradeWidget(
                     return@onMousePressed false
 
                 advWrapper.oreDictEntries.add(oreName)
-                oreDictList.child(OreDictEntryWidget(oreName, 75))
+                oreDictList.child(OreDictEntryWidget(this, oreName, 77))
                 updatePickupWrapper()
                 WidgetTree.resize(oreDictList)
 
@@ -222,12 +229,10 @@ class AdvancedPickupUpgradeWidget(
             }
 
         oreDictList = OreDictRegexListWidget()
-            .size(80, 65)
-
-        oreDictList.background(Rectangle().setColor(Color.BLACK.main))
+            .size(82, 65)
 
         for (entry in advWrapper.oreDictEntries)
-            oreDictList.child(OreDictEntryWidget(entry, 75))
+            oreDictList.child(OreDictEntryWidget(this, entry, 77))
 
         oreDictBasedConfigurationGroup = Column()
             .size(88, 85)
@@ -275,27 +280,92 @@ class AdvancedPickupUpgradeWidget(
     }
 
     private class OreDictRegexListWidget() : ListWidget<OreDictEntryWidget, OreDictRegexListWidget>() {
+        companion object {
+            private val BACKGROUND_TILE_TEXTURE = UITexture.builder()
+                .location(Tags.MOD_ID, "gui/gui_controls")
+                .imageSize(256, 256)
+                .uv(29, 146, 66, 56)
+                .adaptable(1)
+                .tiled()
+                .build()
+        }
+
+        init {
+            background(BACKGROUND_TILE_TEXTURE)
+        }
+
         fun removeChild(widget: OreDictEntryWidget): Boolean =
             remove(widget)
     }
 
-    private inner class OreDictEntryWidget(val text: String, width: Int) : TextWidget(IKey.str(text)), Interactable {
-        var selected = false
-            set(value) {
-                if (value) key.style(TextFormatting.UNDERLINE)
-                else key.removeStyle()
+    private class OreDictEntryWidget(val parent: AdvancedPickupUpgradeWidget, val text: String, width: Int) : TextWidget(IKey.str(" $text")), Interactable {
+        companion object {
+            private const val PAUSE_TIME = 60
+        }
 
-                field = value
-            }
+        private var line = TextRenderer.Line("", 0f)
+        private var time: Long = 0
+        private var scroll = 0
+        private var hovering = false
+        private var pauseTimer = 0
+        private var selected = false
 
         init {
-            size(width, 10)
-                .left(2)
+            size(width, 12)
+                .left(1)
+                .overlay(Outline(Color.WHITE.main))
                 .color(Color.GREY.main)
+                .shadow(true)
+
+            tooltipBuilder {
+                it.showUpTimer(5).pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+
+                if (line.width > area.width)
+                    it.addLine(key)
+
+                val stack = parent.syncManager.cursorItem
+
+                if (!stack.isEmpty) {
+                    val testMatched = OreDictionary
+                        .getOreIDs(stack)
+                        .map(OreDictionary::getOreName)
+                        .any { Regex(text).matches(it) }
+
+                    if (testMatched)
+                        it.addLine(RSBTextures.CHECK_ICON)
+                }
+            }
+        }
+
+        override fun onMouseStartHover() {
+            hovering = true
+        }
+
+        override fun onMouseEndHover() {
+            hovering = false
+            scroll = 0
+            time = 0
+            markTooltipDirty()
+        }
+
+        override fun onUpdate() {
+            super.onUpdate()
+
+            if (pauseTimer > 0) {
+                if (++pauseTimer == PAUSE_TIME) {
+                    pauseTimer = if (scroll == 0) 0 else 1
+                    scroll = 0
+                }
+                return
+            }
+
+            if (hovering && ++time % 2 == 0L && ++scroll == line.upperWidth() - area.width - 1) {
+                pauseTimer = 1
+            }
         }
 
         override fun onMousePressed(mouseButton: Int): Interactable.Result {
-            for (child in oreDictList.children) {
+            for (child in parent.oreDictList.children) {
                 if (child == this)
                     continue
                 (child as OreDictEntryWidget).selected = false
@@ -303,13 +373,45 @@ class AdvancedPickupUpgradeWidget(
 
             if (selected) {
                 selected = false
-                focusedOreDictEntry = null
+                parent.focusedOreDictEntry = null
             } else {
                 selected = true
-                focusedOreDictEntry = this
+                parent.focusedOreDictEntry = this
             }
 
             return Interactable.Result.SUCCESS
+        }
+
+        override fun draw(context: ModularGuiContext?, widgetTheme: WidgetTheme?) {
+            checkString()
+            val renderer = TextRenderer.SHARED
+            renderer.setColor(color)
+            renderer.setAlignment(alignment, (area.w() + 1).toFloat(), area.h().toFloat())
+            renderer.setShadow(isShadow)
+            renderer.setPos(area.padding.left, area.padding.top + 2)
+            renderer.setScale(scale)
+            renderer.setSimulate(false)
+            renderer.drawCut(line)
+        }
+
+        override fun drawOverlay(context: ModularGuiContext, widgetTheme: WidgetTheme) {
+            if (!selected)
+                return
+
+            val overlay = getCurrentOverlay(context.theme, widgetTheme)
+
+            overlay.drawAtZero(context, area.width + 2, area.height + 2, widgetTheme)
+        }
+
+        private fun checkString() {
+            val s = key.get()
+
+            if (s != line.text) {
+                TextRenderer.SHARED.setScale(scale)
+                line = TextRenderer.SHARED.line(s)
+                scroll = 0
+                markTooltipDirty()
+            }
         }
     }
 }
