@@ -37,10 +37,10 @@ class BackpackBlock(
     val tier: BackpackTier,
 ) : Block(Material.CARPET), ITileEntityProvider, IModelRegister.Block {
     companion object {
-        val LEFT_TANK = PropertyBool.create("left_tank")
-        val RIGHT_TANK = PropertyBool.create("right_tank")
-        val BATTERY = PropertyBool.create("battery")
-        val FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL)
+        val LEFT_TANK: PropertyBool = PropertyBool.create("left_tank")
+        val RIGHT_TANK: PropertyBool = PropertyBool.create("right_tank")
+        val BATTERY: PropertyBool = PropertyBool.create("battery")
+        val FACING: PropertyDirection = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL)
         const val BEDROCK_RESISTANCE = 3600000
 
         private val BOOL_PROPERTIES = arrayOf(LEFT_TANK, RIGHT_TANK, BATTERY)

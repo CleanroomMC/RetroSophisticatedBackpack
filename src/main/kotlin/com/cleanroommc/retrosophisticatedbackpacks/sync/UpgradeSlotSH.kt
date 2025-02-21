@@ -4,7 +4,7 @@ import com.cleanroommc.modularui.value.sync.ItemSlotSH
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedFeedingUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvanceFilterable
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
 import net.minecraft.network.PacketBuffer
 
@@ -43,10 +43,10 @@ class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
     }
 
     private fun updateAdvancedFilterable(buf: PacketBuffer) {
-        val wrapper = slot.stack.getCapability(Capabilities.ADVANCE_FILTERABLE_CAPABILITY, null) ?: return
+        val wrapper = slot.stack.getCapability(Capabilities.ADVANCED_FILTERABLE_CAPABILITY, null) ?: return
 
         wrapper.filterType = buf.readEnumValue(IBasicFilterable.FilterType::class.java)
-        wrapper.matchType = buf.readEnumValue(IAdvanceFilterable.MatchType::class.java)
+        wrapper.matchType = buf.readEnumValue(IAdvancedFilterable.MatchType::class.java)
         wrapper.ignoreDurability = buf.readBoolean()
         wrapper.ignoreNBT = buf.readBoolean()
 

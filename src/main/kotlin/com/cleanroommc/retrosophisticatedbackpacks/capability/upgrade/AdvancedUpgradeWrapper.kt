@@ -10,10 +10,10 @@ import net.minecraft.nbt.NBTTagString
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
 
-sealed class AdvancedUpgradeWrapper<T> : UpgradeWrapper<T>(), IToggleable, IAdvanceFilterable where T : UpgradeItem {
+sealed class AdvancedUpgradeWrapper<T> : UpgradeWrapper<T>(), IToggleable, IAdvancedFilterable where T : UpgradeItem {
     override val acceptableCapabilities: List<Capability<*>>
         get() = listOf(
-            Capabilities.ADVANCE_FILTERABLE_CAPABILITY,
+            Capabilities.ADVANCED_FILTERABLE_CAPABILITY,
             Capabilities.BASIC_FILTERABLE_CAPABILITY,
             Capabilities.TOGGLEABLE_CAPABILITY
         )
@@ -21,7 +21,7 @@ sealed class AdvancedUpgradeWrapper<T> : UpgradeWrapper<T>(), IToggleable, IAdva
     override var enabled = true
     override var filterType = IBasicFilterable.FilterType.WHITELIST
     override val filterItems: ExposedItemStackHandler = ExposedItemStackHandler(16)
-    override var matchType = IAdvanceFilterable.MatchType.ITEM
+    override var matchType = IAdvancedFilterable.MatchType.ITEM
     override var oreDictEntries = mutableListOf<String>()
     override var ignoreDurability = true
     override var ignoreNBT = true
@@ -34,16 +34,16 @@ sealed class AdvancedUpgradeWrapper<T> : UpgradeWrapper<T>(), IToggleable, IAdva
         nbt.setBoolean(IToggleable.ENABLED_TAG, enabled)
         nbt.setTag(IBasicFilterable.FILTER_ITEMS_TAG, filterItems.serializeNBT())
         nbt.setByte(IBasicFilterable.FILTER_TYPE_TAG, filterType.ordinal.toByte())
-        nbt.setByte(IAdvanceFilterable.MATCH_TYPE_TAG, matchType.ordinal.toByte())
-        nbt.setBoolean(IAdvanceFilterable.IGNORE_DURABILITY_TAG, ignoreDurability)
-        nbt.setBoolean(IAdvanceFilterable.IGNORE_NBT_TAG, ignoreNBT)
+        nbt.setByte(IAdvancedFilterable.MATCH_TYPE_TAG, matchType.ordinal.toByte())
+        nbt.setBoolean(IAdvancedFilterable.IGNORE_DURABILITY_TAG, ignoreDurability)
+        nbt.setBoolean(IAdvancedFilterable.IGNORE_NBT_TAG, ignoreNBT)
 
         val oreDictList = NBTTagList()
 
         for (entry in oreDictEntries)
             oreDictList.appendTag(NBTTagString(entry))
 
-        nbt.setTag(IAdvanceFilterable.ORE_DICT_LIST_TAG, oreDictList)
+        nbt.setTag(IAdvancedFilterable.ORE_DICT_LIST_TAG, oreDictList)
         return nbt
     }
 
@@ -51,11 +51,11 @@ sealed class AdvancedUpgradeWrapper<T> : UpgradeWrapper<T>(), IToggleable, IAdva
         enabled = nbt.getBoolean(IToggleable.ENABLED_TAG)
         filterItems.deserializeNBT(nbt.getCompoundTag(IBasicFilterable.FILTER_ITEMS_TAG))
         filterType = IBasicFilterable.FilterType.entries[nbt.getByte(IBasicFilterable.FILTER_TYPE_TAG).toInt()]
-        matchType = IAdvanceFilterable.MatchType.entries[nbt.getByte(IAdvanceFilterable.MATCH_TYPE_TAG).toInt()]
-        ignoreDurability = nbt.getBoolean(IAdvanceFilterable.IGNORE_DURABILITY_TAG)
-        ignoreNBT = nbt.getBoolean(IAdvanceFilterable.IGNORE_NBT_TAG)
+        matchType = IAdvancedFilterable.MatchType.entries[nbt.getByte(IAdvancedFilterable.MATCH_TYPE_TAG).toInt()]
+        ignoreDurability = nbt.getBoolean(IAdvancedFilterable.IGNORE_DURABILITY_TAG)
+        ignoreNBT = nbt.getBoolean(IAdvancedFilterable.IGNORE_NBT_TAG)
 
-        val oreDictList = nbt.getTagList(IAdvanceFilterable.ORE_DICT_LIST_TAG, Constants.NBT.TAG_STRING)
+        val oreDictList = nbt.getTagList(IAdvancedFilterable.ORE_DICT_LIST_TAG, Constants.NBT.TAG_STRING)
 
         for (stringNBT in oreDictList)
             oreDictEntries.add((stringNBT as NBTTagString).string)

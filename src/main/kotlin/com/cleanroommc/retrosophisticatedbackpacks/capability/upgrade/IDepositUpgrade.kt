@@ -4,4 +4,4 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.ISidelessCapabilit
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.common.util.INBTSerializable
 
-sealed interface IPickupUpgrade : ISidelessCapabilityProvider, INBTSerializable<NBTTagCompound>
+sealed interface IDepositUpgrade : ISidelessCapabilityProvider, INBTSerializable<NBTTagCompound>

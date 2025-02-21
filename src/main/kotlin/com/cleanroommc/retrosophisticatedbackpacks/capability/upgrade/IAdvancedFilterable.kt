@@ -4,7 +4,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.inventory.ExposedItemStackHan
 import net.minecraft.item.ItemStack
 import net.minecraftforge.oredict.OreDictionary
 
-interface IAdvanceFilterable : IBasicFilterable {
+interface IAdvancedFilterable : IBasicFilterable {
     companion object {
         const val MATCH_TYPE_TAG = "MatchType"
         const val IGNORE_DURABILITY_TAG = "IgnoreDurability"
@@ -93,7 +93,7 @@ interface IAdvanceFilterable : IBasicFilterable {
         ORE_DICT;
     }
 
-    object Impl : IAdvanceFilterable {
+    object Impl : IAdvancedFilterable {
         override val filterItems: ExposedItemStackHandler
             get() = ExposedItemStackHandler(0)
         override var filterType: IBasicFilterable.FilterType

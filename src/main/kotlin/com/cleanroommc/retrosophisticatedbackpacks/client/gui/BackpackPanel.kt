@@ -18,24 +18,19 @@ import com.cleanroommc.retrosophisticatedbackpacks.Config
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedFeedingUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedPickupUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.FeedingUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.PickupUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.*
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget.*
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackContainer
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiData
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.BackpackSlot
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.UpgradeSlot
-import com.cleanroommc.retrosophisticatedbackpacks.item.CraftingUpgradeItem
-import com.cleanroommc.retrosophisticatedbackpacks.item.FeedingUpgradeItem
-import com.cleanroommc.retrosophisticatedbackpacks.item.PickupUpgradeItem
-import com.cleanroommc.retrosophisticatedbackpacks.item.UpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.item.*
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.tileentity.BackpackTileEntity
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.ceilDiv
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraftforge.items.wrapper.PlayerInvWrapper
+import kotlin.math.min
 
 class BackpackPanel(
     internal val player: EntityPlayer,
@@ -216,7 +211,7 @@ class BackpackPanel(
 
             val tabWidget = tabWidgets[tabIndex]
             tabWidget.isEnabled = true
-            tabWidget.tabIcon = ItemDrawable(slot.slot.stack)
+            tabWidget.tabIcon = ItemDrawable(slot.slot.stack).asWidget()
 
             when (item) {
                 is CraftingUpgradeItem -> {
@@ -255,6 +250,15 @@ class BackpackPanel(
                     }
                 }
 
+                is DepositUpgradeItem -> {
+                    val wrapper = stack.getCapability(Capabilities.IDEPOSIT_UPGRADE_CAPABILITY, null)!!
+
+                    tabWidget.expandedWidget = when (wrapper) {
+                        is AdvancedDepositUpgradeWrapper -> TODO()
+                        is DepositUpgradeWrapper -> TODO()
+                    }
+                }
+
                 else -> {}
             }
 
@@ -279,6 +283,27 @@ class BackpackPanel(
             } else {
                 toggleWidget.isEnabled = false
             }
+        }
+
+        WidgetTree.resize(this)
+    }
+
+    // Only call this when any tab widgets is clicked
+    internal fun updateTabWidgets(triggeredTabIndex: Int, isExpanded: Boolean) {
+        val updateUpperBound =
+            min(triggeredTabIndex + tabWidgets[triggeredTabIndex].expandedWidget!!.coveredTabSize, tabWidgets.size - 1)
+
+        // Disable all other tabs
+        for (i in 0 until tabWidgets.size) {
+            if (i == triggeredTabIndex)
+                continue
+
+            tabWidgets[i].showExpanded = false
+        }
+
+        // Refresh potentially covered tabs
+        for (i in triggeredTabIndex + 1 until updateUpperBound) {
+            tabWidgets[i].isEnabled = !isExpanded
         }
 
         WidgetTree.resize(this)

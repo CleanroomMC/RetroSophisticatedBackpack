@@ -1,5 +1,6 @@
 package com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade
 
+import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.ExposedItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.item.UpgradeItem
 import net.minecraft.item.ItemStack
@@ -9,7 +10,8 @@ import net.minecraftforge.common.capabilities.Capability
 sealed class BasicUpgradeWrapper<T> : UpgradeWrapper<T>(), IToggleable, IBasicFilterable where T : UpgradeItem {
     override val acceptableCapabilities: List<Capability<*>>
         get() = listOf(
-
+            Capabilities.TOGGLEABLE_CAPABILITY,
+            Capabilities.BASIC_FILTERABLE_CAPABILITY
         )
 
     override var enabled = true

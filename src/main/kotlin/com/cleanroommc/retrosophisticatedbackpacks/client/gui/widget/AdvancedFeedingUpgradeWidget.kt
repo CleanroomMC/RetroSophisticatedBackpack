@@ -5,14 +5,16 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedFeedingUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
+import com.cleanroommc.retrosophisticatedbackpacks.item.Items
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
+import net.minecraft.item.ItemStack
 
 class AdvancedFeedingUpgradeWidget(
     syncManager: PanelSyncManager,
     slotIndex: Int,
     private val advWrapper: AdvancedFeedingUpgradeWrapper
-) : ExpandedTabWidget(5) {
+) : ExpandedTabWidget(5, ItemStack(Items.advancedFeedingUpgrade)) {
     companion object {
         private val HUNGER_VARIANTS = listOf(
             CyclicVariantButtonWidget.Variant(
@@ -82,9 +84,5 @@ class AdvancedFeedingUpgradeWidget(
             it.writeEnumValue(advWrapper.hungerFeedingStrategy)
             it.writeEnumValue(advWrapper.healthFeedingStrategy)
         }
-    }
-
-    override fun onInit() {
-        context.jeiSettings.addJeiExclusionArea(this)
     }
 }

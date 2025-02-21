@@ -47,7 +47,7 @@ retro_sophisticated_backpacks.tooltip.feeding_upgrade=允許背包自動餵食�
 
 retro_sophisticated_backpacks.tooltip.advanced_feeding_upgrade=允許背包根據更多配置自動餵食玩家
 
-retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Shift 以顯示>
+retro_sophisticated_backpacks.tooltip.shift_to_reveal=<按 Shift 顯示>
 
 # Gui Elements
 retro_sophisticated_backpacks.container.backpack=背包

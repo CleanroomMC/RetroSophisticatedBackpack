@@ -4,7 +4,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.modularui.widgets.slot.SlotGroup
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvanceFilterable
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.FilterSlot
 import com.cleanroommc.retrosophisticatedbackpacks.sync.DelegatedStackHandlerSH
@@ -99,7 +99,7 @@ class UpgradeSlotUpdateGroup(
         commonFilterStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_FILTERABLE)
     }
 
-    fun updateAdvancedFilterDelegate(wrapper: IAdvanceFilterable) {
+    fun updateAdvancedFilterDelegate(wrapper: IAdvancedFilterable) {
         advancedCommonFilterStackHandler.setDelegatedStackHandler(wrapper::filterItems)
         advancedCommonFilterStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_FILTERABLE)
     }

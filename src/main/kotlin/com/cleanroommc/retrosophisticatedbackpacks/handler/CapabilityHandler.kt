@@ -66,6 +66,18 @@ object CapabilityHandler {
             ::AdvancedFeedingUpgradeWrapper
         )
 
+        instance.register(
+            DepositUpgradeWrapper::class.java,
+            CapabilityStorageProvider<DepositUpgradeWrapper>(),
+            ::DepositUpgradeWrapper
+        )
+
+        instance.register(
+            AdvancedDepositUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AdvancedDepositUpgradeWrapper>(),
+            ::AdvancedDepositUpgradeWrapper
+        )
+
         // Interfaces
         instance.register(
             IToggleable::class.java,
@@ -78,9 +90,9 @@ object CapabilityHandler {
         ) { IBasicFilterable.Impl }
 
         instance.register(
-            IAdvanceFilterable::class.java,
-            NOPCapabilityStorage<IAdvanceFilterable>()
-        ) { IAdvanceFilterable.Impl }
+            IAdvancedFilterable::class.java,
+            NOPCapabilityStorage<IAdvancedFilterable>()
+        ) { IAdvancedFilterable.Impl }
 
         instance.register(
             IPickupUpgrade::class.java,
@@ -92,6 +104,12 @@ object CapabilityHandler {
             IFeedingUpgrade::class.java,
             NOPCapabilityStorage<IFeedingUpgrade>(),
             ::FeedingUpgradeWrapper
+        )
+
+        instance.register(
+            IDepositUpgrade::class.java,
+            NOPCapabilityStorage<IDepositUpgrade>(),
+            ::DepositUpgradeWrapper
         )
     }
 

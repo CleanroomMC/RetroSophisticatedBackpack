@@ -4,13 +4,15 @@ import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedPickupUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.item.Items
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
+import net.minecraft.item.ItemStack
 
 class AdvancedPickupUpgradeWidget(
     syncManager: PanelSyncManager,
     slotIndex: Int,
     advWrapper: AdvancedPickupUpgradeWrapper
-) : ExpandedTabWidget(4) {
+) : ExpandedTabWidget(4, ItemStack(Items.advancedPickupUpgrade)) {
     val filterWidget: AdvancedFilterWidget
 
     init {
@@ -27,9 +29,5 @@ class AdvancedPickupUpgradeWidget(
                     .leftRel(0.85f)
                     .topRelAnchor(0.125f, 0.5f)
             )
-    }
-
-    override fun onInit() {
-        context.jeiSettings.addJeiExclusionArea(this)
     }
 }

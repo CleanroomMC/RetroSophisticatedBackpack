@@ -3,12 +3,14 @@ package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.PickupUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.item.Items
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
+import net.minecraft.item.ItemStack
 
 class PickupUpgradeWidget(
     slotIndex: Int,
     wrapper: PickupUpgradeWrapper
-) : ExpandedTabWidget(3) {
+) : ExpandedTabWidget(3, ItemStack(Items.pickupUpgrade)) {
     val filterWidget: BasicFilterWidget
 
     init {
@@ -25,9 +27,5 @@ class PickupUpgradeWidget(
                     .leftRel(0.85f)
                     .topRelAnchor(0.125f, 0.5f)
             )
-    }
-
-    override fun onInit() {
-        context.jeiSettings.addJeiExclusionArea(this)
     }
 }

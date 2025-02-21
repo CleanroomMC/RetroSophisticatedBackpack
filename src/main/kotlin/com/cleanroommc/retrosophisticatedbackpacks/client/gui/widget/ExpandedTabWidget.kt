@@ -1,39 +1,49 @@
 package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget
 
-import com.cleanroommc.modularui.api.drawable.IDrawable
-import com.cleanroommc.modularui.drawable.AdaptableUITexture
+import com.cleanroommc.modularui.api.widget.Interactable
+import com.cleanroommc.modularui.drawable.ItemDrawable
 import com.cleanroommc.modularui.drawable.UITexture
-import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
-import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.widget.ParentWidget
+import com.cleanroommc.modularui.widget.SingleChildWidget
+import com.cleanroommc.modularui.widget.Widget
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
+import net.minecraft.item.ItemStack
 
-sealed class ExpandedTabWidget(val coveredTabSize: Int) : ParentWidget<ExpandedTabWidget>() {
+abstract class ExpandedTabWidget(val coveredTabSize: Int, private val delegatedIconStack: ItemStack) :
+    ParentWidget<ExpandedTabWidget>() {
     companion object {
-        val TAB_TEXTURE = UITexture.builder()
+        val TAB_TEXTURE: UITexture = UITexture.builder()
             .location(Tags.MOD_ID, "gui/gui_controls")
             .imageSize(256, 256)
             .uv(128, 0, 128, 256)
             .adaptable(4)
             .tiled()
-            .build() as AdaptableUITexture
+            .build()
     }
 
-    internal var tabIcon: IDrawable? = null
+    internal lateinit var parentTabWidget: TabWidget
+    private val tabWidget: PhantomTabWidget = PhantomTabWidget(ItemDrawable(delegatedIconStack).asWidget())
 
-    override fun onInit() {
-        context.jeiSettings.addJeiExclusionArea(this)
+    init {
+        child(tabWidget)
+            .background(TAB_TEXTURE)
     }
 
-    override fun draw(context: ModularGuiContext, widgetTheme: WidgetTheme) {
-        super.draw(context, widgetTheme)
+    private inner class PhantomTabWidget(tabIcon: Widget<*>) : SingleChildWidget<PhantomTabWidget>(), Interactable {
+        init {
+            size(TabWidget.TAB_TEXTURE.width, TabWidget.TAB_TEXTURE.height)
+                .child(
+                    tabIcon
+                        .size(16)
+                        .pos(8, 6)
+                )
+        }
 
-        tabIcon?.draw(context, 8, 6, 16, 16, widgetTheme)
-    }
+        override fun onMousePressed(mouseButton: Int): Interactable.Result {
+            if (mouseButton == 0)
+                parentTabWidget.onTabClick()
 
-    override fun drawBackground(context: ModularGuiContext, widgetTheme: WidgetTheme) {
-        super.drawBackground(context, widgetTheme)
-
-        TAB_TEXTURE.draw(context, 0, 0, flex.area.width, flex.area.height, widgetTheme)
+            return Interactable.Result.SUCCESS
+        }
     }
 }
