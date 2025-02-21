@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.text.ITextComponent
 import net.minecraft.util.text.TextComponentTranslation
 import net.minecraftforge.common.capabilities.Capability
@@ -38,9 +39,6 @@ class BackpackWrapper(
     var upgradeItemStackHandler = UpgradeItemStackHandler(upgradeSlotsSize())
     var mainColor = DEFAULT_MAIN_COLOR
     var accentColor = DEFAULT_ACCENT_COLOR
-
-    override val acceptableCapabilities: List<Capability<*>>
-        get() = listOf(Capabilities.BACKPACK_CAPABILITY)
 
     fun getTotalStackMultiplier(): Int =
         upgradeItemStackHandler.inventory.map(ItemStack::getItem).filterIsInstance<StackUpgradeItem>()
@@ -168,6 +166,9 @@ class BackpackWrapper(
 
     override fun getDisplayName(): ITextComponent =
         TextComponentTranslation(name.asTranslationKey())
+
+    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =
+        capability == Capabilities.BACKPACK_CAPABILITY
 
     override fun serializeNBT(): NBTTagCompound {
         val nbt = NBTTagCompound()

@@ -1,23 +1,16 @@
 package com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade
 
-import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.ExposedItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.item.UpgradeItem
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.nbt.NBTTagList
 import net.minecraft.nbt.NBTTagString
+import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.Constants
 
 sealed class AdvancedUpgradeWrapper<T> : UpgradeWrapper<T>(), IToggleable, IAdvancedFilterable where T : UpgradeItem {
-    override val acceptableCapabilities: List<Capability<*>>
-        get() = listOf(
-            Capabilities.ADVANCED_FILTERABLE_CAPABILITY,
-            Capabilities.BASIC_FILTERABLE_CAPABILITY,
-            Capabilities.TOGGLEABLE_CAPABILITY
-        )
-
     override var enabled = true
     override var filterType = IBasicFilterable.FilterType.WHITELIST
     override val filterItems: ExposedItemStackHandler = ExposedItemStackHandler(16)
@@ -28,6 +21,10 @@ sealed class AdvancedUpgradeWrapper<T> : UpgradeWrapper<T>(), IToggleable, IAdva
 
     override fun checkFilter(stack: ItemStack): Boolean =
         enabled && super.checkFilter(stack)
+
+    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =
+        super<IToggleable>.hasCapability(capability, facing) ||
+                super<IAdvancedFilterable>.hasCapability(capability, facing)
 
     override fun serializeNBT(): NBTTagCompound {
         val nbt = NBTTagCompound()

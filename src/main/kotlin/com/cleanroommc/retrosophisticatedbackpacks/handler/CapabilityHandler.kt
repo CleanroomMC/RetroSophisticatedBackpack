@@ -166,7 +166,7 @@ object CapabilityHandler {
         }
     }
 
-    private open class CapabilityStorageProvider<T> :
+    internal open class CapabilityStorageProvider<T> :
         RefinedStorage<T> where T : INBTSerializable<NBTTagCompound> {
         override fun writeNBT(
             capability: Capability<T>,

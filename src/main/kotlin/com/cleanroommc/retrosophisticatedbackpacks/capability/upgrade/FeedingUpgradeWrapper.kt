@@ -6,15 +6,10 @@ import com.cleanroommc.retrosophisticatedbackpacks.item.FeedingUpgradeItem
 import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemFood
 import net.minecraft.item.ItemStack
+import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 
 class FeedingUpgradeWrapper : BasicUpgradeWrapper<FeedingUpgradeItem>(), IFeedingUpgrade {
-    override val acceptableCapabilities: List<Capability<*>>
-        get() = listOf(
-            Capabilities.FEEDING_UPGRADE_CAPABILITY,
-            Capabilities.IFEEDING_UPGRADE_CAPABILITY,
-            *super.acceptableCapabilities.toTypedArray()
-        )
     override val filterItems: ExposedItemStackHandler = object : ExposedItemStackHandler(9) {
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean =
             stack.item is ItemFood
@@ -38,4 +33,9 @@ class FeedingUpgradeWrapper : BasicUpgradeWrapper<FeedingUpgradeItem>(), IFeedin
 
         return ItemStack.EMPTY
     }
+
+    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =
+        capability == Capabilities.FEEDING_UPGRADE_CAPABILITY ||
+                super<IFeedingUpgrade>.hasCapability(capability, facing) ||
+                super<BasicUpgradeWrapper>.hasCapability(capability, facing)
 }
