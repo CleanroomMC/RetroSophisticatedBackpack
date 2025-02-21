@@ -40,10 +40,13 @@ abstract class ExpandedTabWidget(val coveredTabSize: Int, private val delegatedI
         }
 
         override fun onMousePressed(mouseButton: Int): Interactable.Result {
-            if (mouseButton == 0)
+            if (mouseButton == 0) {
                 parentTabWidget.onTabClick()
+                Interactable.playButtonClickSound()
+                return Interactable.Result.SUCCESS
+            }
 
-            return Interactable.Result.SUCCESS
+            return Interactable.Result.STOP
         }
     }
 }

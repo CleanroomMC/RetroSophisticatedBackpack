@@ -7,6 +7,7 @@ import com.cleanroommc.modularui.api.widget.Interactable
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.retrosophisticatedbackpacks.RetroSophisticatedBackpacks
+import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackInventoryHelper
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackTier
 import com.cleanroommc.retrosophisticatedbackpacks.block.BackpackBlock
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
@@ -22,11 +23,12 @@ import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.Entity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
+import net.minecraft.init.SoundEvents
 import net.minecraft.item.ItemBlock
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.ActionResult
-import net.minecraft.util.EnumHand
+import net.minecraft.util.*
+import net.minecraft.util.math.BlockPos
 import net.minecraft.util.text.TextComponentTranslation
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.ICapabilityProvider
@@ -51,12 +53,45 @@ class BackpackItem(
         RegistryHandler.MODELS.add(this)
     }
 
+    override fun onItemUse(
+        player: EntityPlayer,
+        worldIn: World,
+        pos: BlockPos,
+        hand: EnumHand,
+        facing: EnumFacing,
+        hitX: Float,
+        hitY: Float,
+        hitZ: Float
+    ): EnumActionResult {
+        if (player.isSneaking) {
+            val stack = player.getHeldItem(hand)
+            val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null)
+                ?: return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ)
+            val tileEntity = worldIn.getTileEntity(pos)
+                ?: return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ)
+
+            return if (BackpackInventoryHelper.attemptDepositOnTileEntity(wrapper, tileEntity, facing)) {
+                worldIn.playSound(
+                    null,
+                    player.position,
+                    SoundEvents.ITEM_ARMOR_EQUIP_IRON,
+                    SoundCategory.BLOCKS,
+                    0.5f,
+                    0.5f
+                )
+                EnumActionResult.SUCCESS
+            } else EnumActionResult.FAIL
+        }
+
+        return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ)
+    }
+
     override fun onItemRightClick(worldIn: World, player: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack?> {
         if (!worldIn.isRemote) {
             PlayerInventoryGuiFactory.open(player, handIn)
         }
 
-        return super.onItemRightClick(worldIn, player, handIn)
+        return ActionResult(EnumActionResult.SUCCESS, player.getHeldItem(handIn))
     }
 
     override fun initCapabilities(stack: ItemStack, nbt: NBTTagCompound?): ICapabilityProvider {

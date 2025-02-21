@@ -1,10 +1,12 @@
 package com.cleanroommc.retrosophisticatedbackpacks.client.gui
 
+import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.drawable.AdaptableUITexture
 import com.cleanroommc.modularui.drawable.ItemDrawable
 import com.cleanroommc.modularui.drawable.UITexture
 import com.cleanroommc.modularui.drawable.text.StringKey
 import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
@@ -75,6 +77,9 @@ class BackpackPanel(
 
     val upgradeSlotGroups: Array<UpgradeSlotUpdateGroup>
 
+    // Useful when interacting with widgets that only changes upgrade item properties
+    internal var changedByPropertyChange: Boolean = false
+
     init {
         // Backpack slots
         for (i in 0 until backpackWrapper.backpackInventorySize()) {
@@ -103,7 +108,7 @@ class BackpackPanel(
                 backpackWrapper::canRemoveInceptionUpgrade
             ).slotGroup("upgrade_inventory")
 
-            upgradeSlot.changeListener { _, _, isClient, _ ->
+            upgradeSlot.changeListener { lastStack, _, isClient, init ->
                 if (isClient)
                     updateUpgradeWidgets()
             }
@@ -187,18 +192,15 @@ class BackpackPanel(
         child(TextWidget(StringKey(player.inventory.displayName.formattedText)).pos(8, 18 + colSize * 18))
     }
 
-    internal fun updateUpgradeWidgets() {
-        var tabIndex = 0
-
-        for (slotIndex in 0 until backpackWrapper.upgradeSlotsSize()) {
-            val tabWidget = tabWidgets[slotIndex]
-
-            if (!tabWidget.isEnabled)
-                continue
-
-            if (tabWidget.expandedWidget != null)
-                context.jeiSettings.removeJeiExclusionArea(tabWidget.expandedWidget!!)
+    private fun updateUpgradeWidgets() {
+        if (changedByPropertyChange) {
+            changedByPropertyChange = false
+            return
         }
+
+        resetTabState()
+
+        var tabIndex = 0
 
         // Sync all tabs to their corresponding upgrade
         for (slotIndex in 0 until backpackWrapper.upgradeSlotsSize()) {
@@ -211,7 +213,12 @@ class BackpackPanel(
 
             val tabWidget = tabWidgets[tabIndex]
             tabWidget.isEnabled = true
-            tabWidget.tabIcon = ItemDrawable(slot.slot.stack).asWidget()
+            tabWidget.tabIcon = ItemDrawable(slot.slot.stack)
+                .asWidget()
+                .tooltipBuilder {
+                    it.addLine(IKey.str(item.getItemStackDisplayName(stack)))
+                    it.pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+                }
 
             when (item) {
                 is CraftingUpgradeItem -> {
@@ -254,25 +261,51 @@ class BackpackPanel(
                     val wrapper = stack.getCapability(Capabilities.IDEPOSIT_UPGRADE_CAPABILITY, null)!!
 
                     tabWidget.expandedWidget = when (wrapper) {
-                        is AdvancedDepositUpgradeWrapper -> TODO()
-                        is DepositUpgradeWrapper -> TODO()
+                        is AdvancedDepositUpgradeWrapper -> {
+                            upgradeSlotGroups[slotIndex].updateAdvancedFilterDelegate(wrapper)
+                            AdvancedDepositUpgradeWidget(syncManager, slotIndex, wrapper)
+                        }
+
+                        is DepositUpgradeWrapper -> {
+                            upgradeSlotGroups[slotIndex].updateFilterDelegate(wrapper)
+                            DepositUpgradeWidget(slotIndex, wrapper)
+                        }
                     }
                 }
 
                 else -> {}
             }
 
-
+            context.jeiSettings.addJeiExclusionArea(tabWidget.expandedWidget)
             tabIndex++
         }
 
-        // Disable all unused tab widgets
-        for (i in tabIndex until backpackWrapper.upgradeSlotsSize()) {
-            val tabWidget = tabWidgets[i]
-            tabWidget.isEnabled = false
-        }
+        disableUnusedTabWidgets(tabIndex)
+        syncToggles()
+        WidgetTree.resize(this)
+    }
 
-        // Sync all upgrade toggles
+    private fun resetTabState() {
+        for (tabWidget in tabWidgets) {
+            tabWidget.isEnabled = false
+
+            if (tabWidget.expandedWidget != null) {
+                context.jeiSettings.removeJeiExclusionArea(tabWidget.expandedWidget)
+                tabWidget.expandedWidget = null
+            }
+
+            tabWidget.tabIcon = null
+            tabWidget.showExpanded = false
+        }
+    }
+
+    private fun disableUnusedTabWidgets(startTabIndex: Int) {
+        for (i in startTabIndex until backpackWrapper.upgradeSlotsSize()) {
+            tabWidgets[i].isEnabled = false
+        }
+    }
+
+    private fun syncToggles() {
         for (i in 0 until backpackWrapper.upgradeSlotsSize()) {
             val toggleWidget = upgradeSlotGroupWidget.toggleWidgets[i]
             val wrapper = toggleWidget.getWrapper()
@@ -284,8 +317,6 @@ class BackpackPanel(
                 toggleWidget.isEnabled = false
             }
         }
-
-        WidgetTree.resize(this)
     }
 
     // Only call this when any tab widgets is clicked
@@ -303,6 +334,11 @@ class BackpackPanel(
 
         // Refresh potentially covered tabs
         for (i in triggeredTabIndex + 1 until updateUpperBound) {
+            val tabWidget = tabWidgets[i]
+
+            if (tabWidget.expandedWidget == null)
+                continue
+
             tabWidgets[i].isEnabled = !isExpanded
         }
 

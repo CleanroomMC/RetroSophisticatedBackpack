@@ -18,6 +18,8 @@ item.retro_sophisticated_backpacks.pickup_upgrade.name=拾取升級
 item.retro_sophisticated_backpacks.advanced_pickup_upgrade.name=進階拾取升級
 item.retro_sophisticated_backpacks.feeding_upgrade.name=餵食升級
 item.retro_sophisticated_backpacks.advanced_feeding_upgrade.name=進階餵食升級
+item.retro_sophisticated_backpacks.deposit_upgrade.name=卸貨升級
+item.retro_sophisticated_backpacks.advanced_deposit_upgrade.name=進階卸貨升級
 
 # Creative Tabs
 itemGroup.retro_sophisticated_backpacks.creative_tab=復古精緻背包
@@ -47,6 +49,10 @@ retro_sophisticated_backpacks.tooltip.feeding_upgrade=允許背包自動餵食�
 
 retro_sophisticated_backpacks.tooltip.advanced_feeding_upgrade=允許背包根據更多配置自動餵食玩家
 
+retro_sophisticated_backpacks.tooltip.deposit_upgrade=允許玩家蹲下右鍵來轉移背包物品
+
+retro_sophisticated_backpacks.tooltip.advanced_deposit_upgrade=允許玩家蹲下右鍵並根據更多配置來轉移背包物品
+
 retro_sophisticated_backpacks.tooltip.shift_to_reveal=<按 Shift 顯示>
 
 # Gui Elements
@@ -59,6 +65,10 @@ retro_sophisticated_backpacks.gui.advanced_pickup_settings=進階拾取設定
 retro_sophisticated_backpacks.gui.feeding_settings=餵食設定
 
 retro_sophisticated_backpacks.gui.advanced_feeding_settings=進階餵食設定
+
+retro_sophisticated_backpacks.gui.deposit_settings=卸貨升級
+
+retro_sophisticated_backpacks.gui.advanced_deposit_settings=進階卸貨升級
 
 
 # Gui Tooltips

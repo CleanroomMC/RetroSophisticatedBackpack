@@ -52,6 +52,7 @@ class AdvancedFeedingUpgradeWidget(
 
         hungerButtonWidget = CyclicVariantButtonWidget(HUNGER_VARIANTS, advWrapper.hungerFeedingStrategy.ordinal) {
             advWrapper.hungerFeedingStrategy = AdvancedFeedingUpgradeWrapper.FeedingStrategy.Hunger.entries[it]
+            markOnlyPropertyChanged()
             updateWrapper()
         }
             .left(7)
@@ -59,6 +60,7 @@ class AdvancedFeedingUpgradeWidget(
 
         heartButtonWidget = CyclicVariantButtonWidget(HEART_VARIANTS, advWrapper.healthFeedingStrategy.ordinal) {
             advWrapper.healthFeedingStrategy = AdvancedFeedingUpgradeWrapper.FeedingStrategy.HEALTH.entries[it]
+            markOnlyPropertyChanged()
             updateWrapper()
         }
             .left(29)

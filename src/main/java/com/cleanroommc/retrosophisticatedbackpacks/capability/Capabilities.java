@@ -11,7 +11,7 @@ public final class Capabilities {
     @CapabilityInject(BackpackWrapper.class)
     public static final @NotNull Capability<BackpackWrapper> BACKPACK_CAPABILITY = null;
 
-    @CapabilityInject(UpgradeWrapper.class)
+    @CapabilityInject(CraftingUpgradeWrapper.class)
     public static final @NotNull Capability<CraftingUpgradeWrapper> CRAFTING_ITEM_HANDLER_CAPABILITY = null;
 
     @CapabilityInject(PickupUpgradeWrapper.class)
@@ -20,10 +20,10 @@ public final class Capabilities {
     @CapabilityInject(AdvancedPickupUpgradeWrapper.class)
     public static final @NotNull Capability<AdvancedPickupUpgradeWrapper> ADVANCED_PICKUP_UPGRADE_CAPABILITY = null;
 
-    @CapabilityInject(PickupUpgradeWrapper.class)
+    @CapabilityInject(FeedingUpgradeWrapper.class)
     public static final @NotNull Capability<FeedingUpgradeWrapper> FEEDING_UPGRADE_CAPABILITY = null;
 
-    @CapabilityInject(AdvancedPickupUpgradeWrapper.class)
+    @CapabilityInject(AdvancedFeedingUpgradeWrapper.class)
     public static final @NotNull Capability<AdvancedFeedingUpgradeWrapper> ADVANCED_FEEDING_UPGRADE_CAPABILITY = null;
 
     @CapabilityInject(DepositUpgradeWrapper.class)
@@ -42,12 +42,12 @@ public final class Capabilities {
     @CapabilityInject(IAdvancedFilterable.class)
     public static final @NotNull Capability<IAdvancedFilterable> ADVANCED_FILTERABLE_CAPABILITY = null;
 
-    @CapabilityInject(IBasicFilterable.class)
+    @CapabilityInject(IPickupUpgrade.class)
     public static final @NotNull Capability<IPickupUpgrade> IPICKUP_UPGRADE_CAPABILITY = null;
 
     @CapabilityInject(IFeedingUpgrade.class)
     public static final @NotNull Capability<IFeedingUpgrade> IFEEDING_UPGRADE_CAPABILITY = null;
 
-    @CapabilityInject(IFeedingUpgrade.class)
+    @CapabilityInject(IDepositUpgrade.class)
     public static final @NotNull Capability<IDepositUpgrade> IDEPOSIT_UPGRADE_CAPABILITY = null;
 }

@@ -20,6 +20,6 @@ abstract class UpgradeItem(registryName: String, val hasTab: Boolean = false) : 
     }
 
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
-        tooltip.add(TextComponentTranslation("tooltip.${registryName}".asTranslationKey()).formattedText)
+        tooltip.add(TextComponentTranslation("tooltip.${registryName!!.path}".asTranslationKey()).formattedText)
     }
 }

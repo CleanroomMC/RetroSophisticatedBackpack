@@ -6,6 +6,7 @@ import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.widgets.ButtonWidget
+import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 
 class CyclicVariantButtonWidget(
@@ -30,6 +31,10 @@ class CyclicVariantButtonWidget(
 
                 it.pos(RichTooltip.Pos.NEXT_TO_MOUSE)
             }
+    }
+
+    internal fun markOnlyPropertyChanged() {
+        (panel as BackpackPanel).changedByPropertyChange = true
     }
 
     override fun drawOverlay(context: ModularGuiContext, widgetTheme: WidgetTheme) {

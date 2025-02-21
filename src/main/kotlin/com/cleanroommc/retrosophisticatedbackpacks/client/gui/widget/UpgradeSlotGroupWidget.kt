@@ -96,8 +96,9 @@ class UpgradeSlotGroupWidget(panel: BackpackPanel, private val slotSize: Int) : 
 
         override fun onMousePressed(mouseButton: Int): Interactable.Result {
             isToggleEnabled = !isToggleEnabled
-            getWrapper()?.toggle()
 
+            panel.changedByPropertyChange = true
+            getWrapper()?.toggle()
             slotSyncHandler?.syncToServer(UpgradeSlotSH.UPDATE_UPGRADE_TOGGLE)
 
             Interactable.playButtonClickSound()

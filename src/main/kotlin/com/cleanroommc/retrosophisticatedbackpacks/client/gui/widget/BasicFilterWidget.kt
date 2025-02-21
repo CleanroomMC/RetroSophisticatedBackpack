@@ -35,6 +35,7 @@ class BasicFilterWidget(
             filterableWrapper.filterType.ordinal
         ) { index ->
             filterableWrapper.filterType = IBasicFilterable.FilterType.entries[index]
+            markOnlyPropertyChanged()
             slotSyncHandler?.syncToServer(UpgradeSlotSH.UPDATE_BASIC_FILTERABLE) {
                 it.writeEnumValue(filterableWrapper.filterType)
             }

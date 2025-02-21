@@ -83,13 +83,11 @@ class BackpackWrapper(
                     .count() > 1
 
     fun canPickupItem(stack: ItemStack): Boolean =
-        upgradeItemStackHandler.inventory
-            .mapNotNull { it.getCapability(Capabilities.BASIC_FILTERABLE_CAPABILITY, null) }
-            .any { it.checkFilter(stack) }
+        gatherCapabilityUpgrades(Capabilities.IPICKUP_UPGRADE_CAPABILITY)
+            .any { it.canPickup(stack) }
 
     fun getFeedingStack(foodLevel: Int, health: Float, maxHealth: Float): ItemStack {
-        val feedingUpgrades = upgradeItemStackHandler.inventory
-            .mapNotNull { it.getCapability(Capabilities.IFEEDING_UPGRADE_CAPABILITY, null) }
+        val feedingUpgrades = gatherCapabilityUpgrades(Capabilities.IFEEDING_UPGRADE_CAPABILITY)
 
         for (upgrade in feedingUpgrades) {
             val feedingStack = upgrade.getFeedingStack(this, foodLevel, health, maxHealth)
@@ -100,6 +98,16 @@ class BackpackWrapper(
 
         return ItemStack.EMPTY
     }
+
+    fun canDeposit(slotIndex: Int): Boolean {
+        val stack = getStackInSlot(slotIndex)
+        return gatherCapabilityUpgrades(Capabilities.IDEPOSIT_UPGRADE_CAPABILITY)
+            .any { it.canDeposit(stack) }
+    }
+
+    private fun <T> gatherCapabilityUpgrades(capability: Capability<T>): List<T> =
+        upgradeItemStackHandler.inventory
+            .mapNotNull { it.getCapability(capability, null) }
 
     override fun getSizeInventory(): Int =
         backpackInventorySize()

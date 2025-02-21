@@ -2,14 +2,14 @@ package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.widgets.TextWidget
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.PickupUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.DepositUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.item.Items
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import net.minecraft.item.ItemStack
 
 class DepositUpgradeWidget(
     slotIndex: Int,
-    wrapper: PickupUpgradeWrapper
+    wrapper: DepositUpgradeWrapper
 ) : ExpandedTabWidget(3, ItemStack(Items.depositUpgrade)) {
     val filterWidget: BasicFilterWidget
 

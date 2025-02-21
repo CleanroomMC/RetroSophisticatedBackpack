@@ -19,6 +19,7 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
+import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.drawable.Outline
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
@@ -99,6 +100,7 @@ class AdvancedFilterWidget(
             filterableWrapper.filterType.ordinal
         ) { index ->
             filterableWrapper.filterType = IBasicFilterable.FilterType.entries[index]
+            markOnlyPropertyChanged()
             updateWrapper()
         }
 
@@ -107,6 +109,7 @@ class AdvancedFilterWidget(
             filterableWrapper.matchType.ordinal
         ) {
             filterableWrapper.matchType = IAdvancedFilterable.MatchType.entries[it]
+            markOnlyPropertyChanged()
             updateWrapper()
         }
 
@@ -117,6 +120,7 @@ class AdvancedFilterWidget(
             if (filterableWrapper.ignoreDurability) 1 else 0
         ) {
             filterableWrapper.ignoreDurability = it == 1
+            markOnlyPropertyChanged()
             updateWrapper()
         }
         ignoreDurabilityButton.inEffect = inEffect
@@ -126,6 +130,7 @@ class AdvancedFilterWidget(
             if (filterableWrapper.ignoreNBT) 1 else 0
         ) {
             filterableWrapper.ignoreNBT = it == 1
+            markOnlyPropertyChanged()
             updateWrapper()
         }
         ignoreDurabilityButton.inEffect = inEffect
@@ -156,6 +161,8 @@ class AdvancedFilterWidget(
 
                 filterableWrapper.oreDictEntries.add(oreName)
                 oreDictList.child(OreDictEntryWidget(this, oreName, 77))
+                oreDictTextField.text = ""
+                (panel as BackpackPanel).changedByPropertyChange = true
                 updateWrapper()
                 WidgetTree.resize(oreDictList)
 
@@ -178,9 +185,9 @@ class AdvancedFilterWidget(
 
                 filterableWrapper.oreDictEntries.remove(focusedOreDictEntry.text)
                 oreDictList.removeChild(focusedOreDictEntry)
+                (panel as BackpackPanel).changedByPropertyChange = true
                 updateWrapper()
                 WidgetTree.resize(oreDictList)
-
                 true
             }
             .tooltipDynamic {

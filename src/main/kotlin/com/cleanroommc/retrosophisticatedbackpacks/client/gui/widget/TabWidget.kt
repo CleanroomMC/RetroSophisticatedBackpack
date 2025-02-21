@@ -24,7 +24,7 @@ class TabWidget(
                 value.parentTabWidget = this
                 child(value.setEnabledIf { showExpanded })
             } else {
-                remove(field)
+                remove(value)
             }
 
             field = value
@@ -34,7 +34,7 @@ class TabWidget(
             if (value != null) {
                 child(value.size(16).pos(8, 6).setEnabledIf { isEnabled })
             } else {
-                remove(field)
+                remove(value)
             }
 
             field = value
@@ -55,10 +55,10 @@ class TabWidget(
         if (mouseButton == 0) {
             onTabClick()
             Interactable.playButtonClickSound()
-            return Interactable.Result.ACCEPT
+            return Interactable.Result.SUCCESS
         }
 
-        return Interactable.Result.IGNORE
+        return Interactable.Result.STOP
     }
 
     fun onTabClick() {
