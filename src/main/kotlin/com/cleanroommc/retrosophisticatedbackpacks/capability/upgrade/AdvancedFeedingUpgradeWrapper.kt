@@ -3,10 +3,12 @@ package com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.ExposedItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.item.FeedingUpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemFood
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 
 class AdvancedFeedingUpgradeWrapper : AdvancedUpgradeWrapper<FeedingUpgradeItem>(), IFeedingUpgrade {
@@ -15,12 +17,7 @@ class AdvancedFeedingUpgradeWrapper : AdvancedUpgradeWrapper<FeedingUpgradeItem>
         private const val HURT_FEEDING_STRATEGY_TAG = "HurtFeedingStrategy"
     }
 
-    override val acceptableCapabilities: List<Capability<*>>
-        get() = listOf(
-            Capabilities.ADVANCED_FEEDING_UPGRADE_CAPABILITY,
-            Capabilities.IFEEDING_UPGRADE_CAPABILITY,
-            *super.acceptableCapabilities.toTypedArray()
-        )
+    override val settingsLangKey: String = "gui.advanced_feeding_settings".asTranslationKey()
 
     override val filterItems: ExposedItemStackHandler = object : ExposedItemStackHandler(16) {
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean =
@@ -62,6 +59,11 @@ class AdvancedFeedingUpgradeWrapper : AdvancedUpgradeWrapper<FeedingUpgradeItem>
 
         return ItemStack.EMPTY
     }
+
+    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =
+        capability == Capabilities.ADVANCED_FEEDING_UPGRADE_CAPABILITY ||
+                super<IFeedingUpgrade>.hasCapability(capability, facing) ||
+                super<AdvancedUpgradeWrapper>.hasCapability(capability, facing)
 
     override fun serializeNBT(): NBTTagCompound {
         val nbt = super.serializeNBT()

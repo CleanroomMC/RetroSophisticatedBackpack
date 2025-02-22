@@ -8,9 +8,9 @@ import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.INBTSerializable
 
-sealed interface IPickupUpgrade : ISidelessCapabilityProvider, INBTSerializable<NBTTagCompound> {
-    fun canPickup(stack: ItemStack): Boolean
+sealed interface IDepositUpgrade : ISidelessCapabilityProvider, INBTSerializable<NBTTagCompound> {
+    fun canDeposit(stack: ItemStack): Boolean
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =
-        capability == Capabilities.IPICKUP_UPGRADE_CAPABILITY
+        capability == Capabilities.IDEPOSIT_UPGRADE_CAPABILITY
 }

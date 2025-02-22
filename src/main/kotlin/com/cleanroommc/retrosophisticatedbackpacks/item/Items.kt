@@ -3,8 +3,10 @@ package com.cleanroommc.retrosophisticatedbackpacks.item
 import com.cleanroommc.retrosophisticatedbackpacks.Config
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackTier
 import com.cleanroommc.retrosophisticatedbackpacks.block.Blocks
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.*
 import net.minecraft.item.Item
 
+@Suppress("UNUSED")
 object Items {
     @JvmField
     val ITEMS = mutableListOf<Item>()
@@ -84,14 +86,26 @@ object Items {
     val inceptionUpgrade = InceptionUpgradeItem("inception_upgrade")
 
     @JvmField
-    val pickupUpgrade = PickupUpgradeItem("pickup_upgrade")
+    val pickupUpgrade = PickupUpgradeItem("pickup_upgrade", ::PickupUpgradeWrapper)
 
     @JvmField
-    val advancedPickupUpgrade = PickupUpgradeItem("advanced_pickup_upgrade", true)
+    val advancedPickupUpgrade = PickupUpgradeItem("advanced_pickup_upgrade", ::AdvancedPickupUpgradeWrapper)
 
     @JvmField
-    val feedingUpgrade = FeedingUpgradeItem("feeding_upgrade")
+    val feedingUpgrade = FeedingUpgradeItem("feeding_upgrade", ::FeedingUpgradeWrapper)
 
     @JvmField
-    val advancedFeedingUpgrade = FeedingUpgradeItem("advanced_feeding_upgrade", true)
+    val advancedFeedingUpgrade = FeedingUpgradeItem("advanced_feeding_upgrade", ::AdvancedFeedingUpgradeWrapper)
+
+    @JvmField
+    val depositUpgrade = DepositUpgradeItem("deposit_upgrade", ::DepositUpgradeWrapper)
+
+    @JvmField
+    val advancedDepositUpgrade = DepositUpgradeItem("advanced_deposit_upgrade", ::AdvancedDepositUpgradeWrapper)
+
+    @JvmField
+    val restockUpgrade = RestockUpgradeItem("restock_upgrade", ::RestockUpgradeWrapper)
+
+    @JvmField
+    val advancedRestockUpgrade = RestockUpgradeItem("advanced_restock_upgrade", ::AdvancedRestockUpgradeWrapper)
 }

@@ -11,7 +11,6 @@ import net.minecraftforge.event.entity.player.EntityItemPickupEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.TickEvent
-import java.util.*
 
 @Mod.EventBusSubscriber(modid = Tags.MOD_ID)
 object EntityEventHandler {
@@ -20,7 +19,8 @@ object EntityEventHandler {
     @SubscribeEvent
     @JvmStatic
     fun onItemPickup(event: EntityItemPickupEvent) {
-        val inventory = event.entityPlayer.inventory
+        val player = event.entityPlayer
+        val inventory = player.inventory
         var stack = event.item.item.copy()
 
         for (i in 0 until inventory.sizeInventory) {
@@ -35,7 +35,7 @@ object EntityEventHandler {
                 continue
 
             var slotIndex = 0
-            while (!stack.isEmpty && slotIndex < inventory.sizeInventory) {
+            while (!stack.isEmpty && slotIndex < wrapper.sizeInventory) {
                 stack = wrapper.insertStack(slotIndex, stack)
 
                 slotIndex++
@@ -45,12 +45,11 @@ object EntityEventHandler {
                 event.item.setDead()
                 event.isCanceled = true
 
-                val avRandomizer = Random()
                 event.item.world.playSound(
                     null,
                     event.item.posX, event.item.posY, event.item.posZ, SoundEvents.ENTITY_ITEM_PICKUP,
                     SoundCategory.PLAYERS, 0.2f,
-                    (avRandomizer.nextFloat() - avRandomizer.nextFloat()) * 1.4f + 2.0f
+                    ((player.rng.nextFloat() - player.rng.nextFloat()) * 0.7f + 1.0f) * 2.0f
                 )
                 return
             }

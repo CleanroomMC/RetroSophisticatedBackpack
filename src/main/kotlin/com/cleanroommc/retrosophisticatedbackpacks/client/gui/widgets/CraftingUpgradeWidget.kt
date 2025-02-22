@@ -1,8 +1,12 @@
-package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget
+package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets
 
 import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.CraftingUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.item.Items
+import net.minecraft.item.ItemStack
 
-class CraftingUpgradeWidget() : ExpandedTabWidget(4) {
+class CraftingUpgradeWidget(slotIndex: Int, override val wrapper: CraftingUpgradeWrapper) :
+    ExpandedTabWidget<CraftingUpgradeWrapper>(slotIndex, 4, ItemStack(Items.craftingUpgrade), "") {
     companion object {
         private const val SLOT_SIZE = 18
     }
@@ -35,9 +39,5 @@ class CraftingUpgradeWidget() : ExpandedTabWidget(4) {
 //        child(craftingResult)
 
         child(IKey.str("UNFINISHED").asWidget().posRel(0.5F, 0.5F))
-    }
-
-    override fun onInit() {
-        context.jeiSettings.addJeiExclusionArea(this)
     }
 }

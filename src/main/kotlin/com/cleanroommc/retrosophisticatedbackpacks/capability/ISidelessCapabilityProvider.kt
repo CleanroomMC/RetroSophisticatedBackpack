@@ -5,10 +5,7 @@ import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.capabilities.ICapabilityProvider
 
 interface ISidelessCapabilityProvider : ICapabilityProvider {
-    val acceptableCapabilities: List<Capability<*>>
-
-    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =
-        facing == null && acceptableCapabilities.contains(capability)
+    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean
 
     @Suppress("UNCHECKED_CAST")
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? =

@@ -1,4 +1,4 @@
-package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget
+package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.value.sync.SyncHandler
@@ -28,7 +28,7 @@ class BasicFilterWidget(
     private var slotSyncHandler: UpgradeSlotSH? = null
 
     init {
-        coverChildren().syncHandler("upgrades", slotIndex)
+        size(60, 54).syncHandler("upgrades", slotIndex)
 
         filterTypeButton = CyclicVariantButtonWidget(
             FILTER_TYPE_VARIANTS,
@@ -42,7 +42,7 @@ class BasicFilterWidget(
             .size(20, 20)
 
         val slotGroup = SlotGroupWidget().debugName("${syncKey}s")
-        slotGroup.coverChildren().top(24)
+        slotGroup.coverChildren().top(26)
         filterSlots = mutableListOf<ItemSlot>()
 
         for (i in 0 until 9) {

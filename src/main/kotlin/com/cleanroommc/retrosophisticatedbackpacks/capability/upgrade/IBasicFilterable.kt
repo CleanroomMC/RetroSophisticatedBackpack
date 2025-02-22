@@ -1,9 +1,13 @@
 package com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade
 
+import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.capability.ISidelessCapabilityProvider
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.ExposedItemStackHandler
 import net.minecraft.item.ItemStack
+import net.minecraft.util.EnumFacing
+import net.minecraftforge.common.capabilities.Capability
 
-interface IBasicFilterable {
+interface IBasicFilterable : ISidelessCapabilityProvider {
     companion object {
         const val FILTER_ITEMS_TAG = "FilterItems"
         const val FILTER_TYPE_TAG = "FilterType"
@@ -16,6 +20,9 @@ interface IBasicFilterable {
         FilterType.WHITELIST -> filterItems.inventory.any { ItemStack.areItemsEqualIgnoreDurability(it, stack) }
         FilterType.BLACKLIST -> filterItems.inventory.none { ItemStack.areItemsEqualIgnoreDurability(it, stack) }
     }
+
+    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =
+        capability == Capabilities.BASIC_FILTERABLE_CAPABILITY
 
     enum class FilterType {
         WHITELIST,

@@ -1,4 +1,4 @@
-package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget
+package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.api.widget.Interactable
@@ -8,7 +8,6 @@ import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.utils.Color
-import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandler
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widget.WidgetTree
@@ -17,7 +16,7 @@ import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvanceFilterable
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.drawable.Outline
@@ -26,9 +25,8 @@ import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import net.minecraftforge.oredict.OreDictionary
 
 class AdvancedFilterWidget(
-    private val syncManager: PanelSyncManager,
     slotIndex: Int,
-    private val filterableWrapper: IAdvanceFilterable,
+    private val filterableWrapper: IAdvancedFilterable,
     syncKey: String = "adv_common_filter",
 ) : ParentWidget<AdvancedFilterWidget>() {
     companion object {
@@ -92,7 +90,7 @@ class AdvancedFilterWidget(
         private set
 
     init {
-        coverChildren().syncHandler("upgrades", slotIndex)
+        size(88, 109).syncHandler("upgrades", slotIndex)
 
         filterTypeButton = CyclicVariantButtonWidget(
             FILTER_TYPE_VARIANTS,
@@ -106,11 +104,11 @@ class AdvancedFilterWidget(
             MATCH_TYPE_VARIANTS,
             filterableWrapper.matchType.ordinal
         ) {
-            filterableWrapper.matchType = IAdvanceFilterable.MatchType.entries[it]
+            filterableWrapper.matchType = IAdvancedFilterable.MatchType.entries[it]
             updateWrapper()
         }
 
-        val inEffect = filterableWrapper.matchType == IAdvanceFilterable.MatchType.ITEM
+        val inEffect = filterableWrapper.matchType == IAdvancedFilterable.MatchType.ITEM
 
         ignoreDurabilityButton = CyclicVariantButtonWidget(
             IGNORE_DURABILITY_VARIANTS,
@@ -142,7 +140,7 @@ class AdvancedFilterWidget(
             .left(44)
             .child(ignoreDurabilityButton)
             .child(ignoreNBTButton)
-            .setEnabledIf { filterableWrapper.matchType == IAdvanceFilterable.MatchType.ITEM }
+            .setEnabledIf { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ITEM }
             .debugName("item_based_button_list")
 
         val addOreDictEntryButton = ButtonWidget()
@@ -156,6 +154,7 @@ class AdvancedFilterWidget(
 
                 filterableWrapper.oreDictEntries.add(oreName)
                 oreDictList.child(OreDictEntryWidget(this, oreName, 77))
+                oreDictTextField.text = ""
                 updateWrapper()
                 WidgetTree.resize(oreDictList)
 
@@ -180,7 +179,6 @@ class AdvancedFilterWidget(
                 oreDictList.removeChild(focusedOreDictEntry)
                 updateWrapper()
                 WidgetTree.resize(oreDictList)
-
                 true
             }
             .tooltipDynamic {
@@ -194,7 +192,7 @@ class AdvancedFilterWidget(
             .left(44)
             .child(addOreDictEntryButton)
             .child(removeOreDictEntryButton)
-            .setEnabledIf { filterableWrapper.matchType == IAdvanceFilterable.MatchType.ORE_DICT }
+            .setEnabledIf { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ORE_DICT }
             .debugName("ore_dict_based_config_buttons")
 
         buttonRow
@@ -222,7 +220,7 @@ class AdvancedFilterWidget(
             .leftRel(0.5f)
             .top(24)
             .child(slotGroup)
-            .setEnabledIf { filterableWrapper.matchType != IAdvanceFilterable.MatchType.ORE_DICT }
+            .setEnabledIf { filterableWrapper.matchType != IAdvancedFilterable.MatchType.ORE_DICT }
             .debugName("item_based_config_group") as Column
 
         // Ore-dict-based configuration widgets
@@ -247,7 +245,7 @@ class AdvancedFilterWidget(
             .top(24)
             .child(oreDictList)
             .child(oreDictTextField)
-            .setEnabledIf { filterableWrapper.matchType == IAdvanceFilterable.MatchType.ORE_DICT }
+            .setEnabledIf { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ORE_DICT }
             .debugName("ore_dict_based_config_group") as Column
 
         child(buttonRow)
@@ -321,7 +319,7 @@ class AdvancedFilterWidget(
                 if (line.width > area.width)
                     it.addLine(key)
 
-                val stack = parent.syncManager.cursorItem
+                val stack = panel.syncHandler.syncManager.cursorItem
 
                 if (!stack.isEmpty) {
                     val testMatched = OreDictionary

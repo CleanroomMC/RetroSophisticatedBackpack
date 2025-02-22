@@ -11,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumFacing
 import net.minecraft.util.text.ITextComponent
 import net.minecraft.util.text.TextComponentTranslation
 import net.minecraftforge.common.capabilities.Capability
@@ -38,9 +39,6 @@ class BackpackWrapper(
     var upgradeItemStackHandler = UpgradeItemStackHandler(upgradeSlotsSize())
     var mainColor = DEFAULT_MAIN_COLOR
     var accentColor = DEFAULT_ACCENT_COLOR
-
-    override val acceptableCapabilities: List<Capability<*>>
-        get() = listOf(Capabilities.BACKPACK_CAPABILITY)
 
     fun getTotalStackMultiplier(): Int =
         upgradeItemStackHandler.inventory.map(ItemStack::getItem).filterIsInstance<StackUpgradeItem>()
@@ -85,13 +83,11 @@ class BackpackWrapper(
                     .count() > 1
 
     fun canPickupItem(stack: ItemStack): Boolean =
-        upgradeItemStackHandler.inventory
-            .mapNotNull { it.getCapability(Capabilities.BASIC_FILTERABLE_CAPABILITY, null) }
-            .any { it.checkFilter(stack) }
+        gatherCapabilityUpgrades(Capabilities.IPICKUP_UPGRADE_CAPABILITY)
+            .any { it.canPickup(stack) }
 
     fun getFeedingStack(foodLevel: Int, health: Float, maxHealth: Float): ItemStack {
-        val feedingUpgrades = upgradeItemStackHandler.inventory
-            .mapNotNull { it.getCapability(Capabilities.IFEEDING_UPGRADE_CAPABILITY, null) }
+        val feedingUpgrades = gatherCapabilityUpgrades(Capabilities.IFEEDING_UPGRADE_CAPABILITY)
 
         for (upgrade in feedingUpgrades) {
             val feedingStack = upgrade.getFeedingStack(this, foodLevel, health, maxHealth)
@@ -102,6 +98,20 @@ class BackpackWrapper(
 
         return ItemStack.EMPTY
     }
+
+    fun canDeposit(slotIndex: Int): Boolean {
+        val stack = getStackInSlot(slotIndex)
+        return gatherCapabilityUpgrades(Capabilities.IDEPOSIT_UPGRADE_CAPABILITY)
+            .any { it.canDeposit(stack) }
+    }
+
+    fun canRestock(stack: ItemStack): Boolean =
+        gatherCapabilityUpgrades(Capabilities.IRESTOCK_UPGRADE_CAPABILITY)
+            .any { it.canRestock(stack) }
+
+    private fun <T> gatherCapabilityUpgrades(capability: Capability<T>): List<T> =
+        upgradeItemStackHandler.inventory
+            .mapNotNull { it.getCapability(capability, null) }
 
     override fun getSizeInventory(): Int =
         backpackInventorySize()
@@ -168,6 +178,9 @@ class BackpackWrapper(
 
     override fun getDisplayName(): ITextComponent =
         TextComponentTranslation(name.asTranslationKey())
+
+    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =
+        capability == Capabilities.BACKPACK_CAPABILITY
 
     override fun serializeNBT(): NBTTagCompound {
         val nbt = NBTTagCompound()

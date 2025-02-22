@@ -1,18 +1,24 @@
-package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget
+package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets
 
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.cleanroommc.modularui.value.sync.PanelSyncManager
-import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedFeedingUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
+import com.cleanroommc.retrosophisticatedbackpacks.item.Items
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
+import net.minecraft.item.ItemStack
 
 class AdvancedFeedingUpgradeWidget(
-    syncManager: PanelSyncManager,
     slotIndex: Int,
-    private val advWrapper: AdvancedFeedingUpgradeWrapper
-) : ExpandedTabWidget(5) {
+    wrapper: AdvancedFeedingUpgradeWrapper
+) : AdvancedExpandedTabWidget<AdvancedFeedingUpgradeWrapper>(
+    slotIndex,
+    wrapper,
+    ItemStack(Items.advancedFeedingUpgrade),
+    "gui.advanced_feeding_settings".asTranslationKey(),
+    coveredTabSize = 6,
+    filterSyncKey = "adv_feeding_filter"
+) {
     companion object {
         private val HUNGER_VARIANTS = listOf(
             CyclicVariantButtonWidget.Variant(
@@ -43,48 +49,30 @@ class AdvancedFeedingUpgradeWidget(
 
     val hungerButtonWidget: CyclicVariantButtonWidget
     val heartButtonWidget: CyclicVariantButtonWidget
-    val filterWidget: AdvancedFilterWidget
 
     init {
-        size(100, 180)
-
-        hungerButtonWidget = CyclicVariantButtonWidget(HUNGER_VARIANTS, advWrapper.hungerFeedingStrategy.ordinal) {
-            advWrapper.hungerFeedingStrategy = AdvancedFeedingUpgradeWrapper.FeedingStrategy.Hunger.entries[it]
+        hungerButtonWidget = CyclicVariantButtonWidget(HUNGER_VARIANTS, wrapper.hungerFeedingStrategy.ordinal) {
+            wrapper.hungerFeedingStrategy = AdvancedFeedingUpgradeWrapper.FeedingStrategy.Hunger.entries[it]
             updateWrapper()
         }
-            .left(7)
-            .top(36)
 
-        heartButtonWidget = CyclicVariantButtonWidget(HEART_VARIANTS, advWrapper.healthFeedingStrategy.ordinal) {
-            advWrapper.healthFeedingStrategy = AdvancedFeedingUpgradeWrapper.FeedingStrategy.HEALTH.entries[it]
+        heartButtonWidget = CyclicVariantButtonWidget(HEART_VARIANTS, wrapper.healthFeedingStrategy.ordinal) {
+            wrapper.healthFeedingStrategy = AdvancedFeedingUpgradeWrapper.FeedingStrategy.HEALTH.entries[it]
             updateWrapper()
         }
-            .left(29)
-            .top(36)
 
-        filterWidget = AdvancedFilterWidget(syncManager, slotIndex, advWrapper, "adv_feeding_filter")
-            .leftRel(0.5f)
-            .top(58)
-
-        child(hungerButtonWidget)
+        startingRow
+            .leftRelOffset(0.5f, 1)
+            .height(20)
+            .childPadding(2)
+            .child(hungerButtonWidget)
             .child(heartButtonWidget)
-            .child(filterWidget)
-            .child(
-                TextWidget(IKey.lang("gui.advanced_feeding_settings".asTranslationKey()))
-                    .size(60, 20)
-                    .leftRel(0.85f)
-                    .topRelAnchor(0.11f, 0.5f)
-            )
     }
 
     fun updateWrapper() {
         filterWidget.slotSyncHandler?.syncToServer(UpgradeSlotSH.UPDATE_ADVANCED_FEEDING) {
-            it.writeEnumValue(advWrapper.hungerFeedingStrategy)
-            it.writeEnumValue(advWrapper.healthFeedingStrategy)
+            it.writeEnumValue(wrapper.hungerFeedingStrategy)
+            it.writeEnumValue(wrapper.healthFeedingStrategy)
         }
-    }
-
-    override fun onInit() {
-        context.jeiSettings.addJeiExclusionArea(this)
     }
 }

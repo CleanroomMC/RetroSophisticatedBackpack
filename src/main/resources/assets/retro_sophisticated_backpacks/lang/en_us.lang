@@ -18,6 +18,10 @@ item.retro_sophisticated_backpacks.pickup_upgrade.name=Pickup Upgrade
 item.retro_sophisticated_backpacks.advanced_pickup_upgrade.name=Advanced Pickup Upgrade
 item.retro_sophisticated_backpacks.feeding_upgrade.name=Feeding Upgrade
 item.retro_sophisticated_backpacks.advanced_feeding_upgrade.name=Advanced Feeding Upgrade
+item.retro_sophisticated_backpacks.deposit_upgrade.name=Deposit Upgrade
+item.retro_sophisticated_backpacks.advanced_deposit_upgrade.name=Advanced Deposit Upgrade
+item.retro_sophisticated_backpacks.restock_upgrade.name=Restock Upgrade
+item.retro_sophisticated_backpacks.advanced_restock_upgrade.name=Advanced Restock Upgrade
 
 # Creative Tabs
 itemGroup.retro_sophisticated_backpacks.creative_tab=Retro Sophisticated Backpack
@@ -47,18 +51,30 @@ retro_sophisticated_backpacks.tooltip.feeding_upgrade=Allows backpacks to automa
 
 retro_sophisticated_backpacks.tooltip.advanced_feeding_upgrade=Allows backpack to automatically feed player with more configurations
 
+retro_sophisticated_backpacks.tooltip.deposit_upgrade=Deposits items from backpack into sneak-right-clicked inventory
+
+retro_sophisticated_backpacks.tooltip.advanced_deposit_upgrade=Deposits items from backpack into sneak-right-clicked inventory with more configurations
+
+retro_sophisticated_backpacks.tooltip.restock_upgrade=Restocks items from sneak-right-clicked inventory to backpack
+
+retro_sophisticated_backpacks.tooltip.advanced_restock_upgrade=Restocks items from sneak-right-clicked inventory to backpack with more configurations
+
 retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Shift to reveal>
 
 # Gui Elements
 retro_sophisticated_backpacks.container.backpack=Backpack
 
 retro_sophisticated_backpacks.gui.pickup_settings=Pickup Settings
-
 retro_sophisticated_backpacks.gui.advanced_pickup_settings=Adv. Pickup Settings
 
 retro_sophisticated_backpacks.gui.feeding_settings=Feeding Settings
-
 retro_sophisticated_backpacks.gui.advanced_feeding_settings=Adv. Feeding Settings
+
+retro_sophisticated_backpacks.gui.deposit_settings=Deposit Settings
+retro_sophisticated_backpacks.gui.advanced_deposit_settings=Adv. Deposit Settings
+
+retro_sophisticated_backpacks.gui.restock_settings=Restock Settings
+retro_sophisticated_backpacks.gui.advanced_restock_settings=Adv. Restock Settings
 
 # Gui Tooltips
 retro_sophisticated_backpacks.gui.not_in_effect=Not in effect

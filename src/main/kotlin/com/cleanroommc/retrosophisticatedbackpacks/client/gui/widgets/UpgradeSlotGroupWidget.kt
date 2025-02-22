@@ -1,4 +1,4 @@
-package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget
+package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets
 
 import com.cleanroommc.modularui.api.widget.Interactable
 import com.cleanroommc.modularui.drawable.UITexture
@@ -15,7 +15,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import net.minecraft.item.ItemStack
 
-class UpgradeSlotGroupWidget(private val panel: BackpackPanel, private val slotSize: Int) : SlotGroupWidget() {
+class UpgradeSlotGroupWidget(panel: BackpackPanel, private val slotSize: Int) : SlotGroupWidget() {
     companion object {
         private val UPPER_TAB_TEXTURE =
             UITexture.builder().location(Tags.MOD_ID, "gui/gui_controls.png").imageSize(256, 256)
@@ -97,7 +97,6 @@ class UpgradeSlotGroupWidget(private val panel: BackpackPanel, private val slotS
         override fun onMousePressed(mouseButton: Int): Interactable.Result {
             isToggleEnabled = !isToggleEnabled
             getWrapper()?.toggle()
-
             slotSyncHandler?.syncToServer(UpgradeSlotSH.UPDATE_UPGRADE_TOGGLE)
 
             Interactable.playButtonClickSound()

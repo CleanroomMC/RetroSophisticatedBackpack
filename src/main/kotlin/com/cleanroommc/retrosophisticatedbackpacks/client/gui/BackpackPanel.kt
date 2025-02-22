@@ -19,17 +19,14 @@ import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedFeedingUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedPickupUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.FeedingUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.PickupUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget.*
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.CraftingUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
+import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.*
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackContainer
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiData
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.BackpackSlot
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.UpgradeSlot
-import com.cleanroommc.retrosophisticatedbackpacks.item.CraftingUpgradeItem
-import com.cleanroommc.retrosophisticatedbackpacks.item.FeedingUpgradeItem
-import com.cleanroommc.retrosophisticatedbackpacks.item.PickupUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.UpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.tileentity.BackpackTileEntity
@@ -78,6 +75,7 @@ class BackpackPanel(
     val rowSize = if (backpackWrapper.backpackInventorySize() > 81) 12 else 9
     val colSize = backpackWrapper.backpackInventorySize().ceilDiv(rowSize)
 
+    val upgradeSlotSyncHandlers: Array<UpgradeSlotSH>
     val upgradeSlotGroups: Array<UpgradeSlotUpdateGroup>
 
     init {
@@ -98,22 +96,24 @@ class BackpackPanel(
         syncManager.registerSlotGroup(SlotGroup("backpack_inventory", rowSize, 100, true))
 
         // Upgrade slots
-        for (i in 0 until backpackWrapper.upgradeSlotsSize()) {
+        upgradeSlotSyncHandlers = Array(backpackWrapper.upgradeSlotsSize()) {
             val upgradeSlot = UpgradeSlot(
                 backpackWrapper.upgradeItemStackHandler,
-                i,
+                it,
                 backpackWrapper::canAddStackUpgrade,
                 backpackWrapper::canRemoveStackUpgrade,
                 backpackWrapper::canReplaceStackUpgrade,
                 backpackWrapper::canRemoveInceptionUpgrade
             ).slotGroup("upgrade_inventory")
+            val syncHandler = UpgradeSlotSH(upgradeSlot)
 
-            upgradeSlot.changeListener { _, _, isClient, _ ->
+            upgradeSlot.changeListener { lastStack, _, isClient, init ->
                 if (isClient)
                     updateUpgradeWidgets()
             }
 
-            syncManager.syncValue("upgrades", i, UpgradeSlotSH(upgradeSlot))
+            syncManager.syncValue("upgrades", it, syncHandler)
+            syncHandler
         }
 
         syncManager.registerSlotGroup(SlotGroup("upgrade_inventory", 1, 99, true))
@@ -174,7 +174,7 @@ class BackpackPanel(
 
     internal fun addUpgradeTabs() {
         for (i in 0 until backpackWrapper.upgradeSlotsSize()) {
-            val tab = TabWidget(i, this).debugName("upgrade_tab_${i}")
+            val tab = TabWidget(i).debugName("upgrade_tab_${i}")
 
             tab.isEnabled = false
             tabWidgets.add(tab)
@@ -192,17 +192,34 @@ class BackpackPanel(
         child(TextWidget(StringKey(player.inventory.displayName.formattedText)).pos(8, 18 + colSize * 18))
     }
 
-    internal fun updateUpgradeWidgets() {
+    private fun updateUpgradeWidgets() {
+        val upgradeSlotSize = backpackWrapper.upgradeSlotsSize()
         var tabIndex = 0
+        var anyTabOpened = false
 
-        for (slotIndex in 0 until backpackWrapper.upgradeSlotsSize()) {
-            val tabWidget = tabWidgets[slotIndex]
+        resetTabState()
 
-            if (!tabWidget.isEnabled)
+        for ((slotIndex, slotWidget) in upgradeSlotWidgets.withIndex()) {
+            val stack = slotWidget.slot.stack
+            val item = stack.item
+
+            if (!(item is UpgradeItem && item.hasTab))
                 continue
 
-            if (tabWidget.expandedWidget != null)
-                context.jeiSettings.removeJeiExclusionArea(tabWidget.expandedWidget!!)
+            val wrapper = stack.getCapability(Capabilities.UPGRADE_CAPABILITY, null) ?: continue
+
+            if (wrapper.isTabOpened) {
+                if (anyTabOpened) {
+                    wrapper.isTabOpened = false
+                    upgradeSlotSyncHandlers[slotIndex].syncToServer(UpgradeSlotSH.UPDATE_UPGRADE_TAB_STATE) {
+                        it.writeBoolean(false)
+                    }
+
+                    return
+                }
+
+                anyTabOpened = true
+            }
         }
 
         // Sync all tabs to their corresponding upgrade
@@ -215,60 +232,67 @@ class BackpackPanel(
                 continue
 
             val tabWidget = tabWidgets[tabIndex]
+            val upgradeSlotGroup = upgradeSlotGroups[slotIndex]
+            val wrapper = stack.getCapability(Capabilities.UPGRADE_CAPABILITY, null) ?: continue
+            tabWidget.showExpanded = wrapper.isTabOpened
             tabWidget.isEnabled = true
             tabWidget.tabIcon = ItemDrawable(slot.slot.stack)
 
-            when (item) {
-                is CraftingUpgradeItem -> {
-                    tabWidget.expandedWidget = CraftingUpgradeWidget()
+            when (wrapper) {
+                is CraftingUpgradeWrapper -> {
+                    tabWidget.expandedWidget = CraftingUpgradeWidget(slotIndex, wrapper)
                 }
 
-                is PickupUpgradeItem -> {
-                    val wrapper = stack.getCapability(Capabilities.IPICKUP_UPGRADE_CAPABILITY, null)!!
-
-                    tabWidget.expandedWidget = when (wrapper) {
-                        is AdvancedPickupUpgradeWrapper -> {
-                            upgradeSlotGroups[slotIndex].updateAdvancedFilterDelegate(wrapper)
-                            AdvancedPickupUpgradeWidget(syncManager, slotIndex, wrapper)
-                        }
-
-                        is PickupUpgradeWrapper -> {
-                            upgradeSlotGroups[slotIndex].updateFilterDelegate(wrapper)
-                            PickupUpgradeWidget(slotIndex, wrapper)
-                        }
-                    }
+                is AdvancedFeedingUpgradeWrapper -> {
+                    upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
+                    tabWidget.expandedWidget = AdvancedFeedingUpgradeWidget(slotIndex, wrapper)
                 }
 
-                is FeedingUpgradeItem -> {
-                    val wrapper = stack.getCapability(Capabilities.IFEEDING_UPGRADE_CAPABILITY, null)!!
-
-                    tabWidget.expandedWidget = when (wrapper) {
-                        is AdvancedFeedingUpgradeWrapper -> {
-                            upgradeSlotGroups[slotIndex].updateAdvancedFilterDelegate(wrapper)
-                            AdvancedFeedingUpgradeWidget(syncManager, slotIndex, wrapper)
-                        }
-
-                        is FeedingUpgradeWrapper -> {
-                            upgradeSlotGroups[slotIndex].updateFilterDelegate(wrapper)
-                            FeedingUpgradeWidget(slotIndex, wrapper)
-                        }
-                    }
+                is IAdvancedFilterable -> {
+                    upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
+                    tabWidget.expandedWidget = AdvancedExpandedTabWidget(
+                        slotIndex,
+                        wrapper,
+                        stack,
+                        wrapper.settingsLangKey
+                    )
                 }
 
-                else -> {}
+                is IBasicFilterable -> {
+                    upgradeSlotGroup.updateFilterDelegate(wrapper)
+                    tabWidget.expandedWidget = BasicExpandedTabWidget(
+                        slotIndex,
+                        wrapper,
+                        stack,
+                        wrapper.settingsLangKey
+                    )
+                }
             }
 
-
+            context.jeiSettings.addJeiExclusionArea(tabWidget.expandedWidget)
             tabIndex++
         }
 
-        // Disable all unused tab widgets
-        for (i in tabIndex until backpackWrapper.upgradeSlotsSize()) {
-            val tabWidget = tabWidgets[i]
-            tabWidget.isEnabled = false
-        }
+        disableUnusedTabWidgets(tabIndex)
+        syncToggles()
+        WidgetTree.resize(this)
+    }
 
-        // Sync all upgrade toggles
+    private fun resetTabState() {
+        for (tabWidget in tabWidgets) {
+            if (tabWidget.expandedWidget != null) {
+                context.jeiSettings.removeJeiExclusionArea(tabWidget.expandedWidget)
+            }
+        }
+    }
+
+    private fun disableUnusedTabWidgets(startTabIndex: Int) {
+        for (i in startTabIndex until backpackWrapper.upgradeSlotsSize()) {
+            tabWidgets[i].isEnabled = false
+        }
+    }
+
+    private fun syncToggles() {
         for (i in 0 until backpackWrapper.upgradeSlotsSize()) {
             val toggleWidget = upgradeSlotGroupWidget.toggleWidgets[i]
             val wrapper = toggleWidget.getWrapper()
@@ -280,8 +304,6 @@ class BackpackPanel(
                 toggleWidget.isEnabled = false
             }
         }
-
-        WidgetTree.resize(this)
     }
 
     override fun shouldAnimate(): Boolean =

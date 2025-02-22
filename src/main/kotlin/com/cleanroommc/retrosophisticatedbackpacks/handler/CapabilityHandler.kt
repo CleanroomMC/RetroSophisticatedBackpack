@@ -66,7 +66,36 @@ object CapabilityHandler {
             ::AdvancedFeedingUpgradeWrapper
         )
 
+        instance.register(
+            DepositUpgradeWrapper::class.java,
+            CapabilityStorageProvider<DepositUpgradeWrapper>(),
+            ::DepositUpgradeWrapper
+        )
+
+        instance.register(
+            AdvancedDepositUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AdvancedDepositUpgradeWrapper>(),
+            ::AdvancedDepositUpgradeWrapper
+        )
+
+        instance.register(
+            RestockUpgradeWrapper::class.java,
+            CapabilityStorageProvider<RestockUpgradeWrapper>(),
+            ::RestockUpgradeWrapper
+        )
+
+        instance.register(
+            AdvancedRestockUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AdvancedRestockUpgradeWrapper>(),
+            ::AdvancedRestockUpgradeWrapper
+        )
+
         // Interfaces
+        instance.register(
+            UpgradeWrapper::class.java,
+            NOPCapabilityStorage<UpgradeWrapper<*>>(),
+        ) { UpgradeWrapper.Impl }
+
         instance.register(
             IToggleable::class.java,
             NOPCapabilityStorage<IToggleable>()
@@ -78,9 +107,9 @@ object CapabilityHandler {
         ) { IBasicFilterable.Impl }
 
         instance.register(
-            IAdvanceFilterable::class.java,
-            NOPCapabilityStorage<IAdvanceFilterable>()
-        ) { IAdvanceFilterable.Impl }
+            IAdvancedFilterable::class.java,
+            NOPCapabilityStorage<IAdvancedFilterable>()
+        ) { IAdvancedFilterable.Impl }
 
         instance.register(
             IPickupUpgrade::class.java,
@@ -92,6 +121,18 @@ object CapabilityHandler {
             IFeedingUpgrade::class.java,
             NOPCapabilityStorage<IFeedingUpgrade>(),
             ::FeedingUpgradeWrapper
+        )
+
+        instance.register(
+            IDepositUpgrade::class.java,
+            NOPCapabilityStorage<IDepositUpgrade>(),
+            ::DepositUpgradeWrapper
+        )
+
+        instance.register(
+            IRestockUpgrade::class.java,
+            NOPCapabilityStorage<IRestockUpgrade>(),
+            ::RestockUpgradeWrapper
         )
     }
 
@@ -148,7 +189,7 @@ object CapabilityHandler {
         }
     }
 
-    private open class CapabilityStorageProvider<T> :
+    internal open class CapabilityStorageProvider<T> :
         RefinedStorage<T> where T : INBTSerializable<NBTTagCompound> {
         override fun writeNBT(
             capability: Capability<T>,

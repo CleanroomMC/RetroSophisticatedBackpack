@@ -1,10 +1,13 @@
 package com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade
 
+import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.ExposedItemStackHandler
 import net.minecraft.item.ItemStack
+import net.minecraft.util.EnumFacing
+import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.oredict.OreDictionary
 
-interface IAdvanceFilterable : IBasicFilterable {
+interface IAdvancedFilterable : IBasicFilterable {
     companion object {
         const val MATCH_TYPE_TAG = "MatchType"
         const val IGNORE_DURABILITY_TAG = "IgnoreDurability"
@@ -87,13 +90,17 @@ interface IAdvanceFilterable : IBasicFilterable {
         return flag
     }
 
+    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =
+        capability == Capabilities.ADVANCED_FILTERABLE_CAPABILITY ||
+                super<IBasicFilterable>.hasCapability(capability, facing)
+
     enum class MatchType {
         ITEM,
         MOD,
         ORE_DICT;
     }
 
-    object Impl : IAdvanceFilterable {
+    object Impl : IAdvancedFilterable {
         override val filterItems: ExposedItemStackHandler
             get() = ExposedItemStackHandler(0)
         override var filterType: IBasicFilterable.FilterType
