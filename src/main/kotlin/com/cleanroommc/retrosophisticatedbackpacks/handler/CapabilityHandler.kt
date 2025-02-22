@@ -78,7 +78,24 @@ object CapabilityHandler {
             ::AdvancedDepositUpgradeWrapper
         )
 
+        instance.register(
+            RestockUpgradeWrapper::class.java,
+            CapabilityStorageProvider<RestockUpgradeWrapper>(),
+            ::RestockUpgradeWrapper
+        )
+
+        instance.register(
+            AdvancedRestockUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AdvancedRestockUpgradeWrapper>(),
+            ::AdvancedRestockUpgradeWrapper
+        )
+
         // Interfaces
+        instance.register(
+            UpgradeWrapper::class.java,
+            NOPCapabilityStorage<UpgradeWrapper<*>>(),
+        ) { UpgradeWrapper.Impl }
+
         instance.register(
             IToggleable::class.java,
             NOPCapabilityStorage<IToggleable>()
@@ -110,6 +127,12 @@ object CapabilityHandler {
             IDepositUpgrade::class.java,
             NOPCapabilityStorage<IDepositUpgrade>(),
             ::DepositUpgradeWrapper
+        )
+
+        instance.register(
+            IRestockUpgrade::class.java,
+            NOPCapabilityStorage<IRestockUpgrade>(),
+            ::RestockUpgradeWrapper
         )
     }
 

@@ -1,4 +1,4 @@
-package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget
+package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.api.widget.Interactable
@@ -8,7 +8,6 @@ import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.utils.Color
-import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.value.sync.SyncHandler
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widget.WidgetTree
@@ -19,7 +18,6 @@ import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
-import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.drawable.Outline
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
@@ -27,7 +25,6 @@ import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import net.minecraftforge.oredict.OreDictionary
 
 class AdvancedFilterWidget(
-    private val syncManager: PanelSyncManager,
     slotIndex: Int,
     private val filterableWrapper: IAdvancedFilterable,
     syncKey: String = "adv_common_filter",
@@ -93,14 +90,13 @@ class AdvancedFilterWidget(
         private set
 
     init {
-        coverChildren().syncHandler("upgrades", slotIndex)
+        size(88, 109).syncHandler("upgrades", slotIndex)
 
         filterTypeButton = CyclicVariantButtonWidget(
             FILTER_TYPE_VARIANTS,
             filterableWrapper.filterType.ordinal
         ) { index ->
             filterableWrapper.filterType = IBasicFilterable.FilterType.entries[index]
-            markOnlyPropertyChanged()
             updateWrapper()
         }
 
@@ -109,7 +105,6 @@ class AdvancedFilterWidget(
             filterableWrapper.matchType.ordinal
         ) {
             filterableWrapper.matchType = IAdvancedFilterable.MatchType.entries[it]
-            markOnlyPropertyChanged()
             updateWrapper()
         }
 
@@ -120,7 +115,6 @@ class AdvancedFilterWidget(
             if (filterableWrapper.ignoreDurability) 1 else 0
         ) {
             filterableWrapper.ignoreDurability = it == 1
-            markOnlyPropertyChanged()
             updateWrapper()
         }
         ignoreDurabilityButton.inEffect = inEffect
@@ -130,7 +124,6 @@ class AdvancedFilterWidget(
             if (filterableWrapper.ignoreNBT) 1 else 0
         ) {
             filterableWrapper.ignoreNBT = it == 1
-            markOnlyPropertyChanged()
             updateWrapper()
         }
         ignoreDurabilityButton.inEffect = inEffect
@@ -162,7 +155,6 @@ class AdvancedFilterWidget(
                 filterableWrapper.oreDictEntries.add(oreName)
                 oreDictList.child(OreDictEntryWidget(this, oreName, 77))
                 oreDictTextField.text = ""
-                (panel as BackpackPanel).changedByPropertyChange = true
                 updateWrapper()
                 WidgetTree.resize(oreDictList)
 
@@ -185,7 +177,6 @@ class AdvancedFilterWidget(
 
                 filterableWrapper.oreDictEntries.remove(focusedOreDictEntry.text)
                 oreDictList.removeChild(focusedOreDictEntry)
-                (panel as BackpackPanel).changedByPropertyChange = true
                 updateWrapper()
                 WidgetTree.resize(oreDictList)
                 true
@@ -328,7 +319,7 @@ class AdvancedFilterWidget(
                 if (line.width > area.width)
                     it.addLine(key)
 
-                val stack = parent.syncManager.cursorItem
+                val stack = panel.syncHandler.syncManager.cursorItem
 
                 if (!stack.isEmpty) {
                     val testMatched = OreDictionary

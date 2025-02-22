@@ -3,6 +3,7 @@ package com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.ExposedItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.item.FeedingUpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemFood
 import net.minecraft.item.ItemStack
@@ -15,6 +16,8 @@ class AdvancedFeedingUpgradeWrapper : AdvancedUpgradeWrapper<FeedingUpgradeItem>
         private const val HUNGER_FEEDING_STRATEGY_TAG = "HungerFeedingStrategy"
         private const val HURT_FEEDING_STRATEGY_TAG = "HurtFeedingStrategy"
     }
+
+    override val settingsLangKey: String = "gui.advanced_feeding_settings".asTranslationKey()
 
     override val filterItems: ExposedItemStackHandler = object : ExposedItemStackHandler(16) {
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean =

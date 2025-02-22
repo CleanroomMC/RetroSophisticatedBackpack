@@ -7,7 +7,7 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 
-sealed class BasicUpgradeWrapper<T> : UpgradeWrapper<T>(), IToggleable, IBasicFilterable where T : UpgradeItem {
+abstract class BasicUpgradeWrapper<T> : UpgradeWrapper<T>(), IToggleable, IBasicFilterable where T : UpgradeItem {
     override var enabled = true
     override var filterType = IBasicFilterable.FilterType.WHITELIST
     override val filterItems = ExposedItemStackHandler(9)
@@ -17,10 +17,11 @@ sealed class BasicUpgradeWrapper<T> : UpgradeWrapper<T>(), IToggleable, IBasicFi
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =
         super<IToggleable>.hasCapability(capability, facing) ||
-                super<IBasicFilterable>.hasCapability(capability, facing)
+                super<IBasicFilterable>.hasCapability(capability, facing) ||
+                super<UpgradeWrapper>.hasCapability(capability, facing)
 
     override fun serializeNBT(): NBTTagCompound {
-        val nbt = NBTTagCompound()
+        val nbt = super.serializeNBT()
         nbt.setBoolean(IToggleable.ENABLED_TAG, enabled)
         nbt.setTag(IBasicFilterable.FILTER_ITEMS_TAG, filterItems.serializeNBT())
         nbt.setByte(IBasicFilterable.FILTER_TYPE_TAG, filterType.ordinal.toByte())
@@ -28,6 +29,7 @@ sealed class BasicUpgradeWrapper<T> : UpgradeWrapper<T>(), IToggleable, IBasicFi
     }
 
     override fun deserializeNBT(nbt: NBTTagCompound) {
+        super.deserializeNBT(nbt)
         enabled = nbt.getBoolean(IToggleable.ENABLED_TAG)
         filterItems.deserializeNBT(nbt.getCompoundTag(IBasicFilterable.FILTER_ITEMS_TAG))
         filterType = IBasicFilterable.FilterType.entries[nbt.getByte(IBasicFilterable.FILTER_TYPE_TAG).toInt()]

@@ -10,6 +10,39 @@ class BackpackItemStackHandler(size: Int, private val stackMultiplier: () -> Int
         return stack.maxStackSize * stackMultiplier()
     }
 
+    override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {
+        if (stack.isEmpty) return ItemStack.EMPTY
+
+        validateSlotIndex(slot)
+
+        val existing = this.stacks[slot]
+        var limit = getStackLimit(slot, stack)
+
+        if (!existing.isEmpty) {
+            if (!ItemHandlerHelper.canItemStacksStack(stack, existing)) return stack
+
+            limit -= existing.count
+        }
+
+        if (limit <= 0) return stack
+
+        val reachedLimit = stack.count > limit
+
+        if (!simulate) {
+            if (existing.isEmpty) {
+                this.stacks[slot] = if (reachedLimit) ItemHandlerHelper.copyStackWithSize(stack, limit) else stack
+            } else {
+                existing.grow(if (reachedLimit) limit else stack.count)
+            }
+            onContentsChanged(slot)
+        }
+
+        return if (reachedLimit) ItemHandlerHelper.copyStackWithSize(
+            stack,
+            stack.count - limit
+        ) else ItemStack.EMPTY
+    }
+
     override fun extractItem(slotIndex: Int, amount: Int, simulate: Boolean): ItemStack {
         if (amount == 0) return ItemStack.EMPTY
 

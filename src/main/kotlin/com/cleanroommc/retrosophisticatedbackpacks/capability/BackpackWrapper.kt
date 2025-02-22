@@ -105,6 +105,10 @@ class BackpackWrapper(
             .any { it.canDeposit(stack) }
     }
 
+    fun canRestock(stack: ItemStack): Boolean =
+        gatherCapabilityUpgrades(Capabilities.IRESTOCK_UPGRADE_CAPABILITY)
+            .any { it.canRestock(stack) }
+
     private fun <T> gatherCapabilityUpgrades(capability: Capability<T>): List<T> =
         upgradeItemStackHandler.inventory
             .mapNotNull { it.getCapability(capability, null) }

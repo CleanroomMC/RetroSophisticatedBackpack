@@ -32,7 +32,16 @@ public final class Capabilities {
     @CapabilityInject(AdvancedDepositUpgradeWrapper.class)
     public static final @NotNull Capability<AdvancedDepositUpgradeWrapper> ADVANCED_DEPOSIT_UPGRADE_CAPABILITY = null;
 
+    @CapabilityInject(RestockUpgradeWrapper.class)
+    public static final @NotNull Capability<RestockUpgradeWrapper> RESTOCK_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(AdvancedRestockUpgradeWrapper.class)
+    public static final @NotNull Capability<AdvancedRestockUpgradeWrapper> ADVANCED_RESTOCK_UPGRADE_CAPABILITY = null;
+
     // Abstract capabilities
+    @CapabilityInject(UpgradeWrapper.class)
+    public static final @NotNull Capability<UpgradeWrapper<?>> UPGRADE_CAPABILITY = null;
+
     @CapabilityInject(IToggleable.class)
     public static final @NotNull Capability<IToggleable> TOGGLEABLE_CAPABILITY = null;
 
@@ -50,4 +59,7 @@ public final class Capabilities {
 
     @CapabilityInject(IDepositUpgrade.class)
     public static final @NotNull Capability<IDepositUpgrade> IDEPOSIT_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(IRestockUpgrade.class)
+    public static final @NotNull Capability<IRestockUpgrade> IRESTOCK_UPGRADE_CAPABILITY = null;
 }

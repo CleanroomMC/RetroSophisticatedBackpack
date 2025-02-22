@@ -16,9 +16,12 @@ object Blocks {
     @JvmField
     val ironBackpack = BackpackBlock("backpack_iron", BackpackTier.IRON)
 
+    @JvmField
     val goldBackpack = BackpackBlock("backpack_gold", BackpackTier.GOLD)
 
+    @JvmField
     val diamondBackpack = BackpackBlock("backpack_diamond", BackpackTier.DIAMOND)
 
+    @JvmField
     val obsidianBackpack = BackpackBlock("backpack_obsidian", BackpackTier.OBSIDIAN)
 }

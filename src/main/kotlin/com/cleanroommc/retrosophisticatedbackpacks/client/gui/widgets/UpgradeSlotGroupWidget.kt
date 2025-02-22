@@ -1,4 +1,4 @@
-package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widget
+package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets
 
 import com.cleanroommc.modularui.api.widget.Interactable
 import com.cleanroommc.modularui.drawable.UITexture
@@ -96,8 +96,6 @@ class UpgradeSlotGroupWidget(panel: BackpackPanel, private val slotSize: Int) : 
 
         override fun onMousePressed(mouseButton: Int): Interactable.Result {
             isToggleEnabled = !isToggleEnabled
-
-            panel.changedByPropertyChange = true
             getWrapper()?.toggle()
             slotSyncHandler?.syncToServer(UpgradeSlotSH.UPDATE_UPGRADE_TOGGLE)
 

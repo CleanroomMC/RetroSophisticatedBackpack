@@ -53,25 +53,28 @@ class BackpackItem(
         RegistryHandler.MODELS.add(this)
     }
 
-    override fun onItemUse(
+    override fun onItemUseFirst(
         player: EntityPlayer,
-        worldIn: World,
+        world: World,
         pos: BlockPos,
-        hand: EnumHand,
-        facing: EnumFacing,
+        side: EnumFacing,
         hitX: Float,
         hitY: Float,
-        hitZ: Float
+        hitZ: Float,
+        hand: EnumHand
     ): EnumActionResult {
         if (player.isSneaking) {
             val stack = player.getHeldItem(hand)
             val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null)
-                ?: return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ)
-            val tileEntity = worldIn.getTileEntity(pos)
-                ?: return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ)
+                ?: return super.onItemUse(player, world, pos, hand, side, hitX, hitY, hitZ)
+            val tileEntity = world.getTileEntity(pos)
+                ?: return super.onItemUse(player, world, pos, hand, side, hitX, hitY, hitZ)
+            var transferred = BackpackInventoryHelper.attemptDepositOnTileEntity(wrapper, tileEntity, side)
+            transferred =
+                BackpackInventoryHelper.attemptRestockFromTileEntity(wrapper, tileEntity, side) || transferred
 
-            return if (BackpackInventoryHelper.attemptDepositOnTileEntity(wrapper, tileEntity, facing)) {
-                worldIn.playSound(
+            return if (transferred) {
+                world.playSound(
                     null,
                     player.position,
                     SoundEvents.ITEM_ARMOR_EQUIP_IRON,
@@ -83,7 +86,7 @@ class BackpackItem(
             } else EnumActionResult.FAIL
         }
 
-        return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ)
+        return super.onItemUseFirst(player, world, pos, side, hitX, hitY, hitZ, hand)
     }
 
     override fun onItemRightClick(worldIn: World, player: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack?> {

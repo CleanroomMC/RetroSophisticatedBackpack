@@ -14,24 +14,31 @@ import net.minecraft.network.PacketBuffer
  */
 class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
     companion object {
-        const val UPDATE_UPGRADE_TOGGLE = 6
-        const val UPDATE_BASIC_FILTERABLE = 7
-        const val UPDATE_ADVANCED_FILTERABLE = 8
-        const val UPDATE_ADVANCED_FEEDING = 9
+        const val UPDATE_UPGRADE_TAB_STATE = 6
+        const val UPDATE_UPGRADE_TOGGLE = 7
+        const val UPDATE_BASIC_FILTERABLE = 8
+        const val UPDATE_ADVANCED_FILTERABLE = 9
+        const val UPDATE_ADVANCED_FEEDING = 10
     }
 
     override fun readOnServer(id: Int, buf: PacketBuffer) {
         super.readOnServer(id, buf)
 
         when (id) {
-            UPDATE_UPGRADE_TOGGLE -> updateToggleable(buf)
+            UPDATE_UPGRADE_TAB_STATE -> updateTabState(buf)
+            UPDATE_UPGRADE_TOGGLE -> updateToggleable()
             UPDATE_BASIC_FILTERABLE -> updateBasicFilterable(buf)
             UPDATE_ADVANCED_FILTERABLE -> updateAdvancedFilterable(buf)
             UPDATE_ADVANCED_FEEDING -> updateAdvanceFeedingUpgrade(buf)
         }
     }
 
-    private fun updateToggleable(buf: PacketBuffer) {
+    private fun updateTabState(buf: PacketBuffer) {
+        val wrapper = slot.stack.getCapability(Capabilities.UPGRADE_CAPABILITY, null) ?: return
+        wrapper.isTabOpened = buf.readBoolean()
+    }
+
+    private fun updateToggleable() {
         val wrapper = slot.stack.getCapability(Capabilities.TOGGLEABLE_CAPABILITY, null) ?: return
         wrapper.toggle()
     }

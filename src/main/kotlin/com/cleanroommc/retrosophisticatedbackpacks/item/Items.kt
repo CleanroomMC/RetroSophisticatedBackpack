@@ -6,6 +6,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.block.Blocks
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.*
 import net.minecraft.item.Item
 
+@Suppress("UNUSED")
 object Items {
     @JvmField
     val ITEMS = mutableListOf<Item>()
@@ -101,4 +102,10 @@ object Items {
 
     @JvmField
     val advancedDepositUpgrade = DepositUpgradeItem("advanced_deposit_upgrade", ::AdvancedDepositUpgradeWrapper)
+
+    @JvmField
+    val restockUpgrade = RestockUpgradeItem("restock_upgrade", ::RestockUpgradeWrapper)
+
+    @JvmField
+    val advancedRestockUpgrade = RestockUpgradeItem("advanced_restock_upgrade", ::AdvancedRestockUpgradeWrapper)
 }

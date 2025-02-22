@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.items.IItemHandler
+import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.items.wrapper.InvWrapper
 import net.minecraftforge.items.wrapper.SidedInvWrapper
@@ -15,10 +16,7 @@ object BackpackInventoryHelper {
     fun attemptDepositOnTileEntity(wrapper: BackpackWrapper, destination: TileEntity, facing: EnumFacing): Boolean {
         val backpackInventory = wrapper.backpackItemStackHandler
         var transferred = false
-        val destination = if (destination is ISidedInventory) SidedInvWrapper(destination, facing)
-        else if (destination is IInventory) InvWrapper(destination)
-        else if (destination is IItemHandler) destination
-        else return false
+        val destination = getHandler(destination, facing) ?: return false
 
         if (isFull(destination))
             return false
@@ -43,6 +41,43 @@ object BackpackInventoryHelper {
         return transferred
     }
 
+    fun attemptRestockFromTileEntity(wrapper: BackpackWrapper, source: TileEntity, facing: EnumFacing): Boolean {
+        val backpackInventory = wrapper.backpackItemStackHandler
+        var transferred = false
+        val source = getHandler(source, facing) ?: return false
+
+        if (source !is IItemHandlerModifiable)
+            return false
+
+        if (isFull(backpackInventory))
+            return false
+
+        for (i in 0 until source.slots) {
+            var sourceStack = source.getStackInSlot(i)
+
+            if (sourceStack.isEmpty)
+                continue
+
+            var copiedSourceStack = sourceStack.copy()
+
+            if (wrapper.canRestock(copiedSourceStack)) {
+                copiedSourceStack = ItemHandlerHelper.insertItemStacked(backpackInventory, copiedSourceStack, false)
+
+                if (!ItemStack.areItemStacksEqual(sourceStack, copiedSourceStack)) {
+                    transferred = true
+                    source.setStackInSlot(i, copiedSourceStack)
+                }
+            }
+        }
+
+        return transferred
+    }
+
+    private fun getHandler(handler: Any, facing: EnumFacing): IItemHandler? =
+        if (handler is ISidedInventory) SidedInvWrapper(handler, facing)
+        else if (handler is IInventory) InvWrapper(handler)
+        else handler as? IItemHandler
+
     private fun isFull(handler: IItemHandler): Boolean {
         for (i in 0 until handler.slots) {
             val stack = handler.getStackInSlot(i)
@@ -53,15 +88,5 @@ object BackpackInventoryHelper {
         }
 
         return true
-    }
-
-    private fun canInsertStackInSlot(destination: IItemHandler, stack: ItemStack, slotIndex: Int): Boolean =
-        destination.isItemValid(slotIndex, stack)
-
-    private fun canCombine(stack1: ItemStack, stack2: ItemStack): Boolean {
-        return if (stack1.item !== stack2.item) false
-        else if (stack1.metadata != stack2.metadata) false
-        else if (stack1.count > stack1.maxStackSize) false
-        else ItemStack.areItemStackTagsEqual(stack1, stack2)
     }
 }
