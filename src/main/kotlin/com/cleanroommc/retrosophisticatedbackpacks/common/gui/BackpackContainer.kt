@@ -2,7 +2,7 @@ package com.cleanroommc.retrosophisticatedbackpacks.common.gui
 
 import com.cleanroommc.modularui.screen.ContainerCustomizer
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
-import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.BackpackSlot
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularBackpackSlot
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.ClickType
 import net.minecraft.inventory.Container
@@ -27,7 +27,7 @@ class BackpackContainer() : ContainerCustomizer() {
             val clickedSlot = container.getSlot(slotId)
             val slotStack = clickedSlot.stack
 
-            if (clickedSlot is BackpackSlot && !slotStack.isEmpty && heldStack.isEmpty) {
+            if (clickedSlot is ModularBackpackSlot && !slotStack.isEmpty && heldStack.isEmpty) {
                 val s = min(slotStack.count, clickedSlot.getItemStackLimit(slotStack))
                 val toRemove = if (mouseButton == LEFT_MOUSE) s else (s + 1) / 2
                 playerInventory.itemStack = slotStack.splitStack(toRemove)

@@ -1,11 +1,18 @@
 package com.cleanroommc.retrosophisticatedbackpacks.inventory
 
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
 import net.minecraft.item.ItemStack
 import net.minecraftforge.items.ItemHandlerHelper
 import kotlin.math.min
 
 class BackpackItemStackHandler(size: Int, private val wrapper: BackpackWrapper) : ExposedItemStackHandler(size) {
+    val memoryStack: Array<ItemStack> = Array(size) { ItemStack.EMPTY }
+
+    override fun isItemValid(slot: Int, stack: ItemStack): Boolean =
+        if (memoryStack[slot].isEmpty) stack.item !is BackpackItem || wrapper.canNestBackpack()
+        else stack.isItemEqual(memoryStack[slot])
+
     override fun getStackLimit(slotIndex: Int, stack: ItemStack): Int =
         stacks[slotIndex].maxStackSize * wrapper.getTotalStackMultiplier()
 

@@ -36,6 +36,8 @@ object RSBTextures {
     val ADD_ICON = icon("add", 96, 32)
     val REMOVE_ICON = icon("remove", 112, 32)
 
+    val SETTING_ICON = icon("setting", 16, 96)
+
     val MATCH_ORE_DICT_ICON = icon("consider_ore_dict", 112, 96)
     val IGNORE_ORE_DICT_ICON = icon("ignore_ore_dict", 128, 96)
 

@@ -8,7 +8,7 @@ import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.widget.SingleChildWidget
 
-class TabWidget(val tabIndex: Int) : SingleChildWidget<TabWidget>(), Interactable {
+class TabWidget(tabIndex: Int) : SingleChildWidget<TabWidget>(), Interactable {
     companion object {
         val TAB_TEXTURE: TabTexture = GuiTextures.TAB_RIGHT
     }
@@ -24,7 +24,9 @@ class TabWidget(val tabIndex: Int) : SingleChildWidget<TabWidget>(), Interactabl
     var tabIcon: ItemDrawable? = null
 
     init {
-        size(TAB_TEXTURE.width, TAB_TEXTURE.height).right(-TAB_TEXTURE.width + 4).top(tabIndex * 30)
+        size(TAB_TEXTURE.width, TAB_TEXTURE.height)
+            .right(-TAB_TEXTURE.width + 4)
+            .top((tabIndex + 1) * 30)
     }
 
     override fun onInit() {
@@ -59,9 +61,6 @@ class TabWidget(val tabIndex: Int) : SingleChildWidget<TabWidget>(), Interactabl
         if (showExpanded)
             return
 
-        val index = if (tabIndex == 0) -1 else 0
-        val rightTab = TAB_TEXTURE.get(index, false)
-
-        rightTab.draw(context, 0, 0, TAB_TEXTURE.width, TAB_TEXTURE.height, widgetTheme)
+        TAB_TEXTURE.get(0, false).drawAtZero(context, TAB_TEXTURE.width, TAB_TEXTURE.height, widgetTheme)
     }
 }

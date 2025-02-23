@@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraftforge.items.IItemHandler
 
-class UpgradeSlot(
+class ModularUpgradeSlot(
     itemHandler: IItemHandler,
     index: Int,
     private val canAddStackUpgrade: (Int) -> Boolean,
