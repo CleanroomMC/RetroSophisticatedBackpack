@@ -1,9 +1,10 @@
-package com.cleanroommc.retrosophisticatedbackpacks
+package com.cleanroommc.retrosophisticatedbackpacks.config
 
+import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import net.minecraftforge.common.config.Config
 import net.minecraftforge.common.config.Config.RequiresMcRestart
 
-@Config(modid = Tags.MOD_ID)
+@Config(modid = Tags.MOD_ID, name = "${Tags.MOD_ID}_general")
 object Config {
     @JvmField
     val leatherBackpack = LeatherBackpackConfig()
@@ -22,9 +23,6 @@ object Config {
 
     @JvmField
     val stackUpgrade = StackUpgradeConfig()
-
-    @JvmField
-    val clientConfig = ClientConfig()
 
     class LeatherBackpackConfig {
         @JvmField
@@ -96,10 +94,5 @@ object Config {
         @JvmField
         @RequiresMcRestart
         var obsidianMultiplier = 32
-    }
-
-    class ClientConfig {
-        @JvmField
-        var enableAnimation = true
     }
 }
