@@ -219,8 +219,8 @@ class BackpackBlock(
         BackpackTileEntity()
 
     override fun onBlockHarvested(worldIn: World, pos: BlockPos, state: IBlockState, player: EntityPlayer) {
-        dropBlockAsItem(worldIn, pos, state, 0)
-
+        if (player.isCreative)
+            dropBlockAsItem(worldIn, pos, state, 0)
         super.onBlockHarvested(worldIn, pos, state, player)
     }
 
@@ -238,5 +238,28 @@ class BackpackBlock(
         stackBackpackInventory.deserializeNBT(tileEntityBackpackInventory.serializeNBT())
 
         drops.add(stack)
+    }
+
+    override fun removedByPlayer(
+        state: IBlockState,
+        world: World,
+        pos: BlockPos,
+        player: EntityPlayer,
+        willHarvest: Boolean
+    ): Boolean {
+        if (willHarvest) return true
+        return super.removedByPlayer(state, world, pos, player, false)
+    }
+
+    override fun harvestBlock(
+        worldIn: World,
+        player: EntityPlayer,
+        pos: BlockPos,
+        state: IBlockState,
+        te: TileEntity?,
+        stack: ItemStack
+    ) {
+        super.harvestBlock(worldIn, player, pos, state, te, stack)
+        worldIn.setBlockToAir(pos)
     }
 }
