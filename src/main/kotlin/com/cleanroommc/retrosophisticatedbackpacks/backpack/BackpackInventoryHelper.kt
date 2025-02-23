@@ -1,6 +1,7 @@
 package com.cleanroommc.retrosophisticatedbackpacks.backpack
 
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
+import net.minecraft.entity.Entity
 import net.minecraft.inventory.IInventory
 import net.minecraft.inventory.ISidedInventory
 import net.minecraft.item.ItemStack
@@ -14,9 +15,18 @@ import net.minecraftforge.items.wrapper.SidedInvWrapper
 
 object BackpackInventoryHelper {
     fun attemptDepositOnTileEntity(wrapper: BackpackWrapper, destination: TileEntity, facing: EnumFacing): Boolean {
+        val destination = getHandler(destination, facing) ?: return false
+        return attemptDepositOnItemHandler(wrapper, destination)
+    }
+
+    fun attemptDepositOnEntity(wrapper: BackpackWrapper, destination: Entity): Boolean {
+        val destination = getHandler(destination, null) ?: return false
+        return attemptDepositOnItemHandler(wrapper, destination)
+    }
+
+    fun attemptDepositOnItemHandler(wrapper: BackpackWrapper, destination: IItemHandler): Boolean {
         val backpackInventory = wrapper.backpackItemStackHandler
         var transferred = false
-        val destination = getHandler(destination, facing) ?: return false
 
         if (isFull(destination))
             return false
@@ -42,9 +52,18 @@ object BackpackInventoryHelper {
     }
 
     fun attemptRestockFromTileEntity(wrapper: BackpackWrapper, source: TileEntity, facing: EnumFacing): Boolean {
+        val source = getHandler(source, facing) ?: return false
+        return attemptRestockFromItemHandler(wrapper, source)
+    }
+
+    fun attemptRestockFromEntity(wrapper: BackpackWrapper, source: Entity): Boolean {
+        val source = getHandler(source, null) ?: return false
+        return attemptRestockFromItemHandler(wrapper, source)
+    }
+
+    fun attemptRestockFromItemHandler(wrapper: BackpackWrapper, source: IItemHandler): Boolean {
         val backpackInventory = wrapper.backpackItemStackHandler
         var transferred = false
-        val source = getHandler(source, facing) ?: return false
 
         if (source !is IItemHandlerModifiable)
             return false
@@ -73,7 +92,7 @@ object BackpackInventoryHelper {
         return transferred
     }
 
-    private fun getHandler(handler: Any, facing: EnumFacing): IItemHandler? =
+    private fun getHandler(handler: Any, facing: EnumFacing?): IItemHandler? =
         if (handler is ISidedInventory) SidedInvWrapper(handler, facing)
         else if (handler is IInventory) InvWrapper(handler)
         else handler as? IItemHandler

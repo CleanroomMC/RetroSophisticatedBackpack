@@ -2,12 +2,15 @@ package com.cleanroommc.retrosophisticatedbackpacks.handler
 
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackFeedingHelper
+import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackInventoryHelper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.init.SoundEvents
+import net.minecraft.util.EnumActionResult
 import net.minecraft.util.SoundCategory
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent
+import net.minecraftforge.event.entity.player.PlayerInteractEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.TickEvent
@@ -63,6 +66,38 @@ object EntityEventHandler {
             val alteredEntityItem = EntityItem(world, event.item.posX, event.item.posY, event.item.posZ, stack)
             alteredEntityItem.setNoPickupDelay()
             world.spawnEntity(alteredEntityItem)
+        }
+    }
+
+    @SubscribeEvent
+    @JvmStatic
+    fun onPlayerInteract(event: PlayerInteractEvent.EntityInteract) {
+        val player = event.entityPlayer
+        val stack = player.heldItemMainhand
+        val entity = event.target
+
+        if (stack.item is BackpackItem) {
+            if (player.isSneaking) {
+                val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null)
+                    ?: return
+                var transferred = BackpackInventoryHelper.attemptDepositOnEntity(wrapper, entity)
+                transferred =
+                    BackpackInventoryHelper.attemptRestockFromEntity(wrapper, entity) || transferred
+
+                if (transferred) {
+                    player.world.playSound(
+                        null,
+                        player.position,
+                        SoundEvents.ITEM_ARMOR_EQUIP_IRON,
+                        SoundCategory.BLOCKS,
+                        0.5f,
+                        0.5f
+                    )
+
+                    event.isCanceled = true
+                    event.cancellationResult = EnumActionResult.SUCCESS
+                }
+            }
         }
     }
 

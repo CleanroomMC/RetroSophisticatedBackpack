@@ -21,6 +21,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.util.IModelRegister
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.Entity
+import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.init.SoundEvents
@@ -95,6 +96,36 @@ class BackpackItem(
         }
 
         return ActionResult(EnumActionResult.SUCCESS, player.getHeldItem(handIn))
+    }
+
+    override fun itemInteractionForEntity(
+        stack: ItemStack,
+        playerIn: EntityPlayer,
+        target: EntityLivingBase,
+        hand: EnumHand
+    ): Boolean {
+        if (playerIn.isSneaking) {
+            val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null)
+                ?: return super.itemInteractionForEntity(stack, playerIn, target, hand)
+            var transferred = BackpackInventoryHelper.attemptDepositOnEntity(wrapper, target)
+            transferred =
+                BackpackInventoryHelper.attemptRestockFromEntity(wrapper, target) || transferred
+
+            return if (transferred) {
+                playerIn.world.playSound(
+                    null,
+                    playerIn.position,
+                    SoundEvents.ITEM_ARMOR_EQUIP_IRON,
+                    SoundCategory.BLOCKS,
+                    0.5f,
+                    0.5f
+                )
+
+                true
+            } else false
+        }
+
+        return super.itemInteractionForEntity(stack, playerIn, target, hand)
     }
 
     override fun initCapabilities(stack: ItemStack, nbt: NBTTagCompound?): ICapabilityProvider {
