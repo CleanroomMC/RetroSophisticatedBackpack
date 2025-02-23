@@ -11,6 +11,7 @@ class CraftingUpgradeWrapper() : UpgradeWrapper<CraftingUpgradeItem>() {
         private const val MATRIX_TAG = "Matrix"
         private const val CRAFTING_DEST_TAG = "CraftingDest"
     }
+
     override val settingsLangKey: String = ""
 
     var craftingDestination = CraftingDestination.INVENTORY

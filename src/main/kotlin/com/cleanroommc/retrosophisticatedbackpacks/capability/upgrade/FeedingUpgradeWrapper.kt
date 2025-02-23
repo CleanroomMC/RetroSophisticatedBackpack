@@ -4,11 +4,11 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.ExposedItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.item.FeedingUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
-import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemFood
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
+import net.minecraftforge.items.IItemHandler
 
 class FeedingUpgradeWrapper : BasicUpgradeWrapper<FeedingUpgradeItem>(), IFeedingUpgrade {
     override val settingsLangKey: String = "gui.feeding_settings".asTranslationKey()
@@ -21,17 +21,17 @@ class FeedingUpgradeWrapper : BasicUpgradeWrapper<FeedingUpgradeItem>(), IFeedin
     override fun checkFilter(stack: ItemStack): Boolean =
         stack.item is ItemFood && super.checkFilter(stack)
 
-    override fun getFeedingStack(inventory: IInventory, foodLevel: Int, health: Float, maxHealth: Float): ItemStack {
-        val size = inventory.sizeInventory
+    override fun getFeedingStack(handler: IItemHandler, foodLevel: Int, health: Float, maxHealth: Float): ItemStack {
+        val size = handler.slots
 
         for (i in 0 until size) {
-            val stack = inventory.getStackInSlot(i)
+            val stack = handler.getStackInSlot(i)
 
             if (stack.isEmpty)
                 continue
 
             if (checkFilter(stack))
-                return inventory.decrStackSize(i, 1)
+                return handler.extractItem(i, 1, false)
         }
 
         return ItemStack.EMPTY

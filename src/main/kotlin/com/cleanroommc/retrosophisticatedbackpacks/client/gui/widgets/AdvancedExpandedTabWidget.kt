@@ -18,16 +18,16 @@ open class AdvancedExpandedTabWidget<T>(
         where T : IAdvancedFilterable, T : UpgradeWrapper<*> {
     protected val startingRow: Row = Row()
         .height(0)
-        .left(8)
         .debugName("starting_row") as Row
     protected val filterWidget: AdvancedFilterWidget = AdvancedFilterWidget(slotIndex, wrapper, filterSyncKey)
+        .width(88)
+        .coverChildrenHeight()
         .debugName("adv_filter_widget")
 
     init {
         val column = Column()
-            .top(28)
+            .pos(8, 28)
             .width(88)
-            .leftRel(0.5f)
             .childPadding(2)
             .child(startingRow)
             .child(filterWidget)

@@ -25,10 +25,11 @@ class BasicFilterWidget(
 
     private val filterTypeButton: CyclicVariantButtonWidget
     private val filterSlots: List<ItemSlot>
-    private var slotSyncHandler: UpgradeSlotSH? = null
+    var slotSyncHandler: UpgradeSlotSH? = null
+        private set
 
     init {
-        size(60, 54).syncHandler("upgrades", slotIndex)
+        syncHandler("upgrades", slotIndex)
 
         filterTypeButton = CyclicVariantButtonWidget(
             FILTER_TYPE_VARIANTS,

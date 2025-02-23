@@ -7,8 +7,6 @@ import com.cleanroommc.retrosophisticatedbackpacks.item.InceptionUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.StackUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.util.BackpackItemStackHelper
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
-import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
@@ -16,13 +14,15 @@ import net.minecraft.util.text.ITextComponent
 import net.minecraft.util.text.TextComponentTranslation
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.INBTSerializable
+import net.minecraftforge.items.CapabilityItemHandler
+import net.minecraftforge.items.IItemHandler
 import java.util.*
 
 class BackpackWrapper(
     var backpackInventorySize: () -> Int = { 27 },
     var upgradeSlotsSize: () -> Int = { 1 },
     var uuid: UUID = UUID.randomUUID(),
-) : IInventory, ISidelessCapabilityProvider, INBTSerializable<NBTTagCompound> {
+) : IItemHandler, ISidelessCapabilityProvider, INBTSerializable<NBTTagCompound> {
     companion object {
         private const val BACKPACK_INVENTORY_TAG = "BackpackInventory"
         private const val UPGRADE_SLOTS_TAG = "UpgradeSlots"
@@ -35,7 +35,7 @@ class BackpackWrapper(
     }
 
     var isCached: Boolean = false
-    var backpackItemStackHandler = BackpackItemStackHandler(backpackInventorySize(), ::getTotalStackMultiplier)
+    var backpackItemStackHandler = BackpackItemStackHandler(backpackInventorySize(), this)
     var upgradeItemStackHandler = UpgradeItemStackHandler(upgradeSlotsSize())
     var mainColor = DEFAULT_MAIN_COLOR
     var accentColor = DEFAULT_ACCENT_COLOR
@@ -109,78 +109,41 @@ class BackpackWrapper(
         gatherCapabilityUpgrades(Capabilities.IRESTOCK_UPGRADE_CAPABILITY)
             .any { it.canRestock(stack) }
 
+    fun canInsert(stack: ItemStack): Boolean =
+        gatherCapabilityUpgrades(Capabilities.IFILTER_UPGRADE_CAPABILITY)
+            .any { it.canInsert(stack) }
+
+    fun canExtract(slotIndex: Int): Boolean {
+        val stack = getStackInSlot(slotIndex)
+        return gatherCapabilityUpgrades(Capabilities.IFILTER_UPGRADE_CAPABILITY)
+            .any { it.canExtract(stack) }
+    }
+
+    fun getDisplayName(): ITextComponent =
+        TextComponentTranslation("container.backpack".asTranslationKey())
+
     private fun <T> gatherCapabilityUpgrades(capability: Capability<T>): List<T> =
         upgradeItemStackHandler.inventory
             .mapNotNull { it.getCapability(capability, null) }
 
-    override fun getSizeInventory(): Int =
-        backpackInventorySize()
-
-    override fun isEmpty(): Boolean =
-        backpackItemStackHandler.inventory.all(ItemStack::isEmpty)
+    override fun getSlots(): Int =
+        backpackItemStackHandler.slots
 
     override fun getStackInSlot(index: Int): ItemStack =
         backpackItemStackHandler.getStackInSlot(index)
 
-    override fun decrStackSize(index: Int, count: Int): ItemStack =
-        backpackItemStackHandler.extractItem(index, count, false)
+    override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack =
+        backpackItemStackHandler.insertItem(slot, stack, simulate)
 
-    override fun removeStackFromSlot(index: Int): ItemStack =
-        backpackItemStackHandler.extractItem(index, 64, false)
+    override fun extractItem(slot: Int, amount: Int, simulate: Boolean): ItemStack =
+        backpackItemStackHandler.extractItem(slot, amount, simulate)
 
-    fun insertStack(index: Int, stack: ItemStack): ItemStack =
-        backpackItemStackHandler.insertItem(index, stack, false)
-
-    override fun setInventorySlotContents(index: Int, stack: ItemStack) {
-        backpackItemStackHandler.setStackInSlot(index, stack)
-    }
-
-    @Deprecated(
-        "Use backpackItemStackHandler.getStackLimit(Int,ItemStack) instead",
-        ReplaceWith("backpackItemStackHandler.getStackLimit(index,stack)")
-    )
-    override fun getInventoryStackLimit(): Int =
-        Int.MAX_VALUE
-
-    override fun markDirty() {
-    }
-
-    override fun isUsableByPlayer(player: EntityPlayer): Boolean =
-        true
-
-    override fun openInventory(player: EntityPlayer) {
-    }
-
-    override fun closeInventory(player: EntityPlayer) {
-    }
-
-    override fun isItemValidForSlot(index: Int, stack: ItemStack): Boolean {
-        return backpackItemStackHandler.isItemValid(index, stack)
-    }
-
-    override fun getField(id: Int): Int =
-        0
-
-    override fun setField(id: Int, value: Int) {}
-
-    override fun getFieldCount(): Int =
-        0
-
-    override fun clear() {
-        backpackItemStackHandler.inventory.clear()
-    }
-
-    override fun getName(): String =
-        "container.backpack"
-
-    override fun hasCustomName(): Boolean =
-        false
-
-    override fun getDisplayName(): ITextComponent =
-        TextComponentTranslation(name.asTranslationKey())
+    override fun getSlotLimit(slot: Int): Int =
+        backpackItemStackHandler.getSlotLimit(slot)
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =
-        capability == Capabilities.BACKPACK_CAPABILITY
+        capability == Capabilities.BACKPACK_CAPABILITY ||
+                capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY
 
     override fun serializeNBT(): NBTTagCompound {
         val nbt = NBTTagCompound()
@@ -204,7 +167,7 @@ class BackpackWrapper(
 
         uuid = nbt.getUniqueId(UUID_TAG)!!
 
-        backpackItemStackHandler = BackpackItemStackHandler(backpackInventorySize(), ::getTotalStackMultiplier)
+        backpackItemStackHandler = BackpackItemStackHandler(backpackInventorySize(), this)
         upgradeItemStackHandler = UpgradeItemStackHandler(upgradeSlotsSize())
 
         if (nbt.hasKey(BACKPACK_INVENTORY_TAG))

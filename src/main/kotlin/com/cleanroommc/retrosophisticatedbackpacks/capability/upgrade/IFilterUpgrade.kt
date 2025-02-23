@@ -7,13 +7,25 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.INBTSerializable
-import net.minecraftforge.items.IItemHandler
 
-sealed interface IFeedingUpgrade : ISidelessCapabilityProvider, INBTSerializable<NBTTagCompound> {
-    // This considers upgrade's settings, and split 1 food from (backpack only) inventory and returns it
-    // if it meets requirements
-    fun getFeedingStack(handler: IItemHandler, foodLevel: Int, health: Float, maxHealth: Float): ItemStack
+sealed interface IFilterUpgrade : ISidelessCapabilityProvider, INBTSerializable<NBTTagCompound> {
+    companion object {
+        const val FILTER_WAY_TAG = "FilterWay"
+    }
+
+    var filterWay: FilterWayType
+
+    fun canInsert(stack: ItemStack): Boolean
+
+    fun canExtract(stack: ItemStack): Boolean
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =
-        capability == Capabilities.IFEEDING_UPGRADE_CAPABILITY
+        capability == Capabilities.IFILTER_UPGRADE_CAPABILITY
+
+
+    enum class FilterWayType {
+        IN_OUT,
+        IN,
+        OUT;
+    }
 }

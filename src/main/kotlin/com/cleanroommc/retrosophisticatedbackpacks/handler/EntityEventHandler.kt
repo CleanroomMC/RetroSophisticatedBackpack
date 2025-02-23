@@ -35,8 +35,8 @@ object EntityEventHandler {
                 continue
 
             var slotIndex = 0
-            while (!stack.isEmpty && slotIndex < wrapper.sizeInventory) {
-                stack = wrapper.insertStack(slotIndex, stack)
+            while (!stack.isEmpty && slotIndex < wrapper.slots) {
+                stack = wrapper.insertItem(slotIndex, stack, false)
 
                 slotIndex++
             }

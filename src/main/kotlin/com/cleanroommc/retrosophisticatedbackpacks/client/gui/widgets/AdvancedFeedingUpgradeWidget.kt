@@ -62,7 +62,7 @@ class AdvancedFeedingUpgradeWidget(
         }
 
         startingRow
-            .leftRelOffset(0.5f, 1)
+            .leftRel(0.5f)
             .height(20)
             .childPadding(2)
             .child(hungerButtonWidget)

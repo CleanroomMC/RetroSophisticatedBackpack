@@ -38,6 +38,12 @@ public final class Capabilities {
     @CapabilityInject(AdvancedRestockUpgradeWrapper.class)
     public static final @NotNull Capability<AdvancedRestockUpgradeWrapper> ADVANCED_RESTOCK_UPGRADE_CAPABILITY = null;
 
+    @CapabilityInject(FilterUpgradeWrapper.class)
+    public static final @NotNull Capability<FilterUpgradeWrapper> FILTER_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(AdvancedFilterUpgradeWrapper.class)
+    public static final @NotNull Capability<AdvancedFilterUpgradeWrapper> ADVANCED_FILTER_UPGRADE_WRAPPER_CAPABILITY = null;
+
     // Abstract capabilities
     @CapabilityInject(UpgradeWrapper.class)
     public static final @NotNull Capability<UpgradeWrapper<?>> UPGRADE_CAPABILITY = null;
@@ -62,4 +68,7 @@ public final class Capabilities {
 
     @CapabilityInject(IRestockUpgrade.class)
     public static final @NotNull Capability<IRestockUpgrade> IRESTOCK_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(IFilterUpgrade.class)
+    public static final @NotNull Capability<IFilterUpgrade> IFILTER_UPGRADE_CAPABILITY = null;
 }

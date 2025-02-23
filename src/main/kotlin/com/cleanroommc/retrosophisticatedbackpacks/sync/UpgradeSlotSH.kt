@@ -6,6 +6,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedFeedingUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IFilterUpgrade
 import net.minecraft.network.PacketBuffer
 
 /**
@@ -19,6 +20,7 @@ class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
         const val UPDATE_BASIC_FILTERABLE = 8
         const val UPDATE_ADVANCED_FILTERABLE = 9
         const val UPDATE_ADVANCED_FEEDING = 10
+        const val UPDATE_FILTER_WAY = 11
     }
 
     override fun readOnServer(id: Int, buf: PacketBuffer) {
@@ -30,6 +32,7 @@ class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
             UPDATE_BASIC_FILTERABLE -> updateBasicFilterable(buf)
             UPDATE_ADVANCED_FILTERABLE -> updateAdvancedFilterable(buf)
             UPDATE_ADVANCED_FEEDING -> updateAdvanceFeedingUpgrade(buf)
+            UPDATE_FILTER_WAY -> updateFilterUpgrade(buf)
         }
     }
 
@@ -73,5 +76,11 @@ class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
             buf.readEnumValue(AdvancedFeedingUpgradeWrapper.FeedingStrategy.Hunger::class.java)
         wrapper.healthFeedingStrategy =
             buf.readEnumValue(AdvancedFeedingUpgradeWrapper.FeedingStrategy.HEALTH::class.java)
+    }
+
+    private fun updateFilterUpgrade(buf: PacketBuffer) {
+        val wrapper = slot.stack.getCapability(Capabilities.IFILTER_UPGRADE_CAPABILITY, null) ?: return
+
+        wrapper.filterWay = buf.readEnumValue(IFilterUpgrade.FilterWayType::class.java)
     }
 }

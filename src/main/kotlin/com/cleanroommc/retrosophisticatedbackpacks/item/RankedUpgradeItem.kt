@@ -9,7 +9,7 @@ import net.minecraftforge.common.util.INBTSerializable
 
 abstract class RankedUpgradeItem<CP>(
     registryName: String,
-    private val capabilityProvider: () -> CP,
+    private val wrapperFactory: () -> CP,
 ) : UpgradeItem(registryName, true)
         where CP : ICapabilityProvider, CP : INBTSerializable<NBTTagCompound> {
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
@@ -17,7 +17,7 @@ abstract class RankedUpgradeItem<CP>(
     }
 
     override fun initCapabilities(stack: ItemStack, nbt: NBTTagCompound?): ICapabilityProvider {
-        val capability = capabilityProvider.invoke()
+        val capability = wrapperFactory.invoke()
         nbt?.let(capability::deserializeNBT)
         return capability
     }

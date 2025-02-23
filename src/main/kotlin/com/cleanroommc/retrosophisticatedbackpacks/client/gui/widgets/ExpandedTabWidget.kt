@@ -18,7 +18,7 @@ import net.minecraft.item.ItemStack
 
 abstract class ExpandedTabWidget<T>(
     slotIndex: Int,
-    coveredTabSize: Int,
+    val coveredTabSize: Int,
     delegatedIconStack: ItemStack,
     titleKey: String,
     width: Int = 75

@@ -20,7 +20,6 @@ import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.SoundEvents
-import net.minecraft.inventory.Container
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.tileentity.TileEntity
@@ -29,6 +28,7 @@ import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
+import net.minecraftforge.items.ItemHandlerHelper
 
 @Suppress("OVERRIDE_DEPRECATION", "DEPRECATION")
 class BackpackBlock(
@@ -161,7 +161,7 @@ class BackpackBlock(
     override fun getComparatorInputOverride(blockState: IBlockState, worldIn: World, pos: BlockPos): Int {
         val tileEntity = worldIn.getTileEntity(pos) as? BackpackTileEntity ?: return 0
 
-        return Container.calcRedstoneFromInventory(tileEntity)
+        return ItemHandlerHelper.calcRedstoneFromInventory(tileEntity)
     }
 
     override fun onBlockPlacedBy(
@@ -174,7 +174,7 @@ class BackpackBlock(
         val backpackInventory = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return
         val tileEntity = worldIn.getTileEntity(pos) as? BackpackTileEntity ?: return
 
-        tileEntity.backpackWrapper.deserializeNBT(backpackInventory.serializeNBT())
+        tileEntity.wrapper.deserializeNBT(backpackInventory.serializeNBT())
     }
 
     override fun onBlockActivated(

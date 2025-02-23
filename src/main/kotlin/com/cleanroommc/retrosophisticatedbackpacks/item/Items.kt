@@ -108,4 +108,10 @@ object Items {
 
     @JvmField
     val advancedRestockUpgrade = RestockUpgradeItem("advanced_restock_upgrade", ::AdvancedRestockUpgradeWrapper)
+
+    @JvmField
+    val filterUpgrade = FilterUpgradeItem("filter_upgrade", ::FilterUpgradeWrapper)
+
+    @JvmField
+    val advancedFilterUpgrade = FilterUpgradeItem("advanced_filter_upgrade", ::AdvancedFilterUpgradeWrapper)
 }

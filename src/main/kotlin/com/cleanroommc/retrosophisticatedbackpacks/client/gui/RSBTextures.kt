@@ -29,6 +29,10 @@ object RSBTextures {
     val BY_MOD_ID_ICON = icon("by_mod_id", 32, 16)
     val BY_ITEM_ICON = ItemDrawable(ItemStack(Items.APPLE))
 
+    val IN_OUT_ICON = icon("in_out", 0, 32)
+    val IN_ICON = icon("in", 16, 32)
+    val OUT_ICON = icon("out", 32, 32)
+
     val ADD_ICON = icon("add", 96, 32)
     val REMOVE_ICON = icon("remove", 112, 32)
 

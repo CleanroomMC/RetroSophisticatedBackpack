@@ -22,6 +22,8 @@ item.retro_sophisticated_backpacks.deposit_upgrade.name=卸貨升級
 item.retro_sophisticated_backpacks.advanced_deposit_upgrade.name=進階卸貨升級
 item.retro_sophisticated_backpacks.restock_upgrade.name=取貨升級
 item.retro_sophisticated_backpacks.advanced_restock_upgrade.name=進階取貨升級
+item.retro_sophisticated_backpacks.filter_upgrade.name=過濾升級
+item.retro_sophisticated_backpacks.advanced_filter_upgrade.name=進階過濾升級
 
 # Creative Tabs
 itemGroup.retro_sophisticated_backpacks.creative_tab=復古精緻背包
@@ -59,6 +61,10 @@ retro_sophisticated_backpacks.tooltip.restock_upgrade=將潛行右鍵的容器�
 
 retro_sophisticated_backpacks.tooltip.advanced_restock_upgrade=根據更多配置將潛行右鍵的容器物品取貨至背包
 
+retro_sophisticated_backpacks.tooltip.filter_upgrade=當放置於世界時過濾輸入的物品
+
+retro_sophisticated_backpacks.tooltip.advanced_filter_upgrade=當放置於世界時根據更多配置過濾輸入的物品
+
 retro_sophisticated_backpacks.tooltip.shift_to_reveal=<按 Shift 顯示>
 
 # Gui Elements
@@ -75,6 +81,9 @@ retro_sophisticated_backpacks.gui.advanced_deposit_settings=進階卸貨設定
 
 retro_sophisticated_backpacks.gui.restock_settings=取貨設定
 retro_sophisticated_backpacks.gui.advanced_restock_settings=進階取貨設定
+
+retro_sophisticated_backpacks.gui.filter_settings=過濾設定
+retro_sophisticated_backpacks.gui.advanced_filter_settings=進階過濾設定
 
 # Gui Tooltips
 retro_sophisticated_backpacks.gui.not_in_effect=未生效
@@ -102,3 +111,7 @@ retro_sophisticated_backpacks.gui.immediate_hunger=當玩家飢餓時立即餵�
 
 retro_sophisticated_backpacks.gui.ignore_health=忽略生命值\n忽略玩家的生命值，僅基於飢餓值設定餵食玩家
 retro_sophisticated_backpacks.gui.consider_health=當玩家受傷時立即餵食\n在玩家生命值未滿時忽略飢餓值設定
+
+retro_sophisticated_backpacks.gui.input_output=輸入 & 輸出
+retro_sophisticated_backpacks.gui.input=僅限輸入
+retro_sophisticated_backpacks.gui.output=僅限輸出

@@ -33,7 +33,7 @@ object BackpackInventoryHelper {
 
                 if (!ItemStack.areItemStacksEqual(stack, copiedStack)) {
                     transferred = true
-                    wrapper.setInventorySlotContents(i, copiedStack)
+                    wrapper.extractItem(i, stack.count - copiedStack.count, false)
                 }
             }
         }

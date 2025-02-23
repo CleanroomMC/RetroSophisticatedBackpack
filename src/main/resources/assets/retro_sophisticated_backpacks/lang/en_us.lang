@@ -22,13 +22,15 @@ item.retro_sophisticated_backpacks.deposit_upgrade.name=Deposit Upgrade
 item.retro_sophisticated_backpacks.advanced_deposit_upgrade.name=Advanced Deposit Upgrade
 item.retro_sophisticated_backpacks.restock_upgrade.name=Restock Upgrade
 item.retro_sophisticated_backpacks.advanced_restock_upgrade.name=Advanced Restock Upgrade
+item.retro_sophisticated_backpacks.filter_upgrade.name=Filter Upgrade
+item.retro_sophisticated_backpacks.advanced_filter_upgrade.name=Advanced Filter Upgrade
 
 # Creative Tabs
-itemGroup.retro_sophisticated_backpacks.creative_tab=Retro Sophisticated Backpack
+itemGroup.retro_sophisticated_backpacks.creative_tab=Retro Sophisticated Backpacks
 
 # Keybinds
 retro_sophisticated_backpacks.key.open_backpack.desc=Opens Backpack in Inventory
-retro_sophisticated_backpacks.key.category=Retro Sophisticated Backpack
+retro_sophisticated_backpacks.key.category=Retro Sophisticated Backpacks
 
 # Tooltips
 retro_sophisticated_backpacks.tooltip.backpack.inventory_size=Inventory size: %d
@@ -59,6 +61,10 @@ retro_sophisticated_backpacks.tooltip.restock_upgrade=Restocks items from sneak-
 
 retro_sophisticated_backpacks.tooltip.advanced_restock_upgrade=Restocks items from sneak-right-clicked inventory to backpack with more configurations
 
+retro_sophisticated_backpacks.tooltip.filter_upgrade=Filters inserted items when placing in world
+
+retro_sophisticated_backpacks.tooltip.advanced_filter_upgrade=Filters inserted items when placing in world with more configurations
+
 retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Shift to reveal>
 
 # Gui Elements
@@ -75,6 +81,9 @@ retro_sophisticated_backpacks.gui.advanced_deposit_settings=Adv. Deposit Setting
 
 retro_sophisticated_backpacks.gui.restock_settings=Restock Settings
 retro_sophisticated_backpacks.gui.advanced_restock_settings=Adv. Restock Settings
+
+retro_sophisticated_backpacks.gui.filter_settings=Filter Settings
+retro_sophisticated_backpacks.gui.advanced_filter_settings=Adv. Filter Settings
 
 # Gui Tooltips
 retro_sophisticated_backpacks.gui.not_in_effect=Not in effect
@@ -102,3 +111,7 @@ retro_sophisticated_backpacks.gui.immediate_hunger=Feed as soon as player is tin
 
 retro_sophisticated_backpacks.gui.ignore_health=Do not consider health\nIgnores player's health and only feeds based on hunger setting
 retro_sophisticated_backpacks.gui.consider_health=Feed player immediately when hurt\nIgnores hunger setting when player is not at max health
+
+retro_sophisticated_backpacks.gui.input_output=Input & Output
+retro_sophisticated_backpacks.gui.input=Input Only
+retro_sophisticated_backpacks.gui.output=Output Only

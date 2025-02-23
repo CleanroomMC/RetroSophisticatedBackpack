@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": {
+      "item": "minecraft:string"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "B": {
+      "item": "retro_sophisticated_backpacks:upgrade_base"
+    }
+  },
+  "pattern": [
+    "RSR",
+    "SBS",
+    "RSR"
+  ],
+  "result": {
+    "item": "retro_sophisticated_backpacks:filter_upgrade"
+  }
+}

@@ -1,7 +1,5 @@
 package com.cleanroommc.retrosophisticatedbackpacks.crafting
 
-import com.google.common.collect.Maps
-import com.google.common.collect.Sets
 import com.google.gson.JsonObject
 import com.google.gson.JsonSyntaxException
 import net.minecraft.item.crafting.Ingredient
@@ -14,10 +12,12 @@ import net.minecraftforge.common.crafting.JsonContext
 
 object RecipeUtil {
     fun parseShaped(context: JsonContext, json: JsonObject): ShapedPrimer {
-        val ingredientMap: MutableMap<Char?, Ingredient> = Maps.newHashMap()
+        val ingredientMap = mutableMapOf<Char, Ingredient>()
         for (entry in JsonUtils.getJsonObject(json, "key").entrySet()) {
-            if (entry.key.length != 1) throw JsonSyntaxException("Invalid key entry: '" + entry.key + "' is an invalid symbol (must be 1 character only).")
-            if (" " == entry.key) throw JsonSyntaxException("Invalid key entry: ' ' is a reserved symbol.")
+            if (entry.key.length != 1)
+                throw JsonSyntaxException("Invalid key entry: '" + entry.key + "' is an invalid symbol (must be 1 character only).")
+            if (" " == entry.key)
+                throw JsonSyntaxException("Invalid key entry: ' ' is a reserved symbol.")
 
             ingredientMap.put(entry.key.toCharArray()[0], CraftingHelper.getIngredient(entry.value, context))
         }
@@ -26,12 +26,16 @@ object RecipeUtil {
 
         val patternJ = JsonUtils.getJsonArray(json, "pattern")
 
-        if (patternJ.size() == 0) throw JsonSyntaxException("Invalid pattern: empty pattern not allowed")
+        if (patternJ.size() == 0)
+            throw JsonSyntaxException("Invalid pattern: empty pattern not allowed")
 
         val pattern: Array<String> = Array(patternJ.size()) { "" }
         for (x in pattern.indices) {
             val line: String = JsonUtils.getString(patternJ.get(x), "pattern[$x]")
-            if (x > 0 && pattern[0].length != line.length) throw JsonSyntaxException("Invalid pattern: each row must  be the same width")
+
+            if (x > 0 && pattern[0].length != line.length)
+                throw JsonSyntaxException("Invalid pattern: each row must  be the same width")
+
             pattern[x] = line
         }
 
@@ -41,7 +45,7 @@ object RecipeUtil {
         primer.mirrored = JsonUtils.getBoolean(json, "mirrored", true)
         primer.input = NonNullList.withSize<Ingredient?>(primer.width * primer.height, Ingredient.EMPTY)
 
-        val keys: MutableSet<Char?> = Sets.newHashSet(ingredientMap.keys)
+        val keys = ingredientMap.keys.toMutableSet()
         keys.remove(' ')
 
         var index = 0

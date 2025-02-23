@@ -90,7 +90,7 @@ class AdvancedFilterWidget(
         private set
 
     init {
-        size(88, 109).syncHandler("upgrades", slotIndex)
+        syncHandler("upgrades", slotIndex)
 
         filterTypeButton = CyclicVariantButtonWidget(
             FILTER_TYPE_VARIANTS,
@@ -130,7 +130,7 @@ class AdvancedFilterWidget(
 
         // Buttons
         val buttonRow = Row()
-            .leftRelOffset(0.5f, 1)
+            .leftRel(0.5f)
             .size(88, 20)
             .childPadding(2)
 
@@ -308,7 +308,6 @@ class AdvancedFilterWidget(
 
         init {
             size(width, 12)
-                .left(1)
                 .overlay(Outline(Color.WHITE.main))
                 .color(Color.GREY.main)
                 .shadow(true)

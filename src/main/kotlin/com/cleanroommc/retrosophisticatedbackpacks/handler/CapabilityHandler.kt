@@ -90,6 +90,18 @@ object CapabilityHandler {
             ::AdvancedRestockUpgradeWrapper
         )
 
+        instance.register(
+            FilterUpgradeWrapper::class.java,
+            CapabilityStorageProvider<FilterUpgradeWrapper>(),
+            ::FilterUpgradeWrapper
+        )
+
+        instance.register(
+            AdvancedFilterUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AdvancedFilterUpgradeWrapper>(),
+            ::AdvancedFilterUpgradeWrapper
+        )
+
         // Interfaces
         instance.register(
             UpgradeWrapper::class.java,
@@ -133,6 +145,12 @@ object CapabilityHandler {
             IRestockUpgrade::class.java,
             NOPCapabilityStorage<IRestockUpgrade>(),
             ::RestockUpgradeWrapper
+        )
+
+        instance.register(
+            IFilterUpgrade::class.java,
+            NOPCapabilityStorage<IFilterUpgrade>(),
+            ::FilterUpgradeWrapper
         )
     }
 

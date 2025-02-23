@@ -18,10 +18,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.Config
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedFeedingUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.CraftingUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.*
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.*
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackContainer
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiData
@@ -33,6 +30,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.tileentity.BackpackTileEntity
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.ceilDiv
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraftforge.items.wrapper.PlayerInvWrapper
+import kotlin.math.min
 
 class BackpackPanel(
     internal val player: EntityPlayer,
@@ -193,9 +191,8 @@ class BackpackPanel(
     }
 
     private fun updateUpgradeWidgets() {
-        val upgradeSlotSize = backpackWrapper.upgradeSlotsSize()
         var tabIndex = 0
-        var anyTabOpened = false
+        var openedTabIndex: Int? = null
 
         resetTabState()
 
@@ -209,7 +206,7 @@ class BackpackPanel(
             val wrapper = stack.getCapability(Capabilities.UPGRADE_CAPABILITY, null) ?: continue
 
             if (wrapper.isTabOpened) {
-                if (anyTabOpened) {
+                if (openedTabIndex != null) {
                     wrapper.isTabOpened = false
                     upgradeSlotSyncHandlers[slotIndex].syncToServer(UpgradeSlotSH.UPDATE_UPGRADE_TAB_STATE) {
                         it.writeBoolean(false)
@@ -218,7 +215,7 @@ class BackpackPanel(
                     return
                 }
 
-                anyTabOpened = true
+                openedTabIndex = slotIndex
             }
         }
 
@@ -248,6 +245,16 @@ class BackpackPanel(
                     tabWidget.expandedWidget = AdvancedFeedingUpgradeWidget(slotIndex, wrapper)
                 }
 
+                is AdvancedFilterUpgradeWrapper -> {
+                    upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
+                    tabWidget.expandedWidget = AdvancedFilterUpgradeWidget(slotIndex, wrapper)
+                }
+
+                is FilterUpgradeWrapper -> {
+                    upgradeSlotGroup.updateFilterDelegate(wrapper)
+                    tabWidget.expandedWidget = FilterUpgradeWidget(slotIndex, wrapper)
+                }
+
                 is IAdvancedFilterable -> {
                     upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
                     tabWidget.expandedWidget = AdvancedExpandedTabWidget(
@@ -271,6 +278,18 @@ class BackpackPanel(
 
             context.jeiSettings.addJeiExclusionArea(tabWidget.expandedWidget)
             tabIndex++
+        }
+
+        if (openedTabIndex != null) {
+            val tabWidget = tabWidgets[openedTabIndex]
+            val expandedTabWidget = min(
+                openedTabIndex + (tabWidget.expandedWidget?.coveredTabSize ?: 0),
+                tabWidgets.size
+            )
+
+            for (tabIndex in openedTabIndex + 1 until expandedTabWidget) {
+                tabWidgets[tabIndex].isEnabled = false
+            }
         }
 
         disableUnusedTabWidgets(tabIndex)
@@ -308,11 +327,6 @@ class BackpackPanel(
 
     override fun shouldAnimate(): Boolean =
         Config.clientConfig.enableAnimation
-
-    override fun onClose() {
-        super.onClose()
-        tileEntity?.closeInventory(player)
-    }
 
     override fun postDraw(context: ModularGuiContext, transformed: Boolean) {
         super.postDraw(context, transformed)
