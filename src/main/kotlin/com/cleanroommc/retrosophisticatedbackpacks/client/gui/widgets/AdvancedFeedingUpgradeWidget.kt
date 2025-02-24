@@ -37,11 +37,11 @@ class AdvancedFeedingUpgradeWidget(
 
         private val HEART_VARIANTS = listOf(
             CyclicVariantButtonWidget.Variant(
-                IKey.lang("gui.ignore_health".asTranslationKey()),
+                IKey.lang("gui.consider_health".asTranslationKey()),
                 RSBTextures.HALF_HEART_ICON
             ),
             CyclicVariantButtonWidget.Variant(
-                IKey.lang("gui.consider_health".asTranslationKey()),
+                IKey.lang("gui.ignore_health".asTranslationKey()),
                 RSBTextures.IGNORE_HALF_HEART_ICON
             ),
         )
