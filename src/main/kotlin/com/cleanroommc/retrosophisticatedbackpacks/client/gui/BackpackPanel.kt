@@ -245,6 +245,11 @@ class BackpackPanel(
                     tabWidget.expandedWidget = AdvancedFeedingUpgradeWidget(slotIndex, wrapper)
                 }
 
+                is FeedingUpgradeWrapper -> {
+                    upgradeSlotGroup.updateFilterDelegate(wrapper)
+                    tabWidget.expandedWidget = FeedingUpgradeWidget(slotIndex, wrapper)
+                }
+
                 is AdvancedFilterUpgradeWrapper -> {
                     upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
                     tabWidget.expandedWidget = AdvancedFilterUpgradeWidget(slotIndex, wrapper)
