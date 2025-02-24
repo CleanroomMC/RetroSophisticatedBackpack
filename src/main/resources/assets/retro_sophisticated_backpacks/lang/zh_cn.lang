@@ -18,6 +18,12 @@ item.retro_sophisticated_backpacks.pickup_upgrade.name=拾取升级
 item.retro_sophisticated_backpacks.advanced_pickup_upgrade.name=高级拾取升级
 item.retro_sophisticated_backpacks.feeding_upgrade.name=喂食升级
 item.retro_sophisticated_backpacks.advanced_feeding_upgrade.name=高级喂食升级
+item.retro_sophisticated_backpacks.deposit_upgrade.name=卸货升级
+item.retro_sophisticated_backpacks.advanced_deposit_upgrade.name=高级卸货升级
+item.retro_sophisticated_backpacks.restock_upgrade.name=取货升级
+item.retro_sophisticated_backpacks.advanced_restock_upgrade.name=高级取货升级
+item.retro_sophisticated_backpacks.filter_upgrade.name=过滤升级
+item.retro_sophisticated_backpacks.advanced_filter_upgrade.name=高级过滤升级
 
 # Creative Tabs
 itemGroup.retro_sophisticated_backpacks.creative_tab=复古精妙背包
@@ -47,18 +53,37 @@ retro_sophisticated_backpacks.tooltip.feeding_upgrade=能够让背包自动喂�
 
 retro_sophisticated_backpacks.tooltip.advanced_feeding_upgrade=能够让背包自动喂食玩家，拥有更多过滤选项
 
+retro_sophisticated_backpacks.tooltip.deposit_upgrade=手持背包，潜行右击容器以卸载物品
+
+retro_sophisticated_backpacks.tooltip.advanced_deposit_upgrade=手持背包，潜行右击容器以卸载物品，拥有更多过滤选项
+
+retro_sophisticated_backpacks.tooltip.restock_upgrade=手持背包，潜行右击容器以提取物品
+
+retro_sophisticated_backpacks.tooltip.advanced_restock_upgrade=手持背包，潜行右击容器以提取物品，拥有更多过滤选项
+
+retro_sophisticated_backpacks.tooltip.filter_upgrade=放置在世界中时，过滤输入/输出背包的物品
+
+retro_sophisticated_backpacks.tooltip.advanced_filter_upgrade=放置在世界中时，过滤输入/输出背包的物品，拥有更多配置项
+
 retro_sophisticated_backpacks.tooltip.shift_to_reveal=<按Shift显示>
 
 # Gui Elements
 retro_sophisticated_backpacks.container.backpack=背包
 
 retro_sophisticated_backpacks.gui.pickup_settings=拾取设置
-
 retro_sophisticated_backpacks.gui.advanced_pickup_settings=高级拾取设置
 
 retro_sophisticated_backpacks.gui.feeding_settings=喂食设置
-
 retro_sophisticated_backpacks.gui.advanced_feeding_settings=高级喂食设置
+
+retro_sophisticated_backpacks.gui.deposit_settings=卸货设置
+retro_sophisticated_backpacks.gui.advanced_deposit_settings=高级卸货设置
+
+retro_sophisticated_backpacks.gui.restock_settings=取货设置
+retro_sophisticated_backpacks.gui.advanced_restock_settings=高级取货设置
+
+retro_sophisticated_backpacks.gui.filter_settings=过滤设置
+retro_sophisticated_backpacks.gui.advanced_filter_settings=高级过滤设置
 
 # Gui Tooltips
 retro_sophisticated_backpacks.gui.not_in_effect=未生效
@@ -86,3 +111,7 @@ retro_sophisticated_backpacks.gui.immediate_hunger=当玩家稍微饥饿时立�
 
 retro_sophisticated_backpacks.gui.ignore_health=忽略生命值\n忽略玩家的生命值，仅基于饥饿值喂食玩家
 retro_sophisticated_backpacks.gui.consider_health=当玩家受伤时立即喂食\n在玩家未达到最大生命值前忽略饥饿值
+
+retro_sophisticated_backpacks.gui.input_output=输入&输出
+retro_sophisticated_backpacks.gui.input=仅输入
+retro_sophisticated_backpacks.gui.output=仅输出
