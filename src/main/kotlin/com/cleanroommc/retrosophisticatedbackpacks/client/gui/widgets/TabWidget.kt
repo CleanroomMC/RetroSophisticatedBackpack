@@ -1,32 +1,44 @@
 package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets
 
+import com.cleanroommc.modularui.api.drawable.IDrawable
 import com.cleanroommc.modularui.api.widget.Interactable
 import com.cleanroommc.modularui.drawable.GuiTextures
-import com.cleanroommc.modularui.drawable.ItemDrawable
 import com.cleanroommc.modularui.drawable.TabTexture
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.widget.SingleChildWidget
 
-class TabWidget(tabIndex: Int) : SingleChildWidget<TabWidget>(), Interactable {
+class TabWidget(
+    private val tabIndex: Int,
+    top: Int = tabIndex * 30,
+    private val expandDirection: ExpandDirection = ExpandDirection.RIGHT
+) :
+    SingleChildWidget<TabWidget>(), Interactable {
     companion object {
         val TAB_TEXTURE: TabTexture = GuiTextures.TAB_RIGHT
     }
 
     var showExpanded = false
-    var expandedWidget: ExpandedTabWidget<*>? = null
+    var expandedWidget: ExpandedTabWidget? = null
         set(value) {
-            if (value != null)
+            if (value != null) {
+                if (expandDirection == ExpandDirection.LEFT)
+                    value.right(0)
+
                 child(value.setEnabledIf { showExpanded })
+            }
 
             field = value
         }
-    var tabIcon: ItemDrawable? = null
+    var tabIcon: IDrawable? = null
 
     init {
-        size(TAB_TEXTURE.width, TAB_TEXTURE.height)
-            .right(-TAB_TEXTURE.width + 4)
-            .top((tabIndex + 1) * 30)
+        size(TAB_TEXTURE.width, TAB_TEXTURE.height).top(top)
+
+        when (expandDirection) {
+            ExpandDirection.LEFT -> left(-TAB_TEXTURE.width + 4)
+            ExpandDirection.RIGHT -> right(-TAB_TEXTURE.width + 4)
+        }
     }
 
     override fun onInit() {
@@ -61,6 +73,14 @@ class TabWidget(tabIndex: Int) : SingleChildWidget<TabWidget>(), Interactable {
         if (showExpanded)
             return
 
-        TAB_TEXTURE.get(0, false).drawAtZero(context, TAB_TEXTURE.width, TAB_TEXTURE.height, widgetTheme)
+        val index = if (tabIndex == 0) -1 else 0
+
+        when (expandDirection) {
+            ExpandDirection.LEFT -> GuiTextures.TAB_LEFT.get(index, false)
+                .drawAtZero(context, TAB_TEXTURE.width, TAB_TEXTURE.height, widgetTheme)
+
+            ExpandDirection.RIGHT -> GuiTextures.TAB_RIGHT.get(index, false)
+                .drawAtZero(context, TAB_TEXTURE.width, TAB_TEXTURE.height, widgetTheme)
+        }
     }
 }

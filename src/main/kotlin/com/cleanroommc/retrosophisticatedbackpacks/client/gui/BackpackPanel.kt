@@ -1,7 +1,6 @@
 package com.cleanroommc.retrosophisticatedbackpacks.client.gui
 
 import com.cleanroommc.modularui.api.IPanelHandler
-import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.drawable.AdaptableUITexture
 import com.cleanroommc.modularui.drawable.ItemDrawable
 import com.cleanroommc.modularui.drawable.UITexture
@@ -11,11 +10,9 @@ import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.WidgetTree
-import com.cleanroommc.modularui.widgets.Dialog
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
-import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.modularui.widgets.slot.SlotGroup
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
@@ -84,6 +81,7 @@ class BackpackPanel(
     val upgradeSlotGroups: Array<UpgradeSlotUpdateGroup>
 
     val settingPanel: IPanelHandler
+    var isMemorySettingTabOpened: Boolean = false
 
     init {
         // Backpack slots
@@ -94,15 +92,6 @@ class BackpackPanel(
             syncManager.syncValue("backpack", it, syncHandler)
             syncHandler
         }
-
-//        for (i in 0 until backpackWrapper.backpackInventorySize()) {
-//            syncManager.itemSlot(
-//                "backpack",
-//                i,
-//                ModularBackpackSlot(backpackWrapper, i)
-//                    .slotGroup("backpack_inventory")
-//            )
-//        }
 
         syncManager.registerSlotGroup(SlotGroup("backpack_inventory", rowSize, 100, true))
 
@@ -132,20 +121,7 @@ class BackpackPanel(
         }
 
         settingPanel = syncManager.panel("setting_panel", { syncManager, syncHandler ->
-            val width = area.width
-            val height = 95
-
-            val dialog = Dialog<Any>("second_window", null)
-                .setDisablePanelsBelow(false)
-                .setCloseOnOutOfBoundsClick(false)
-                .size(width, height)
-                .relative(this)
-                .bottom(0)
-            val grid = Column().size(width - 14, height - 14).margin(7).child(TextWidget(IKey.str("KEK")).leftRel(0.5f))
-
-            dialog.child(grid)
-
-            dialog
+            BackpackSettingPanel(this)
         }, true)
     }
 
@@ -205,7 +181,7 @@ class BackpackPanel(
 
     internal fun addUpgradeTabs() {
         for (i in 0 until backpackWrapper.upgradeSlotsSize()) {
-            val tab = TabWidget(i).debugName("upgrade_tab_${i}")
+            val tab = TabWidget(i + 1).debugName("upgrade_tab_${i}")
 
             tab.isEnabled = false
             tabWidgets.add(tab)
@@ -315,12 +291,12 @@ class BackpackPanel(
 
         if (openedTabIndex != null) {
             val tabWidget = tabWidgets[openedTabIndex]
-            val expandedTabWidget = min(
+            val upperboundIndex = min(
                 openedTabIndex + (tabWidget.expandedWidget?.coveredTabSize ?: 0),
                 tabWidgets.size
             )
 
-            for (tabIndex in openedTabIndex + 1 until expandedTabWidget) {
+            for (tabIndex in openedTabIndex + 1 until upperboundIndex) {
                 tabWidgets[tabIndex].isEnabled = false
             }
         }

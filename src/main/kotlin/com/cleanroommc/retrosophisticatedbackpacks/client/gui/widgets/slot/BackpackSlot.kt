@@ -33,7 +33,7 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
     }
 
     private val isInSettingMode: Boolean
-        get() = panel.settingPanel.isPanelOpen
+        get() = panel.isMemorySettingTabOpened
     private val stackMemorySetting: NonNullList<ItemStack>
         get() = wrapper.backpackItemStackHandler.memoryStack
 
@@ -41,15 +41,15 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
         if (isInSettingMode) {
             val isMemorySet = !stackMemorySetting[slot.slotIndex].isEmpty
 
-            if (isMemorySet) {
+            if (isMemorySet && mouseButton == 1) {
                 wrapper.unsetMemoryStack(slot.slotIndex)
                 syncHandler.syncToServer(BackpackSlotSH.UPDATE_UNSET_MEMORY_STACK)
-            } else {
+                Interactable.Result.SUCCESS
+            } else if (!isMemorySet && mouseButton == 0) {
                 wrapper.setMemoryStack(slot.slotIndex)
                 syncHandler.syncToServer(BackpackSlotSH.UPDATE_SET_MEMORY_STACK)
-            }
-
-            Interactable.Result.SUCCESS
+                Interactable.Result.SUCCESS
+            } else Interactable.Result.STOP
         } else {
             super.onMousePressed(mouseButton)
         }
@@ -104,7 +104,7 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
 
         superDraw()
 
-        if (!slot.stack.isEmpty && !memoryStack.isEmpty)
+        if (slot.stack.isEmpty && !memoryStack.isEmpty)
             drawMemoryStack(memoryStack)
     }
 

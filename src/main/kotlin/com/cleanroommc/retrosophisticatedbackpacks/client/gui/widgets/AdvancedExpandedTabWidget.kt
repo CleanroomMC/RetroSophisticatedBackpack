@@ -14,7 +14,7 @@ open class AdvancedExpandedTabWidget<T>(
     filterSyncKey: String = "adv_common_filter",
     coveredTabSize: Int = 5,
     width: Int = 100,
-) : ExpandedTabWidget<T>(slotIndex, coveredTabSize, delegatedIconStack, titleKey, width)
+) : ExpandedUpgradeTabWidget<T>(slotIndex, coveredTabSize, delegatedIconStack, titleKey, width)
         where T : IAdvancedFilterable, T : UpgradeWrapper<*> {
     protected val startingRow: Row = Row()
         .height(0)
