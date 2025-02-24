@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.widget.Widget
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 
 class SettingTabWidget : Widget<SettingTabWidget>(), Interactable {
     companion object {
@@ -22,7 +23,7 @@ class SettingTabWidget : Widget<SettingTabWidget>(), Interactable {
             .top(0)
             .background(TAB_TEXTURE.get(-1, false))
             .tooltipStatic {
-                it.addLine(IKey.str("Settings"))
+                it.addLine(IKey.lang("gui.settings".asTranslationKey()))
                     .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
             }
     }

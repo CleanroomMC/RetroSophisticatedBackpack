@@ -46,8 +46,8 @@ class MemorySettingWidget(
             false
         }
         .tooltipStatic {
-            it.addLine(IKey.lang("tooltip.memorize_all".asTranslationKey()))
-            it.pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+            it.addLine(IKey.lang("gui.memorize_all".asTranslationKey()))
+                .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
         }
 
     private val unmemorizeAllButton: ButtonWidget<*> = ButtonWidget()
@@ -71,8 +71,8 @@ class MemorySettingWidget(
             false
         }
         .tooltipStatic {
-            it.addLine(IKey.lang("tooltip.unmemorize_all".asTranslationKey()))
-            it.pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+            it.addLine(IKey.lang("gui.unmemorize_all".asTranslationKey()))
+                .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
         }
 
     init {

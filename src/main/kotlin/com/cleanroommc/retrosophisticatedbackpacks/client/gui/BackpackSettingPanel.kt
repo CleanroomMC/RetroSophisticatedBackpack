@@ -5,6 +5,7 @@ import com.cleanroommc.modularui.drawable.AdaptableUITexture
 import com.cleanroommc.modularui.drawable.UITexture
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.screen.ModularScreen
+import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.widgets.TextWidget
@@ -14,6 +15,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.ExpandDire
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.MemorySettingWidget
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.TabWidget
 import com.cleanroommc.retrosophisticatedbackpacks.config.ClientConfig
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 
 class BackpackSettingPanel(private val parent: BackpackPanel) : ModularPanel("backpack_settings") {
     companion object {
@@ -35,6 +37,10 @@ class BackpackSettingPanel(private val parent: BackpackPanel) : ModularPanel("ba
             .bottom(0)
 
         memoryTab = TabWidget(0, top = 0, ExpandDirection.LEFT)
+            .tooltipStatic {
+                it.addLine(IKey.lang("gui.memorize_all".asTranslationKey()))
+                    .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+            }
         memoryTab.expandedWidget = MemorySettingWidget(parent, memoryTab)
         memoryTab.tabIcon = RSBTextures.BRAIN_ICON
 

@@ -119,5 +119,7 @@ retro_sophisticated_backpacks.gui.input_output=Input & Output
 retro_sophisticated_backpacks.gui.input=Input Only
 retro_sophisticated_backpacks.gui.output=Output Only
 
-retro_sophisticated_backpacks.tooltip.memorize_all=Memorize all slots
-retro_sophisticated_backpacks.tooltip.unmemorize_all=Forget all slots
+retro_sophisticated_backpacks.gui.settings=Settings
+
+retro_sophisticated_backpacks.gui.memorize_all=Memorize all slots
+retro_sophisticated_backpacks.gui.unmemorize_all=Forget all slots

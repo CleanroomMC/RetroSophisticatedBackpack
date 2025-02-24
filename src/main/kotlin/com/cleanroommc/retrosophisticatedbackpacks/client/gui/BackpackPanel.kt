@@ -1,11 +1,13 @@
 package com.cleanroommc.retrosophisticatedbackpacks.client.gui
 
 import com.cleanroommc.modularui.api.IPanelHandler
+import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.drawable.AdaptableUITexture
 import com.cleanroommc.modularui.drawable.ItemDrawable
 import com.cleanroommc.modularui.drawable.UITexture
 import com.cleanroommc.modularui.drawable.text.StringKey
 import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
@@ -243,6 +245,12 @@ class BackpackPanel(
             tabWidget.showExpanded = wrapper.isTabOpened
             tabWidget.isEnabled = true
             tabWidget.tabIcon = ItemDrawable(slot.slot.stack)
+            tabWidget.tooltip {
+                it.clearText()
+                    .addLine(IKey.str(item.getItemStackDisplayName(stack)))
+                    .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+            }
+
 
             when (wrapper) {
                 is CraftingUpgradeWrapper -> {
