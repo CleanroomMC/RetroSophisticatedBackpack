@@ -108,6 +108,9 @@ object EntityEventHandler {
             feedTickCounter++
 
             if (feedTickCounter % 20 == 0) {
+                if (event.player.isCreative)
+                    return
+
                 BackpackFeedingHelper.attemptFeed(event.player)
                 feedTickCounter = 0
             }

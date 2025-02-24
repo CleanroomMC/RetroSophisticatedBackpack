@@ -1,6 +1,5 @@
 package com.cleanroommc.retrosophisticatedbackpacks.client.gui
 
-import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.modularui.widgets.slot.SlotGroup
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
@@ -12,7 +11,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.sync.FilterSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.sync.FoodFilterSlotSH
 
 class UpgradeSlotUpdateGroup(
-    private val syncManager: PanelSyncManager,
+    private val panel: BackpackPanel,
     private val wrapper: BackpackWrapper,
     private val slotIndex: Int
 ) {
@@ -28,6 +27,8 @@ class UpgradeSlotUpdateGroup(
     val advancedFeedingFilterSlots: Array<ModularSlot>
 
     init {
+        val syncManager = panel.syncManager
+
         syncManager.syncValue("common_filter_delegation_$slotIndex", commonFilterStackHandler)
 
         commonFilterSlots = Array(9) {

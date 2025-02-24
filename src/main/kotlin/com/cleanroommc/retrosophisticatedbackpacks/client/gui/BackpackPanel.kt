@@ -1,5 +1,7 @@
 package com.cleanroommc.retrosophisticatedbackpacks.client.gui
 
+import com.cleanroommc.modularui.api.IPanelHandler
+import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.drawable.AdaptableUITexture
 import com.cleanroommc.modularui.drawable.ItemDrawable
 import com.cleanroommc.modularui.drawable.UITexture
@@ -9,9 +11,11 @@ import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.WidgetTree
+import com.cleanroommc.modularui.widgets.Dialog
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
+import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.modularui.widgets.slot.SlotGroup
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
@@ -26,6 +30,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularBackpa
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularUpgradeSlot
 import com.cleanroommc.retrosophisticatedbackpacks.config.ClientConfig
 import com.cleanroommc.retrosophisticatedbackpacks.item.UpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.sync.BackpackSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.tileentity.BackpackTileEntity
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.ceilDiv
@@ -74,31 +79,39 @@ class BackpackPanel(
     val rowSize = if (backpackWrapper.backpackInventorySize() > 81) 12 else 9
     val colSize = backpackWrapper.backpackInventorySize().ceilDiv(rowSize)
 
+    val backpackSlotSyncHandlers: Array<BackpackSlotSH>
     val upgradeSlotSyncHandlers: Array<UpgradeSlotSH>
     val upgradeSlotGroups: Array<UpgradeSlotUpdateGroup>
 
+    val settingPanel: IPanelHandler
+
     init {
         // Backpack slots
-        for (i in 0 until backpackWrapper.backpackInventorySize()) {
-            syncManager.itemSlot(
-                "backpack",
-                i,
-                ModularBackpackSlot(backpackWrapper, i)
-                    .slotGroup("backpack_inventory")
-            )
+        backpackSlotSyncHandlers = Array(backpackWrapper.backpackInventorySize()) {
+            val backpackSlot = ModularBackpackSlot(backpackWrapper, it).slotGroup("backpack_inventory")
+            val syncHandler = BackpackSlotSH(backpackWrapper, backpackSlot)
+
+            syncManager.syncValue("backpack", it, syncHandler)
+            syncHandler
         }
+
+//        for (i in 0 until backpackWrapper.backpackInventorySize()) {
+//            syncManager.itemSlot(
+//                "backpack",
+//                i,
+//                ModularBackpackSlot(backpackWrapper, i)
+//                    .slotGroup("backpack_inventory")
+//            )
+//        }
 
         syncManager.registerSlotGroup(SlotGroup("backpack_inventory", rowSize, 100, true))
 
         // Upgrade slots
         upgradeSlotSyncHandlers = Array(backpackWrapper.upgradeSlotsSize()) {
             val upgradeSlot = ModularUpgradeSlot(
-                backpackWrapper.upgradeItemStackHandler,
-                it,
-                backpackWrapper::canAddStackUpgrade,
-                backpackWrapper::canRemoveStackUpgrade,
-                backpackWrapper::canReplaceStackUpgrade,
-                backpackWrapper::canRemoveInceptionUpgrade
+                this,
+                backpackWrapper,
+                it
             ).slotGroup("upgrade_inventory")
             val syncHandler = UpgradeSlotSH(upgradeSlot)
 
@@ -115,8 +128,25 @@ class BackpackPanel(
 
         // Upgrade slot inventory pre register
         upgradeSlotGroups = Array(backpackWrapper.upgradeSlotsSize()) {
-            UpgradeSlotUpdateGroup(syncManager, backpackWrapper, it)
+            UpgradeSlotUpdateGroup(this, backpackWrapper, it)
         }
+
+        settingPanel = syncManager.panel("setting_panel", { syncManager, syncHandler ->
+            val width = area.width
+            val height = 95
+
+            val dialog = Dialog<Any>("second_window", null)
+                .setDisablePanelsBelow(false)
+                .setCloseOnOutOfBoundsClick(false)
+                .size(width, height)
+                .relative(this)
+                .bottom(0)
+            val grid = Column().size(width - 14, height - 14).margin(7).child(TextWidget(IKey.str("KEK")).leftRel(0.5f))
+
+            dialog.child(grid)
+
+            dialog
+        }, true)
     }
 
     // Currently only main hand slot will be locked if it's the backpack being opened
@@ -144,7 +174,7 @@ class BackpackPanel(
         backpackSlotGroupWidget.flex().coverChildren().leftRel(0.5F).top(17)
 
         for (i in 0 until backpackWrapper.backpackInventorySize()) {
-            val itemSlot = BackpackSlot()
+            val itemSlot = BackpackSlot(this, backpackWrapper)
                 .syncHandler("backpack", i)
                 .pos(i % rowSize * SLOT_SIZE, i / rowSize * SLOT_SIZE)
                 .debugName("slot_${i}")

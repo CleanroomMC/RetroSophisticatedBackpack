@@ -28,6 +28,9 @@ class BackpackWrapper(
         private const val UPGRADE_SLOTS_TAG = "UpgradeSlots"
         private const val BACKPACK_INVENTORY_SIZE_TAG = "BackpackInventorySize"
         private const val UPGRADE_SLOTS_SIZE_TAG = "UpgradeSlotsSize"
+
+        private const val MEMORY_STACK_ITEMS_TAG = "MemoryItems"
+
         private const val UUID_TAG = "UUID"
 
         const val DEFAULT_MAIN_COLOR: Int = -0x339ec6
@@ -119,6 +122,26 @@ class BackpackWrapper(
             .any { it.canExtract(stack) }
     }
 
+    // Setting related
+
+    fun setMemoryStack(slotIndex: Int) {
+        val currentStack = getStackInSlot(slotIndex)
+
+        if (currentStack.isEmpty)
+            return
+
+        val copiedStack = currentStack.copy()
+        copiedStack.count = 1
+
+        backpackItemStackHandler.memoryStack[slotIndex] = copiedStack
+    }
+
+    fun unsetMemoryStack(slotIndex: Int) {
+        backpackItemStackHandler.memoryStack[slotIndex] = ItemStack.EMPTY
+    }
+
+    // Overrides
+
     fun getDisplayName(): ITextComponent =
         TextComponentTranslation("container.backpack".asTranslationKey())
 
@@ -155,6 +178,12 @@ class BackpackWrapper(
         nbt.setTag(UPGRADE_SLOTS_TAG, upgradesNbt)
         nbt.setInteger(BACKPACK_INVENTORY_SIZE_TAG, backpackInventorySize())
         nbt.setInteger(UPGRADE_SLOTS_SIZE_TAG, upgradeSlotsSize())
+
+        // Settings
+        val memoryNbt = NBTTagCompound()
+        BackpackItemStackHelper.saveAllSlotsExtended(memoryNbt, backpackItemStackHandler.memoryStack)
+        nbt.setTag(MEMORY_STACK_ITEMS_TAG, memoryNbt)
+
         nbt.setUniqueId(UUID_TAG, uuid)
         return nbt
     }
@@ -181,5 +210,11 @@ class BackpackWrapper(
                 nbt.getCompoundTag(UPGRADE_SLOTS_TAG),
                 upgradeItemStackHandler.inventory
             )
+
+        // Settings
+        BackpackItemStackHelper.loadAllItemsExtended(
+            nbt.getCompoundTag(MEMORY_STACK_ITEMS_TAG),
+            backpackItemStackHandler.memoryStack
+        )
     }
 }
