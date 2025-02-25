@@ -58,11 +58,11 @@ class BackpackPanel(
             syncManager: PanelSyncManager,
             player: EntityPlayer,
             tileEntity: BackpackTileEntity?,
-            backpackWrapper: BackpackWrapper,
+            wrapper: BackpackWrapper,
             width: Int,
             height: Int
         ): BackpackPanel {
-            val panel = BackpackPanel(player, tileEntity, syncManager, backpackWrapper, BackpackContainer())
+            val panel = BackpackPanel(player, tileEntity, syncManager, wrapper, BackpackContainer(wrapper))
                 .size(width, height) as BackpackPanel
             syncManager.containerCustomizer = panel.backpackContainer
             syncManager.bindPlayerInventory(player)

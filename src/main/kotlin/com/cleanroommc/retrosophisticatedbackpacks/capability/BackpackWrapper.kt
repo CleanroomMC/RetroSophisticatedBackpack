@@ -124,6 +124,9 @@ class BackpackWrapper(
 
     // Setting related
 
+    fun isSlotMemorized(slotIndex: Int): Boolean =
+        !backpackItemStackHandler.memoryStack[slotIndex].isEmpty
+
     fun setMemoryStack(slotIndex: Int) {
         val currentStack = getStackInSlot(slotIndex)
 
