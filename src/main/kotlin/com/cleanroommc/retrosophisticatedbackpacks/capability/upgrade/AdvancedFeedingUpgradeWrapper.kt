@@ -1,5 +1,6 @@
 package com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade
 
+import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackDataFixer
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.ExposedItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.item.FeedingUpgradeItem
@@ -41,7 +42,7 @@ class AdvancedFeedingUpgradeWrapper : AdvancedUpgradeWrapper<FeedingUpgradeItem>
             if (!checkFilter(stack))
                 continue
 
-            val item = stack.item as ItemFood
+            val item = stack.item as? ItemFood ?: continue
             val healingAmount = item.getHealAmount(stack)
 
             if (maxHealth > health && healthFeedingStrategy == FeedingStrategy.HEALTH.ALWAYS)
@@ -76,6 +77,7 @@ class AdvancedFeedingUpgradeWrapper : AdvancedUpgradeWrapper<FeedingUpgradeItem>
         super.deserializeNBT(nbt)
         hungerFeedingStrategy = FeedingStrategy.Hunger.entries[nbt.getByte(HUNGER_FEEDING_STRATEGY_TAG).toInt()]
         healthFeedingStrategy = FeedingStrategy.HEALTH.entries[nbt.getByte(HURT_FEEDING_STRATEGY_TAG).toInt()]
+        BackpackDataFixer.fixFeedingUpgrade(filterItems)
     }
 
     class FeedingStrategy private constructor() {
