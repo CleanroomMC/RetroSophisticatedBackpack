@@ -89,6 +89,7 @@ retro_sophisticated_backpacks.gui.memory_settings=記憶設定
 retro_sophisticated_backpacks.gui.sorting_settings=整理設定
 
 # Gui Tooltips
+retro_sophisticated_backpacks.gui.stack_size_extra=數量: %s / %s
 retro_sophisticated_backpacks.gui.not_in_effect=未生效
 
 retro_sophisticated_backpacks.gui.whitelist=白名單

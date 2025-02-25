@@ -1,11 +1,13 @@
 package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.slot
 
+import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.api.widget.Interactable
 import com.cleanroommc.modularui.core.mixin.GuiAccessor
 import com.cleanroommc.modularui.core.mixin.GuiContainerAccessor
 import com.cleanroommc.modularui.core.mixin.GuiScreenAccessor
 import com.cleanroommc.modularui.drawable.GuiDraw
 import com.cleanroommc.modularui.drawable.text.TextRenderer
+import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.utils.Alignment
@@ -16,6 +18,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularBackpackSlot
 import com.cleanroommc.retrosophisticatedbackpacks.sync.BackpackSlotSH
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import net.minecraft.client.gui.Gui
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.client.renderer.GlStateManager
@@ -23,6 +26,8 @@ import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.inventory.Container
 import net.minecraft.inventory.Slot
 import net.minecraft.item.ItemStack
+import net.minecraft.util.text.Style
+import net.minecraft.util.text.TextComponentString
 import net.minecraft.util.text.TextFormatting
 import kotlin.math.min
 
@@ -32,10 +37,29 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
     }
 
     private val isInSettingMode: Boolean
+        get() = panel.settingPanel.isPanelOpen
+    private val isInMemorySettingMode: Boolean
         get() = panel.isMemorySettingTabOpened
 
+    override fun buildTooltip(stack: ItemStack, tooltip: RichTooltip) {
+        if (stack.isEmpty)
+            return
+
+        super.buildTooltip(stack, tooltip)
+        val formattedCount = NumberFormat.formatWithMaxDecimals(stack.count.toDouble(), 2)
+        val formattedStackLimit = NumberFormat.formatWithMaxDecimals(slot.getItemStackLimit(stack).toDouble(), 2)
+
+        tooltip.addLine(
+            IKey.lang(
+                "gui.stack_size_extra".asTranslationKey(),
+                TextComponentString(formattedCount).setStyle(Style().setColor(TextFormatting.AQUA)).formattedText,
+                TextComponentString(formattedStackLimit).setStyle(Style().setColor(TextFormatting.AQUA)).formattedText
+            )
+        )
+    }
+
     override fun onMousePressed(mouseButton: Int): Interactable.Result =
-        if (isInSettingMode) {
+        if (isInMemorySettingMode) {
             val isMemorySet = wrapper.isSlotMemorized(slot.slotIndex)
 
             if (isMemorySet && mouseButton == 1) {
@@ -47,6 +71,8 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
                 syncHandler.syncToServer(BackpackSlotSH.UPDATE_SET_MEMORY_STACK)
                 Interactable.Result.SUCCESS
             } else Interactable.Result.STOP
+        } else if (isInSettingMode) {
+            Interactable.Result.STOP
         } else {
             super.onMousePressed(mouseButton)
         }
