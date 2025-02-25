@@ -120,6 +120,7 @@ retro_sophisticated_backpacks.gui.input=僅限輸入
 retro_sophisticated_backpacks.gui.output=僅限輸出
 
 retro_sophisticated_backpacks.gui.settings=設定
+retro_sophisticated_backpacks.gui.configuration_tab=設定介面
 
 retro_sophisticated_backpacks.gui.memorize_all=記憶所有欄位
 retro_sophisticated_backpacks.gui.unmemorize_all=遺忘所有欄位

@@ -47,7 +47,7 @@ class BackpackSettingPanel(private val parent: BackpackPanel) : ModularPanel("ba
         val grid = Column()
             .size(parent.area.width - 14, HEIGHT - 14)
             .margin(7)
-            .child(TextWidget(IKey.str("Configuration Tab")).leftRel(0.5f))
+            .child(TextWidget(IKey.lang("gui.configuration_tab".asTranslationKey())).leftRel(0.5f))
 
         child(grid)
             .child(memoryTab)
