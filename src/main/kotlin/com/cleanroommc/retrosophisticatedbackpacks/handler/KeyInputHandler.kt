@@ -2,6 +2,7 @@ package com.cleanroommc.retrosophisticatedbackpacks.handler
 
 import baubles.api.BaublesApi
 import baubles.common.container.SlotBauble
+import com.cleanroommc.modularui.screen.ClientScreenHandler
 import com.cleanroommc.retrosophisticatedbackpacks.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
@@ -10,6 +11,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.network.C2SOpenBackpackPacket
 import com.cleanroommc.retrosophisticatedbackpacks.proxy.RSBProxy
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.inventory.GuiContainer
+import net.minecraft.item.ItemStack
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.InputEvent
@@ -70,11 +72,18 @@ object KeyInputHandler {
     fun onKeyInputInGuiScreen(keyCode: Int) {
         val mc = Minecraft.getMinecraft()
         val screen = mc.currentScreen
+        val muiScreen = ClientScreenHandler.getMuiScreen()
 
         if (RSBProxy.ClientProxy.OPEN_BACKPACK_KEYBIND.keyCode == keyCode && screen is GuiContainer) {
-            val hoveredSlot = screen.slotUnderMouse ?: return
-            val stack = hoveredSlot.stack
+            val hoveredSlot = screen.slotUnderMouse
+            val stack = hoveredSlot?.stack ?: ItemStack.EMPTY
             val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null)
+
+            if (stack.isEmpty && muiScreen != null && muiScreen.name == "backpack_gui") {
+                muiScreen.close()
+                return
+            } else if (hoveredSlot == null)
+                return
 
             if (wrapper == null)
                 return

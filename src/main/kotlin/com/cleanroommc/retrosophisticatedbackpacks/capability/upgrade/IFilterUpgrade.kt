@@ -8,7 +8,7 @@ import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.INBTSerializable
 
-sealed interface IFilterUpgrade : ISidelessCapabilityProvider, INBTSerializable<NBTTagCompound> {
+sealed interface IFilterUpgrade : ISidelessCapabilityProvider, IToggleable, INBTSerializable<NBTTagCompound> {
     companion object {
         const val FILTER_WAY_TAG = "FilterWay"
     }

@@ -35,6 +35,7 @@ sealed class BackpackGuiHolder(protected val backpackWrapper: BackpackWrapper) {
     protected fun addCommonWidgets(panel: BackpackPanel, syncManager: PanelSyncManager, player: EntityPlayer) {
         panel.addBackpackInventorySlots()
         panel.addUpgradeSlots()
+        panel.addSettingTab()
         panel.addUpgradeTabs()
         panel.addTexts(player)
     }

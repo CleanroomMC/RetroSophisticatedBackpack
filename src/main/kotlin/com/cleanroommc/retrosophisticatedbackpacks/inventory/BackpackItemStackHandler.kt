@@ -1,13 +1,43 @@
 package com.cleanroommc.retrosophisticatedbackpacks.inventory
 
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
 import net.minecraft.item.ItemStack
+import net.minecraft.util.NonNullList
 import net.minecraftforge.items.ItemHandlerHelper
 import kotlin.math.min
 
 class BackpackItemStackHandler(size: Int, private val wrapper: BackpackWrapper) : ExposedItemStackHandler(size) {
+    val memorizedSlotStack: NonNullList<ItemStack> = NonNullList.withSize(size, ItemStack.EMPTY)
+
+    override fun isItemValid(slot: Int, stack: ItemStack): Boolean =
+        if (memorizedSlotStack[slot].isEmpty) stack.item !is BackpackItem || wrapper.canNestBackpack()
+        else stack.isItemEqual(memorizedSlotStack[slot])
+
     override fun getStackLimit(slotIndex: Int, stack: ItemStack): Int =
         stacks[slotIndex].maxStackSize * wrapper.getTotalStackMultiplier()
+
+    /**
+     * Prioritize insertion by tries inserting on memorized slot first.
+     *
+     * Only used by backpack tile entity for other block's insertion interaction, to prevent
+     * gui-based interaction get unexpected insertion result.
+     */
+    fun prioritizedInsertion(slotIndex: Int, stack: ItemStack, simulate: Boolean): ItemStack {
+        var stack = stack
+
+        for ((slotIndex, memorizedStack) in memorizedSlotStack.withIndex()) {
+            if (memorizedStack.isEmpty || !ItemStack.areItemsEqual(stack, memorizedStack))
+                continue
+
+            stack = insertItem(slotIndex, stack, simulate)
+
+            if (stack.isEmpty)
+                return stack
+        }
+
+        return insertItem(slotIndex, stack, simulate)
+    }
 
     override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {
         if (stack.isEmpty)

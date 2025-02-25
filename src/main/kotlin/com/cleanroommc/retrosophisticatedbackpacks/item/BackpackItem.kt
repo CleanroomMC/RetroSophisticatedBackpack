@@ -90,6 +90,22 @@ class BackpackItem(
         return super.onItemUseFirst(player, world, pos, side, hitX, hitY, hitZ, hand)
     }
 
+    override fun onItemUse(
+        player: EntityPlayer,
+        worldIn: World,
+        pos: BlockPos,
+        hand: EnumHand,
+        facing: EnumFacing,
+        hitX: Float,
+        hitY: Float,
+        hitZ: Float
+    ): EnumActionResult {
+        if (!player.isSneaking)
+            return EnumActionResult.FAIL
+
+        return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ)
+    }
+
     override fun onItemRightClick(worldIn: World, player: EntityPlayer, handIn: EnumHand): ActionResult<ItemStack?> {
         if (!worldIn.isRemote) {
             PlayerInventoryGuiFactory.open(player, handIn)

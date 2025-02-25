@@ -85,7 +85,11 @@ retro_sophisticated_backpacks.gui.advanced_restock_settings=進階取貨設定
 retro_sophisticated_backpacks.gui.filter_settings=過濾設定
 retro_sophisticated_backpacks.gui.advanced_filter_settings=進階過濾設定
 
+retro_sophisticated_backpacks.gui.memory_settings=記憶設定
+retro_sophisticated_backpacks.gui.sorting_settings=整理設定
+
 # Gui Tooltips
+retro_sophisticated_backpacks.gui.stack_size_extra=數量: %s / %s
 retro_sophisticated_backpacks.gui.not_in_effect=未生效
 
 retro_sophisticated_backpacks.gui.whitelist=白名單
@@ -115,3 +119,9 @@ retro_sophisticated_backpacks.gui.consider_health=當玩家受傷時立即餵食
 retro_sophisticated_backpacks.gui.input_output=輸入 & 輸出
 retro_sophisticated_backpacks.gui.input=僅限輸入
 retro_sophisticated_backpacks.gui.output=僅限輸出
+
+retro_sophisticated_backpacks.gui.settings=設定
+retro_sophisticated_backpacks.gui.configuration_tab=設定介面
+
+retro_sophisticated_backpacks.gui.memorize_all=記憶所有欄位
+retro_sophisticated_backpacks.gui.unmemorize_all=遺忘所有欄位

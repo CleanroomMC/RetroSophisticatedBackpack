@@ -6,7 +6,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.item.Items
 import net.minecraft.item.ItemStack
 
 class CraftingUpgradeWidget(slotIndex: Int, override val wrapper: CraftingUpgradeWrapper) :
-    ExpandedTabWidget<CraftingUpgradeWrapper>(slotIndex, 4, ItemStack(Items.craftingUpgrade), "") {
+    ExpandedUpgradeTabWidget<CraftingUpgradeWrapper>(slotIndex, 4, ItemStack(Items.craftingUpgrade), "") {
     companion object {
         private const val SLOT_SIZE = 18
     }

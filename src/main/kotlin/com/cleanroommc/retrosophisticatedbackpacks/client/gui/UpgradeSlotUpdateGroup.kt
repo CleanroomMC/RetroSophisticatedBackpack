@@ -1,18 +1,17 @@
 package com.cleanroommc.retrosophisticatedbackpacks.client.gui
 
-import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.modularui.widgets.slot.SlotGroup
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
-import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.FilterSlot
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularFilterSlot
 import com.cleanroommc.retrosophisticatedbackpacks.sync.DelegatedStackHandlerSH
 import com.cleanroommc.retrosophisticatedbackpacks.sync.FilterSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.sync.FoodFilterSlotSH
 
 class UpgradeSlotUpdateGroup(
-    private val syncManager: PanelSyncManager,
+    private val panel: BackpackPanel,
     private val wrapper: BackpackWrapper,
     private val slotIndex: Int
 ) {
@@ -28,10 +27,12 @@ class UpgradeSlotUpdateGroup(
     val advancedFeedingFilterSlots: Array<ModularSlot>
 
     init {
+        val syncManager = panel.syncManager
+
         syncManager.syncValue("common_filter_delegation_$slotIndex", commonFilterStackHandler)
 
         commonFilterSlots = Array(9) {
-            val slot = FilterSlot(commonFilterStackHandler.delegatedStackHandler, it)
+            val slot = ModularFilterSlot(commonFilterStackHandler.delegatedStackHandler, it)
             slot.slotGroup("common_filters_$slotIndex")
 
             syncManager.syncValue(
@@ -48,7 +49,7 @@ class UpgradeSlotUpdateGroup(
         syncManager.syncValue("adv_common_filter_delegation_$slotIndex", advancedCommonFilterStackHandler)
 
         advancedCommonFilterSlots = Array(16) {
-            val slot = FilterSlot(advancedCommonFilterStackHandler.delegatedStackHandler, it)
+            val slot = ModularFilterSlot(advancedCommonFilterStackHandler.delegatedStackHandler, it)
             slot.slotGroup("adv_common_filters_$slotIndex")
 
             syncManager.syncValue(
@@ -64,7 +65,7 @@ class UpgradeSlotUpdateGroup(
 
         // Feeding Filter Slots
         feedingFilterSlots = Array(9) {
-            val slot = FilterSlot(commonFilterStackHandler.delegatedStackHandler, it)
+            val slot = ModularFilterSlot(commonFilterStackHandler.delegatedStackHandler, it)
             slot.slotGroup("feeding_filters_$slotIndex")
 
             syncManager.syncValue(
@@ -79,7 +80,7 @@ class UpgradeSlotUpdateGroup(
         syncManager.registerSlotGroup(SlotGroup("feeding_filters_$slotIndex", 4, false))
 
         advancedFeedingFilterSlots = Array(16) {
-            val slot = FilterSlot(advancedCommonFilterStackHandler.delegatedStackHandler, it)
+            val slot = ModularFilterSlot(advancedCommonFilterStackHandler.delegatedStackHandler, it)
             slot.slotGroup("adv_feeding_filters_$slotIndex")
 
             syncManager.syncValue(

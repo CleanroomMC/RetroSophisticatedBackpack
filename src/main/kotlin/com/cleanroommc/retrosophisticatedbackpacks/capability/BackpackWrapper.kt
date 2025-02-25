@@ -28,6 +28,9 @@ class BackpackWrapper(
         private const val UPGRADE_SLOTS_TAG = "UpgradeSlots"
         private const val BACKPACK_INVENTORY_SIZE_TAG = "BackpackInventorySize"
         private const val UPGRADE_SLOTS_SIZE_TAG = "UpgradeSlotsSize"
+
+        private const val MEMORY_STACK_ITEMS_TAG = "MemoryItems"
+
         private const val UUID_TAG = "UUID"
 
         const val DEFAULT_MAIN_COLOR: Int = -0x339ec6
@@ -109,15 +112,48 @@ class BackpackWrapper(
         gatherCapabilityUpgrades(Capabilities.IRESTOCK_UPGRADE_CAPABILITY)
             .any { it.canRestock(stack) }
 
-    fun canInsert(stack: ItemStack): Boolean =
-        gatherCapabilityUpgrades(Capabilities.IFILTER_UPGRADE_CAPABILITY)
-            .any { it.canInsert(stack) }
+    fun canInsert(stack: ItemStack): Boolean {
+        val filterUpgrades = gatherCapabilityUpgrades(Capabilities.IFILTER_UPGRADE_CAPABILITY)
+            .filter { it.enabled }
+
+        return if (filterUpgrades.isEmpty()) true
+        else filterUpgrades.any { it.canInsert(stack) }
+    }
 
     fun canExtract(slotIndex: Int): Boolean {
         val stack = getStackInSlot(slotIndex)
-        return gatherCapabilityUpgrades(Capabilities.IFILTER_UPGRADE_CAPABILITY)
-            .any { it.canExtract(stack) }
+        val filterUpgrades = gatherCapabilityUpgrades(Capabilities.IFILTER_UPGRADE_CAPABILITY)
+            .filter { it.enabled }
+
+        return if (filterUpgrades.isEmpty()) true
+        else filterUpgrades.any { it.canInsert(stack) }
     }
+
+    // Setting related
+
+    fun isSlotMemorized(slotIndex: Int): Boolean =
+        !backpackItemStackHandler.memorizedSlotStack[slotIndex].isEmpty
+
+    fun getMemorizedStack(slotIndex: Int): ItemStack =
+        backpackItemStackHandler.memorizedSlotStack[slotIndex]
+
+    fun setMemoryStack(slotIndex: Int) {
+        val currentStack = getStackInSlot(slotIndex)
+
+        if (currentStack.isEmpty)
+            return
+
+        val copiedStack = currentStack.copy()
+        copiedStack.count = 1
+
+        backpackItemStackHandler.memorizedSlotStack[slotIndex] = copiedStack
+    }
+
+    fun unsetMemoryStack(slotIndex: Int) {
+        backpackItemStackHandler.memorizedSlotStack[slotIndex] = ItemStack.EMPTY
+    }
+
+    // Overrides
 
     fun getDisplayName(): ITextComponent =
         TextComponentTranslation("container.backpack".asTranslationKey())
@@ -155,6 +191,12 @@ class BackpackWrapper(
         nbt.setTag(UPGRADE_SLOTS_TAG, upgradesNbt)
         nbt.setInteger(BACKPACK_INVENTORY_SIZE_TAG, backpackInventorySize())
         nbt.setInteger(UPGRADE_SLOTS_SIZE_TAG, upgradeSlotsSize())
+
+        // Settings
+        val memoryNbt = NBTTagCompound()
+        BackpackItemStackHelper.saveAllSlotsExtended(memoryNbt, backpackItemStackHandler.memorizedSlotStack)
+        nbt.setTag(MEMORY_STACK_ITEMS_TAG, memoryNbt)
+
         nbt.setUniqueId(UUID_TAG, uuid)
         return nbt
     }
@@ -181,5 +223,11 @@ class BackpackWrapper(
                 nbt.getCompoundTag(UPGRADE_SLOTS_TAG),
                 upgradeItemStackHandler.inventory
             )
+
+        // Settings
+        BackpackItemStackHelper.loadAllItemsExtended(
+            nbt.getCompoundTag(MEMORY_STACK_ITEMS_TAG),
+            backpackItemStackHandler.memorizedSlotStack
+        )
     }
 }

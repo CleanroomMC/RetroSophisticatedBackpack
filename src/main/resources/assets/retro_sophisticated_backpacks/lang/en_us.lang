@@ -85,7 +85,11 @@ retro_sophisticated_backpacks.gui.advanced_restock_settings=Adv. Restock Setting
 retro_sophisticated_backpacks.gui.filter_settings=Filter Settings
 retro_sophisticated_backpacks.gui.advanced_filter_settings=Adv. Filter Settings
 
+retro_sophisticated_backpacks.gui.memory_settings=Memory Settings
+retro_sophisticated_backpacks.gui.sorting_settings=Sorting Settings
+
 # Gui Tooltips
+retro_sophisticated_backpacks.gui.stack_size_extra=Count: %s / %s
 retro_sophisticated_backpacks.gui.not_in_effect=Not in effect
 
 retro_sophisticated_backpacks.gui.whitelist=Whitelist
@@ -115,3 +119,9 @@ retro_sophisticated_backpacks.gui.consider_health=Feed player immediately when h
 retro_sophisticated_backpacks.gui.input_output=Input & Output
 retro_sophisticated_backpacks.gui.input=Input Only
 retro_sophisticated_backpacks.gui.output=Output Only
+
+retro_sophisticated_backpacks.gui.settings=Settings
+retro_sophisticated_backpacks.gui.configuration_tab=Configuration Tab
+
+retro_sophisticated_backpacks.gui.memorize_all=Memorize all slots
+retro_sophisticated_backpacks.gui.unmemorize_all=Forget all slots

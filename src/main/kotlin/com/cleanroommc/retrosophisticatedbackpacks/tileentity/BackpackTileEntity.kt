@@ -97,7 +97,7 @@ class BackpackTileEntity(val wrapper: BackpackWrapper = BackpackWrapper()) :
         stack: ItemStack,
         simulate: Boolean
     ): ItemStack =
-        if (wrapper.canInsert(stack)) wrapper.insertItem(slot, stack, simulate)
+        if (wrapper.canInsert(stack)) wrapper.backpackItemStackHandler.prioritizedInsertion(slot, stack, simulate)
         else stack
 
     override fun extractItem(
