@@ -112,14 +112,21 @@ class BackpackWrapper(
         gatherCapabilityUpgrades(Capabilities.IRESTOCK_UPGRADE_CAPABILITY)
             .any { it.canRestock(stack) }
 
-    fun canInsert(stack: ItemStack): Boolean =
-        gatherCapabilityUpgrades(Capabilities.IFILTER_UPGRADE_CAPABILITY)
-            .any { it.canInsert(stack) }
+    fun canInsert(stack: ItemStack): Boolean {
+        val filterUpgrades = gatherCapabilityUpgrades(Capabilities.IFILTER_UPGRADE_CAPABILITY)
+            .filter { it.enabled }
+
+        return if (filterUpgrades.isEmpty()) true
+        else filterUpgrades.any { it.canInsert(stack) }
+    }
 
     fun canExtract(slotIndex: Int): Boolean {
         val stack = getStackInSlot(slotIndex)
-        return gatherCapabilityUpgrades(Capabilities.IFILTER_UPGRADE_CAPABILITY)
-            .any { it.canExtract(stack) }
+        val filterUpgrades = gatherCapabilityUpgrades(Capabilities.IFILTER_UPGRADE_CAPABILITY)
+            .filter { it.enabled }
+
+        return if (filterUpgrades.isEmpty()) true
+        else filterUpgrades.any { it.canInsert(stack) }
     }
 
     // Setting related
