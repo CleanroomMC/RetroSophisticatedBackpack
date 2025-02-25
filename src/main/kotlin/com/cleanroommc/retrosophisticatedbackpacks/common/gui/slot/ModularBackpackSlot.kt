@@ -9,7 +9,7 @@ class ModularBackpackSlot(
     index: Int
 ) : ModularSlot(wrapper.backpackItemStackHandler, index) {
     fun getMemoryStack(): ItemStack =
-        wrapper.backpackItemStackHandler.memoryStack[slotIndex]
+        wrapper.getMemorizedStack(slotIndex)
 
     override fun getItemStackLimit(stack: ItemStack): Int =
         stack.maxStackSize * wrapper.getTotalStackMultiplier()

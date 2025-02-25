@@ -23,7 +23,6 @@ import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.inventory.Container
 import net.minecraft.inventory.Slot
 import net.minecraft.item.ItemStack
-import net.minecraft.util.NonNullList
 import net.minecraft.util.text.TextFormatting
 import kotlin.math.min
 
@@ -34,12 +33,10 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
 
     private val isInSettingMode: Boolean
         get() = panel.isMemorySettingTabOpened
-    private val stackMemorySetting: NonNullList<ItemStack>
-        get() = wrapper.backpackItemStackHandler.memoryStack
 
     override fun onMousePressed(mouseButton: Int): Interactable.Result =
         if (isInSettingMode) {
-            val isMemorySet = !stackMemorySetting[slot.slotIndex].isEmpty
+            val isMemorySet = wrapper.isSlotMemorized(slot.slotIndex)
 
             if (isMemorySet && mouseButton == 1) {
                 wrapper.unsetMemoryStack(slot.slotIndex)
@@ -71,7 +68,7 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
     }
 
     private fun drawSettingStack() {
-        val memoryStack = wrapper.backpackItemStackHandler.memoryStack[slot.slotIndex]
+        val memoryStack = wrapper.backpackItemStackHandler.memorizedSlotStack[slot.slotIndex]
         val guiScreen = screen.screenWrapper.guiScreen
         val renderItem = (guiScreen as GuiScreenAccessor).itemRender
 

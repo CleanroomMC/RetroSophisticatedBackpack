@@ -132,7 +132,10 @@ class BackpackWrapper(
     // Setting related
 
     fun isSlotMemorized(slotIndex: Int): Boolean =
-        !backpackItemStackHandler.memoryStack[slotIndex].isEmpty
+        !backpackItemStackHandler.memorizedSlotStack[slotIndex].isEmpty
+
+    fun getMemorizedStack(slotIndex: Int): ItemStack =
+        backpackItemStackHandler.memorizedSlotStack[slotIndex]
 
     fun setMemoryStack(slotIndex: Int) {
         val currentStack = getStackInSlot(slotIndex)
@@ -143,11 +146,11 @@ class BackpackWrapper(
         val copiedStack = currentStack.copy()
         copiedStack.count = 1
 
-        backpackItemStackHandler.memoryStack[slotIndex] = copiedStack
+        backpackItemStackHandler.memorizedSlotStack[slotIndex] = copiedStack
     }
 
     fun unsetMemoryStack(slotIndex: Int) {
-        backpackItemStackHandler.memoryStack[slotIndex] = ItemStack.EMPTY
+        backpackItemStackHandler.memorizedSlotStack[slotIndex] = ItemStack.EMPTY
     }
 
     // Overrides
@@ -191,7 +194,7 @@ class BackpackWrapper(
 
         // Settings
         val memoryNbt = NBTTagCompound()
-        BackpackItemStackHelper.saveAllSlotsExtended(memoryNbt, backpackItemStackHandler.memoryStack)
+        BackpackItemStackHelper.saveAllSlotsExtended(memoryNbt, backpackItemStackHandler.memorizedSlotStack)
         nbt.setTag(MEMORY_STACK_ITEMS_TAG, memoryNbt)
 
         nbt.setUniqueId(UUID_TAG, uuid)
@@ -224,7 +227,7 @@ class BackpackWrapper(
         // Settings
         BackpackItemStackHelper.loadAllItemsExtended(
             nbt.getCompoundTag(MEMORY_STACK_ITEMS_TAG),
-            backpackItemStackHandler.memoryStack
+            backpackItemStackHandler.memorizedSlotStack
         )
     }
 }
