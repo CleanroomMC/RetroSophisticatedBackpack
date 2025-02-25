@@ -120,8 +120,17 @@ retro_sophisticated_backpacks.gui.input_output=Input & Output
 retro_sophisticated_backpacks.gui.input=Input Only
 retro_sophisticated_backpacks.gui.output=Output Only
 
+retro_sophisticated_backpacks.gui.sort_inventory=Sort Backpack Inventory
+retro_sophisticated_backpacks.gui.sort_by_name=Sort By Name
+retro_sophisticated_backpacks.gui.sort_by_mod_id=Sort By Mod ID
+retro_sophisticated_backpacks.gui.sort_by_count=Sort By Count
+retro_sophisticated_backpacks.gui.sort_by_ore_dict=Sort By Ore Dictionary
+
+retro_sophisticated_backpacks.gui.transfer_to_player_inv=Transfer All Items to Player Inventory
+retro_sophisticated_backpacks.gui.transfer_to_backpack_inv=Transfer All Items to Backpack Inventory
+
 retro_sophisticated_backpacks.gui.settings=Settings
 retro_sophisticated_backpacks.gui.configuration_tab=Configuration Tab
 
-retro_sophisticated_backpacks.gui.memorize_all=Memorize all slots
-retro_sophisticated_backpacks.gui.unmemorize_all=Forget all slots
+retro_sophisticated_backpacks.gui.memorize_all=Memorize All Slots
+retro_sophisticated_backpacks.gui.unmemorize_all=Forget All Slots

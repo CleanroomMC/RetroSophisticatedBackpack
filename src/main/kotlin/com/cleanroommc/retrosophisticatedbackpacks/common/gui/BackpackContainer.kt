@@ -24,7 +24,7 @@ class BackpackContainer(private val wrapper: BackpackWrapper) : ContainerCustomi
 
         if (clickTypeIn == ClickType.PICKUP &&
             (mouseButton == LEFT_MOUSE || mouseButton == RIGHT_MOUSE) &&
-            (slotId != DROP_TO_WORLD || slotId >= 0)
+            (slotId != DROP_TO_WORLD && slotId >= 0)
         ) {
             val clickedSlot = container.getSlot(slotId)
             val slotStack = clickedSlot.stack

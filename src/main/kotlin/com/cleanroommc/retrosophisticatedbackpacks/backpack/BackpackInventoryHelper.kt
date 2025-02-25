@@ -11,9 +11,119 @@ import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.items.wrapper.InvWrapper
+import net.minecraftforge.items.wrapper.PlayerInvWrapper
 import net.minecraftforge.items.wrapper.SidedInvWrapper
+import net.minecraftforge.oredict.OreDictionary
+import kotlin.math.min
 
 object BackpackInventoryHelper {
+    fun sortInventory(wrapper: BackpackWrapper) {
+        fun compareLists(list1: List<String>, list2: List<String>): Int {
+            for (i in 0 until min(list1.size, list2.size)) {
+                val item1 = list1[i]
+                val item2 = list2[i]
+                val comparedValue = item1.compareTo(item2)
+
+                if (comparedValue != 0)
+                    return comparedValue
+            }
+
+            return list1.size.compareTo(list2.size)
+        }
+
+        // Merges all slots first
+        for (i in 0 until wrapper.backpackInventorySize() - 1) {
+            val baseStack = wrapper.getStackInSlot(i)
+            val maxSize = baseStack.maxStackSize * wrapper.getTotalStackMultiplier()
+
+            for (j in i + 1 until wrapper.backpackInventorySize()) {
+                val stack = wrapper.getStackInSlot(j)
+
+                if (!ItemHandlerHelper.canItemStacksStack(baseStack, stack))
+                    continue
+
+                val diff = min(stack.count, maxSize - baseStack.count)
+
+                if (diff > 0) {
+                    baseStack.grow(diff)
+                    stack.shrink(diff)
+                    continue
+                } else if (diff == 0) break
+            }
+        }
+
+        val inPlaceStacks = mutableListOf<Pair<ItemStack, Int>>()
+        val sorted = mutableListOf<ItemStack>()
+
+        for (i in 0 until wrapper.backpackInventorySize()) {
+            val stack = wrapper.getStackInSlot(i)
+
+            if (wrapper.isSlotMemorized(i)) {
+                inPlaceStacks.add(stack to i)
+                continue
+            } else {
+                sorted.add(stack)
+            }
+        }
+
+        sorted.sortWith { stack1, stack2 ->
+            val item1 = stack1.item
+            val item2 = stack2.item
+
+            if (stack1.isEmpty)
+                return@sortWith 1
+            else if (stack2.isEmpty)
+                return@sortWith -1
+
+            when (wrapper.sortType) {
+                SortType.BY_NAME -> {
+                    item1.getItemStackDisplayName(stack1).compareTo(item2.getItemStackDisplayName(stack2))
+                }
+
+                SortType.BY_MOD_ID -> {
+                    item1.registryName!!.namespace.compareTo(item2.registryName!!.namespace)
+                }
+
+                SortType.BY_COUNT -> {
+                    stack1.count.compareTo(stack2.count)
+                }
+
+                SortType.BY_ORE_DICT -> {
+                    val oreDict1 = OreDictionary.getOreIDs(stack1).map(OreDictionary::getOreName)
+                    val oreDict2 = OreDictionary.getOreIDs(stack2).map(OreDictionary::getOreName)
+
+                    compareLists(oreDict1, oreDict2)
+                }
+            }
+        }
+
+        for ((stack, i) in inPlaceStacks) {
+            sorted.add(i, stack)
+        }
+
+        wrapper.backpackItemStackHandler.setSize(wrapper.backpackInventorySize())
+
+        for ((slotIndex, stack) in sorted.withIndex()) {
+            wrapper.backpackItemStackHandler.setStackInSlot(slotIndex, stack)
+        }
+    }
+
+    fun transferPlayerInventoryToBackpack(wrapper: BackpackWrapper, playerInventory: PlayerInvWrapper) {
+        for (i in 0 until playerInventory.slots) {
+            val stack = playerInventory.getStackInSlot(i)
+            val resultStack = ItemHandlerHelper.insertItemStacked(wrapper, stack, false)
+            playerInventory.setStackInSlot(i, resultStack)
+        }
+    }
+
+    fun transferBackpackToPlayerInventory(wrapper: BackpackWrapper, playerInventory: PlayerInvWrapper) {
+        for (i in 0 until wrapper.backpackInventorySize()) {
+            val stack =  wrapper.getStackInSlot(i)
+            val resultStack = ItemHandlerHelper.insertItemStacked(playerInventory, stack, false)
+            wrapper.backpackItemStackHandler.setStackInSlot(i, resultStack)
+        }
+    }
+
     fun attemptDepositOnTileEntity(wrapper: BackpackWrapper, destination: TileEntity, facing: EnumFacing): Boolean {
         val destination = getHandler(destination, facing) ?: return false
         return attemptDepositOnItemHandler(wrapper, destination)

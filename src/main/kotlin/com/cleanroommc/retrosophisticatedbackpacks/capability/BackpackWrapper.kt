@@ -1,5 +1,6 @@
 package com.cleanroommc.retrosophisticatedbackpacks.capability
 
+import com.cleanroommc.retrosophisticatedbackpacks.backpack.SortType
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.BackpackItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.UpgradeItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
@@ -30,6 +31,7 @@ class BackpackWrapper(
         private const val UPGRADE_SLOTS_SIZE_TAG = "UpgradeSlotsSize"
 
         private const val MEMORY_STACK_ITEMS_TAG = "MemoryItems"
+        private const val SORT_TYPE_TAG = "SortType"
 
         private const val UUID_TAG = "UUID"
 
@@ -40,6 +42,8 @@ class BackpackWrapper(
     var isCached: Boolean = false
     var backpackItemStackHandler = BackpackItemStackHandler(backpackInventorySize(), this)
     var upgradeItemStackHandler = UpgradeItemStackHandler(upgradeSlotsSize())
+    var sortType: SortType = SortType.BY_NAME
+
     var mainColor = DEFAULT_MAIN_COLOR
     var accentColor = DEFAULT_ACCENT_COLOR
 
@@ -196,6 +200,7 @@ class BackpackWrapper(
         val memoryNbt = NBTTagCompound()
         BackpackItemStackHelper.saveAllSlotsExtended(memoryNbt, backpackItemStackHandler.memorizedSlotStack)
         nbt.setTag(MEMORY_STACK_ITEMS_TAG, memoryNbt)
+        nbt.setByte(SORT_TYPE_TAG, sortType.ordinal.toByte())
 
         nbt.setUniqueId(UUID_TAG, uuid)
         return nbt
@@ -229,5 +234,7 @@ class BackpackWrapper(
             nbt.getCompoundTag(MEMORY_STACK_ITEMS_TAG),
             backpackItemStackHandler.memorizedSlotStack
         )
+
+        sortType = SortType.entries[nbt.getByte(SORT_TYPE_TAG).toInt()]
     }
 }

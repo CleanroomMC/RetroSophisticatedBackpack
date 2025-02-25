@@ -120,6 +120,15 @@ retro_sophisticated_backpacks.gui.input_output=輸入 & 輸出
 retro_sophisticated_backpacks.gui.input=僅限輸入
 retro_sophisticated_backpacks.gui.output=僅限輸出
 
+retro_sophisticated_backpacks.gui.sort_inventory=整理背包
+retro_sophisticated_backpacks.gui.sort_by_name=根據名稱整理
+retro_sophisticated_backpacks.gui.sort_by_mod_id=根據模組 ID 整理
+retro_sophisticated_backpacks.gui.sort_by_count=根據數量整理
+retro_sophisticated_backpacks.gui.sort_by_ore_dict=根據礦物詞典整理
+
+retro_sophisticated_backpacks.gui.transfer_to_player_inv=轉移所有物品至玩家物品欄
+retro_sophisticated_backpacks.gui.transfer_to_backpack_inv=轉移所有物品至背包物品欄
+
 retro_sophisticated_backpacks.gui.settings=設定
 retro_sophisticated_backpacks.gui.configuration_tab=設定介面
 
