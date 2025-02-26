@@ -313,12 +313,12 @@ class AdvancedFilterWidget(
                 .shadow(true)
 
             tooltipBuilder {
-                it.showUpTimer(5).pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+                it.pos(RichTooltip.Pos.NEXT_TO_MOUSE)
 
                 if (line.width > area.width)
                     it.addLine(key)
 
-                val stack = panel.syncHandler.syncManager.cursorItem
+                val stack = panel.context.mc.player.inventory.itemStack
 
                 if (!stack.isEmpty) {
                     val testMatched = OreDictionary
@@ -335,6 +335,7 @@ class AdvancedFilterWidget(
         override fun onMouseStartHover() {
             hovering = true
 
+            markTooltipDirty()
             if (!selected)
                 overlay(Outline(Color.GREY.main))
         }
