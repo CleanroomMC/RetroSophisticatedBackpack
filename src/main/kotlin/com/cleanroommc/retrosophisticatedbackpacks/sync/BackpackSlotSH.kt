@@ -9,12 +9,16 @@ class BackpackSlotSH(private val wrapper: BackpackWrapper, slot: ModularSlot) : 
     companion object {
         const val UPDATE_SET_MEMORY_STACK = 6
         const val UPDATE_UNSET_MEMORY_STACK = 7
+        const val UPDATE_SET_SLOT_LOCK = 8
+        const val UPDATE_UNSET_SLOT_LOCK = 9
     }
 
     override fun readOnServer(id: Int, buf: PacketBuffer) {
         when (id) {
             UPDATE_SET_MEMORY_STACK -> wrapper.setMemoryStack(slot.slotIndex)
             UPDATE_UNSET_MEMORY_STACK -> wrapper.unsetMemoryStack(slot.slotIndex)
+            UPDATE_SET_SLOT_LOCK -> wrapper.setSlotLocked(slot.slotIndex, true)
+            UPDATE_UNSET_SLOT_LOCK -> wrapper.setSlotLocked(slot.slotIndex, false)
             else -> super.readOnServer(id, buf)
         }
     }

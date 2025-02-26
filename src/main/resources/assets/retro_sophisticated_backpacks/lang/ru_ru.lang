@@ -21,7 +21,7 @@ itemGroup.retro_sophisticated_backpacks.creative_tab=Ретро Современ
 #Всплывающие подсказки (Tooltips)
 retro_sophisticated_backpacks.tooltip.backpack.inventory_size=Размер инвентаря: %d
 retro_sophisticated_backpacks.tooltip.backpack.upgrade_slots_size=Размер слотов для улучшений: %d
-retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> Множитель стаков: %d
+retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> Множитель стаков: %d %s
 
 retro_sophisticated_backpacks.tooltip.upgrade_base=Ничего не делает! Можете положить в слоты для улучшений!
 

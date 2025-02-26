@@ -29,7 +29,7 @@ retro_sophisticated_backpacks.key.category=Retro Sophisticated Backpack
 # Podpowiedzi
 retro_sophisticated_backpacks.tooltip.backpack.inventory_size=Rozmiar ekwipunku: %d
 retro_sophisticated_backpacks.tooltip.backpack.upgrade_slots_size=Sloty ulepszeń: %d
-retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> Mnożnik stosu: %d
+retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> Mnożnik stosu: %d %s
 
 retro_sophisticated_backpacks.tooltip.upgrade_base=Nic nie robi! Możesz umieścić ją w miejscu na ulepszenia!
 

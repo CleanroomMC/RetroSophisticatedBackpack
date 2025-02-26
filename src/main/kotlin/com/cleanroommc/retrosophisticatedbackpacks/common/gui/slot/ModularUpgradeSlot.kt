@@ -3,6 +3,7 @@ package com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
+import com.cleanroommc.retrosophisticatedbackpacks.item.ExponentialStackUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.InceptionUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.StackUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.UpgradeItem
@@ -19,9 +20,10 @@ class ModularUpgradeSlot(
             return false
 
         val originalUpgradeItem = stack.item
+        val newUpgradeItem = playerIn.inventory.itemStack.item
 
         if (originalUpgradeItem is StackUpgradeItem) {
-            val newUpgradeItem = playerIn.inventory.itemStack.item
+
 
             return if (newUpgradeItem is StackUpgradeItem) wrapper.canReplaceStackUpgrade(
                 originalUpgradeItem.multiplier(),
@@ -30,9 +32,12 @@ class ModularUpgradeSlot(
             else wrapper.canRemoveStackUpgrade(originalUpgradeItem.multiplier())
         }
 
-        if (originalUpgradeItem is InceptionUpgradeItem) {
-            val newUpgradeItem = playerIn.inventory.itemStack.item
+        if (originalUpgradeItem is ExponentialStackUpgradeItem) {
+            return if (newUpgradeItem is ExponentialStackUpgradeItem) true
+            else wrapper.canRemoveExponentialStackUpgrade()
+        }
 
+        if (originalUpgradeItem is InceptionUpgradeItem) {
             return if (newUpgradeItem !is InceptionUpgradeItem) wrapper.canRemoveInceptionUpgrade()
             else true
         }
@@ -45,6 +50,7 @@ class ModularUpgradeSlot(
 
     override fun isItemValid(stack: ItemStack): Boolean = when (val item = stack.item) {
         is StackUpgradeItem -> wrapper.canAddStackUpgrade(item.multiplier())
+        is ExponentialStackUpgradeItem -> wrapper.canAddExponentialStackUpgrade()
         else -> item is UpgradeItem
     }
 }

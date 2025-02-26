@@ -50,6 +50,15 @@ object RSBTextures {
     val TOGGLE_DISABLE_ICON = icon("disable", 0, 128, 4, 10)
     val TOGGLE_ENABLE_ICON = icon("enable", 4, 128, 4, 10)
 
+    val SORT_ICON = icon("sort", 0, 144, 12, 12)
+    val SMALL_A_ICON = icon("small_a", 24, 144, 12, 12)
+    val SMALL_1_ICON = icon("small_1", 36, 144, 12, 12)
+    val SMALL_O_ICON = icon("small_ore_dict", 64, 144, 12, 12)
+
+    val SMALL_M_ICON = icon("small_m", 0, 156, 12, 12)
+    val DOT_DOWN_ARROW_ICON = icon("dot_down_arrow", 24, 156, 12, 12)
+    val DOT_UP_ARROW_ICON = icon("dot_up_arrow", 36, 156, 12, 12)
+
     private fun icon(name: String, x: Int, y: Int, w: Int = 16, h: Int = 16): UITexture =
         UITexture.builder()
             .location(ICON_LOCATION)

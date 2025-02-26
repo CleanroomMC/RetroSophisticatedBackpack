@@ -35,7 +35,7 @@ retro_sophisticated_backpacks.key.category=复古精妙背包
 # Tooltips
 retro_sophisticated_backpacks.tooltip.backpack.inventory_size=背包容量：%d
 retro_sophisticated_backpacks.tooltip.backpack.upgrade_slots_size=升级插槽：%d
-retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> 堆叠倍数：%d
+retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> 堆叠倍数：%d %s
 
 retro_sophisticated_backpacks.tooltip.upgrade_base=没有任何效果！大可放进升级插槽里！
 

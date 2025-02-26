@@ -11,6 +11,8 @@ import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 class CyclicVariantButtonWidget(
     private val variants: List<Variant>,
     private var index: Int = 0,
+    private var iconOffset: Int = 2,
+    private var iconSize: Int = 16,
     private val mousePressedUpdater: CyclicVariantButtonWidget.(Int) -> Unit,
 ) : ButtonWidget<CyclicVariantButtonWidget>() {
     var inEffect: Boolean = true
@@ -20,6 +22,7 @@ class CyclicVariantButtonWidget(
             .onMousePressed {
                 index = (index + 1) % variants.size
                 mousePressedUpdater(index)
+                markTooltipDirty()
                 true
             }.tooltipDynamic {
                 it.addLine(variants[index].name)
@@ -35,7 +38,8 @@ class CyclicVariantButtonWidget(
     override fun drawOverlay(context: ModularGuiContext, widgetTheme: WidgetTheme) {
         super.drawOverlay(context, widgetTheme)
 
-        variants[index].drawable.draw(context, 2, 2, 16, 16, widgetTheme)
+        val drawable = variants[index].drawable
+        drawable.draw(context, iconOffset, iconOffset, iconSize, iconSize, widgetTheme)
     }
 
     data class Variant(val name: IKey, val drawable: IDrawable)

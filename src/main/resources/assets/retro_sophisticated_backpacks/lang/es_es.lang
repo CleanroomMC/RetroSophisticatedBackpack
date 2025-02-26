@@ -21,7 +21,7 @@ itemGroup.retro_sophisticated_backpacks.creative_tab=Mochila Sofisticada Retro
 #Descripciones emergentes (Tooltips)
 retro_sophisticated_backpacks.tooltip.backpack.inventory_size=Tamaño de inventario: %d
 retro_sophisticated_backpacks.tooltip.backpack.upgrade_slots_size=Tamaño de ranuras de mejora: %d
-retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> Multiplicador de apilado: %d
+retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> Multiplicador de apilado: %d %s
 
 retro_sophisticated_backpacks.tooltip.upgrade_base=¡No hace nada! Siéntete libre de ponerlo en tus ranuras de mejora.
 

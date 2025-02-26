@@ -2,6 +2,7 @@ package com.cleanroommc.retrosophisticatedbackpacks.client.gui
 
 import com.cleanroommc.modularui.api.IPanelHandler
 import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.api.widget.Interactable
 import com.cleanroommc.modularui.drawable.AdaptableUITexture
 import com.cleanroommc.modularui.drawable.ItemDrawable
 import com.cleanroommc.modularui.drawable.UITexture
@@ -12,12 +13,14 @@ import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.WidgetTree
+import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.modularui.widgets.slot.SlotGroup
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
+import com.cleanroommc.retrosophisticatedbackpacks.backpack.SortType
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.*
@@ -29,9 +32,11 @@ import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularBackpa
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularUpgradeSlot
 import com.cleanroommc.retrosophisticatedbackpacks.config.ClientConfig
 import com.cleanroommc.retrosophisticatedbackpacks.item.UpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.sync.BackpackSH
 import com.cleanroommc.retrosophisticatedbackpacks.sync.BackpackSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.tileentity.BackpackTileEntity
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.ceilDiv
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraftforge.items.wrapper.PlayerInvWrapper
@@ -53,6 +58,24 @@ class BackpackPanel(
             .adaptable(4)
             .tiled()
             .build() as AdaptableUITexture
+        private val SORT_TYPE_VARIANTS = listOf(
+            CyclicVariantButtonWidget.Variant(
+                IKey.lang("gui.sort_by_name".asTranslationKey()),
+                RSBTextures.SMALL_A_ICON
+            ),
+            CyclicVariantButtonWidget.Variant(
+                IKey.lang("gui.sort_by_mod_id".asTranslationKey()),
+                RSBTextures.SMALL_M_ICON
+            ),
+            CyclicVariantButtonWidget.Variant(
+                IKey.lang("gui.sort_by_count".asTranslationKey()),
+                RSBTextures.SMALL_1_ICON
+            ),
+            CyclicVariantButtonWidget.Variant(
+                IKey.lang("gui.sort_by_ore_dict".asTranslationKey()),
+                RSBTextures.SMALL_O_ICON
+            )
+        )
 
         internal fun defaultPanel(
             syncManager: PanelSyncManager,
@@ -78,14 +101,18 @@ class BackpackPanel(
     val rowSize = if (backpackWrapper.backpackInventorySize() > 81) 12 else 9
     val colSize = backpackWrapper.backpackInventorySize().ceilDiv(rowSize)
 
+    val backpackSyncHandler: BackpackSH = BackpackSH(PlayerInvWrapper(player.inventory), backpackWrapper)
     val backpackSlotSyncHandlers: Array<BackpackSlotSH>
     val upgradeSlotSyncHandlers: Array<UpgradeSlotSH>
     val upgradeSlotGroups: Array<UpgradeSlotUpdateGroup>
 
     val settingPanel: IPanelHandler
     var isMemorySettingTabOpened: Boolean = false
+    var isSortingSettingTabOpened: Boolean = false
 
     init {
+        syncManager.syncValue("backpack_wrapper", backpackSyncHandler)
+
         // Backpack slots
         backpackSlotSyncHandlers = Array(backpackWrapper.backpackInventorySize()) {
             val backpackSlot = ModularBackpackSlot(backpackWrapper, it).slotGroup("backpack_inventory")
@@ -145,6 +172,84 @@ class BackpackPanel(
                 override fun canTakeStack(playerIn: EntityPlayer): Boolean = false
             }.slotGroup("player_inventory")
         )
+    }
+
+    internal fun addSortingButtons() {
+        val sortButton = ButtonWidget()
+            .top(4)
+            .right(21)
+            .size(12)
+            .overlay(RSBTextures.SORT_ICON)
+            .onMousePressed {
+                if (it == 0) {
+                    Interactable.playButtonClickSound()
+                    backpackSyncHandler.sortInventory()
+                    backpackSyncHandler.syncToServer(BackpackSH.UPDATE_SORT_INV)
+                    true
+                } else false
+            }
+            .tooltipStatic {
+                it.addLine(IKey.lang("gui.sort_inventory".asTranslationKey()))
+                    .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+            }
+        val sortTypeButton = CyclicVariantButtonWidget(
+            SORT_TYPE_VARIANTS,
+            backpackWrapper.sortType.ordinal,
+            iconOffset = 0,
+            iconSize = 12
+        ) {
+            val nextSortType = SortType.entries[it]
+
+            backpackSyncHandler.setSortType(nextSortType)
+            backpackSyncHandler.syncToServer(BackpackSH.UPDATE_SET_SORT_TYPE) {
+                it.writeEnumValue(nextSortType)
+            }
+        }.top(4)
+            .right(7)
+            .size(12)
+
+        child(sortButton)
+            .child(sortTypeButton)
+    }
+
+    internal fun addTransferButtons() {
+        val transferToPlayerButton = ButtonWidget()
+            .top(17 + colSize * 18)
+            .right(21)
+            .size(12)
+            .overlay(RSBTextures.DOT_DOWN_ARROW_ICON)
+            .onMousePressed {
+                if (it == 0) {
+                    Interactable.playButtonClickSound()
+                    backpackSyncHandler.transferToPlayerInventory()
+                    backpackSyncHandler.syncToServer(BackpackSH.UPDATE_TRANSFER_TO_PLAYER_INV)
+                    true
+                } else false
+            }
+            .tooltipStatic {
+                it.addLine(IKey.lang("gui.transfer_to_player_inv".asTranslationKey()))
+                    .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+            }
+        val transferToBackpackButton = ButtonWidget()
+            .top(17 + colSize * 18)
+            .right(7)
+            .size(12)
+            .overlay(RSBTextures.DOT_UP_ARROW_ICON)
+            .onMousePressed {
+                if (it == 0) {
+                    Interactable.playButtonClickSound()
+                    backpackSyncHandler.transferToBackpack()
+                    backpackSyncHandler.syncToServer(BackpackSH.UPDATE_TRANSFER_TO_BACKPACK_INV)
+                    true
+                } else false
+            }
+            .tooltipStatic {
+                it.addLine(IKey.lang("gui.transfer_to_backpack_inv".asTranslationKey()))
+                    .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+            }
+
+        child(transferToPlayerButton)
+            .child(transferToBackpackButton)
     }
 
     internal fun addBackpackInventorySlots() {

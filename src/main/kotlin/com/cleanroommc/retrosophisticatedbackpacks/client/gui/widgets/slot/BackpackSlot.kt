@@ -16,6 +16,7 @@ import com.cleanroommc.modularui.utils.NumberFormat
 import com.cleanroommc.modularui.widgets.ItemSlot
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
+import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularBackpackSlot
 import com.cleanroommc.retrosophisticatedbackpacks.sync.BackpackSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
@@ -40,6 +41,8 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
         get() = panel.settingPanel.isPanelOpen
     private val isInMemorySettingMode: Boolean
         get() = panel.isMemorySettingTabOpened
+    private val isInSortSettingMode: Boolean
+        get() = panel.isSortingSettingTabOpened
 
     override fun buildTooltip(stack: ItemStack, tooltip: RichTooltip) {
         if (stack.isEmpty)
@@ -71,6 +74,18 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
                 syncHandler.syncToServer(BackpackSlotSH.UPDATE_SET_MEMORY_STACK)
                 Interactable.Result.SUCCESS
             } else Interactable.Result.STOP
+        } else if (isInSortSettingMode) {
+            val isSlotLocked = wrapper.isSlotLocked(slot.slotIndex)
+
+            if (isSlotLocked && mouseButton == 1) {
+                wrapper.setSlotLocked(slot.slotIndex, false)
+                syncHandler.syncToServer(BackpackSlotSH.UPDATE_UNSET_SLOT_LOCK)
+                Interactable.Result.SUCCESS
+            } else if (!isSlotLocked && mouseButton == 0) {
+                wrapper.setSlotLocked(slot.slotIndex, true)
+                syncHandler.syncToServer(BackpackSlotSH.UPDATE_SET_SLOT_LOCK)
+                Interactable.Result.SUCCESS
+            } else Interactable.Result.STOP
         } else if (isInSettingMode) {
             Interactable.Result.STOP
         } else {
@@ -89,6 +104,9 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
     }
 
     override fun draw(context: ModularGuiContext, widgetTheme: WidgetTheme) {
+        if (wrapper.isSlotLocked(slot.slotIndex))
+            drawLockedSlot(context, widgetTheme)
+
         if (isInSettingMode) drawSettingStack()
         else drawNormalStack()
     }
@@ -150,6 +168,13 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
 
         (guiScreen as GuiAccessor).zLevel = 0f
         renderItem.zLevel = 0f
+    }
+
+    private fun drawLockedSlot(context: ModularGuiContext, widgetTheme: WidgetTheme) {
+        RSBTextures.NO_SORT_ICON.draw(context, 1, 1, 16, 16, widgetTheme)
+        GlStateManager.depthFunc(516)
+        Gui.drawRect(1, 1, 17, 17, Color.argb(139, 139, 139, 128))
+        GlStateManager.depthFunc(515)
     }
 
     private fun superDraw() {
