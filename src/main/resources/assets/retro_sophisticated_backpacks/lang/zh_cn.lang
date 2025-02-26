@@ -12,6 +12,7 @@ item.retro_sophisticated_backpacks.stack_upgrade_tier_1.name=堆叠升级T1
 item.retro_sophisticated_backpacks.stack_upgrade_tier_2.name=堆叠升级T2
 item.retro_sophisticated_backpacks.stack_upgrade_tier_3.name=堆叠升级T3
 item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=堆叠升级T4
+item.retro_sophisticated_backpacks.exponential_stack_upgrade.name=指数堆叠升级
 item.retro_sophisticated_backpacks.crafting_upgrade.name=合成升级
 item.retro_sophisticated_backpacks.inception_upgrade.name=嵌套升级
 item.retro_sophisticated_backpacks.pickup_upgrade.name=拾取升级
@@ -40,6 +41,8 @@ retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> 堆叠倍数�
 retro_sophisticated_backpacks.tooltip.upgrade_base=没有任何效果！大可放进升级插槽里！
 
 retro_sophisticated_backpacks.tooltip.stack_upgrade=堆叠上限×%d
+
+retro_sophisticated_backpacks.tooltip.exponential_stack_upgrade=堆叠倍数将按乘算而非加算计算
 
 retro_sophisticated_backpacks.tooltip.crafting_upgrade=在背包旁添加额外的合成方格
 
@@ -85,7 +88,11 @@ retro_sophisticated_backpacks.gui.advanced_restock_settings=高级取货设置
 retro_sophisticated_backpacks.gui.filter_settings=过滤设置
 retro_sophisticated_backpacks.gui.advanced_filter_settings=高级过滤设置
 
+retro_sophisticated_backpacks.gui.memory_settings=记忆设置
+retro_sophisticated_backpacks.gui.sorting_settings=整理设置
+
 # Gui Tooltips
+retro_sophisticated_backpacks.gui.stack_size_extra=数量：%s / %s
 retro_sophisticated_backpacks.gui.not_in_effect=未生效
 
 retro_sophisticated_backpacks.gui.whitelist=白名单
@@ -115,3 +122,21 @@ retro_sophisticated_backpacks.gui.consider_health=当玩家受伤时立即喂食
 retro_sophisticated_backpacks.gui.input_output=输入&输出
 retro_sophisticated_backpacks.gui.input=仅输入
 retro_sophisticated_backpacks.gui.output=仅输出
+
+retro_sophisticated_backpacks.gui.sort_inventory=整理背包
+retro_sophisticated_backpacks.gui.sort_by_name=按名称整理
+retro_sophisticated_backpacks.gui.sort_by_mod_id=按模组ID整理
+retro_sophisticated_backpacks.gui.sort_by_count=按数量整理
+retro_sophisticated_backpacks.gui.sort_by_ore_dict=按矿物词典整理
+
+retro_sophisticated_backpacks.gui.transfer_to_player_inv=转移所有物品至玩家物品栏
+retro_sophisticated_backpacks.gui.transfer_to_backpack_inv=转移所有物品至背包物品栏
+
+retro_sophisticated_backpacks.gui.settings=设置
+retro_sophisticated_backpacks.gui.configuration_tab=设置标签页
+
+retro_sophisticated_backpacks.gui.memorize_all=记忆所有槽位
+retro_sophisticated_backpacks.gui.unmemorize_all=遗忘所有槽位
+
+retro_sophisticated_backpacks.gui.lock_all_sort=禁止整理所有槽位
+retro_sophisticated_backpacks.gui.unlock_all_sort=允许整理所有槽位
