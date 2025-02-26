@@ -32,6 +32,7 @@ class BackpackWrapper(
 
         private const val MEMORY_STACK_ITEMS_TAG = "MemoryItems"
         private const val SORT_TYPE_TAG = "SortType"
+        private const val LOCKED_SLOTS_TAG = "LockedSlots"
 
         private const val UUID_TAG = "UUID"
 
@@ -157,6 +158,13 @@ class BackpackWrapper(
         backpackItemStackHandler.memorizedSlotStack[slotIndex] = ItemStack.EMPTY
     }
 
+    fun isSlotLocked(slotIndex: Int): Boolean =
+        backpackItemStackHandler.sortLockedSlots[slotIndex]
+
+    fun setSlotLocked(slotIndex: Int, locked: Boolean) {
+        backpackItemStackHandler.sortLockedSlots[slotIndex] = locked
+    }
+
     // Overrides
 
     fun getDisplayName(): ITextComponent =
@@ -202,6 +210,11 @@ class BackpackWrapper(
         nbt.setTag(MEMORY_STACK_ITEMS_TAG, memoryNbt)
         nbt.setByte(SORT_TYPE_TAG, sortType.ordinal.toByte())
 
+        nbt.setByteArray(
+            LOCKED_SLOTS_TAG,
+            backpackItemStackHandler.sortLockedSlots.map { if (it) 1 else 0 }.map(Int::toByte).toByteArray()
+        )
+
         nbt.setUniqueId(UUID_TAG, uuid)
         return nbt
     }
@@ -234,6 +247,10 @@ class BackpackWrapper(
             nbt.getCompoundTag(MEMORY_STACK_ITEMS_TAG),
             backpackItemStackHandler.memorizedSlotStack
         )
+
+        nbt.getByteArray(LOCKED_SLOTS_TAG).forEachIndexed { index, b ->
+            setSlotLocked(index, b.toInt() != 0)
+        }
 
         sortType = SortType.entries[nbt.getByte(SORT_TYPE_TAG).toInt()]
     }

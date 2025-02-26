@@ -13,6 +13,7 @@ import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.ExpandDirection
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.MemorySettingWidget
+import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.SortingSettingWidget
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.TabWidget
 import com.cleanroommc.retrosophisticatedbackpacks.config.ClientConfig
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
@@ -29,7 +30,8 @@ class BackpackSettingPanel(private val parent: BackpackPanel) : ModularPanel("ba
             .build() as AdaptableUITexture
     }
 
-    val memoryTab: TabWidget
+    private val memoryTab: TabWidget
+    private val sortTab: TabWidget
 
     init {
         size(parent.area.width, HEIGHT)
@@ -38,11 +40,19 @@ class BackpackSettingPanel(private val parent: BackpackPanel) : ModularPanel("ba
 
         memoryTab = TabWidget(0, top = 0, ExpandDirection.LEFT)
             .tooltipStatic {
-                it.addLine(IKey.lang("gui.memorize_all".asTranslationKey()))
+                it.addLine(IKey.lang("gui.memory_settings".asTranslationKey()))
                     .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
             }
-        memoryTab.expandedWidget = MemorySettingWidget(parent, memoryTab)
+        memoryTab.expandedWidget = MemorySettingWidget(parent, this, memoryTab)
         memoryTab.tabIcon = RSBTextures.BRAIN_ICON
+
+        sortTab = TabWidget(1, expandDirection = ExpandDirection.LEFT)
+            .tooltipStatic {
+                it.addLine(IKey.lang("gui.sorting_settings".asTranslationKey()))
+                    .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+            }
+        sortTab.expandedWidget = SortingSettingWidget(parent, this, sortTab)
+        sortTab.tabIcon = RSBTextures.NO_SORT_ICON
 
         val grid = Column()
             .size(parent.area.width - 14, HEIGHT - 14)
@@ -51,6 +61,24 @@ class BackpackSettingPanel(private val parent: BackpackPanel) : ModularPanel("ba
 
         child(grid)
             .child(memoryTab)
+            .child(sortTab)
+    }
+
+    internal fun updateTabState(fromIndex: Int) {
+        memoryTab.isEnabled = true
+        sortTab.isEnabled = true
+
+        when (fromIndex) {
+            0 -> {
+                sortTab.showExpanded = false
+                parent.isSortingSettingTabOpened = false
+                sortTab.isEnabled = !memoryTab.showExpanded
+            }
+            1 -> {
+                memoryTab.showExpanded = false
+                parent.isMemorySettingTabOpened = false
+            }
+        }
     }
 
     override fun shouldAnimate(): Boolean =
@@ -62,11 +90,13 @@ class BackpackSettingPanel(private val parent: BackpackPanel) : ModularPanel("ba
     override fun onOpen(screen: ModularScreen) {
         super.onOpen(screen)
         parent.isMemorySettingTabOpened = memoryTab.showExpanded
+        parent.isSortingSettingTabOpened = sortTab.showExpanded
     }
 
     override fun onClose() {
         super.onClose()
         parent.isMemorySettingTabOpened = false
+        parent.isSortingSettingTabOpened = false
     }
 
     override fun postDraw(context: ModularGuiContext, transformed: Boolean) {

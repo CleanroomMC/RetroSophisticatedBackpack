@@ -108,6 +108,7 @@ class BackpackPanel(
 
     val settingPanel: IPanelHandler
     var isMemorySettingTabOpened: Boolean = false
+    var isSortingSettingTabOpened: Boolean = false
 
     init {
         syncManager.syncValue("backpack_wrapper", backpackSyncHandler)

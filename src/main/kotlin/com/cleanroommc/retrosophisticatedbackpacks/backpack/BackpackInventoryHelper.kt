@@ -33,10 +33,17 @@ object BackpackInventoryHelper {
 
         // Merges all slots first
         for (i in 0 until wrapper.backpackInventorySize() - 1) {
+            if (wrapper.isSlotLocked(i))
+                continue
+
+            var isMemorizedSlot = wrapper.isSlotMemorized(i)
             val baseStack = wrapper.getStackInSlot(i)
             val maxSize = baseStack.maxStackSize * wrapper.getTotalStackMultiplier()
 
             for (j in i + 1 until wrapper.backpackInventorySize()) {
+                if (isMemorizedSlot != wrapper.isSlotMemorized(j) || wrapper.isSlotLocked(j))
+                    continue
+
                 val stack = wrapper.getStackInSlot(j)
 
                 if (!ItemHandlerHelper.canItemStacksStack(baseStack, stack))
@@ -58,7 +65,7 @@ object BackpackInventoryHelper {
         for (i in 0 until wrapper.backpackInventorySize()) {
             val stack = wrapper.getStackInSlot(i)
 
-            if (wrapper.isSlotMemorized(i)) {
+            if (wrapper.isSlotMemorized(i) || wrapper.isSlotLocked(i)) {
                 inPlaceStacks.add(stack to i)
                 continue
             } else {

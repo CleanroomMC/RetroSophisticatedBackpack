@@ -9,6 +9,7 @@ import kotlin.math.min
 
 class BackpackItemStackHandler(size: Int, private val wrapper: BackpackWrapper) : ExposedItemStackHandler(size) {
     val memorizedSlotStack: NonNullList<ItemStack> = NonNullList.withSize(size, ItemStack.EMPTY)
+    val sortLockedSlots: MutableList<Boolean> = MutableList(size) { false }
 
     override fun isItemValid(slot: Int, stack: ItemStack): Boolean =
         if (memorizedSlotStack[slot].isEmpty) stack.item !is BackpackItem || wrapper.canNestBackpack()
