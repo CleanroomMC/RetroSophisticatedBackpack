@@ -30,7 +30,10 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.*
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.text.Style
+import net.minecraft.util.text.TextComponentString
 import net.minecraft.util.text.TextComponentTranslation
+import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.ICapabilityProvider
 import net.minecraftforge.fml.common.Optional
@@ -184,10 +187,15 @@ class BackpackItem(
 
         if (Interactable.hasShiftDown()) {
             val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return
+            val stackHint =
+                if (wrapper.isStackedByMultiplication()) "(xM)"
+                else "(+M)"
+
             tooltip.add(
                 TextComponentTranslation(
                     "tooltip.backpack.stack_multiplier".asTranslationKey(),
-                    wrapper.getTotalStackMultiplier()
+                    wrapper.getTotalStackMultiplier(),
+                    TextComponentString(stackHint).setStyle(Style().setColor(TextFormatting.RED)).formattedText
                 ).formattedText
             )
         } else {

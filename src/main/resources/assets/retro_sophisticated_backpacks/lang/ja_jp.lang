@@ -21,7 +21,7 @@ itemGroup.retro_sophisticated_backpacks.creative_tab=レトロ洗練されたバ
 #ツールチップ
 retro_sophisticated_backpacks.tooltip.backpack.inventory_size=インベントリサイズ: %d
 retro_sophisticated_backpacks.tooltip.backpack.upgrade_slots_size=アップグレードスロット: %d
-retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> スタック倍率: %d
+retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> スタック倍率: %d %s
 
 retro_sophisticated_backpacks.tooltip.upgrade_base=何もしません！アップグレードスロットに入れて使ってください！
 

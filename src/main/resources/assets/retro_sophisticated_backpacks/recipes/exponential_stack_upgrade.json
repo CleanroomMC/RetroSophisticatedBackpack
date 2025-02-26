@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "N": {
+      "item": "minecraft:nether_star"
+    },
+    "B": {
+      "item": "retro_sophisticated_backpacks:upgrade_base"
+    },
+    "U": {
+      "item": "retro_sophisticated_backpacks:stack_upgrade_tier_4"
+    },
+    "C": {
+      "item": "minecraft:end_crystal"
+    },
+    "E": {
+      "item": "minecraft:emerald_block"
+    }
+  },
+  "pattern": [
+    "CNC",
+    "UBU",
+    "EUE"
+  ],
+  "result": {
+    "item": "retro_sophisticated_backpacks:exponential_stack_upgrade"
+  }
+}

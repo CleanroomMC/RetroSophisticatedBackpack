@@ -12,6 +12,7 @@ item.retro_sophisticated_backpacks.stack_upgrade_tier_1.name=Stack Upgrade Tier 
 item.retro_sophisticated_backpacks.stack_upgrade_tier_2.name=Stack Upgrade Tier 2
 item.retro_sophisticated_backpacks.stack_upgrade_tier_3.name=Stack Upgrade Tier 3
 item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=Stack Upgrade Tier 4
+item.retro_sophisticated_backpacks.exponential_stack_upgrade.name=Exponential Stack Upgrade
 item.retro_sophisticated_backpacks.crafting_upgrade.name=Crafting Upgrade
 item.retro_sophisticated_backpacks.inception_upgrade.name=Inception Upgrade
 item.retro_sophisticated_backpacks.pickup_upgrade.name=Pickup Upgrade
@@ -35,11 +36,13 @@ retro_sophisticated_backpacks.key.category=Retro Sophisticated Backpacks
 # Tooltips
 retro_sophisticated_backpacks.tooltip.backpack.inventory_size=Inventory size: %d
 retro_sophisticated_backpacks.tooltip.backpack.upgrade_slots_size=Upgrade slots: %d
-retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> Stack multiplier: %d
+retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> Stack multiplier: %d %s
 
 retro_sophisticated_backpacks.tooltip.upgrade_base=It does nothing! Feel free to put it in your upgrade slots!
 
 retro_sophisticated_backpacks.tooltip.stack_upgrade=Multiplies stack size by %d
+
+retro_sophisticated_backpacks.tooltip.exponential_stack_upgrade=Stack multipliers will stack by multiplying instead of adding
 
 retro_sophisticated_backpacks.tooltip.crafting_upgrade=Adds additional crafting grid to side of backpack
 

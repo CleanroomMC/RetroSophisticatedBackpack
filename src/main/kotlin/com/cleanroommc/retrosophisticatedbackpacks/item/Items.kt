@@ -1,9 +1,9 @@
 package com.cleanroommc.retrosophisticatedbackpacks.item
 
-import com.cleanroommc.retrosophisticatedbackpacks.config.Config
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackTier
 import com.cleanroommc.retrosophisticatedbackpacks.block.Blocks
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.*
+import com.cleanroommc.retrosophisticatedbackpacks.config.Config
 import net.minecraft.item.Item
 
 @Suppress("UNUSED")
@@ -66,6 +66,9 @@ object Items {
 
     @JvmField
     val stackUpgradeTierStarter = StackUpgradeItem("stack_upgrade_starter_tier", Config.stackUpgrade::leatherMultiplier)
+
+    @JvmField
+    val exponentialStackUpgrade = ExponentialStackUpgradeItem("exponential_stack_upgrade")
 
     @JvmField
     val stackUpgradeTier1 = StackUpgradeItem("stack_upgrade_tier_1", Config.stackUpgrade::ironMultiplier)
