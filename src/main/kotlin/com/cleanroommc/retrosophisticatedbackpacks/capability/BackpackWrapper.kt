@@ -60,7 +60,7 @@ class BackpackWrapper(
         getTotalStackMultiplier(isStackedByMultiplication())
 
     fun getTotalStackMultiplier(condition: Boolean): Int {
-        val base = if (condition) 1 else 0
+        val base = if (condition) 0 else 1
         val func = getStackMultiplyFunction(condition)
 
         return upgradeItemStackHandler.inventory.map(ItemStack::getItem).filterIsInstance<StackUpgradeItem>()
