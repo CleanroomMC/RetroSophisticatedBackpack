@@ -10,7 +10,6 @@ import net.minecraft.world.World
 
 abstract class UpgradeItem(registryName: String, val hasTab: Boolean = false) : ItemBase() {
     init {
-        setMaxStackSize(1)
         setCreativeTab(RetroSophisticatedBackpacks.CREATIVE_TAB)
         setRegistryName(registryName)
         setTranslationKey(registryName.asTranslationKey())
