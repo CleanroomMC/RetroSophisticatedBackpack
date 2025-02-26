@@ -60,11 +60,16 @@ class BackpackWrapper(
         getTotalStackMultiplier(isStackedByMultiplication())
 
     fun getTotalStackMultiplier(condition: Boolean): Int {
-        val base = if (condition) 0 else 1
+        val base = if (condition) 1 else 0
+        val stackUpgradeItems = upgradeItemStackHandler.inventory
+            .map(ItemStack::getItem)
+            .filterIsInstance<StackUpgradeItem>()
         val func = getStackMultiplyFunction(condition)
 
-        return upgradeItemStackHandler.inventory.map(ItemStack::getItem).filterIsInstance<StackUpgradeItem>()
-            .fold(base) { acc, item -> func(acc, item.multiplier()) }
+        if (!condition && stackUpgradeItems.isEmpty())
+            return 1
+
+        return stackUpgradeItems.fold(base) { acc, item -> func(acc, item.multiplier()) }
     }
 
     fun canAddStackUpgrade(newMultiplier: Int): Boolean {
