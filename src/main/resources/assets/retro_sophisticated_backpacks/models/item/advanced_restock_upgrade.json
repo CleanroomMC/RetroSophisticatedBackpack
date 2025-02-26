@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "retro_sophisticated_backpacks:item/advanced_deposit_upgrade"
+    "layer0": "retro_sophisticated_backpacks:item/advanced_restock_upgrade"
   }
 }
