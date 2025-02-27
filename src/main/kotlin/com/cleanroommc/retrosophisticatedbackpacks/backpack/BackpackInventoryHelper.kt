@@ -1,6 +1,8 @@
 package com.cleanroommc.retrosophisticatedbackpacks.backpack
 
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
 import net.minecraft.entity.Entity
 import net.minecraft.inventory.IInventory
 import net.minecraft.inventory.ISidedInventory
@@ -118,6 +120,17 @@ object BackpackInventoryHelper {
     fun transferPlayerInventoryToBackpack(wrapper: BackpackWrapper, playerInventory: PlayerInvWrapper) {
         for (i in 0 until playerInventory.slots) {
             val stack = playerInventory.getStackInSlot(i)
+
+            if (stack.item is BackpackItem) {
+                val currentBackpackWrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null)
+
+                if (currentBackpackWrapper === wrapper)
+                    continue
+
+                if (!wrapper.canNestBackpack())
+                    continue
+            }
+
             val resultStack = ItemHandlerHelper.insertItemStacked(wrapper, stack, false)
             playerInventory.setStackInSlot(i, resultStack)
         }
