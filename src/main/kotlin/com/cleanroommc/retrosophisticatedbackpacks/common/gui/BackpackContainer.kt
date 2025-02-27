@@ -11,7 +11,8 @@ import net.minecraft.item.ItemStack
 import net.minecraftforge.items.ItemHandlerHelper
 import kotlin.math.min
 
-class BackpackContainer(private val wrapper: BackpackWrapper) : ContainerCustomizer() {
+class BackpackContainer(private val wrapper: BackpackWrapper, private val backpackSlotIndex: Int?) :
+    ContainerCustomizer() {
     companion object {
         private val DROP_TO_WORLD: Int = -999
         private const val LEFT_MOUSE: Int = 0
@@ -93,6 +94,9 @@ class BackpackContainer(private val wrapper: BackpackWrapper) : ContainerCustomi
             if (slot != null && slot.hasStack)
                 playerInventory.itemStack = slot.stack.copy()
 
+            return ItemStack.EMPTY
+        } else if (clickTypeIn == ClickType.SWAP && mouseButton >= 0 && mouseButton < 9 && backpackSlotIndex == mouseButton) {
+            // Prevents swapping opened backpack when backpack is in player inventory
             return ItemStack.EMPTY
         }
 

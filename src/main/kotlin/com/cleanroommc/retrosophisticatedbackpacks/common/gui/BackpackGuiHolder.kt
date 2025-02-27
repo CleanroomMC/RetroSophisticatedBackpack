@@ -6,6 +6,7 @@ import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiData.InventoryType
 import com.cleanroommc.retrosophisticatedbackpacks.tileentity.BackpackTileEntity
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.ceilDiv
 import net.minecraft.entity.player.EntityPlayer
@@ -21,7 +22,9 @@ sealed class BackpackGuiHolder(protected val backpackWrapper: BackpackWrapper) {
     protected fun createPanel(
         syncManager: PanelSyncManager,
         player: EntityPlayer,
-        tileEntity: BackpackTileEntity?
+        tileEntity: BackpackTileEntity?,
+        inventoryType: InventoryType? = null,
+        slotIndex: Int? = null
     ): BackpackPanel =
         BackpackPanel.defaultPanel(
             syncManager,
@@ -29,7 +32,8 @@ sealed class BackpackGuiHolder(protected val backpackWrapper: BackpackWrapper) {
             tileEntity,
             backpackWrapper,
             14 + rowSize * SLOT_SIZE,
-            112 + colSize * SLOT_SIZE
+            112 + colSize * SLOT_SIZE,
+            inventoryType?.let { if (it == InventoryType.PLAYER_INVENTORY) slotIndex else null },
         )
 
     protected fun addCommonWidgets(panel: BackpackPanel, player: EntityPlayer) {
@@ -61,7 +65,7 @@ sealed class BackpackGuiHolder(protected val backpackWrapper: BackpackWrapper) {
             data: PlayerInventoryGuiData,
             syncManager: PanelSyncManager
         ): ModularPanel {
-            val panel = createPanel(syncManager, data.player, null)
+            val panel = createPanel(syncManager, data.player, null, data.inventoryType, data.slotIndex)
             addCommonWidgets(panel, data.player)
             panel.modifyPlayerSlot(syncManager, data.inventoryType, data.slotIndex, data.player)
             return panel
