@@ -40,6 +40,7 @@ Here is a list of implemented feature and considered features to be implemented:
 - [x] restock upgrade (b/a)
 - [x] filter upgrade (b/a)
 - [ ] magnet upgrade (b/a)
+- [ ] void upgrade (b/a)
 - [ ] crafting upgrade
 - [ ] everlasting upgrade
 - [ ] jukebox upgrade (low priority)
