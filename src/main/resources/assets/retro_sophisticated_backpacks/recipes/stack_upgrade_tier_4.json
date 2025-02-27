@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "U": {
-      "item": "minecraft:obsidian"
+      "item": "minecraft:nether_star"
     },
     "B": {
       "item": "retro_sophisticated_backpacks:stack_upgrade_tier_3"
