@@ -20,6 +20,7 @@ import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.modularui.widgets.slot.SlotGroup
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
+import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackInventoryHelper
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.SortType
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
@@ -184,8 +185,12 @@ class BackpackPanel(
             .onMousePressed {
                 if (it == 0) {
                     Interactable.playButtonClickSound()
-                    backpackSyncHandler.sortInventory()
-                    backpackSyncHandler.syncToServer(BackpackSH.UPDATE_SORT_INV)
+                    BackpackInventoryHelper.sortInventory(backpackWrapper)
+                    backpackSyncHandler.syncToServer(BackpackSH.UPDATE_SORT_INV) {
+                        for (i in 0 until backpackWrapper.backpackInventorySize()) {
+                            it.writeItemStack(backpackWrapper.getStackInSlot(i))
+                        }
+                    }
                     true
                 } else false
             }
