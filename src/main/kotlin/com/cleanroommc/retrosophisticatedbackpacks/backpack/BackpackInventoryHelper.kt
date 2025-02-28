@@ -79,10 +79,9 @@ object BackpackInventoryHelper {
             val item1 = stack1.item
             val item2 = stack2.item
 
-            if (stack1.isEmpty)
-                return@sortWith 1
-            else if (stack2.isEmpty)
-                return@sortWith -1
+            if (stack1.isEmpty && stack2.isEmpty) return@sortWith 0
+            else if (stack1.isEmpty) return@sortWith 1
+            else if (stack2.isEmpty) return@sortWith -1
 
             when (wrapper.sortType) {
                 SortType.BY_NAME -> {
