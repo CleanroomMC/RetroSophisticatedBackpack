@@ -27,7 +27,7 @@ abstract class UpgradeItem(registryName: String, val hasTab: Boolean = false) : 
 
     override fun getNBTShareTag(stack: ItemStack): NBTTagCompound? {
         var nbt = super.getNBTShareTag(stack)
-        val wrapper = stack.getCapability(Capabilities.UPGRADE_CAPABILITY, null)!!
+        val wrapper = stack.getCapability(Capabilities.UPGRADE_CAPABILITY, null) ?: return nbt
         
         if (nbt != null) nbt.setTag("Capability", wrapper.serializeNBT())
         else nbt = wrapper.serializeNBT()

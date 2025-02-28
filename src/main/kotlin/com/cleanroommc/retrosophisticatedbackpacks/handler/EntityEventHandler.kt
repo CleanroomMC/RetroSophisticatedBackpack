@@ -1,5 +1,7 @@
 package com.cleanroommc.retrosophisticatedbackpacks.handler
 
+import baubles.api.BaublesApi
+import com.cleanroommc.retrosophisticatedbackpacks.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackFeedingHelper
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackInventoryHelper
@@ -7,6 +9,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
 import net.minecraft.entity.item.EntityItem
 import net.minecraft.init.SoundEvents
+import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumActionResult
 import net.minecraft.util.SoundCategory
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent
@@ -14,6 +17,9 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.TickEvent
+import net.minecraftforge.items.IItemHandler
+import net.minecraftforge.items.wrapper.InvWrapper
+import kotlin.times
 
 @Mod.EventBusSubscriber(modid = Tags.MOD_ID)
 object EntityEventHandler {
@@ -25,9 +31,43 @@ object EntityEventHandler {
         val player = event.entityPlayer
         val inventory = player.inventory
         var stack = event.item.item.copy()
+        
+        stack = attemptPickup(InvWrapper(inventory), stack)
+        
+        if (!stack.isEmpty && RetroSophisticatedBackpacks.baublesLoaded) {
+            stack = attemptPickup(BaublesApi.getBaublesHandler(player), stack)
+        }
 
-        for (i in 0 until inventory.sizeInventory) {
-            val backpackStack = inventory.getStackInSlot(i)
+        if (stack.isEmpty) {
+            event.item.setDead()
+            event.isCanceled = true
+
+            event.item.world.playSound(
+                null,
+                event.item.posX, event.item.posY, event.item.posZ, SoundEvents.ENTITY_ITEM_PICKUP,
+                SoundCategory.PLAYERS, 0.2f,
+                ((player.rng.nextFloat() - player.rng.nextFloat()) * 0.7f + 1.0f) * 2.0f
+            )
+            return
+        } else if (stack.count != event.item.item.count) {
+            event.item.setDead()
+            event.isCanceled = true
+
+            val world = event.item.world
+            val alteredEntityItem = EntityItem(world, event.item.posX, event.item.posY, event.item.posZ, stack)
+            alteredEntityItem.setNoPickupDelay()
+            world.spawnEntity(alteredEntityItem)
+        }
+    }
+
+    /**
+     * Attempts to perform pickup to any backpack exists in targetInventory. 
+     */
+    private fun attemptPickup(targetInventory: IItemHandler, stack: ItemStack): ItemStack {
+        var stack = stack
+        
+        for (i in 0 until targetInventory.slots) {
+            val backpackStack = targetInventory.getStackInSlot(i)
 
             if (backpackStack.item !is BackpackItem)
                 continue
@@ -39,34 +79,16 @@ object EntityEventHandler {
 
             var slotIndex = 0
             while (!stack.isEmpty && slotIndex < wrapper.slots) {
-                stack = wrapper.insertItem(slotIndex, stack, false)
+                stack = wrapper.backpackItemStackHandler.prioritizedInsertion(slotIndex, stack, false)
 
                 slotIndex++
             }
 
-            if (stack.isEmpty) {
-                event.item.setDead()
-                event.isCanceled = true
-
-                event.item.world.playSound(
-                    null,
-                    event.item.posX, event.item.posY, event.item.posZ, SoundEvents.ENTITY_ITEM_PICKUP,
-                    SoundCategory.PLAYERS, 0.2f,
-                    ((player.rng.nextFloat() - player.rng.nextFloat()) * 0.7f + 1.0f) * 2.0f
-                )
-                return
-            }
+            if (stack.isEmpty) 
+                break
         }
-
-        if (stack.count != event.item.item.count) {
-            event.item.setDead()
-            event.isCanceled = true
-
-            val world = event.item.world
-            val alteredEntityItem = EntityItem(world, event.item.posX, event.item.posY, event.item.posZ, stack)
-            alteredEntityItem.setNoPickupDelay()
-            world.spawnEntity(alteredEntityItem)
-        }
+        
+        return stack
     }
 
     @SubscribeEvent
