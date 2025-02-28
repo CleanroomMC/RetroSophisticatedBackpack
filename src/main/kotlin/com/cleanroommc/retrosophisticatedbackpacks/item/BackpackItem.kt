@@ -166,6 +166,27 @@ class BackpackItem(
         super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected)
     }
 
+    override fun getNBTShareTag(stack: ItemStack): NBTTagCompound? {
+        var nbt = super.getNBTShareTag(stack)
+        val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return nbt
+        val wrapperNbt = wrapper.serializeNBT()
+
+        if (nbt == null) nbt = wrapperNbt
+        else nbt.setTag("BackpackCapability", wrapperNbt)
+
+        return nbt
+    }
+
+    override fun readNBTShareTag(stack: ItemStack, nbt: NBTTagCompound?) {
+        if (nbt == null)
+            return
+
+        val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return
+
+        if (nbt.hasKey("BackpackCapability")) wrapper.deserializeNBT(nbt.getCompoundTag("BackpackCapability"))
+        else wrapper.deserializeNBT(nbt)
+    }
+
     override fun addInformation(
         stack: ItemStack,
         worldIn: World?,
