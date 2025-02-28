@@ -25,6 +25,7 @@ import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.init.SoundEvents
+import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemBlock
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -37,6 +38,7 @@ import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.ICapabilityProvider
 import net.minecraftforge.fml.common.Optional
+import net.minecraftforge.items.IItemHandler
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles", striprefs = true)
 class BackpackItem(
@@ -77,7 +79,7 @@ class BackpackItem(
             transferred =
                 BackpackInventoryHelper.attemptRestockFromTileEntity(wrapper, tileEntity, side) || transferred
 
-            return if (transferred) {
+            if (transferred) {
                 world.playSound(
                     null,
                     player.position,
@@ -86,8 +88,9 @@ class BackpackItem(
                     0.5f,
                     0.5f
                 )
-                EnumActionResult.SUCCESS
-            } else EnumActionResult.FAIL
+                
+                return EnumActionResult.SUCCESS
+            }
         }
 
         return super.onItemUseFirst(player, world, pos, side, hitX, hitY, hitZ, hand)
@@ -103,8 +106,15 @@ class BackpackItem(
         hitY: Float,
         hitZ: Float
     ): EnumActionResult {
-        if (!player.isSneaking)
-            return EnumActionResult.FAIL
+        val te = worldIn.getTileEntity(pos)
+        
+        if (player.isSneaking && (te is IItemHandler || te is IInventory))
+            return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ)
+
+        if (!worldIn.isRemote) {
+            PlayerInventoryGuiFactory.open(player, hand)
+            return EnumActionResult.SUCCESS
+        }
 
         return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ)
     }
@@ -168,7 +178,7 @@ class BackpackItem(
 
     override fun getNBTShareTag(stack: ItemStack): NBTTagCompound? {
         var nbt = super.getNBTShareTag(stack)
-        val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null)!!
+        val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return nbt
 
         if (nbt != null) nbt.setTag("Capability", wrapper.serializeNBT())
         else nbt = wrapper.serializeNBT()
@@ -180,7 +190,7 @@ class BackpackItem(
         if (nbt == null)
             return
 
-        val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null)!!
+        val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return
 
         if (nbt.hasKey("Capability")) wrapper.deserializeNBT(nbt.getCompoundTag("Capability"))
         else wrapper.deserializeNBT(nbt)

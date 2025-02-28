@@ -39,7 +39,7 @@ abstract class UpgradeItem(registryName: String, val hasTab: Boolean = false) : 
         if (nbt == null)
             return
         
-        val wrapper = stack.getCapability(Capabilities.UPGRADE_CAPABILITY, null)!!
+        val wrapper = stack.getCapability(Capabilities.UPGRADE_CAPABILITY, null) ?: return
         
         if (nbt.hasKey("Capability")) wrapper.deserializeNBT(nbt.getCompoundTag("Capability"))
         else wrapper.deserializeNBT(nbt)
