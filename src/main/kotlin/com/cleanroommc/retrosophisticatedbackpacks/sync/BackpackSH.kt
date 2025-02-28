@@ -6,8 +6,9 @@ import com.cleanroommc.retrosophisticatedbackpacks.backpack.SortType
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import net.minecraft.network.PacketBuffer
 import net.minecraftforge.items.wrapper.PlayerInvWrapper
+import net.minecraftforge.items.wrapper.PlayerMainInvWrapper
 
-class BackpackSH(private val playerInv: PlayerInvWrapper, private val wrapper: BackpackWrapper) : SyncHandler() {
+class BackpackSH(private val playerInv: PlayerMainInvWrapper, private val wrapper: BackpackWrapper) : SyncHandler() {
     companion object {
         const val UPDATE_SET_SORT_TYPE = 0
         const val UPDATE_SORT_INV = 1

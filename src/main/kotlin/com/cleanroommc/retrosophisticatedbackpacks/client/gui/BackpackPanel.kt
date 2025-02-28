@@ -41,6 +41,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.ceilDiv
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraftforge.items.wrapper.PlayerInvWrapper
+import net.minecraftforge.items.wrapper.PlayerMainInvWrapper
 import kotlin.math.min
 
 class BackpackPanel(
@@ -87,8 +88,9 @@ class BackpackPanel(
             height: Int,
             backpackSlotIndex: Int? = null,
         ): BackpackPanel {
-            val panel = BackpackPanel(player, tileEntity, syncManager, wrapper, BackpackContainer(wrapper, backpackSlotIndex))
-                .size(width, height) as BackpackPanel
+            val panel =
+                BackpackPanel(player, tileEntity, syncManager, wrapper, BackpackContainer(wrapper, backpackSlotIndex))
+                    .size(width, height) as BackpackPanel
             syncManager.containerCustomizer = panel.backpackContainer
             syncManager.bindPlayerInventory(player)
             panel.bindPlayerInventory()
@@ -103,7 +105,7 @@ class BackpackPanel(
     val rowSize = if (backpackWrapper.backpackInventorySize() > 81) 12 else 9
     val colSize = backpackWrapper.backpackInventorySize().ceilDiv(rowSize)
 
-    val backpackSyncHandler: BackpackSH = BackpackSH(PlayerInvWrapper(player.inventory), backpackWrapper)
+    val backpackSyncHandler: BackpackSH = BackpackSH(PlayerMainInvWrapper(player.inventory), backpackWrapper)
     val backpackSlotSyncHandlers: Array<BackpackSlotSH>
     val upgradeSlotSyncHandlers: Array<UpgradeSlotSH>
     val upgradeSlotGroups: Array<UpgradeSlotUpdateGroup>

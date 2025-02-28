@@ -14,6 +14,7 @@ import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.items.wrapper.InvWrapper
 import net.minecraftforge.items.wrapper.PlayerInvWrapper
+import net.minecraftforge.items.wrapper.PlayerMainInvWrapper
 import net.minecraftforge.items.wrapper.SidedInvWrapper
 import net.minecraftforge.oredict.OreDictionary
 import kotlin.math.min
@@ -116,8 +117,8 @@ object BackpackInventoryHelper {
         }
     }
 
-    fun transferPlayerInventoryToBackpack(wrapper: BackpackWrapper, playerInventory: PlayerInvWrapper) {
-        for (i in 0 until playerInventory.slots) {
+    fun transferPlayerInventoryToBackpack(wrapper: BackpackWrapper, playerInventory: PlayerMainInvWrapper) {
+        for (i in 9 until playerInventory.slots) {
             val stack = playerInventory.getStackInSlot(i)
 
             if (stack.item is BackpackItem) {
@@ -135,7 +136,7 @@ object BackpackInventoryHelper {
         }
     }
 
-    fun transferBackpackToPlayerInventory(wrapper: BackpackWrapper, playerInventory: PlayerInvWrapper) {
+    fun transferBackpackToPlayerInventory(wrapper: BackpackWrapper, playerInventory: PlayerMainInvWrapper) {
         for (i in 0 until wrapper.backpackInventorySize()) {
             val stack =  wrapper.getStackInSlot(i)
             val resultStack = ItemHandlerHelper.insertItemStacked(playerInventory, stack, false)
