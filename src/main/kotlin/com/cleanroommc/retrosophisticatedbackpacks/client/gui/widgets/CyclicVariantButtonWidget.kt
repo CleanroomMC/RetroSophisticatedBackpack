@@ -22,7 +22,9 @@ class CyclicVariantButtonWidget(
     init {
         size(20, 20)
             .onMousePressed {
-                this.index = (this.index + 1) % variants.size
+                this.index =
+                    if (it == 1) (this.index - 1 + variants.size) % variants.size
+                    else (this.index + 1) % variants.size
                 mousePressedUpdater(this.index)
                 markTooltipDirty()
                 true
