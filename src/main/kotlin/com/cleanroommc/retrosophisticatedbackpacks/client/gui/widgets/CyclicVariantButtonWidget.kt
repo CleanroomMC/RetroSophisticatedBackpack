@@ -10,22 +10,24 @@ import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 
 class CyclicVariantButtonWidget(
     private val variants: List<Variant>,
-    private var index: Int = 0,
+    index: Int = 0,
     private var iconOffset: Int = 2,
     private var iconSize: Int = 16,
     private val mousePressedUpdater: CyclicVariantButtonWidget.(Int) -> Unit,
 ) : ButtonWidget<CyclicVariantButtonWidget>() {
+    var index = index
+        private set
     var inEffect: Boolean = true
 
     init {
         size(20, 20)
             .onMousePressed {
-                index = (index + 1) % variants.size
-                mousePressedUpdater(index)
+                this.index = (this.index + 1) % variants.size
+                mousePressedUpdater(this.index)
                 markTooltipDirty()
                 true
             }.tooltipDynamic {
-                it.addLine(variants[index].name)
+                it.addLine(variants[this.index].name)
 
                 if (!inEffect) {
                     it.addLine(IKey.lang("gui.not_in_effect".asTranslationKey()).style(IKey.RED))

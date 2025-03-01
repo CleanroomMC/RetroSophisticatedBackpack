@@ -112,6 +112,7 @@ class BackpackPanel(
 
     val settingPanel: IPanelHandler
     var isMemorySettingTabOpened: Boolean = false
+    var shouldMemorizeRespectNBT: Boolean = false
     var isSortingSettingTabOpened: Boolean = false
 
     init {

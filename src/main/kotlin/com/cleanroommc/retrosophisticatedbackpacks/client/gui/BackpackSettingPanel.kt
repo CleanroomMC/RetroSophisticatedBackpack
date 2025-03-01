@@ -90,12 +90,14 @@ class BackpackSettingPanel(private val parent: BackpackPanel) : ModularPanel("ba
     override fun onOpen(screen: ModularScreen) {
         super.onOpen(screen)
         parent.isMemorySettingTabOpened = memoryTab.showExpanded
+        parent.shouldMemorizeRespectNBT = (memoryTab.expandedWidget as MemorySettingWidget).isRespectNBT()
         parent.isSortingSettingTabOpened = sortTab.showExpanded
     }
 
     override fun onClose() {
         super.onClose()
         parent.isMemorySettingTabOpened = false
+        parent.shouldMemorizeRespectNBT = false
         parent.isSortingSettingTabOpened = false
     }
 

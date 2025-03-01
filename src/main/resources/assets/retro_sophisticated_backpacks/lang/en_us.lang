@@ -105,7 +105,7 @@ retro_sophisticated_backpacks.gui.match_ore_dict=By Ore Dictionary
 retro_sophisticated_backpacks.gui.match_durability=Match Durability
 retro_sophisticated_backpacks.gui.ignore_durability=Ignore Durability
 
-retro_sophisticated_backpacks.gui.match_nbt=match NBT
+retro_sophisticated_backpacks.gui.match_nbt=Match NBT
 retro_sophisticated_backpacks.gui.ignore_nbt=Ignore NBT
 
 retro_sophisticated_backpacks.gui.add_ore_dict_entry=Add Ore Dict.

@@ -70,8 +70,10 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
                 syncHandler.syncToServer(BackpackSlotSH.UPDATE_UNSET_MEMORY_STACK)
                 Interactable.Result.SUCCESS
             } else if (!isMemorySet && mouseButton == 0) {
-                wrapper.setMemoryStack(slot.slotIndex)
-                syncHandler.syncToServer(BackpackSlotSH.UPDATE_SET_MEMORY_STACK)
+                wrapper.setMemoryStack(slot.slotIndex, panel.shouldMemorizeRespectNBT)
+                syncHandler.syncToServer(BackpackSlotSH.UPDATE_SET_MEMORY_STACK) {
+                    it.writeBoolean(panel.shouldMemorizeRespectNBT)
+                }
                 Interactable.Result.SUCCESS
             } else Interactable.Result.STOP
         } else if (isInSortSettingMode) {

@@ -32,6 +32,7 @@ class BackpackWrapper(
         private const val UPGRADE_SLOTS_SIZE_TAG = "UpgradeSlotsSize"
 
         private const val MEMORY_STACK_ITEMS_TAG = "MemoryItems"
+        private const val MEMORY_STACK_RESPECT_NBT_TAG = "MemoryRespectNBT"
         private const val SORT_TYPE_TAG = "SortType"
         private const val LOCKED_SLOTS_TAG = "LockedSlots"
 
@@ -187,7 +188,7 @@ class BackpackWrapper(
     fun getMemorizedStack(slotIndex: Int): ItemStack =
         backpackItemStackHandler.memorizedSlotStack[slotIndex]
 
-    fun setMemoryStack(slotIndex: Int) {
+    fun setMemoryStack(slotIndex: Int, respectNBT: Boolean) {
         val currentStack = getStackInSlot(slotIndex)
 
         if (currentStack.isEmpty)
@@ -197,10 +198,19 @@ class BackpackWrapper(
         copiedStack.count = 1
 
         backpackItemStackHandler.memorizedSlotStack[slotIndex] = copiedStack
+        backpackItemStackHandler.memorizedSlotRespectNbtList[slotIndex] = respectNBT
     }
 
     fun unsetMemoryStack(slotIndex: Int) {
         backpackItemStackHandler.memorizedSlotStack[slotIndex] = ItemStack.EMPTY
+        backpackItemStackHandler.memorizedSlotRespectNbtList[slotIndex] = false
+    }
+    
+    fun isMemoryStackRespectNBT(slotIndex: Int): Boolean =
+        !backpackItemStackHandler.memorizedSlotRespectNbtList[slotIndex]
+
+    fun setMemoryStackRespectNBT(slotIndex: Int, respect: Boolean) {
+        backpackItemStackHandler.memorizedSlotRespectNbtList[slotIndex] = respect
     }
 
     fun isSlotLocked(slotIndex: Int): Boolean =
@@ -253,6 +263,10 @@ class BackpackWrapper(
         val memoryNbt = NBTTagCompound()
         BackpackItemStackHelper.saveAllSlotsExtended(memoryNbt, backpackItemStackHandler.memorizedSlotStack)
         nbt.setTag(MEMORY_STACK_ITEMS_TAG, memoryNbt)
+        nbt.setByteArray(
+            MEMORY_STACK_RESPECT_NBT_TAG,
+            backpackItemStackHandler.memorizedSlotRespectNbtList.map { if (it) 1.toByte() else 0 }.toByteArray()
+        )
         nbt.setByte(SORT_TYPE_TAG, sortType.ordinal.toByte())
 
         nbt.setByteArray(
@@ -292,6 +306,10 @@ class BackpackWrapper(
             nbt.getCompoundTag(MEMORY_STACK_ITEMS_TAG),
             backpackItemStackHandler.memorizedSlotStack
         )
+
+        nbt.getByteArray(MEMORY_STACK_RESPECT_NBT_TAG).forEachIndexed { index, b ->
+            setMemoryStackRespectNBT(index, b.toInt() != 0)
+        }
 
         nbt.getByteArray(LOCKED_SLOTS_TAG).forEachIndexed { index, b ->
             setSlotLocked(index, b.toInt() != 0)
