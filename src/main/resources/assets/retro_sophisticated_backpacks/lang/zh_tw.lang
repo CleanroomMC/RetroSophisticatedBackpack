@@ -135,8 +135,10 @@ retro_sophisticated_backpacks.gui.transfer_to_backpack_inv=轉移所有物品至
 retro_sophisticated_backpacks.gui.settings=設定
 retro_sophisticated_backpacks.gui.configuration_tab=設定介面
 
+retro_sophisticated_backpacks.gui.memorized_slot=記憶欄位
 retro_sophisticated_backpacks.gui.memorize_all=記憶所有欄位
 retro_sophisticated_backpacks.gui.unmemorize_all=遺忘所有欄位
 
+retro_sophisticated_backpacks.gui.no_sorting_slot=禁止整理欄位
 retro_sophisticated_backpacks.gui.lock_all_sort=禁止整理所有欄位
 retro_sophisticated_backpacks.gui.unlock_all_sort=允許整理所有欄位

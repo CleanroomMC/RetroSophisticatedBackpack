@@ -45,12 +45,23 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
         get() = panel.isSortingSettingTabOpened
 
     override fun buildTooltip(stack: ItemStack, tooltip: RichTooltip) {
-        if (stack.isEmpty)
+        val memorizedStack = wrapper.getMemorizedStack(slot.slotIndex)
+
+        if (stack.isEmpty && memorizedStack.isEmpty)
             return
 
-        super.buildTooltip(stack, tooltip)
-        val formattedCount = NumberFormat.formatWithMaxDecimals(stack.count.toDouble(), 2)
-        val formattedStackLimit = NumberFormat.formatWithMaxDecimals(slot.getItemStackLimit(stack).toDouble(), 2)
+        val formattedCount: String
+        val formattedStackLimit: String
+
+        if (!stack.isEmpty) {
+            super.buildTooltip(stack, tooltip)
+            formattedCount = NumberFormat.formatWithMaxDecimals(stack.count.toDouble(), 2)
+            formattedStackLimit = NumberFormat.formatWithMaxDecimals(slot.getItemStackLimit(stack).toDouble(), 2)
+        } else {
+            super.buildTooltip(memorizedStack, tooltip)
+            formattedCount = "0"
+            formattedStackLimit = NumberFormat.formatWithMaxDecimals(slot.getItemStackLimit(memorizedStack).toDouble(), 2)
+        }
 
         tooltip.addLine(
             IKey.lang(
@@ -59,6 +70,25 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
                 TextComponentString(formattedStackLimit).setStyle(Style().setColor(TextFormatting.AQUA)).formattedText
             )
         )
+
+        if (wrapper.isSlotMemorized(slot.slotIndex)) {
+            tooltip.addLine(IKey.lang("gui.memorized_slot".asTranslationKey()).style(IKey.LIGHT_PURPLE))
+            
+            if (wrapper.isMemoryStackRespectNBT(slot.slotIndex)) {
+                tooltip.addLine(
+                    IKey.comp(IKey.str("- "), IKey.lang("gui.match_nbt".asTranslationKey())).style(TextFormatting.YELLOW)
+                )
+            } else {
+                tooltip.addLine(
+                    IKey.comp(IKey.str("- "), IKey.lang("gui.ignore_nbt".asTranslationKey()))
+                        .style(TextFormatting.GRAY)
+                )
+            }
+        }
+        
+        if (wrapper.isSlotLocked(slot.slotIndex)) {
+            tooltip.addLine(IKey.lang("gui.no_sorting_slot".asTranslationKey()).style(TextFormatting.DARK_RED))
+        }
     }
 
     override fun onMousePressed(mouseButton: Int): Interactable.Result =
@@ -109,11 +139,11 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
         if (wrapper.isSlotLocked(slot.slotIndex))
             drawLockedSlot(context, widgetTheme)
 
-        if (isInSettingMode) drawSettingStack()
-        else drawNormalStack()
+        if (isInSettingMode) drawSettingStack(context, widgetTheme)
+        else drawNormalStack(context, widgetTheme)
     }
 
-    private fun drawSettingStack() {
+    private fun drawSettingStack(context: ModularGuiContext, widgetTheme: WidgetTheme) {
         val memoryStack = wrapper.backpackItemStackHandler.memorizedSlotStack[slot.slotIndex]
         val guiScreen = screen.screenWrapper.guiScreen
         val renderItem = (guiScreen as GuiScreenAccessor).itemRender
@@ -141,17 +171,17 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
         renderItem.zLevel = 0f
     }
 
-    private fun drawNormalStack() {
+    private fun drawNormalStack(context: ModularGuiContext, widgetTheme: WidgetTheme) {
         val slot = slot as? ModularBackpackSlot ?: return
         val memoryStack = slot.getMemoryStack()
 
         superDraw()
 
         if (slot.stack.isEmpty && !memoryStack.isEmpty)
-            drawMemoryStack(memoryStack)
+            drawMemoryStack(memoryStack, context, widgetTheme)
     }
 
-    private fun drawMemoryStack(memoryStack: ItemStack) {
+    private fun drawMemoryStack(memoryStack: ItemStack, context: ModularGuiContext, widgetTheme: WidgetTheme) {
         val guiScreen = screen.screenWrapper.guiScreen
         val renderItem = (guiScreen as GuiScreenAccessor).itemRender
 
@@ -161,6 +191,7 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
         GlStateManager.disableLighting()
 
         renderItem.renderItemIntoGUI(memoryStack, 1, 1)
+
         GlStateManager.depthFunc(516)
         Gui.drawRect(1, 1, 17, 17, Color.argb(139, 139, 139, 128))
         GlStateManager.depthFunc(515)

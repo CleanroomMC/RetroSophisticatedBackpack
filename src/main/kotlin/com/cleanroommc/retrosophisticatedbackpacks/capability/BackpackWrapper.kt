@@ -207,7 +207,7 @@ class BackpackWrapper(
     }
     
     fun isMemoryStackRespectNBT(slotIndex: Int): Boolean =
-        !backpackItemStackHandler.memorizedSlotRespectNbtList[slotIndex]
+        backpackItemStackHandler.memorizedSlotRespectNbtList[slotIndex]
 
     fun setMemoryStackRespectNBT(slotIndex: Int, respect: Boolean) {
         backpackItemStackHandler.memorizedSlotRespectNbtList[slotIndex] = respect

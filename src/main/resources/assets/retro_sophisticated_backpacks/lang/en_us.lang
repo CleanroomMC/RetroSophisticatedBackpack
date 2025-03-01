@@ -135,8 +135,10 @@ retro_sophisticated_backpacks.gui.transfer_to_backpack_inv=Transfer All Items to
 retro_sophisticated_backpacks.gui.settings=Settings
 retro_sophisticated_backpacks.gui.configuration_tab=Configuration Tab
 
+retro_sophisticated_backpacks.gui.memorized_slot=Memorized Slot
 retro_sophisticated_backpacks.gui.memorize_all=Memorize All Slots
 retro_sophisticated_backpacks.gui.unmemorize_all=Forget All Slots
 
+retro_sophisticated_backpacks.gui.no_sorting_slot=No Sorting Slot
 retro_sophisticated_backpacks.gui.lock_all_sort=Select All Slots For No Sorting
 retro_sophisticated_backpacks.gui.unlock_all_sort=Select All Slots For Sorting
