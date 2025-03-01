@@ -74,6 +74,7 @@ class BackpackSettingPanel(private val parent: BackpackPanel) : ModularPanel("ba
                 parent.isSortingSettingTabOpened = false
                 sortTab.isEnabled = !memoryTab.showExpanded
             }
+
             1 -> {
                 memoryTab.showExpanded = false
                 parent.isMemorySettingTabOpened = false

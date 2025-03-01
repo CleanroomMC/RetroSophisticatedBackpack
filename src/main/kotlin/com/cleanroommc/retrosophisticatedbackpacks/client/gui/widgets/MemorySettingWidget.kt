@@ -33,7 +33,7 @@ class MemorySettingWidget(
             )
         )
     }
-    
+
     private val buttonRow: Row = Row()
         .leftRel(0.5f)
         .height(20)
@@ -105,7 +105,7 @@ class MemorySettingWidget(
 
         child(buttonRow)
     }
-    
+
     fun isRespectNBT(): Boolean =
         respectNBTButton.index != 0
 

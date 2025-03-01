@@ -27,6 +27,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.*
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.*
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.slot.BackpackSlot
+import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.upgrade.*
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackContainer
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiData
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularBackpackSlot
@@ -184,7 +185,10 @@ class BackpackPanel(
             .top(4)
             .right(21)
             .size(12)
-            .overlay(RSBTextures.SORT_ICON)
+            .overlay(RSBTextures.SOLID_UP_ARROW_ICON)
+            .setEnabledIf {
+                !settingPanel.isPanelOpen
+            }
             .onMousePressed {
                 if (it == 0) {
                     Interactable.playButtonClickSound()
@@ -213,7 +217,11 @@ class BackpackPanel(
             backpackSyncHandler.syncToServer(BackpackSH.UPDATE_SET_SORT_TYPE) {
                 it.writeEnumValue(nextSortType)
             }
-        }.top(4)
+        }
+            .setEnabledIf {
+                !settingPanel.isPanelOpen
+            }
+            .top(4)
             .right(7)
             .size(12)
 
@@ -222,40 +230,72 @@ class BackpackPanel(
     }
 
     internal fun addTransferButtons() {
-        val transferToPlayerButton = ButtonWidget()
-            .top(17 + colSize * 18)
-            .right(21)
-            .size(12)
-            .overlay(RSBTextures.DOT_DOWN_ARROW_ICON)
-            .onMousePressed {
-                if (it == 0) {
-                    Interactable.playButtonClickSound()
-                    backpackSyncHandler.transferToPlayerInventory()
-                    backpackSyncHandler.syncToServer(BackpackSH.UPDATE_TRANSFER_TO_PLAYER_INV)
-                    true
-                } else false
-            }
-            .tooltipStatic {
-                it.addLine(IKey.lang("gui.transfer_to_player_inv".asTranslationKey()))
-                    .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
-            }
-        val transferToBackpackButton = ButtonWidget()
-            .top(17 + colSize * 18)
-            .right(7)
-            .size(12)
-            .overlay(RSBTextures.DOT_UP_ARROW_ICON)
-            .onMousePressed {
-                if (it == 0) {
-                    Interactable.playButtonClickSound()
-                    backpackSyncHandler.transferToBackpack()
-                    backpackSyncHandler.syncToServer(BackpackSH.UPDATE_TRANSFER_TO_BACKPACK_INV)
-                    true
-                } else false
-            }
-            .tooltipStatic {
-                it.addLine(IKey.lang("gui.transfer_to_backpack_inv".asTranslationKey()))
-                    .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
-            }
+        val transferToPlayerButton =
+            TransferButtonWidget(RSBTextures.DOT_DOWN_ARROW_ICON, RSBTextures.SOLID_DOWN_ARROW_ICON)
+                .top(17 + colSize * 18)
+                .right(21)
+                .size(12)
+                .setEnabledIf {
+                    !settingPanel.isPanelOpen
+                }
+                .onMousePressed {
+                    if (it == 0) {
+                        val transferMatched = !Interactable.hasShiftDown()
+
+                        Interactable.playButtonClickSound()
+                        backpackSyncHandler.transferToPlayerInventory(transferMatched)
+                        backpackSyncHandler.syncToServer(BackpackSH.UPDATE_TRANSFER_TO_PLAYER_INV) {
+                            it.writeBoolean(transferMatched)
+                        }
+                        true
+                    } else false
+                }
+                .tooltipAutoUpdate(true)
+                .tooltipDynamic {
+                    if (Interactable.hasShiftDown()) {
+                        it.addLine(IKey.lang("gui.transfer_to_player_inv".asTranslationKey()))
+                    } else {
+                        it.addLine(IKey.lang("gui.transfer_to_player_inv_matched_1".asTranslationKey()))
+                            .addLine(
+                                IKey.lang("gui.transfer_to_player_inv_matched_2".asTranslationKey()).style(IKey.GRAY)
+                            )
+                    }
+
+                    it.pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+                }
+        val transferToBackpackButton =
+            TransferButtonWidget(RSBTextures.DOT_UP_ARROW_ICON, RSBTextures.SOLID_UP_ARROW_ICON)
+                .top(17 + colSize * 18)
+                .right(7)
+                .size(12)
+                .setEnabledIf {
+                    !settingPanel.isPanelOpen
+                }
+                .onMousePressed {
+                    if (it == 0) {
+                        val transferMatched = !Interactable.hasShiftDown()
+
+                        Interactable.playButtonClickSound()
+                        backpackSyncHandler.transferToBackpack(transferMatched)
+                        backpackSyncHandler.syncToServer(BackpackSH.UPDATE_TRANSFER_TO_BACKPACK_INV) {
+                            it.writeBoolean(transferMatched)
+                        }
+                        true
+                    } else false
+                }
+                .tooltipAutoUpdate(true)
+                .tooltipDynamic {
+                    if (Interactable.hasShiftDown()) {
+                        it.addLine(IKey.lang("gui.transfer_to_backpack_inv".asTranslationKey()))
+                    } else {
+                        it.addLine(IKey.lang("gui.transfer_to_backpack_inv_matched_1".asTranslationKey()))
+                            .addLine(
+                                IKey.lang("gui.transfer_to_backpack_inv_matched_2".asTranslationKey()).style(IKey.GRAY)
+                            )
+                    }
+
+                    it.pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+                }
 
         child(transferToPlayerButton)
             .child(transferToBackpackButton)

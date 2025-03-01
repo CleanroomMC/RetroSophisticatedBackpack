@@ -60,7 +60,8 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
         } else {
             super.buildTooltip(memorizedStack, tooltip)
             formattedCount = "0"
-            formattedStackLimit = NumberFormat.formatWithMaxDecimals(slot.getItemStackLimit(memorizedStack).toDouble(), 2)
+            formattedStackLimit =
+                NumberFormat.formatWithMaxDecimals(slot.getItemStackLimit(memorizedStack).toDouble(), 2)
         }
 
         tooltip.addLine(
@@ -73,10 +74,11 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
 
         if (wrapper.isSlotMemorized(slot.slotIndex)) {
             tooltip.addLine(IKey.lang("gui.memorized_slot".asTranslationKey()).style(IKey.LIGHT_PURPLE))
-            
+
             if (wrapper.isMemoryStackRespectNBT(slot.slotIndex)) {
                 tooltip.addLine(
-                    IKey.comp(IKey.str("- "), IKey.lang("gui.match_nbt".asTranslationKey())).style(TextFormatting.YELLOW)
+                    IKey.comp(IKey.str("- "), IKey.lang("gui.match_nbt".asTranslationKey()))
+                        .style(TextFormatting.YELLOW)
                 )
             } else {
                 tooltip.addLine(
@@ -85,7 +87,7 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
                 )
             }
         }
-        
+
         if (wrapper.isSlotLocked(slot.slotIndex)) {
             tooltip.addLine(IKey.lang("gui.no_sorting_slot".asTranslationKey()).style(TextFormatting.DARK_RED))
         }

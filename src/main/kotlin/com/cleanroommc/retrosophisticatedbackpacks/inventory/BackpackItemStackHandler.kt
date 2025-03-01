@@ -27,6 +27,11 @@ class BackpackItemStackHandler(size: Int, private val wrapper: BackpackWrapper) 
      * gui-based interaction get unexpected insertion result.
      */
     fun prioritizedInsertion(slotIndex: Int, stack: ItemStack, simulate: Boolean): ItemStack {
+        var stack = insertItemToMemorySlots(stack, simulate)
+        return insertItem(slotIndex, stack, simulate)
+    }
+
+    fun insertItemToMemorySlots(stack: ItemStack, simulate: Boolean): ItemStack {
         var stack = stack
 
         for ((slotIndex, memorizedStack) in memorizedSlotStack.withIndex()) {
@@ -39,7 +44,7 @@ class BackpackItemStackHandler(size: Int, private val wrapper: BackpackWrapper) 
                 return stack
         }
 
-        return insertItem(slotIndex, stack, simulate)
+        return stack
     }
 
     override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {

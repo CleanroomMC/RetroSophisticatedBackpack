@@ -88,7 +88,7 @@ class BackpackItem(
                     0.5f,
                     0.5f
                 )
-                
+
                 return EnumActionResult.SUCCESS
             }
         }
@@ -107,7 +107,7 @@ class BackpackItem(
         hitZ: Float
     ): EnumActionResult {
         val te = worldIn.getTileEntity(pos)
-        
+
         if (player.isSneaking && (te is IItemHandler || te is IInventory))
             return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ)
 

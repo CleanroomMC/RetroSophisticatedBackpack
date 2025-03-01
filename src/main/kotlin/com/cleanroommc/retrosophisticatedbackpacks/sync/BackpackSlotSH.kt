@@ -17,9 +17,10 @@ class BackpackSlotSH(private val wrapper: BackpackWrapper, slot: ModularSlot) : 
         when (id) {
             UPDATE_SET_MEMORY_STACK -> {
                 val respectNBT = buf.readBoolean()
-                
+
                 wrapper.setMemoryStack(slot.slotIndex, respectNBT)
             }
+
             UPDATE_UNSET_MEMORY_STACK -> wrapper.unsetMemoryStack(slot.slotIndex)
             UPDATE_SET_SLOT_LOCK -> wrapper.setSlotLocked(slot.slotIndex, true)
             UPDATE_UNSET_SLOT_LOCK -> wrapper.setSlotLocked(slot.slotIndex, false)

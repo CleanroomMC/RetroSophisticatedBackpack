@@ -205,7 +205,7 @@ class BackpackWrapper(
         backpackItemStackHandler.memorizedSlotStack[slotIndex] = ItemStack.EMPTY
         backpackItemStackHandler.memorizedSlotRespectNbtList[slotIndex] = false
     }
-    
+
     fun isMemoryStackRespectNBT(slotIndex: Int): Boolean =
         backpackItemStackHandler.memorizedSlotRespectNbtList[slotIndex]
 

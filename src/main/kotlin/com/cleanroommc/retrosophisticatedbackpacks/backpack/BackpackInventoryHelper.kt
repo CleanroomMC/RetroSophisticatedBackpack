@@ -13,7 +13,6 @@ import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.ItemHandlerHelper
 import net.minecraftforge.items.wrapper.InvWrapper
-import net.minecraftforge.items.wrapper.PlayerInvWrapper
 import net.minecraftforge.items.wrapper.PlayerMainInvWrapper
 import net.minecraftforge.items.wrapper.SidedInvWrapper
 import net.minecraftforge.oredict.OreDictionary
@@ -117,9 +116,13 @@ object BackpackInventoryHelper {
         }
     }
 
-    fun transferPlayerInventoryToBackpack(wrapper: BackpackWrapper, playerInventory: PlayerMainInvWrapper) {
+    fun transferPlayerInventoryToBackpack(
+        wrapper: BackpackWrapper,
+        playerInventory: PlayerMainInvWrapper,
+        transferMatched: Boolean
+    ) {
         for (i in 9 until playerInventory.slots) {
-            val stack = playerInventory.getStackInSlot(i)
+            var stack = playerInventory.getStackInSlot(i)
 
             if (stack.item is BackpackItem) {
                 val currentBackpackWrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null)
@@ -131,16 +134,35 @@ object BackpackInventoryHelper {
                     continue
             }
 
-            val resultStack = ItemHandlerHelper.insertItemStacked(wrapper, stack, false)
-            playerInventory.setStackInSlot(i, resultStack)
+            for (j in 0 until wrapper.backpackInventorySize()) {
+                stack = wrapper.backpackItemStackHandler.insertItemToMemorySlots(stack, false)
+
+                if (transferMatched && wrapper.getStackInSlot(j).isEmpty)
+                    continue
+                
+                stack = wrapper.insertItem(j, stack, false)
+            }
+
+            playerInventory.setStackInSlot(i, stack)
         }
     }
 
-    fun transferBackpackToPlayerInventory(wrapper: BackpackWrapper, playerInventory: PlayerMainInvWrapper) {
+    fun transferBackpackToPlayerInventory(
+        wrapper: BackpackWrapper,
+        playerInventory: PlayerMainInvWrapper,
+        transferMatched: Boolean
+    ) {
         for (i in 0 until wrapper.backpackInventorySize()) {
-            val stack =  wrapper.getStackInSlot(i)
-            val resultStack = ItemHandlerHelper.insertItemStacked(playerInventory, stack, false)
-            wrapper.backpackItemStackHandler.setStackInSlot(i, resultStack)
+            var stack = wrapper.getStackInSlot(i)
+
+            for (j in 9 until playerInventory.slots) {
+                if (transferMatched && playerInventory.getStackInSlot(j).isEmpty)
+                    continue
+
+                stack = playerInventory.insertItem(j, stack, false)
+            }
+
+            wrapper.backpackItemStackHandler.setStackInSlot(i, stack)
         }
     }
 

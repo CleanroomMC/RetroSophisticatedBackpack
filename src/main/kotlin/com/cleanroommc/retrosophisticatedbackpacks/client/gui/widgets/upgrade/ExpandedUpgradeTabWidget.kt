@@ -1,8 +1,9 @@
-package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets
+package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.upgrade
 
 import com.cleanroommc.modularui.drawable.ItemDrawable
 import com.cleanroommc.modularui.value.sync.SyncHandler
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.UpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.ExpandedTabWidget
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import net.minecraft.item.ItemStack
 

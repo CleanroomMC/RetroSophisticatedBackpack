@@ -46,6 +46,7 @@ abstract class ExpandedTabWidget(
                     .child(titleKeyWidget)
                     .child(phantomTabWidget)
             }
+
             ExpandDirection.RIGHT -> {
                 left(0)
 
@@ -75,6 +76,7 @@ abstract class ExpandedTabWidget(
 
                     tabIcon.right(8)
                 }
+
                 ExpandDirection.RIGHT -> {
                     tabIcon.left(8)
                 }

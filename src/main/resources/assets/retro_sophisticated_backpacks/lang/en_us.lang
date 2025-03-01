@@ -130,7 +130,11 @@ retro_sophisticated_backpacks.gui.sort_by_count=Sort By Count
 retro_sophisticated_backpacks.gui.sort_by_ore_dict=Sort By Ore Dictionary
 
 retro_sophisticated_backpacks.gui.transfer_to_player_inv=Transfer All Items to Player Inventory
+retro_sophisticated_backpacks.gui.transfer_to_player_inv_matched_1=Transfer Matched Items to Player Inventory
+retro_sophisticated_backpacks.gui.transfer_to_player_inv_matched_2=Shift To Transfer All
 retro_sophisticated_backpacks.gui.transfer_to_backpack_inv=Transfer All Items to Backpack Inventory
+retro_sophisticated_backpacks.gui.transfer_to_backpack_inv_matched_1=Transfer Matched Items to Backpack Inventory
+retro_sophisticated_backpacks.gui.transfer_to_backpack_inv_matched_2=Shift To Transfer All
 
 retro_sophisticated_backpacks.gui.settings=Settings
 retro_sophisticated_backpacks.gui.configuration_tab=Configuration Tab

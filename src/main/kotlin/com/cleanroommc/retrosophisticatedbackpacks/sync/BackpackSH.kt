@@ -5,7 +5,6 @@ import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackInventoryHel
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.SortType
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import net.minecraft.network.PacketBuffer
-import net.minecraftforge.items.wrapper.PlayerInvWrapper
 import net.minecraftforge.items.wrapper.PlayerMainInvWrapper
 
 class BackpackSH(private val playerInv: PlayerMainInvWrapper, private val wrapper: BackpackWrapper) : SyncHandler() {
@@ -22,8 +21,8 @@ class BackpackSH(private val playerInv: PlayerMainInvWrapper, private val wrappe
         when (id) {
             UPDATE_SET_SORT_TYPE -> setSortType(buf)
             UPDATE_SORT_INV -> sortInventory(buf)
-            UPDATE_TRANSFER_TO_BACKPACK_INV -> transferToBackpack()
-            UPDATE_TRANSFER_TO_PLAYER_INV -> transferToPlayerInventory()
+            UPDATE_TRANSFER_TO_BACKPACK_INV -> transferToBackpack(buf)
+            UPDATE_TRANSFER_TO_PLAYER_INV -> transferToPlayerInventory(buf)
             else -> {}
         }
     }
@@ -39,19 +38,31 @@ class BackpackSH(private val playerInv: PlayerMainInvWrapper, private val wrappe
     // Must sort on client then send sort result to server side
     fun sortInventory(buf: PacketBuffer) {
         val size = wrapper.backpackInventorySize()
-        
+
         for (i in 0 until size) {
             val stack = buf.readItemStack()
-            
+
             wrapper.backpackItemStackHandler.setStackInSlot(i, stack)
         }
     }
 
-    fun transferToBackpack() {
-        BackpackInventoryHelper.transferPlayerInventoryToBackpack(wrapper, playerInv)
+    fun transferToBackpack(transferMatched: Boolean) {
+        BackpackInventoryHelper.transferPlayerInventoryToBackpack(wrapper, playerInv, transferMatched)
     }
 
-    fun transferToPlayerInventory() {
-        BackpackInventoryHelper.transferBackpackToPlayerInventory(wrapper, playerInv)
+    fun transferToBackpack(buf: PacketBuffer) {
+        val transferMatched = buf.readBoolean()
+
+        BackpackInventoryHelper.transferPlayerInventoryToBackpack(wrapper, playerInv, transferMatched)
+    }
+
+    fun transferToPlayerInventory(transferMatched: Boolean) {
+        BackpackInventoryHelper.transferBackpackToPlayerInventory(wrapper, playerInv, transferMatched)
+    }
+
+    fun transferToPlayerInventory(buf: PacketBuffer) {
+        val transferMatched = buf.readBoolean()
+
+        BackpackInventoryHelper.transferBackpackToPlayerInventory(wrapper, playerInv, transferMatched)
     }
 }

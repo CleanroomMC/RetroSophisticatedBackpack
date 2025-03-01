@@ -19,7 +19,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.TickEvent
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.wrapper.InvWrapper
-import kotlin.times
 
 @Mod.EventBusSubscriber(modid = Tags.MOD_ID)
 object EntityEventHandler {
@@ -31,9 +30,9 @@ object EntityEventHandler {
         val player = event.entityPlayer
         val inventory = player.inventory
         var stack = event.item.item.copy()
-        
+
         stack = attemptPickup(InvWrapper(inventory), stack)
-        
+
         if (!stack.isEmpty && RetroSophisticatedBackpacks.baublesLoaded) {
             stack = attemptPickup(BaublesApi.getBaublesHandler(player), stack)
         }
@@ -61,11 +60,11 @@ object EntityEventHandler {
     }
 
     /**
-     * Attempts to perform pickup to any backpack exists in targetInventory. 
+     * Attempts to perform pickup to any backpack exists in targetInventory.
      */
     private fun attemptPickup(targetInventory: IItemHandler, stack: ItemStack): ItemStack {
         var stack = stack
-        
+
         for (i in 0 until targetInventory.slots) {
             val backpackStack = targetInventory.getStackInSlot(i)
 
@@ -84,10 +83,10 @@ object EntityEventHandler {
                 slotIndex++
             }
 
-            if (stack.isEmpty) 
+            if (stack.isEmpty)
                 break
         }
-        
+
         return stack
     }
 

@@ -1,33 +1,33 @@
-package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets
+package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.upgrade
 
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.UpgradeWrapper
 import net.minecraft.item.ItemStack
 
-open class AdvancedExpandedTabWidget<T>(
+open class BasicExpandedTabWidget<T>(
     slotIndex: Int,
     override val wrapper: T,
     delegatedIconStack: ItemStack,
     titleKey: String,
-    filterSyncKey: String = "adv_common_filter",
-    coveredTabSize: Int = 5,
-    width: Int = 100,
+    filterSyncKey: String = "common_filter",
+    coveredTabSize: Int = 4,
+    width: Int = 75,
 ) : ExpandedUpgradeTabWidget<T>(slotIndex, coveredTabSize, delegatedIconStack, titleKey, width)
-        where T : IAdvancedFilterable, T : UpgradeWrapper<*> {
+        where T : IBasicFilterable, T : UpgradeWrapper<*> {
     protected val startingRow: Row = Row()
         .height(0)
         .debugName("starting_row") as Row
-    protected val filterWidget: AdvancedFilterWidget = AdvancedFilterWidget(slotIndex, wrapper, filterSyncKey)
-        .width(88)
+    protected val filterWidget: BasicFilterWidget = BasicFilterWidget(wrapper, slotIndex, filterSyncKey)
+        .width(64)
         .coverChildrenHeight()
-        .debugName("adv_filter_widget")
+        .debugName("filter_widget")
 
     init {
         val column = Column()
             .pos(8, 28)
-            .width(88)
+            .width(64)
             .childPadding(2)
             .child(startingRow)
             .child(filterWidget)
@@ -35,4 +35,3 @@ open class AdvancedExpandedTabWidget<T>(
         child(column)
     }
 }
-
