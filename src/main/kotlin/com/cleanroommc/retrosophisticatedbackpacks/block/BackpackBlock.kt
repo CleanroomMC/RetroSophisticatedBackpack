@@ -7,6 +7,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.handler.RegistryHandler
 import com.cleanroommc.retrosophisticatedbackpacks.tileentity.BackpackTileEntity
 import com.cleanroommc.retrosophisticatedbackpacks.util.IModelRegister
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
+import git.jbredwards.fluidlogged_api.api.block.IFluidloggable
 import net.minecraft.block.Block
 import net.minecraft.block.ITileEntityProvider
 import net.minecraft.block.SoundType
@@ -28,14 +29,16 @@ import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
+import net.minecraftforge.fml.common.Optional
 import net.minecraftforge.items.ItemHandlerHelper
 
 @Suppress("OVERRIDE_DEPRECATION", "DEPRECATION")
+@Optional.Interface(iface = "git.jbredwards.fluidlogged_api.api.block.IFluidloggable", modid = "fluidlogged_api")
 class BackpackBlock(
     registryName: String,
     explosionResistance: Float,
     val tier: BackpackTier,
-) : Block(Material.CARPET), ITileEntityProvider, IModelRegister.Block {
+) : Block(Material.CARPET), ITileEntityProvider, IModelRegister.Block, IFluidloggable {
     companion object {
         val LEFT_TANK: PropertyBool = PropertyBool.create("left_tank")
         val RIGHT_TANK: PropertyBool = PropertyBool.create("right_tank")
