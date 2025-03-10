@@ -148,6 +148,7 @@ dependencies {
 
     implementation("com.cleanroommc:modularui:2.5.0-rc4")
     implementation(rfg.deobf("curse.maven:baubles-227083:2518667"))
+    compileOnly(rfg.deobf("curse.maven:fluidlogged-api-485654:3697254")) // Oldest supported version (v1.7)
     
     if (use_assetmover.toBoolean()) {
         implementation("com.cleanroommc:assetmover:2.5")
