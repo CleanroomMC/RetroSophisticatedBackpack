@@ -25,7 +25,6 @@ import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.init.SoundEvents
-import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemBlock
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -38,7 +37,6 @@ import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.ICapabilityProvider
 import net.minecraftforge.fml.common.Optional
-import net.minecraftforge.items.IItemHandler
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles", striprefs = true)
 class BackpackItem(
@@ -108,7 +106,7 @@ class BackpackItem(
     ): EnumActionResult {
         val te = worldIn.getTileEntity(pos)
 
-        if (player.isSneaking && (te is IItemHandler || te is IInventory))
+        if (player.isSneaking && te != null)
             return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ)
 
         if (!worldIn.isRemote)

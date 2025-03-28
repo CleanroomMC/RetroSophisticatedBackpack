@@ -8,6 +8,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackInventoryHel
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
 import net.minecraft.entity.item.EntityItem
+import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.init.SoundEvents
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumActionResult
@@ -125,16 +126,22 @@ object EntityEventHandler {
     @SubscribeEvent
     @JvmStatic
     fun onPlayerTicking(event: TickEvent.PlayerTickEvent) {
+        val player = event.player
+
+        if (player !is EntityPlayerMP)
+            return
+
         if (event.phase == TickEvent.Phase.END) {
             feedTickCounter++
 
             if (feedTickCounter % 20 == 0) {
                 feedTickCounter = 0
 
-                if (event.player.isCreative)
+                if (player.isCreative)
                     return
 
-                BackpackFeedingHelper.attemptFeed(event.player)
+                BackpackFeedingHelper.attemptFeed(player)
+                player.onUpdateEntity()
             }
         }
     }
