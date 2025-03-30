@@ -139,8 +139,10 @@ retro_sophisticated_backpacks.gui.transfer_to_backpack_inv_matched_2=按住Shift
 retro_sophisticated_backpacks.gui.settings=设置
 retro_sophisticated_backpacks.gui.configuration_tab=设置标签页
 
+retro_sophisticated_backpacks.gui.memorized_slot=被记忆的槽位
 retro_sophisticated_backpacks.gui.memorize_all=记忆所有槽位
 retro_sophisticated_backpacks.gui.unmemorize_all=遗忘所有槽位
 
+retro_sophisticated_backpacks.gui.no_sorting_slot=禁止整理的槽位
 retro_sophisticated_backpacks.gui.lock_all_sort=禁止整理所有槽位
 retro_sophisticated_backpacks.gui.unlock_all_sort=允许整理所有槽位
