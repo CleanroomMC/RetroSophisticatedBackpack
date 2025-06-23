@@ -141,7 +141,6 @@ object EntityEventHandler {
                     return
 
                 BackpackFeedingHelper.attemptFeed(player)
-                player.onUpdateEntity()
             }
         }
     }
