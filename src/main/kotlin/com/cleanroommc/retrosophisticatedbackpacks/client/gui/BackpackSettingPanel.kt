@@ -24,7 +24,7 @@ class BackpackSettingPanel(private val parent: BackpackPanel) : ModularPanel("ba
         private val LAYERED_TAB_TEXTURE = UITexture.builder()
             .location(Tags.MOD_ID, "gui/gui_controls")
             .imageSize(256, 256)
-            .uv(128, 0, 124, 256)
+            .xy(128, 0, 124, 256)
             .adaptable(4)
             .tiled()
             .build() as AdaptableUITexture
@@ -106,6 +106,6 @@ class BackpackSettingPanel(private val parent: BackpackPanel) : ModularPanel("ba
         super.postDraw(context, transformed)
 
         // Nasty hack to draw over upgrade tabs
-        LAYERED_TAB_TEXTURE.draw(context, 0, 0, 6, flex.area.height, WidgetTheme.getDefault())
+        LAYERED_TAB_TEXTURE.draw(context, 0, 0, 6, flex.area.height, WidgetTheme.getDefault().theme)
     }
 }

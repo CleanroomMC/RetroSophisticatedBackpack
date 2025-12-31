@@ -7,6 +7,7 @@ import com.cleanroommc.modularui.drawable.text.TextRenderer
 import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
+import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.utils.Color
 import com.cleanroommc.modularui.value.sync.SyncHandler
 import com.cleanroommc.modularui.widget.ParentWidget
@@ -281,7 +282,7 @@ class AdvancedFilterWidget(
             private val BACKGROUND_TILE_TEXTURE = UITexture.builder()
                 .location(Tags.MOD_ID, "gui/gui_controls")
                 .imageSize(256, 256)
-                .uv(29, 146, 66, 56)
+                .xy(29, 146, 66, 56)
                 .adaptable(1)
                 .tiled()
                 .build()
@@ -296,7 +297,7 @@ class AdvancedFilterWidget(
     }
 
     private class OreDictEntryWidget(val parent: AdvancedFilterWidget, val text: String, width: Int) :
-        TextWidget(IKey.str(" $text")), Interactable {
+        TextWidget<OreDictEntryWidget>(IKey.str(" $text")), Interactable {
         companion object {
             private const val PAUSE_TIME = 60
         }
@@ -384,10 +385,10 @@ class AdvancedFilterWidget(
             return Interactable.Result.SUCCESS
         }
 
-        override fun draw(context: ModularGuiContext?, widgetTheme: WidgetTheme?) {
-            checkString()
+        override fun draw(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
+            checkStringClose()
             val renderer = TextRenderer.SHARED
-            color?.let { renderer.setColor(it) }
+            color?.let { renderer.color = it.asInt }
             renderer.setAlignment(alignment, (area.w() + 1).toFloat(), area.h().toFloat())
             isShadow?.let { renderer.setShadow(it) }
             renderer.setPos(area.padding.left, area.padding.top + 2)
@@ -396,16 +397,18 @@ class AdvancedFilterWidget(
             renderer.drawCut(line)
         }
 
-        override fun drawOverlay(context: ModularGuiContext, widgetTheme: WidgetTheme) {
+        override fun drawOverlay(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
             if (!selected && !hovering)
                 return
+            context?.let {
+                val overlay = getCurrentOverlay(context.theme, widgetTheme)
 
-            val overlay = getCurrentOverlay(context.theme, widgetTheme)
+                overlay?.drawAtZero(context, area.width + 2, area.height + 2, widgetTheme?.theme ?: WidgetTheme.getDefault().theme)
+            }
 
-            overlay.drawAtZero(context, area.width + 2, area.height + 2, widgetTheme)
         }
 
-        private fun checkString() {
+        private fun checkStringClose(){
             val s = key.get()
 
             if (s != line.text) {

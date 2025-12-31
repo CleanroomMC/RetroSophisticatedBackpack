@@ -2,14 +2,15 @@ package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.slot
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.api.widget.Interactable
-import com.cleanroommc.modularui.core.mixin.GuiAccessor
-import com.cleanroommc.modularui.core.mixin.GuiContainerAccessor
-import com.cleanroommc.modularui.core.mixin.GuiScreenAccessor
+import com.cleanroommc.modularui.core.mixins.early.minecraft.GuiAccessor
+import com.cleanroommc.modularui.core.mixins.early.minecraft.GuiContainerAccessor
+import com.cleanroommc.modularui.core.mixins.early.minecraft.GuiScreenAccessor
 import com.cleanroommc.modularui.drawable.GuiDraw
 import com.cleanroommc.modularui.drawable.text.TextRenderer
 import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
+import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.Color
 import com.cleanroommc.modularui.utils.NumberFormat
@@ -149,12 +150,16 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
         super.onMouseDrag(mouseButton, timeSinceClick)
     }
 
-    override fun draw(context: ModularGuiContext, widgetTheme: WidgetTheme) {
-        if (wrapper.isSlotLocked(slot.slotIndex))
-            drawLockedSlot(context, widgetTheme)
+    override fun draw(context: ModularGuiContext?, widgetThemeEntry: WidgetThemeEntry<*>?) {
+        context?.let {
+            val widgetTheme = widgetThemeEntry?.theme ?: WidgetTheme.getDefault().theme
+            if (wrapper.isSlotLocked(slot.slotIndex))
+                drawLockedSlot(it, widgetTheme)
 
-        if (isInSettingMode) drawSettingStack(context, widgetTheme)
-        else drawNormalStack(context, widgetTheme)
+
+            if (isInSettingMode) drawSettingStack(context, widgetTheme)
+            else drawNormalStack(context, widgetTheme)
+        }
     }
 
     private fun drawSettingStack(context: ModularGuiContext, widgetTheme: WidgetTheme) {

@@ -64,7 +64,7 @@ object RSBTextures {
         UITexture.builder()
             .location(ICON_LOCATION)
             .imageSize(256, 256)
-            .uv(x, y, w, h)
+            .xy(x, y, w, h)
             .name(name)
             .build()
 }

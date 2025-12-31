@@ -5,6 +5,7 @@ import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
+import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 
@@ -39,11 +40,11 @@ class CyclicVariantButtonWidget(
             }
     }
 
-    override fun drawOverlay(context: ModularGuiContext, widgetTheme: WidgetTheme) {
+    override fun drawOverlay(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
         super.drawOverlay(context, widgetTheme)
 
         val drawable = variants[index].drawable
-        drawable.draw(context, iconOffset, iconOffset, iconSize, iconSize, widgetTheme)
+        context?.let{drawable.draw(context, iconOffset, iconOffset, iconSize, iconSize, widgetTheme?.theme ?: WidgetTheme.getDefault().theme)}
     }
 
     data class Variant(val name: IKey, val drawable: IDrawable)

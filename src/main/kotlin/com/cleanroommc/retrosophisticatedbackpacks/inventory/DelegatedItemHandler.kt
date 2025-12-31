@@ -4,9 +4,16 @@ import net.minecraft.item.ItemStack
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
 
-class DelegatedItemHandler(var delegated: () -> IItemHandler) : IItemHandlerModifiable {
-    override fun getSlots(): Int =
-        delegated().slots
+class DelegatedItemHandler(var delegated: () -> IItemHandler, var wrappedSlotAmount: Int) : IItemHandlerModifiable {
+
+    var bypassSizeCheck = false
+    override fun getSlots(): Int{
+        val current = delegated().slots
+        if(bypassSizeCheck){
+            return wrappedSlotAmount
+        }
+        return current;
+    }
 
     override fun getStackInSlot(slot: Int): ItemStack =
         delegated().getStackInSlot(slot)

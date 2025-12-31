@@ -6,6 +6,7 @@ import com.cleanroommc.modularui.drawable.GuiTextures
 import com.cleanroommc.modularui.drawable.TabTexture
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
+import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.widget.SingleChildWidget
 
 class TabWidget(
@@ -42,7 +43,7 @@ class TabWidget(
     }
 
     override fun onInit() {
-        context.jeiSettings.addJeiExclusionArea(this)
+        context.recipeViewerSettings.addRecipeViewerExclusionArea(this)
     }
 
     override fun onMousePressed(mouseButton: Int): Interactable.Result {
@@ -58,16 +59,16 @@ class TabWidget(
         return Interactable.Result.STOP
     }
 
-    override fun draw(context: ModularGuiContext, widgetTheme: WidgetTheme) {
+    override fun draw(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
         super.draw(context, widgetTheme)
 
         if (showExpanded)
             return
 
-        tabIcon?.draw(context, 8, 6, 16, 16, widgetTheme)
+        tabIcon?.draw(context, 8, 6, 16, 16, widgetTheme?.theme ?: WidgetTheme.getDefault().theme)
     }
 
-    override fun drawBackground(context: ModularGuiContext, widgetTheme: WidgetTheme) {
+    override fun drawBackground(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
         super.drawBackground(context, widgetTheme)
 
         if (showExpanded)
@@ -77,10 +78,10 @@ class TabWidget(
 
         when (expandDirection) {
             ExpandDirection.LEFT -> GuiTextures.TAB_LEFT.get(index, false)
-                .drawAtZero(context, TAB_TEXTURE.width, TAB_TEXTURE.height, widgetTheme)
+                .drawAtZero(context, TAB_TEXTURE.width, TAB_TEXTURE.height, widgetTheme?.theme ?: WidgetTheme.getDefault().theme)
 
             ExpandDirection.RIGHT -> GuiTextures.TAB_RIGHT.get(index, false)
-                .drawAtZero(context, TAB_TEXTURE.width, TAB_TEXTURE.height, widgetTheme)
+                .drawAtZero(context, TAB_TEXTURE.width, TAB_TEXTURE.height, widgetTheme?.theme ?: WidgetTheme.getDefault().theme)
         }
     }
 }

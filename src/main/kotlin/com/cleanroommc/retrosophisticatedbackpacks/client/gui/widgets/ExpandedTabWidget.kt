@@ -23,14 +23,14 @@ abstract class ExpandedTabWidget(
         val TAB_TEXTURE: UITexture = UITexture.builder()
             .location(Tags.MOD_ID, "gui/gui_controls")
             .imageSize(256, 256)
-            .uv(128, 0, 128, 256)
+            .xy(128, 0, 128, 256)
             .adaptable(4)
             .tiled()
             .build()
     }
 
     protected val phantomTabWidget: PhantomTabWidget = PhantomTabWidget(delegatedIcon.asWidget()).top(0)
-    protected val titleKeyWidget: TextWidget = TextWidget(IKey.lang(titleKey))
+    protected val titleKeyWidget: TextWidget<*> = IKey.lang(titleKey).asWidget()
         .alignment(Alignment.Center)
         .topRel(0.5F)
     protected val upperTabRow: Row = Row()

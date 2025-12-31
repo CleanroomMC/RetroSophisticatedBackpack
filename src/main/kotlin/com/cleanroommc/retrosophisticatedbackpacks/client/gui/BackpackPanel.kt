@@ -55,7 +55,7 @@ class BackpackPanel(
         private val LAYERED_TAB_TEXTURE = UITexture.builder()
             .location(Tags.MOD_ID, "gui/gui_controls")
             .imageSize(256, 256)
-            .uv(132, 0, 124, 256)
+            .xy(132, 0, 124, 256)
             .adaptable(4)
             .tiled()
             .build() as AdaptableUITexture
@@ -450,7 +450,7 @@ class BackpackPanel(
                 }
             }
 
-            context.jeiSettings.addJeiExclusionArea(tabWidget.expandedWidget)
+            context.recipeViewerSettings.addRecipeViewerExclusionArea(tabWidget.expandedWidget)
             tabIndex++
         }
 
@@ -468,13 +468,13 @@ class BackpackPanel(
 
         disableUnusedTabWidgets(tabIndex)
         syncToggles()
-        WidgetTree.resize(this)
+        scheduleResize()
     }
 
     private fun resetTabState() {
         for (tabWidget in tabWidgets) {
             if (tabWidget.expandedWidget != null) {
-                context.jeiSettings.removeJeiExclusionArea(tabWidget.expandedWidget)
+                context.recipeViewerSettings.removeRecipeViewerExclusionArea(tabWidget.expandedWidget)
             }
         }
     }
@@ -506,6 +506,6 @@ class BackpackPanel(
         super.postDraw(context, transformed)
 
         // Nasty hack to draw over upgrade tabs
-        LAYERED_TAB_TEXTURE.draw(context, flex.area.width - 6, 0, 6, flex.area.height, WidgetTheme.getDefault())
+        LAYERED_TAB_TEXTURE.draw(context, flex.area.width - 6, 0, 6, flex.area.height, WidgetTheme.getDefault().theme)
     }
 }

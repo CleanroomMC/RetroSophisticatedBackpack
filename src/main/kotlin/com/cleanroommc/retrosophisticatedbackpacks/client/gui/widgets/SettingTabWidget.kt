@@ -7,6 +7,7 @@ import com.cleanroommc.modularui.drawable.TabTexture
 import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
+import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.widget.Widget
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
@@ -29,7 +30,7 @@ class SettingTabWidget : Widget<SettingTabWidget>(), Interactable {
     }
 
     override fun onInit() {
-        context.jeiSettings.addJeiExclusionArea(this)
+        context.recipeViewerSettings.addRecipeViewerExclusionArea(this)
     }
 
     override fun onMousePressed(mouseButton: Int): Interactable.Result {
@@ -49,9 +50,9 @@ class SettingTabWidget : Widget<SettingTabWidget>(), Interactable {
         return Interactable.Result.IGNORE
     }
 
-    override fun draw(context: ModularGuiContext, widgetTheme: WidgetTheme) {
+    override fun draw(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
         super.draw(context, widgetTheme)
 
-        RSBTextures.SETTING_ICON.draw(context, 8, 6, 16, 16, widgetTheme)
+        RSBTextures.SETTING_ICON.draw(context, 8, 6, 16, 16, widgetTheme?.theme ?: WidgetTheme.getDefault().theme)
     }
 }
