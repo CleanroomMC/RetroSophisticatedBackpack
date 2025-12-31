@@ -14,7 +14,7 @@ import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widget.WidgetTree
 import com.cleanroommc.modularui.widgets.ButtonWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
+import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
@@ -28,7 +28,6 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.*
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.*
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.slot.BackpackSlot
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.upgrade.*
-import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackContainer
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiData
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularBackpackSlot
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularUpgradeSlot
@@ -49,8 +48,7 @@ class BackpackPanel(
     internal val player: EntityPlayer,
     internal val tileEntity: BackpackTileEntity?,
     internal val syncManager: PanelSyncManager,
-    internal val backpackWrapper: BackpackWrapper,
-    internal val backpackContainer: BackpackContainer
+    internal val backpackWrapper: BackpackWrapper
 ) : ModularPanel("backpack_gui") {
     companion object {
         private const val SLOT_SIZE = 18
@@ -90,9 +88,9 @@ class BackpackPanel(
             backpackSlotIndex: Int? = null,
         ): BackpackPanel {
             val panel =
-                BackpackPanel(player, tileEntity, syncManager, wrapper, BackpackContainer(wrapper, backpackSlotIndex))
+                BackpackPanel(player, tileEntity, syncManager, wrapper)
                     .size(width, height) as BackpackPanel
-            syncManager.containerCustomizer = panel.backpackContainer
+
             syncManager.bindPlayerInventory(player)
             panel.bindPlayerInventory()
 

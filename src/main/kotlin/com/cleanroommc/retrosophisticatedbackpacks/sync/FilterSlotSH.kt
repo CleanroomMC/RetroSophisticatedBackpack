@@ -1,14 +1,14 @@
 package com.cleanroommc.retrosophisticatedbackpacks.sync
 
 import com.cleanroommc.modularui.utils.MouseData
-import com.cleanroommc.modularui.value.sync.ItemSlotSH
+import com.cleanroommc.modularui.value.sync.PhantomItemSlotSH
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import net.minecraft.item.ItemStack
 
 /**
  * Used to prevent phantom items (or ingredients) from overflowing, which has undefined meaning for filter action.
  */
-open class FilterSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
+open class FilterSlotSH(slot: ModularSlot) : PhantomItemSlotSH(slot) {
     override fun phantomClick(mouseData: MouseData, cursorStack: ItemStack) {
         super.phantomClick(mouseData, cursorStack)
         clampStackCount()

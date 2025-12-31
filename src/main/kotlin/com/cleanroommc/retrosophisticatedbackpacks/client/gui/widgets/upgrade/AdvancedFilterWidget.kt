@@ -14,6 +14,7 @@ import com.cleanroommc.modularui.widget.WidgetTree
 import com.cleanroommc.modularui.widgets.*
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
@@ -81,7 +82,7 @@ class AdvancedFilterWidget(
 
     private val itemBasedConfigurationGroup: Column
     private val oreDictBasedConfigurationGroup: Column
-    private val filterSlots: List<ItemSlot>
+    private val filterSlots: List<PhantomItemSlot>
 
     private val oreDictTextField: TextFieldWidget
     private val oreDictList: OreDictRegexListWidget
@@ -207,10 +208,10 @@ class AdvancedFilterWidget(
         val slotGroup = SlotGroupWidget().debugName("${syncKey}s")
         slotGroup.coverChildren().leftRel(0.5f)
 
-        filterSlots = mutableListOf<ItemSlot>()
+        filterSlots = mutableListOf<PhantomItemSlot>()
 
         for (i in 0 until 16) {
-            val slot = ItemSlot().syncHandler("${syncKey}_$slotIndex", i).pos(i % 4 * 18, i / 4 * 18)
+            val slot = PhantomItemSlot().syncHandler("${syncKey}_$slotIndex", i).pos(i % 4 * 18, i / 4 * 18) as PhantomItemSlot
 
             filterSlots.add(slot)
             slotGroup.child(slot)
@@ -386,9 +387,9 @@ class AdvancedFilterWidget(
         override fun draw(context: ModularGuiContext?, widgetTheme: WidgetTheme?) {
             checkString()
             val renderer = TextRenderer.SHARED
-            renderer.setColor(color)
+            color?.let { renderer.setColor(it) }
             renderer.setAlignment(alignment, (area.w() + 1).toFloat(), area.h().toFloat())
-            renderer.setShadow(isShadow)
+            isShadow?.let { renderer.setShadow(it) }
             renderer.setPos(area.padding.left, area.padding.top + 2)
             renderer.setScale(scale)
             renderer.setSimulate(false)

@@ -13,7 +13,7 @@ import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.Color
 import com.cleanroommc.modularui.utils.NumberFormat
-import com.cleanroommc.modularui.widgets.ItemSlot
+import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
@@ -30,12 +30,22 @@ import net.minecraft.item.ItemStack
 import net.minecraft.util.text.Style
 import net.minecraft.util.text.TextComponentString
 import net.minecraft.util.text.TextFormatting
+import java.math.RoundingMode
 import kotlin.math.min
 
 class BackpackSlot(private val panel: BackpackPanel, private val wrapper: BackpackWrapper) : ItemSlot() {
     companion object {
         private val textRenderer = TextRenderer()
+        val DECIMAL_TWO: NumberFormat.Params = NumberFormat.AMOUNT_TEXT.copyToBuilder()
+            .maxLength(2)
+            .considerOnlyDecimalsForLength(true)
+            .build()
+        val DECIMAL_ONE: NumberFormat.Params = NumberFormat.AMOUNT_TEXT.copyToBuilder()
+            .maxLength(2)
+            .considerOnlyDecimalsForLength(true)
+            .build()
     }
+
 
     private val isInSettingMode: Boolean
         get() = panel.settingPanel.isPanelOpen
@@ -55,13 +65,15 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
 
         if (!stack.isEmpty) {
             super.buildTooltip(stack, tooltip)
-            formattedCount = NumberFormat.formatWithMaxDecimals(stack.count.toDouble(), 2)
-            formattedStackLimit = NumberFormat.formatWithMaxDecimals(slot.getItemStackLimit(stack).toDouble(), 2)
+
+            //NumberFormat.format(amount, NumberFormat.AMOUNT_TEXT);
+            formattedCount = NumberFormat.format(stack.count.toDouble(), DECIMAL_TWO)
+            formattedStackLimit = NumberFormat.format(slot.getItemStackLimit(stack).toDouble(), DECIMAL_TWO)
         } else {
             super.buildTooltip(memorizedStack, tooltip)
             formattedCount = "0"
             formattedStackLimit =
-                NumberFormat.formatWithMaxDecimals(slot.getItemStackLimit(memorizedStack).toDouble(), 2)
+                NumberFormat.format(slot.getItemStackLimit(memorizedStack).toDouble(), DECIMAL_TWO)
         }
 
         tooltip.addLine(
@@ -288,7 +300,7 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
                 }
                 // render the amount overlay
                 if (amount > 1 || format != null) {
-                    var amountText = NumberFormat.formatWithMaxDecimals(amount.toDouble(), 1)
+                    var amountText = NumberFormat.format(amount.toDouble(), DECIMAL_ONE)
                     if (format != null) {
                         amountText = format + amountText
                     }
