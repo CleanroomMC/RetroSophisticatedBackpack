@@ -146,7 +146,7 @@ dependencies {
         exclude("net.minecraftforge")
     }
 
-    implementation("com.cleanroommc:modularui:3.0.5") // 2.5.0-rc4
+    implementation("com.cleanroommc:modularui:3.0.6") // 2.5.0-rc4
     implementation(rfg.deobf("curse.maven:neverenoughanimation-1062347:6533650-sources-6533651"))
     implementation(rfg.deobf("curse.maven:baubles-227083:2518667"))
     compileOnly(rfg.deobf("curse.maven:fluidlogged-api-485654:3697254")) // Oldest supported version (v1.7)
