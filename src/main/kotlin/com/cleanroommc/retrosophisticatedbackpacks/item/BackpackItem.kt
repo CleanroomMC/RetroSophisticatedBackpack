@@ -181,20 +181,25 @@ class BackpackItem(
         var nbt = super.getNBTShareTag(stack)
         val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return nbt
 
-        if (nbt != null) nbt.setTag("Capability", wrapper.serializeNBT())
-        else nbt = wrapper.serializeNBT()
+        if (nbt != null) nbt.setTag("BackpackCapability", wrapper.serializeNBT())
+        else {
+            nbt = NBTTagCompound()
+            nbt.setTag("BackpackCapability", wrapper.serializeNBT())
+        }
 
         return nbt
     }
 
     override fun readNBTShareTag(stack: ItemStack, nbt: NBTTagCompound?) {
+        super.readNBTShareTag(stack, nbt)
         if (nbt == null)
             return
-
         val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return
 
-        if (nbt.hasKey("Capability")) wrapper.deserializeNBT(nbt.getCompoundTag("Capability"))
-        else wrapper.deserializeNBT(nbt)
+        if (nbt.hasKey("BackpackCapability")){
+            wrapper.deserializeNBT(nbt.getCompoundTag("BackpackCapability"))
+        }
+        //else wrapper.deserializeNBT(nbt)
     }
 
     override fun addInformation(

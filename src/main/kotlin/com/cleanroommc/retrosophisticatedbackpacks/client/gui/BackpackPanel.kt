@@ -300,14 +300,14 @@ class BackpackPanel(
     }
 
     internal fun addBackpackInventorySlots() {
-        val backpackSlotGroupWidget = SlotGroupWidget().debugName("backpack_inventory")
+        val backpackSlotGroupWidget = SlotGroupWidget().name("backpack_inventory")
         backpackSlotGroupWidget.flex().coverChildren().leftRel(0.5F).top(17)
 
         for (i in 0 until backpackWrapper.backpackInventorySize()) {
             val itemSlot = BackpackSlot(this, backpackWrapper)
                 .syncHandler("backpack", i)
                 .pos(i % rowSize * SLOT_SIZE, i / rowSize * SLOT_SIZE)
-                .debugName("slot_${i}")
+                .name("slot_${i}")
 
             backpackSlotGroupWidget.child(itemSlot)
         }
@@ -316,11 +316,11 @@ class BackpackPanel(
     }
 
     internal fun addUpgradeSlots() {
-        upgradeSlotGroupWidget.debugName("upgrade_inventory")
+        upgradeSlotGroupWidget.name("upgrade_inventory")
         upgradeSlotGroupWidget.flex().size(23, 10 + backpackWrapper.upgradeSlotsSize() * 18).left(-21)
 
         for (i in 0 until backpackWrapper.upgradeSlotsSize()) {
-            val itemSlot = ItemSlot().syncHandler("upgrades", i).pos(5, 5 + i * 18).debugName("slot_${i}")
+            val itemSlot = ItemSlot().syncHandler("upgrades", i).pos(5, 5 + i * 18).name("slot_${i}")
 
             upgradeSlotWidgets.add(itemSlot)
             upgradeSlotGroupWidget.child(itemSlot)
@@ -335,7 +335,7 @@ class BackpackPanel(
 
     internal fun addUpgradeTabs() {
         for (i in 0 until backpackWrapper.upgradeSlotsSize()) {
-            val tab = TabWidget(i + 1).debugName("upgrade_tab_${i}")
+            val tab = TabWidget(i + 1).name("upgrade_tab_${i}")
 
             tab.isEnabled = false
             tabWidgets.add(tab)
@@ -450,7 +450,7 @@ class BackpackPanel(
                 }
             }
 
-            context.recipeViewerSettings.addRecipeViewerExclusionArea(tabWidget.expandedWidget)
+            context.recipeViewerSettings.addExclusionArea(tabWidget.expandedWidget)
             tabIndex++
         }
 
@@ -474,7 +474,7 @@ class BackpackPanel(
     private fun resetTabState() {
         for (tabWidget in tabWidgets) {
             if (tabWidget.expandedWidget != null) {
-                context.recipeViewerSettings.removeRecipeViewerExclusionArea(tabWidget.expandedWidget)
+                context.recipeViewerSettings.removeExclusionArea(tabWidget.expandedWidget)
             }
         }
     }

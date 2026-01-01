@@ -144,7 +144,7 @@ class AdvancedFilterWidget(
             .child(ignoreDurabilityButton)
             .child(ignoreNBTButton)
             .setEnabledIf { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ITEM }
-            .debugName("item_based_button_list")
+            .name("item_based_button_list")
 
         val addOreDictEntryButton = ButtonWidget()
             .size(20, 20)
@@ -159,7 +159,7 @@ class AdvancedFilterWidget(
                 oreDictList.child(OreDictEntryWidget(this, oreName, 77))
                 oreDictTextField.text = ""
                 updateWrapper()
-                WidgetTree.resize(oreDictList)
+                oreDictList.scheduleResize()
 
                 true
             }
@@ -167,7 +167,7 @@ class AdvancedFilterWidget(
                 it.addLine(IKey.lang("gui.add_ore_dict_entry".asTranslationKey()))
                     .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
             }
-            .debugName("add_ore_dict_button")
+            .name("add_ore_dict_button")
 
         val removeOreDictEntryButton = ButtonWidget()
             .size(20, 20)
@@ -181,7 +181,7 @@ class AdvancedFilterWidget(
                 filterableWrapper.oreDictEntries.remove(focusedOreDictEntry.text)
                 oreDictList.removeChild(focusedOreDictEntry)
                 updateWrapper()
-                WidgetTree.resize(oreDictList)
+                oreDictList.scheduleResize()
                 true
             }
             .tooltipDynamic {
@@ -196,17 +196,17 @@ class AdvancedFilterWidget(
             .child(addOreDictEntryButton)
             .child(removeOreDictEntryButton)
             .setEnabledIf { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ORE_DICT }
-            .debugName("ore_dict_based_config_buttons")
+            .name("ore_dict_based_config_buttons")
 
         buttonRow
             .child(filterTypeButton)
             .child(matchTypeButton)
             .child(itemBasedConfigButtonRow)
             .child(oreDictBasedConfigButtonRow)
-            .debugName("button_list")
+            .name("button_list")
 
         // Item-based configuration widgets
-        val slotGroup = SlotGroupWidget().debugName("${syncKey}s")
+        val slotGroup = SlotGroupWidget().name("${syncKey}s")
         slotGroup.coverChildren().leftRel(0.5f)
 
         filterSlots = mutableListOf<PhantomItemSlot>()
@@ -224,7 +224,7 @@ class AdvancedFilterWidget(
             .top(24)
             .child(slotGroup)
             .setEnabledIf { filterableWrapper.matchType != IAdvancedFilterable.MatchType.ORE_DICT }
-            .debugName("item_based_config_group") as Column
+            .name("item_based_config_group") as Column
 
         // Ore-dict-based configuration widgets
         oreDictTextField = TextFieldWidget()
@@ -249,7 +249,7 @@ class AdvancedFilterWidget(
             .child(oreDictList)
             .child(oreDictTextField)
             .setEnabledIf { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ORE_DICT }
-            .debugName("ore_dict_based_config_group") as Column
+            .name("ore_dict_based_config_group") as Column
 
         child(buttonRow)
             .child(itemBasedConfigurationGroup)

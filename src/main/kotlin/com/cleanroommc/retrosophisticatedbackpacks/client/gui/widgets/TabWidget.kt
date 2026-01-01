@@ -43,7 +43,7 @@ class TabWidget(
     }
 
     override fun onInit() {
-        context.recipeViewerSettings.addRecipeViewerExclusionArea(this)
+        context.recipeViewerSettings.addExclusionArea(this)
     }
 
     override fun onMousePressed(mouseButton: Int): Interactable.Result {

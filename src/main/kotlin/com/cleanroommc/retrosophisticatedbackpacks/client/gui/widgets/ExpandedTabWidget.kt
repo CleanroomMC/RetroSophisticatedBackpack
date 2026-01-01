@@ -42,7 +42,7 @@ abstract class ExpandedTabWidget(
                 right(0)
 
                 upperTabRow
-                    .child(Widget().width(4).debugName("placeholder"))
+                    .child(Widget().width(4).name("placeholder"))
                     .child(titleKeyWidget)
                     .child(phantomTabWidget)
             }

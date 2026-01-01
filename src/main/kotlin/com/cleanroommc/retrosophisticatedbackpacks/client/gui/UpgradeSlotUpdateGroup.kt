@@ -92,8 +92,8 @@ class UpgradeSlotUpdateGroup(
 
             slot
         }
-        commonFilterStackHandler.delegatedStackHandler.bypassSizeCheck = false
-        advancedCommonFilterStackHandler.delegatedStackHandler.bypassSizeCheck = false
+        //commonFilterStackHandler.delegatedStackHandler.bypassSizeCheck = false
+        //advancedCommonFilterStackHandler.delegatedStackHandler.bypassSizeCheck = false
 
         syncManager.registerSlotGroup(SlotGroup("adv_feeding_filters_$slotIndex", 4, false))
     }

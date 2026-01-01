@@ -15,6 +15,7 @@ import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.Color
 import com.cleanroommc.modularui.utils.NumberFormat
 import com.cleanroommc.modularui.widgets.slot.ItemSlot
+import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
@@ -26,12 +27,12 @@ import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.RenderHelper
 import net.minecraft.inventory.Container
-import net.minecraft.inventory.Slot
 import net.minecraft.item.ItemStack
 import net.minecraft.util.text.Style
 import net.minecraft.util.text.TextComponentString
 import net.minecraft.util.text.TextFormatting
-import java.math.RoundingMode
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 import kotlin.math.min
 
 class BackpackSlot(private val panel: BackpackPanel, private val wrapper: BackpackWrapper) : ItemSlot() {
@@ -150,6 +151,7 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
         super.onMouseDrag(mouseButton, timeSinceClick)
     }
 
+    @SideOnly(Side.CLIENT)
     override fun draw(context: ModularGuiContext?, widgetThemeEntry: WidgetThemeEntry<*>?) {
         context?.let {
             val widgetTheme = widgetThemeEntry?.theme ?: WidgetTheme.getDefault().theme
@@ -162,6 +164,7 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
         }
     }
 
+    @SideOnly(Side.CLIENT)
     private fun drawSettingStack(context: ModularGuiContext, widgetTheme: WidgetTheme) {
         val memoryStack = wrapper.backpackItemStackHandler.memorizedSlotStack[slot.slotIndex]
         val guiScreen = screen.screenWrapper.guiScreen
@@ -190,6 +193,7 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
         renderItem.zLevel = 0f
     }
 
+    @SideOnly(Side.CLIENT)
     private fun drawNormalStack(context: ModularGuiContext, widgetTheme: WidgetTheme) {
         val slot = slot as? ModularBackpackSlot ?: return
         val memoryStack = slot.getMemoryStack()
@@ -200,6 +204,7 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
             drawMemoryStack(memoryStack, context, widgetTheme)
     }
 
+    @SideOnly(Side.CLIENT)
     private fun drawMemoryStack(memoryStack: ItemStack, context: ModularGuiContext, widgetTheme: WidgetTheme) {
         val guiScreen = screen.screenWrapper.guiScreen
         val renderItem = (guiScreen as GuiScreenAccessor).itemRender
@@ -222,6 +227,7 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
         renderItem.zLevel = 0f
     }
 
+    @SideOnly(Side.CLIENT)
     private fun drawLockedSlot(context: ModularGuiContext, widgetTheme: WidgetTheme) {
         RSBTextures.NO_SORT_ICON.draw(context, 1, 1, 16, 16, widgetTheme)
         GlStateManager.depthFunc(516)
@@ -229,19 +235,26 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
         GlStateManager.depthFunc(515)
     }
 
+    @SideOnly(Side.CLIENT)
     private fun superDraw() {
+        if(syncHandler == null) return
         RenderHelper.enableGUIStandardItemLighting()
         drawSlot(slot)
         RenderHelper.enableStandardItemLighting()
         GlStateManager.disableLighting()
+        drawOverlay()
+        /*
         if (isHovering) {
             GlStateManager.colorMask(true, true, true, false)
             GuiDraw.drawRect(1f, 1f, 16f, 16f, getSlotHoverColor())
             GlStateManager.colorMask(true, true, true, true)
         }
+
+         */
     }
 
-    private fun drawSlot(slotIn: Slot) {
+    @SideOnly(Side.CLIENT)
+    private fun drawSlot(slotIn: ModularSlot) {
         val guiScreen = screen.screenWrapper.guiScreen
         check(guiScreen is GuiContainer) { "The gui must be an instance of GuiContainer if it contains slots!" }
         val acc = guiScreen as GuiContainerAccessor

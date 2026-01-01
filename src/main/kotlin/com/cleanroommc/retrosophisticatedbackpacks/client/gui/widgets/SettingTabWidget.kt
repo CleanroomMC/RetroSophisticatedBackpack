@@ -30,7 +30,7 @@ class SettingTabWidget : Widget<SettingTabWidget>(), Interactable {
     }
 
     override fun onInit() {
-        context.recipeViewerSettings.addRecipeViewerExclusionArea(this)
+        context.recipeViewerSettings.addExclusionArea(this)
     }
 
     override fun onMousePressed(mouseButton: Int): Interactable.Result {

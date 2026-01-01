@@ -43,7 +43,7 @@ class BasicFilterWidget(
         }
             .size(20, 20)
 
-        val slotGroup = SlotGroupWidget().debugName("${syncKey}s")
+        val slotGroup = SlotGroupWidget().name("${syncKey}s")
         slotGroup.coverChildren().top(26)
         filterSlots = mutableListOf<PhantomItemSlot>()
 

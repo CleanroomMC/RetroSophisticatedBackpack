@@ -37,7 +37,7 @@ class UpgradeSlotGroupWidget(panel: BackpackPanel, private val slotSize: Int) : 
         for (i in 0 until slotSize) {
             val toggleWidget = UpgradeToggleWidget(panel, i)
                 .syncHandler("upgrades", i)
-                .debugName("upgrade_toggle_$i")
+                .name("upgrade_toggle_$i")
 
             toggleWidgets.add(toggleWidget)
             child(toggleWidget)
@@ -45,7 +45,7 @@ class UpgradeSlotGroupWidget(panel: BackpackPanel, private val slotSize: Int) : 
     }
 
     override fun onInit() {
-        context.recipeViewerSettings.addRecipeViewerExclusionArea(this)
+        context.recipeViewerSettings.addExclusionArea(this)
     }
 
     override fun draw(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
