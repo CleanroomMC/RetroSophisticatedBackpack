@@ -7,13 +7,14 @@ import com.cleanroommc.modularui.core.mixins.early.minecraft.GuiContainerAccesso
 import com.cleanroommc.modularui.core.mixins.early.minecraft.GuiScreenAccessor
 import com.cleanroommc.modularui.drawable.GuiDraw
 import com.cleanroommc.modularui.drawable.text.TextRenderer
+import com.cleanroommc.modularui.screen.NEAAnimationHandler
 import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.theme.WidgetThemeEntry
-import com.cleanroommc.modularui.utils.Alignment
 import com.cleanroommc.modularui.utils.Color
 import com.cleanroommc.modularui.utils.NumberFormat
+import com.cleanroommc.modularui.utils.Platform
 import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
@@ -43,7 +44,7 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
             .considerOnlyDecimalsForLength(true)
             .build()
         val DECIMAL_ONE: NumberFormat.Params = NumberFormat.AMOUNT_TEXT.copyToBuilder()
-            .maxLength(2)
+            .maxLength(1)
             .considerOnlyDecimalsForLength(true)
             .build()
     }
@@ -160,7 +161,16 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
 
 
             if (isInSettingMode) drawSettingStack(context, widgetTheme)
-            else drawNormalStack(context, widgetTheme)
+            else {
+                val slot = slot as? ModularBackpackSlot ?: return
+                val memoryStack = slot.getMemoryStack()
+
+                super.draw(context, widgetThemeEntry)
+
+                if (slot.stack.isEmpty && !memoryStack.isEmpty)
+                    drawMemoryStack(memoryStack, context, widgetTheme)
+
+            }//drawNormalStack(context, widgetTheme)
         }
     }
 
@@ -168,31 +178,42 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
     private fun drawSettingStack(context: ModularGuiContext, widgetTheme: WidgetTheme) {
         val memoryStack = wrapper.backpackItemStackHandler.memorizedSlotStack[slot.slotIndex]
         val guiScreen = screen.screenWrapper.guiScreen
+        check(guiScreen is GuiContainer) { "The gui must be an instance of GuiContainer if it contains slots!" }
+        val guiContainer = guiScreen as GuiContainer
         val renderItem = (guiScreen as GuiScreenAccessor).itemRender
 
-        (guiScreen as GuiAccessor).zLevel = 100f
-        renderItem.zLevel = 100f
+        // makes sure items of different layers don't interfere with each other visually
+        val z = (context.currentDrawingZ + 100).toFloat()
+        (guiScreen as GuiAccessor).zLevel = z
+        renderItem.zLevel = z
+
         RenderHelper.enableGUIStandardItemLighting()
         GlStateManager.disableLighting()
+        val useMemory = slot.stack == null || slot.stack.isEmpty()
+        val chosenstack = if(useMemory) memoryStack else slot.stack
 
-        if (slot.stack.isEmpty)
-            renderItem.renderItemIntoGUI(memoryStack, 1, 1)
-        else
-            renderItem.renderItemIntoGUI(slot.stack, 1, 1)
+        val itemstack = NEAAnimationHandler.injectVirtualStack(chosenstack, guiContainer, slot)
+
+        Platform.setupDrawItem()
+        if(!useMemory) NEAAnimationHandler.injectHoverScale(guiContainer, slot)
+        renderItem.renderItemIntoGUI(itemstack, 1, 1)
+        Platform.endDrawItem()
+        if(!useMemory) NEAAnimationHandler.endHoverScale()
 
         if (!memoryStack.isEmpty) {
             GlStateManager.depthFunc(516)
             Gui.drawRect(1, 1, 17, 17, Color.argb(139, 139, 139, 128))
             GlStateManager.depthFunc(515)
         }
+        RenderHelper.enableStandardItemLighting()
 
-        GlStateManager.enableLighting()
-        RenderHelper.disableStandardItemLighting()
+        //GlStateManager.enableLighting()
+        //RenderHelper.disableStandardItemLighting()
 
         (guiScreen as GuiAccessor).zLevel = 0f
         renderItem.zLevel = 0f
     }
-
+    /*
     @SideOnly(Side.CLIENT)
     private fun drawNormalStack(context: ModularGuiContext, widgetTheme: WidgetTheme) {
         val slot = slot as? ModularBackpackSlot ?: return
@@ -204,24 +225,40 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
             drawMemoryStack(memoryStack, context, widgetTheme)
     }
 
+     */
+
     @SideOnly(Side.CLIENT)
     private fun drawMemoryStack(memoryStack: ItemStack, context: ModularGuiContext, widgetTheme: WidgetTheme) {
+        val memoryStack = wrapper.backpackItemStackHandler.memorizedSlotStack[slot.slotIndex]
         val guiScreen = screen.screenWrapper.guiScreen
+        check(guiScreen is GuiContainer) { "The gui must be an instance of GuiContainer if it contains slots!" }
+        val guiContainer = guiScreen as GuiContainer
         val renderItem = (guiScreen as GuiScreenAccessor).itemRender
 
-        (guiScreen as GuiAccessor).zLevel = 100f
-        renderItem.zLevel = 100f
+        // makes sure items of different layers don't interfere with each other visually
+        val z = (context.currentDrawingZ + 100).toFloat()
+        (guiScreen as GuiAccessor).zLevel = z
+        renderItem.zLevel = z
         RenderHelper.enableGUIStandardItemLighting()
         GlStateManager.disableLighting()
 
-        renderItem.renderItemIntoGUI(memoryStack, 1, 1)
+        val itemstack = NEAAnimationHandler.injectVirtualStack(memoryStack, guiContainer, slot)
 
-        GlStateManager.depthFunc(516)
-        Gui.drawRect(1, 1, 17, 17, Color.argb(139, 139, 139, 128))
-        GlStateManager.depthFunc(515)
+        Platform.setupDrawItem()
+        //val itemScale = NEAAnimationHandler.injectHoverScale(guiContainer, slotIn)
+        renderItem.renderItemIntoGUI(itemstack, 1, 1)
+        Platform.endDrawItem()
+        //NEAAnimationHandler.endHoverScale()
 
-        GlStateManager.enableLighting()
-        RenderHelper.disableStandardItemLighting()
+        if (!memoryStack.isEmpty) {
+            GlStateManager.depthFunc(516)
+            Gui.drawRect(1, 1, 17, 17, Color.argb(139, 139, 139, 128))
+            GlStateManager.depthFunc(515)
+        }
+        RenderHelper.enableStandardItemLighting()
+
+        //GlStateManager.enableLighting()
+        //RenderHelper.disableStandardItemLighting()
 
         (guiScreen as GuiAccessor).zLevel = 0f
         renderItem.zLevel = 0f
@@ -242,7 +279,12 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
         drawSlot(slot)
         RenderHelper.enableStandardItemLighting()
         GlStateManager.disableLighting()
-        drawOverlay()
+        if (isHovering) {
+            GlStateManager.colorMask(true, true, true, false)
+            GuiDraw.drawRect(1.0f, 1.0f, 16.0f, 16.0f, this.slotHoverColor)
+            GlStateManager.colorMask(true, true, true, true)
+        }
+
         /*
         if (isHovering) {
             GlStateManager.colorMask(true, true, true, false)
@@ -257,6 +299,7 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
     private fun drawSlot(slotIn: ModularSlot) {
         val guiScreen = screen.screenWrapper.guiScreen
         check(guiScreen is GuiContainer) { "The gui must be an instance of GuiContainer if it contains slots!" }
+        val guiContainer = guiScreen as GuiContainer
         val acc = guiScreen as GuiContainerAccessor
         val renderItem = (guiScreen as GuiScreenAccessor).itemRender
         var itemstack: ItemStack = slotIn.stack
@@ -300,22 +343,33 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
                 acc.invokeUpdateDragSplitting()
             }
         }
-
-        (guiScreen as GuiAccessor).zLevel = 100f
-        renderItem.zLevel = 100.0f
+        // makes sure items of different layers don't interfere with each other visually
+        val z = (context.currentDrawingZ + 100).toFloat()
+        (guiScreen as GuiAccessor).zLevel = z
+        renderItem.zLevel = z
 
         if (!flag1) {
             if (flag) {
                 GuiDraw.drawRect(1f, 1f, 16f, 16f, -2130706433)
             }
 
+            itemstack = NEAAnimationHandler.injectVirtualStack(itemstack, guiContainer, slotIn)
             if (!itemstack.isEmpty) {
                 GlStateManager.enableDepth()
                 // render the item itself
+
+                Platform.setupDrawItem()
+                val itemScale = NEAAnimationHandler.injectHoverScale(guiContainer, slotIn)
+
+                // render the item itself
                 renderItem.renderItemAndEffectIntoGUI(guiScreen.mc.player, itemstack, 1, 1)
+                Platform.endDrawItem()
+
                 if (amount < 0) {
                     amount = itemstack.count
                 }
+                GuiDraw.drawStandardSlotAmountText(amount, format, area)
+                /*
                 // render the amount overlay
                 if (amount > 1 || format != null) {
                     var amountText = NumberFormat.format(amount.toDouble(), DECIMAL_ONE)
@@ -348,17 +402,20 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
                     GlStateManager.enableBlend()
                 }
 
+                 */
+
                 val cachedCount = itemstack.getCount()
                 itemstack.setCount(1) // required to not render the amount overlay
                 // render other overlays like durability bar
                 renderItem.renderItemOverlayIntoGUI(
-                    (guiScreen as GuiScreenAccessor).getFontRenderer(),
+                    (guiScreen as GuiScreenAccessor).fontRenderer,
                     itemstack,
                     1,
                     1,
                     null
                 )
-                itemstack.setCount(cachedCount)
+                NEAAnimationHandler.endHoverScale()
+                itemstack.count = cachedCount
                 GlStateManager.disableDepth()
             }
         }
