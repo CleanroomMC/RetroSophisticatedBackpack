@@ -1,11 +1,11 @@
 package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets
 
+import com.cleanroommc.modularui.api.value.ISyncOrValue
 import com.cleanroommc.modularui.api.widget.Interactable
 import com.cleanroommc.modularui.drawable.UITexture
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.theme.WidgetThemeEntry
-import com.cleanroommc.modularui.value.sync.SyncHandler
 import com.cleanroommc.modularui.widget.Widget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
@@ -104,7 +104,7 @@ class UpgradeSlotGroupWidget(panel: BackpackPanel, private val slotSize: Int) : 
             return Interactable.Result.SUCCESS
         }
 
-        override fun isValidSyncHandler(syncHandler: SyncHandler?): Boolean {
+        override fun isValidSyncOrValue(syncHandler: ISyncOrValue): Boolean {
             if (syncHandler is UpgradeSlotSH)
                 slotSyncHandler = syncHandler
             return slotSyncHandler != null

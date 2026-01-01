@@ -1,6 +1,7 @@
 package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.upgrade
 
 import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.api.value.ISyncOrValue
 import com.cleanroommc.modularui.api.widget.Interactable
 import com.cleanroommc.modularui.drawable.UITexture
 import com.cleanroommc.modularui.drawable.text.TextRenderer
@@ -9,9 +10,7 @@ import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.utils.Color
-import com.cleanroommc.modularui.value.sync.SyncHandler
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widget.WidgetTree
 import com.cleanroommc.modularui.widgets.*
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
@@ -271,7 +270,7 @@ class AdvancedFilterWidget(
         }
     }
 
-    override fun isValidSyncHandler(syncHandler: SyncHandler?): Boolean {
+    override fun isValidSyncOrValue(syncHandler: ISyncOrValue): Boolean {
         if (syncHandler is UpgradeSlotSH)
             slotSyncHandler = syncHandler
         return slotSyncHandler != null

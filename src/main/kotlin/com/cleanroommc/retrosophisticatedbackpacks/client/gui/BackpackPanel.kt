@@ -153,9 +153,9 @@ class BackpackPanel(
             UpgradeSlotUpdateGroup(this, backpackWrapper, it)
         }
 
-        settingPanel = syncManager.panel("setting_panel", { syncManager, syncHandler ->
+        settingPanel = syncManager.syncedPanel("setting_panel", true) { syncManager, syncHandler ->
             BackpackSettingPanel(this)
-        }, true)
+        }
     }
 
     // Currently only main hand slot will be locked if it's the backpack being opened

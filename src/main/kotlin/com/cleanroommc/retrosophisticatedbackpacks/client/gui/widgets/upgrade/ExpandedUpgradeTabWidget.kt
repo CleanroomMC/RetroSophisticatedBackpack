@@ -1,7 +1,7 @@
 package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.upgrade
 
+import com.cleanroommc.modularui.api.value.ISyncOrValue
 import com.cleanroommc.modularui.drawable.ItemDrawable
-import com.cleanroommc.modularui.value.sync.SyncHandler
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.UpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.ExpandedTabWidget
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
@@ -33,7 +33,7 @@ abstract class ExpandedUpgradeTabWidget<U>(
         }
     }
 
-    override fun isValidSyncHandler(syncHandler: SyncHandler?): Boolean {
+    override fun isValidSyncOrValue(syncHandler: ISyncOrValue): Boolean {
         if (syncHandler is UpgradeSlotSH)
             slotSyncHandler = syncHandler
         return slotSyncHandler != null
