@@ -8,6 +8,7 @@ import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.widget.SingleChildWidget
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.setEnabledIfAndEnabled
 
 class TabWidget(
     private val tabIndex: Int,
@@ -26,7 +27,7 @@ class TabWidget(
                 if (expandDirection == ExpandDirection.LEFT)
                     value.right(0)
 
-                child(value.setEnabledIf { showExpanded })
+                child(value.setEnabledIfAndEnabled { showExpanded })
             }
 
             field = value
