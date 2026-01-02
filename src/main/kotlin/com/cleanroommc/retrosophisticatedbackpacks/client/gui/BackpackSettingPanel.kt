@@ -83,7 +83,7 @@ class BackpackSettingPanel(private val parent: BackpackPanel) : ModularPanel("ba
     }
 
     override fun shouldAnimate(): Boolean =
-        ClientConfig.enableAnimation
+        ClientConfig.enableAnimation && super.shouldAnimate()
 
     override fun isDraggable(): Boolean =
         false

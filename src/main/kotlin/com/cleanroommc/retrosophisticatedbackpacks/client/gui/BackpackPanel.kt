@@ -510,7 +510,7 @@ class BackpackPanel(
     }
 
     override fun shouldAnimate(): Boolean =
-        ClientConfig.enableAnimation
+        ClientConfig.enableAnimation && super.shouldAnimate()
 
     override fun postDraw(context: ModularGuiContext, transformed: Boolean) {
         super.postDraw(context, transformed)
