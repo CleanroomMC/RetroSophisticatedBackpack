@@ -24,6 +24,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.client.gui.drawable.Outline
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.CyclicVariantButtonWidget
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.setEnabledIfAndEnabled
 import net.minecraftforge.oredict.OreDictionary
 
 class AdvancedFilterWidget(
@@ -142,7 +143,7 @@ class AdvancedFilterWidget(
             .left(44)
             .child(ignoreDurabilityButton)
             .child(ignoreNBTButton)
-            .setEnabledIf { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ITEM }
+            .setEnabledIfAndEnabled { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ITEM }
             .name("item_based_button_list")
 
         val addOreDictEntryButton = ButtonWidget()
@@ -194,7 +195,7 @@ class AdvancedFilterWidget(
             .left(44)
             .child(addOreDictEntryButton)
             .child(removeOreDictEntryButton)
-            .setEnabledIf { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ORE_DICT }
+            .setEnabledIfAndEnabled { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ORE_DICT }
             .name("ore_dict_based_config_buttons")
 
         buttonRow
@@ -222,7 +223,7 @@ class AdvancedFilterWidget(
             .leftRel(0.5f)
             .top(24)
             .child(slotGroup)
-            .setEnabledIf { filterableWrapper.matchType != IAdvancedFilterable.MatchType.ORE_DICT }
+            .setEnabledIfAndEnabled { filterableWrapper.matchType != IAdvancedFilterable.MatchType.ORE_DICT }
             .name("item_based_config_group") as Column
 
         // Ore-dict-based configuration widgets
@@ -247,7 +248,7 @@ class AdvancedFilterWidget(
             .top(24)
             .child(oreDictList)
             .child(oreDictTextField)
-            .setEnabledIf { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ORE_DICT }
+            .setEnabledIfAndEnabled { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ORE_DICT }
             .name("ore_dict_based_config_group") as Column
 
         child(buttonRow)

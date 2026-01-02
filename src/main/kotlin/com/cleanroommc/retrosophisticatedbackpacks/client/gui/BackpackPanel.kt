@@ -12,7 +12,6 @@ import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
-import com.cleanroommc.modularui.widget.WidgetTree
 import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
@@ -40,6 +39,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.tileentity.BackpackTileEntity
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.ceilDiv
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.ItemStack
 import net.minecraftforge.items.wrapper.PlayerInvWrapper
 import net.minecraftforge.items.wrapper.PlayerMainInvWrapper
 import kotlin.math.min
@@ -360,7 +360,7 @@ class BackpackPanel(
         resetTabState()
 
         for ((slotIndex, slotWidget) in upgradeSlotWidgets.withIndex()) {
-            val stack = slotWidget.slot.stack
+            val stack: ItemStack = slotWidget.slot.stack
             val item = stack.item
 
             if (!(item is UpgradeItem && item.hasTab))
@@ -385,15 +385,19 @@ class BackpackPanel(
         // Sync all tabs to their corresponding upgrade
         for (slotIndex in 0 until backpackWrapper.upgradeSlotsSize()) {
             val slot = upgradeSlotWidgets[slotIndex]
-            val stack = slot.slot.stack
+            val stack: ItemStack  = slot.slot.stack
             val item = stack.item
 
-            if (!(item is UpgradeItem && item.hasTab))
-                continue
-
             val tabWidget = tabWidgets[tabIndex]
+
+            if (!(item is UpgradeItem && item.hasTab)){
+                tabWidget.isEnabled = false
+                tabWidget.expandedWidget = null
+                continue
+            }
+
             val upgradeSlotGroup = upgradeSlotGroups[slotIndex]
-            val wrapper = stack.getCapability(Capabilities.UPGRADE_CAPABILITY, null) ?: continue
+            val wrapper: UpgradeWrapper<*> = stack.getCapability(Capabilities.UPGRADE_CAPABILITY, null) ?: continue
             tabWidget.showExpanded = wrapper.isTabOpened
             tabWidget.isEnabled = true
             tabWidget.tabIcon = ItemDrawable(slot.slot.stack)
@@ -403,44 +407,50 @@ class BackpackPanel(
                     .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
             }
 
-
             when (wrapper) {
                 is CraftingUpgradeWrapper -> {
-                    tabWidget.expandedWidget = CraftingUpgradeWidget(slotIndex, wrapper)
+                    if(tabWidget.expandedWidget !is CraftingUpgradeWidget)
+                        tabWidget.expandedWidget = CraftingUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is AdvancedFeedingUpgradeWrapper -> {
                     upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
-                    tabWidget.expandedWidget = AdvancedFeedingUpgradeWidget(slotIndex, wrapper)
+                    if(tabWidget.expandedWidget !is AdvancedFeedingUpgradeWidget)
+                        tabWidget.expandedWidget = AdvancedFeedingUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is FeedingUpgradeWrapper -> {
                     upgradeSlotGroup.updateFilterDelegate(wrapper)
-                    tabWidget.expandedWidget = FeedingUpgradeWidget(slotIndex, wrapper)
+                    if(tabWidget.expandedWidget !is FeedingUpgradeWidget)
+                        tabWidget.expandedWidget = FeedingUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is AdvancedFilterUpgradeWrapper -> {
                     upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
-                    tabWidget.expandedWidget = AdvancedFilterUpgradeWidget(slotIndex, wrapper)
+                    if(tabWidget.expandedWidget !is AdvancedFilterUpgradeWidget)
+                        tabWidget.expandedWidget = AdvancedFilterUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is FilterUpgradeWrapper -> {
                     upgradeSlotGroup.updateFilterDelegate(wrapper)
-                    tabWidget.expandedWidget = FilterUpgradeWidget(slotIndex, wrapper)
+                    if(tabWidget.expandedWidget !is FilterUpgradeWidget)
+                        tabWidget.expandedWidget = FilterUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is IAdvancedFilterable -> {
                     upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
-                    tabWidget.expandedWidget = AdvancedExpandedTabWidget(
-                        slotIndex,
-                        wrapper,
-                        stack,
-                        wrapper.settingsLangKey
-                    )
+                    if(tabWidget.expandedWidget !is AdvancedExpandedTabWidget<*>)
+                        tabWidget.expandedWidget = AdvancedExpandedTabWidget(
+                            slotIndex,
+                            wrapper,
+                            stack,
+                            wrapper.settingsLangKey
+                        )
                 }
 
                 is IBasicFilterable -> {
                     upgradeSlotGroup.updateFilterDelegate(wrapper)
+                    if(tabWidget.expandedWidget !is BasicExpandedTabWidget<*>)
                     tabWidget.expandedWidget = BasicExpandedTabWidget(
                         slotIndex,
                         wrapper,
@@ -491,8 +501,8 @@ class BackpackPanel(
             val wrapper = toggleWidget.getWrapper()
 
             if (wrapper != null) {
-                toggleWidget.isEnabled = true
                 toggleWidget.isToggleEnabled = wrapper.enabled
+                toggleWidget.isEnabled = true
             } else {
                 toggleWidget.isEnabled = false
             }

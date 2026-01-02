@@ -176,7 +176,8 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
 
     @SideOnly(Side.CLIENT)
     private fun drawSettingStack(context: ModularGuiContext, widgetTheme: WidgetTheme) {
-        val memoryStack = wrapper.backpackItemStackHandler.memorizedSlotStack[slot.slotIndex]
+        val slot = slot as? ModularBackpackSlot ?: return
+        val memoryStack = slot.getMemoryStack()
         val guiScreen = screen.screenWrapper.guiScreen
         check(guiScreen is GuiContainer) { "The gui must be an instance of GuiContainer if it contains slots!" }
         val guiContainer = guiScreen as GuiContainer
