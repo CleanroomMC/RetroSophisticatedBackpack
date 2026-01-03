@@ -34,6 +34,8 @@ class TabWidget(
                     value.right(0)
 
                 child(value.setEnabledIfAndEnabled { showExpanded })
+            }else{
+                child(null)
             }
 
             field = value
