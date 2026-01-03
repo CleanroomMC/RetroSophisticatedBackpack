@@ -21,6 +21,12 @@ class TabWidget(
     }
 
     var showExpanded = false
+        set(value) {
+            // Probably a hack, but should prevent minor flickering
+            expandedWidget?.isEnabled = value
+
+            field = value
+        }
     var expandedWidget: ExpandedTabWidget? = null
         set(value) {
             if (value != null) {
