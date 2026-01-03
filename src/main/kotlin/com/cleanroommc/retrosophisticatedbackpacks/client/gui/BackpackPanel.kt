@@ -353,6 +353,14 @@ class BackpackPanel(
         child(TextWidget(StringKey(player.inventory.displayName.formattedText)).pos(8, 18 + colSize * 18))
     }
 
+    private inline fun <reified V: ExpandedTabWidget> shouldRecreateTab(widget: ExpandedTabWidget?, wrapper: UpgradeWrapper<*>): Boolean{
+        if(widget is ExpandedUpgradeTabWidget<*> && !widget.isSameWrapper(wrapper)){
+            return true
+        }
+        return widget !is V
+    }
+
+
     private fun updateUpgradeWidgets() {
         var tabIndex = 0
         var openedTabIndex: Int? = null
@@ -409,37 +417,37 @@ class BackpackPanel(
 
             when (wrapper) {
                 is CraftingUpgradeWrapper -> {
-                    if(tabWidget.expandedWidget !is CraftingUpgradeWidget)
+                    if(shouldRecreateTab<CraftingUpgradeWidget>(tabWidget.expandedWidget, wrapper))
                         tabWidget.expandedWidget = CraftingUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is AdvancedFeedingUpgradeWrapper -> {
                     upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
-                    if(tabWidget.expandedWidget !is AdvancedFeedingUpgradeWidget)
+                    if(shouldRecreateTab<AdvancedFeedingUpgradeWidget>(tabWidget.expandedWidget, wrapper))
                         tabWidget.expandedWidget = AdvancedFeedingUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is FeedingUpgradeWrapper -> {
                     upgradeSlotGroup.updateFilterDelegate(wrapper)
-                    if(tabWidget.expandedWidget !is FeedingUpgradeWidget)
+                    if(shouldRecreateTab<FeedingUpgradeWidget>(tabWidget.expandedWidget, wrapper))
                         tabWidget.expandedWidget = FeedingUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is AdvancedFilterUpgradeWrapper -> {
                     upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
-                    if(tabWidget.expandedWidget !is AdvancedFilterUpgradeWidget)
+                    if(shouldRecreateTab<AdvancedFilterUpgradeWidget>(tabWidget.expandedWidget, wrapper))
                         tabWidget.expandedWidget = AdvancedFilterUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is FilterUpgradeWrapper -> {
                     upgradeSlotGroup.updateFilterDelegate(wrapper)
-                    if(tabWidget.expandedWidget !is FilterUpgradeWidget)
+                    if(shouldRecreateTab<FilterUpgradeWidget>(tabWidget.expandedWidget, wrapper))
                         tabWidget.expandedWidget = FilterUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is IAdvancedFilterable -> {
                     upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
-                    if(tabWidget.expandedWidget !is AdvancedExpandedTabWidget<*>)
+                    if(shouldRecreateTab<AdvancedExpandedTabWidget<*>>(tabWidget.expandedWidget, wrapper))
                         tabWidget.expandedWidget = AdvancedExpandedTabWidget(
                             slotIndex,
                             wrapper,
@@ -450,13 +458,13 @@ class BackpackPanel(
 
                 is IBasicFilterable -> {
                     upgradeSlotGroup.updateFilterDelegate(wrapper)
-                    if(tabWidget.expandedWidget !is BasicExpandedTabWidget<*>)
-                    tabWidget.expandedWidget = BasicExpandedTabWidget(
-                        slotIndex,
-                        wrapper,
-                        stack,
-                        wrapper.settingsLangKey
-                    )
+                    if(shouldRecreateTab<BasicExpandedTabWidget<*>>(tabWidget.expandedWidget, wrapper))
+                        tabWidget.expandedWidget = BasicExpandedTabWidget(
+                            slotIndex,
+                            wrapper,
+                            stack,
+                            wrapper.settingsLangKey
+                        )
                 }
             }
 
