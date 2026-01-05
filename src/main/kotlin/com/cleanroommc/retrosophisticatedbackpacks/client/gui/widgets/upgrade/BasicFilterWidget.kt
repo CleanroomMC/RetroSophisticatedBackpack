@@ -12,7 +12,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 
 class BasicFilterWidget(
-    private val filterableWrapper: IBasicFilterable,
+    var filterableWrapper: IBasicFilterable,
     slotIndex: Int,
     syncKey: String = "common_filter"
 ) :

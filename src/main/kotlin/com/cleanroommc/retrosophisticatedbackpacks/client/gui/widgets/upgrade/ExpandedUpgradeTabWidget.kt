@@ -6,9 +6,11 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.UpgradeWra
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.ExpandedTabWidget
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import net.minecraft.item.ItemStack
+import kotlin.reflect.full.isSubclassOf
 
 abstract class ExpandedUpgradeTabWidget<U>(
     slotIndex: Int,
+    wrap: U,
     coveredTabSize: Int,
     delegatedIconStack: ItemStack,
     titleKey: String,
@@ -19,14 +21,33 @@ abstract class ExpandedUpgradeTabWidget<U>(
     titleKey,
     width
 ) where U : UpgradeWrapper<*> {
-    abstract val wrapper: U
     private var slotSyncHandler: UpgradeSlotSH? = null
+    open var wrapper: U = wrap
+        set(value) {
+            field = value
+            onWrapperChange(value)
+        }
+
 
     init {
         syncHandler("upgrades", slotIndex)
     }
-    fun isSameWrapper(other: UpgradeWrapper<*>): Boolean{
-        return true//(wrapper === other)
+
+    /**
+     * Since it may be difficult to infer the wrapper's generic type for a given subclass (especially if multiple constraints are imposed),
+     * this method, albeit hacky, is provided to allow for setting the wrapper without knowing the required class.
+     * @return whether the cast was a success.
+     */
+    fun consumePossibleWrapper(after: Any): Boolean{
+        if(after::class == wrapper::class /* || after::class.isSubclassOf(wrapper::class) */){
+            @Suppress("UNCHECKED_CAST")
+            wrapper = after as U
+            return true
+        }
+        return false
+    }
+    open fun onWrapperChange(after: U){
+
     }
 
     override fun updateTabState() {

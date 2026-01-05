@@ -29,7 +29,7 @@ import net.minecraftforge.oredict.OreDictionary
 
 class AdvancedFilterWidget(
     slotIndex: Int,
-    private val filterableWrapper: IAdvancedFilterable,
+    var filterableWrapper: IAdvancedFilterable,
     syncKey: String = "adv_common_filter",
 ) : ParentWidget<AdvancedFilterWidget>() {
     companion object {
