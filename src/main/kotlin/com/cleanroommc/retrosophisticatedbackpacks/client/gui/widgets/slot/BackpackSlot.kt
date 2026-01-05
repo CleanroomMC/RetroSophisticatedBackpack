@@ -238,7 +238,7 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
             GlStateManager.depthFunc(515)
         }
         RenderHelper.enableStandardItemLighting()
-
+        GlStateManager.disableLighting()
         //GlStateManager.enableLighting()
         //RenderHelper.disableStandardItemLighting()
 
