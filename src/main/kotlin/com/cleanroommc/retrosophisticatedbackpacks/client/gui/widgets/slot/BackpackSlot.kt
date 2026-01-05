@@ -3,9 +3,7 @@ package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.slot
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.api.widget.Interactable
 import com.cleanroommc.modularui.core.mixins.early.minecraft.GuiAccessor
-import com.cleanroommc.modularui.core.mixins.early.minecraft.GuiContainerAccessor
 import com.cleanroommc.modularui.core.mixins.early.minecraft.GuiScreenAccessor
-import com.cleanroommc.modularui.drawable.GuiDraw
 import com.cleanroommc.modularui.drawable.text.TextRenderer
 import com.cleanroommc.modularui.screen.NEAAnimationHandler
 import com.cleanroommc.modularui.screen.RichTooltip
@@ -16,7 +14,6 @@ import com.cleanroommc.modularui.utils.Color
 import com.cleanroommc.modularui.utils.NumberFormat
 import com.cleanroommc.modularui.utils.Platform
 import com.cleanroommc.modularui.widgets.slot.ItemSlot
-import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
@@ -27,14 +24,12 @@ import net.minecraft.client.gui.Gui
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.RenderHelper
-import net.minecraft.inventory.Container
 import net.minecraft.item.ItemStack
 import net.minecraft.util.text.Style
 import net.minecraft.util.text.TextComponentString
 import net.minecraft.util.text.TextFormatting
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import kotlin.math.min
 
 class BackpackSlot(private val panel: BackpackPanel, private val wrapper: BackpackWrapper) : ItemSlot() {
     companion object {
@@ -208,8 +203,7 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
         }
         RenderHelper.enableStandardItemLighting()
 
-        //GlStateManager.enableLighting()
-        //RenderHelper.disableStandardItemLighting()
+        GlStateManager.disableLighting()
 
         (guiScreen as GuiAccessor).zLevel = 0f
         renderItem.zLevel = 0f
