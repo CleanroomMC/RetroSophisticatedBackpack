@@ -26,7 +26,7 @@ abstract class ExpandedUpgradeTabWidget<U>(
         syncHandler("upgrades", slotIndex)
     }
     fun isSameWrapper(other: UpgradeWrapper<*>): Boolean{
-        return (wrapper === other)
+        return true//(wrapper === other)
     }
 
     override fun updateTabState() {

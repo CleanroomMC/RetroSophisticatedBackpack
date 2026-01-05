@@ -136,10 +136,10 @@ class BackpackPanel(
                 it
             ).slotGroup("upgrade_inventory")
             val syncHandler = UpgradeSlotSH(upgradeSlot)
-
+            val index = it
             upgradeSlot.changeListener { lastStack, _, isClient, init ->
                 if (isClient)
-                    updateUpgradeWidgets()
+                    updateUpgradeWidgets(index,lastStack)
             }
 
             syncManager.syncValue("upgrades", it, syncHandler)
@@ -361,7 +361,7 @@ class BackpackPanel(
     }
 
 
-    private fun updateUpgradeWidgets() {
+    private fun updateUpgradeWidgets(index: Int?,lastStack: ItemStack?) {
         var tabIndex = 0
         var openedTabIndex: Int? = null
 
@@ -393,7 +393,7 @@ class BackpackPanel(
         // Sync all tabs to their corresponding upgrade
         for (slotIndex in 0 until backpackWrapper.upgradeSlotsSize()) {
             val slot = upgradeSlotWidgets[slotIndex]
-            val stack: ItemStack  = slot.slot.stack
+            val stack: ItemStack = slot.slot.stack
             val item = stack.item
 
             val tabWidget = tabWidgets[tabIndex]
@@ -414,7 +414,11 @@ class BackpackPanel(
                     .addLine(IKey.str(item.getItemStackDisplayName(stack)))
                     .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
             }
-
+            if(slotIndex == index){
+                println("Old Stack: ${lastStack}")
+                println("New Stack: ${slot.slot.stack}")
+                println("Equal?: ${lastStack == slot.slot.stack}")
+            }
             when (wrapper) {
                 is CraftingUpgradeWrapper -> {
                     if(shouldRecreateTab<CraftingUpgradeWidget>(tabWidget.expandedWidget, wrapper))
@@ -486,7 +490,7 @@ class BackpackPanel(
 
         disableUnusedTabWidgets(tabIndex)
         syncToggles()
-        scheduleResize()
+        //scheduleResize()
     }
 
     private fun resetTabState() {
