@@ -196,7 +196,7 @@ class BackpackItem(
             return
         val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return
 
-        if (nbt.hasKey("BackpackCapability")){
+        if (nbt.hasKey("BackpackCapability")) {
             wrapper.deserializeNBT(nbt.getCompoundTag("BackpackCapability"))
         }
     }

@@ -408,7 +408,7 @@ class AdvancedFilterWidget(
 
         }
 
-        private fun checkStringClose(){
+        private fun checkStringClose() {
             val s = key.get()
 
             if (s != line.text) {

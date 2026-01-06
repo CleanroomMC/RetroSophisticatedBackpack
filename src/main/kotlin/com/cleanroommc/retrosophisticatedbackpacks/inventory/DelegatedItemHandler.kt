@@ -18,7 +18,7 @@ class DelegatedItemHandler(var delegated: () -> IItemHandler, var wrappedSlotAmo
 
     override fun getSlots(): Int{
         val current = delegated().slots
-        if(current == 0 && bypassSizeCheck){
+        if (current == 0 && bypassSizeCheck) {
             return wrappedSlotAmount
         }
         return current;

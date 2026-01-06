@@ -39,14 +39,15 @@ abstract class ExpandedUpgradeTabWidget<U>(
      * @return whether the cast was a success.
      */
     fun consumePossibleWrapper(after: Any): Boolean{
-        if(after::class == wrapper::class /* || after::class.isSubclassOf(wrapper::class) */){
+        if (after::class == wrapper::class) {
             @Suppress("UNCHECKED_CAST")
             wrapper = after as U
             return true
         }
         return false
     }
-    open fun onWrapperChange(after: U){
+
+    open fun onWrapperChange(after: U) {
 
     }
 

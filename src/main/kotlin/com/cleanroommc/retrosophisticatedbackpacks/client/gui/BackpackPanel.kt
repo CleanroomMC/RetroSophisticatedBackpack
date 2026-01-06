@@ -408,7 +408,7 @@ class BackpackPanel(
 
             val tabWidget = tabWidgets[tabIndex]
 
-            if (!(item is UpgradeItem && item.hasTab)){
+            if (!(item is UpgradeItem && item.hasTab)) {
                 tabWidget.isEnabled = false
                 tabWidget.expandedWidget = null
                 tabIndex++
@@ -430,37 +430,37 @@ class BackpackPanel(
 
             when (wrapper) {
                 is CraftingUpgradeWrapper -> {
-                    if(updateAndCheckRecreation<CraftingUpgradeWidget, CraftingUpgradeWrapper>(tabWidget.expandedWidget, wrapper))
+                    if (updateAndCheckRecreation<CraftingUpgradeWidget, CraftingUpgradeWrapper>(tabWidget.expandedWidget, wrapper))
                         tabWidget.expandedWidget = CraftingUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is AdvancedFeedingUpgradeWrapper -> {
                     upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
-                    if(updateAndCheckRecreation<AdvancedFeedingUpgradeWidget, AdvancedFeedingUpgradeWrapper>(tabWidget.expandedWidget, wrapper))
+                    if (updateAndCheckRecreation<AdvancedFeedingUpgradeWidget, AdvancedFeedingUpgradeWrapper>(tabWidget.expandedWidget, wrapper))
                         tabWidget.expandedWidget = AdvancedFeedingUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is FeedingUpgradeWrapper -> {
                     upgradeSlotGroup.updateFilterDelegate(wrapper)
-                    if(updateAndCheckRecreation<FeedingUpgradeWidget, FeedingUpgradeWrapper>(tabWidget.expandedWidget, wrapper))
+                    if (updateAndCheckRecreation<FeedingUpgradeWidget, FeedingUpgradeWrapper>(tabWidget.expandedWidget, wrapper))
                         tabWidget.expandedWidget = FeedingUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is AdvancedFilterUpgradeWrapper -> {
                     upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
-                    if(updateAndCheckRecreation<AdvancedFilterUpgradeWidget, AdvancedFilterUpgradeWrapper>(tabWidget.expandedWidget, wrapper))
+                    if (updateAndCheckRecreation<AdvancedFilterUpgradeWidget, AdvancedFilterUpgradeWrapper>(tabWidget.expandedWidget, wrapper))
                         tabWidget.expandedWidget = AdvancedFilterUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is FilterUpgradeWrapper -> {
                     upgradeSlotGroup.updateFilterDelegate(wrapper)
-                    if(updateAndCheckRecreation<FilterUpgradeWidget, FilterUpgradeWrapper>(tabWidget.expandedWidget, wrapper))
+                    if (updateAndCheckRecreation<FilterUpgradeWidget, FilterUpgradeWrapper>(tabWidget.expandedWidget, wrapper))
                         tabWidget.expandedWidget = FilterUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is IAdvancedFilterable -> {
                     upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
-                    if(updateAndCheckRecreation<AdvancedExpandedTabWidget<*>>(tabWidget.expandedWidget, wrapper))
+                    if (updateAndCheckRecreation<AdvancedExpandedTabWidget<*>>(tabWidget.expandedWidget, wrapper))
                         tabWidget.expandedWidget = AdvancedExpandedTabWidget(
                             slotIndex,
                             wrapper,
@@ -471,7 +471,7 @@ class BackpackPanel(
 
                 is IBasicFilterable -> {
                     upgradeSlotGroup.updateFilterDelegate(wrapper)
-                    if(updateAndCheckRecreation<BasicExpandedTabWidget<*>>(tabWidget.expandedWidget, wrapper))
+                    if (updateAndCheckRecreation<BasicExpandedTabWidget<*>>(tabWidget.expandedWidget, wrapper))
                         tabWidget.expandedWidget = BasicExpandedTabWidget(
                             slotIndex,
                             wrapper,
