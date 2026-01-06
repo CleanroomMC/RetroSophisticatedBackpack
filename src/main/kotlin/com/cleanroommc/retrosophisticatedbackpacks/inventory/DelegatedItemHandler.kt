@@ -8,8 +8,6 @@ import net.minecraftforge.items.wrapper.EmptyHandler
 class DelegatedItemHandler(var delegated: () -> IItemHandler, var wrappedSlotAmount: Int) : IItemHandlerModifiable {
 
 
-
-
     override fun getSlots(): Int {
         val delegated = delegated()
 
