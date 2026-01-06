@@ -8,6 +8,8 @@ class DelegatedItemHandler(var delegated: () -> IItemHandler, var wrappedSlotAmo
 
     /**
      * Temporary flag to bypass ModularSlot's slot count requirement during construction, which would normally raise an error.
+     * getSlots needs to return 0 when there is no upgrade provided, since there isn't an ItemHandler to bind to.
+     * Furthermore, this may change depending on if a delegate is present, so hardcoding isn't an option here.
      * Only enabled while ModularSlot instances are being created.
      * @see com.cleanroommc.retrosophisticatedbackpacks.client.gui.UpgradeSlotUpdateGroup
      */
@@ -16,7 +18,7 @@ class DelegatedItemHandler(var delegated: () -> IItemHandler, var wrappedSlotAmo
 
     override fun getSlots(): Int{
         val current = delegated().slots
-        if(current != 0 && bypassSizeCheck){
+        if(current == 0 && bypassSizeCheck){
             return wrappedSlotAmount
         }
         return current;

@@ -397,6 +397,8 @@ class BackpackPanel(
                 openedTabIndex = slotIndex
             }
         }
+        // Shifted forward to account for settings tab.
+        var tabDisplayIndex = 1
 
         // Sync all tabs to their corresponding upgrade
         for (slotIndex in 0 until backpackWrapper.upgradeSlotsSize()) {
@@ -409,6 +411,7 @@ class BackpackPanel(
             if (!(item is UpgradeItem && item.hasTab)){
                 tabWidget.isEnabled = false
                 tabWidget.expandedWidget = null
+                tabIndex++
                 continue
             }
 
@@ -416,6 +419,8 @@ class BackpackPanel(
             val wrapper: UpgradeWrapper<*> = stack.getCapability(Capabilities.UPGRADE_CAPABILITY, null) ?: continue
             tabWidget.showExpanded = wrapper.isTabOpened
             tabWidget.isEnabled = true
+            // Ensure correct tab position
+            tabWidget.tabOrder = tabDisplayIndex
             tabWidget.tabIcon = ItemDrawable(slot.slot.stack)
             tabWidget.tooltip {
                 it.clearText()
@@ -478,6 +483,7 @@ class BackpackPanel(
 
             context.recipeViewerSettings.addExclusionArea(tabWidget.expandedWidget)
             tabIndex++
+            tabDisplayIndex++
         }
 
         if (openedTabIndex != null) {

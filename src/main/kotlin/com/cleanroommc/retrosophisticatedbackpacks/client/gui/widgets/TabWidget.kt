@@ -7,12 +7,13 @@ import com.cleanroommc.modularui.drawable.TabTexture
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.widget.SingleChildWidget
+import com.cleanroommc.modularui.widget.sizer.Unit
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.getThemeOrDefault
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.setEnabledIfAndEnabled
 
 class TabWidget(
     private val tabIndex: Int,
-    top: Int = tabIndex * 30,
+    var tabOrder: Int = tabIndex,
     private val expandDirection: ExpandDirection = ExpandDirection.RIGHT
 ) :
     SingleChildWidget<TabWidget>(), Interactable {
@@ -27,6 +28,7 @@ class TabWidget(
 
             field = value
         }
+
     var expandedWidget: ExpandedTabWidget? = null
         set(value) {
             if (value != null) {
@@ -43,7 +45,7 @@ class TabWidget(
     var tabIcon: IDrawable? = null
 
     init {
-        size(TAB_TEXTURE.width, TAB_TEXTURE.height).top(top)
+        size(TAB_TEXTURE.width, TAB_TEXTURE.height).top({tabOrder * 30.0}, Unit.Measure.PIXEL)
 
         when (expandDirection) {
             ExpandDirection.LEFT -> left(-TAB_TEXTURE.width + 4)

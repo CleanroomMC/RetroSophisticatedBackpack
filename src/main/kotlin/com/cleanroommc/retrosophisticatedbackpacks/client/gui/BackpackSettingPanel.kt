@@ -38,7 +38,7 @@ class BackpackSettingPanel(private val parent: BackpackPanel) : ModularPanel("ba
             .relative(parent)
             .bottom(0)
 
-        memoryTab = TabWidget(0, top = 0, ExpandDirection.LEFT)
+        memoryTab = TabWidget(0, expandDirection = ExpandDirection.LEFT)
             .tooltipStatic {
                 it.addLine(IKey.lang("gui.memory_settings".asTranslationKey()))
                     .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
