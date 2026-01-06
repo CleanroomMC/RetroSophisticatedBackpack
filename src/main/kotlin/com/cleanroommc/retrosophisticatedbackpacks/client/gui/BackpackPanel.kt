@@ -354,7 +354,7 @@ class BackpackPanel(
     }
 
     private inline fun <reified V: ExpandedUpgradeTabWidget<U>, reified U: UpgradeWrapper<*>> updateAndCheckRecreation(widget: ExpandedTabWidget?, wrapper: U): Boolean{
-        if(widget is V){
+        if (widget is V) {
             widget.wrapper = wrapper
             return false
         }
@@ -362,7 +362,7 @@ class BackpackPanel(
     }
 
     private inline fun <reified V: ExpandedUpgradeTabWidget<*>> updateAndCheckRecreation(widget: ExpandedTabWidget?, wrapper: Any): Boolean{
-        if(widget is V){
+        if (widget is V) {
             return !widget.consumePossibleWrapper(wrapper)
         }
         return true
