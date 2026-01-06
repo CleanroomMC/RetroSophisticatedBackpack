@@ -1,9 +1,9 @@
 package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.upgrade
 
 import com.cleanroommc.modularui.api.drawable.IKey
-import com.cleanroommc.modularui.value.sync.SyncHandler
+import com.cleanroommc.modularui.api.value.ISyncOrValue
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
+import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
@@ -12,7 +12,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 
 class BasicFilterWidget(
-    private val filterableWrapper: IBasicFilterable,
+    var filterableWrapper: IBasicFilterable,
     slotIndex: Int,
     syncKey: String = "common_filter"
 ) :
@@ -25,7 +25,7 @@ class BasicFilterWidget(
     }
 
     private val filterTypeButton: CyclicVariantButtonWidget
-    private val filterSlots: List<ItemSlot>
+    private val filterSlots: List<PhantomItemSlot>
     var slotSyncHandler: UpgradeSlotSH? = null
         private set
 
@@ -43,12 +43,12 @@ class BasicFilterWidget(
         }
             .size(20, 20)
 
-        val slotGroup = SlotGroupWidget().debugName("${syncKey}s")
+        val slotGroup = SlotGroupWidget().name("${syncKey}s")
         slotGroup.coverChildren().top(26)
-        filterSlots = mutableListOf<ItemSlot>()
+        filterSlots = mutableListOf<PhantomItemSlot>()
 
         for (i in 0 until 9) {
-            val slot = ItemSlot().syncHandler("${syncKey}_$slotIndex", i).pos(i % 3 * 18, i / 3 * 18)
+            val slot = PhantomItemSlot().syncHandler("${syncKey}_$slotIndex", i).pos(i % 3 * 18, i / 3 * 18) as PhantomItemSlot
 
             filterSlots.add(slot)
             slotGroup.child(slot)
@@ -58,7 +58,7 @@ class BasicFilterWidget(
             .child(slotGroup)
     }
 
-    override fun isValidSyncHandler(syncHandler: SyncHandler?): Boolean {
+    override fun isValidSyncOrValue(syncHandler: ISyncOrValue): Boolean {
         if (syncHandler is UpgradeSlotSH)
             slotSyncHandler = syncHandler
         return slotSyncHandler != null

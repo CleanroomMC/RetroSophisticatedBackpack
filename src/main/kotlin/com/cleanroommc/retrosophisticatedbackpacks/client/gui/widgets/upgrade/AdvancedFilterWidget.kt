@@ -1,19 +1,19 @@
 package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.upgrade
 
 import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.api.value.ISyncOrValue
 import com.cleanroommc.modularui.api.widget.Interactable
 import com.cleanroommc.modularui.drawable.UITexture
 import com.cleanroommc.modularui.drawable.text.TextRenderer
 import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
-import com.cleanroommc.modularui.theme.WidgetTheme
+import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.utils.Color
-import com.cleanroommc.modularui.value.sync.SyncHandler
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widget.WidgetTree
 import com.cleanroommc.modularui.widgets.*
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
+import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
@@ -23,11 +23,13 @@ import com.cleanroommc.retrosophisticatedbackpacks.client.gui.drawable.Outline
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.CyclicVariantButtonWidget
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.getThemeOrDefault
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.setEnabledIfAndEnabled
 import net.minecraftforge.oredict.OreDictionary
 
 class AdvancedFilterWidget(
     slotIndex: Int,
-    private val filterableWrapper: IAdvancedFilterable,
+    var filterableWrapper: IAdvancedFilterable,
     syncKey: String = "adv_common_filter",
 ) : ParentWidget<AdvancedFilterWidget>() {
     companion object {
@@ -81,7 +83,7 @@ class AdvancedFilterWidget(
 
     private val itemBasedConfigurationGroup: Column
     private val oreDictBasedConfigurationGroup: Column
-    private val filterSlots: List<ItemSlot>
+    private val filterSlots: List<PhantomItemSlot>
 
     private val oreDictTextField: TextFieldWidget
     private val oreDictList: OreDictRegexListWidget
@@ -141,8 +143,8 @@ class AdvancedFilterWidget(
             .left(44)
             .child(ignoreDurabilityButton)
             .child(ignoreNBTButton)
-            .setEnabledIf { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ITEM }
-            .debugName("item_based_button_list")
+            .setEnabledIfAndEnabled { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ITEM }
+            .name("item_based_button_list")
 
         val addOreDictEntryButton = ButtonWidget()
             .size(20, 20)
@@ -157,7 +159,7 @@ class AdvancedFilterWidget(
                 oreDictList.child(OreDictEntryWidget(this, oreName, 77))
                 oreDictTextField.text = ""
                 updateWrapper()
-                WidgetTree.resize(oreDictList)
+                oreDictList.scheduleResize()
 
                 true
             }
@@ -165,7 +167,7 @@ class AdvancedFilterWidget(
                 it.addLine(IKey.lang("gui.add_ore_dict_entry".asTranslationKey()))
                     .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
             }
-            .debugName("add_ore_dict_button")
+            .name("add_ore_dict_button")
 
         val removeOreDictEntryButton = ButtonWidget()
             .size(20, 20)
@@ -179,7 +181,7 @@ class AdvancedFilterWidget(
                 filterableWrapper.oreDictEntries.remove(focusedOreDictEntry.text)
                 oreDictList.removeChild(focusedOreDictEntry)
                 updateWrapper()
-                WidgetTree.resize(oreDictList)
+                oreDictList.scheduleResize()
                 true
             }
             .tooltipDynamic {
@@ -193,24 +195,24 @@ class AdvancedFilterWidget(
             .left(44)
             .child(addOreDictEntryButton)
             .child(removeOreDictEntryButton)
-            .setEnabledIf { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ORE_DICT }
-            .debugName("ore_dict_based_config_buttons")
+            .setEnabledIfAndEnabled { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ORE_DICT }
+            .name("ore_dict_based_config_buttons")
 
         buttonRow
             .child(filterTypeButton)
             .child(matchTypeButton)
             .child(itemBasedConfigButtonRow)
             .child(oreDictBasedConfigButtonRow)
-            .debugName("button_list")
+            .name("button_list")
 
         // Item-based configuration widgets
-        val slotGroup = SlotGroupWidget().debugName("${syncKey}s")
+        val slotGroup = SlotGroupWidget().name("${syncKey}s")
         slotGroup.coverChildren().leftRel(0.5f)
 
-        filterSlots = mutableListOf<ItemSlot>()
+        filterSlots = mutableListOf<PhantomItemSlot>()
 
         for (i in 0 until 16) {
-            val slot = ItemSlot().syncHandler("${syncKey}_$slotIndex", i).pos(i % 4 * 18, i / 4 * 18)
+            val slot = PhantomItemSlot().syncHandler("${syncKey}_$slotIndex", i).pos(i % 4 * 18, i / 4 * 18) as PhantomItemSlot
 
             filterSlots.add(slot)
             slotGroup.child(slot)
@@ -221,8 +223,8 @@ class AdvancedFilterWidget(
             .leftRel(0.5f)
             .top(24)
             .child(slotGroup)
-            .setEnabledIf { filterableWrapper.matchType != IAdvancedFilterable.MatchType.ORE_DICT }
-            .debugName("item_based_config_group") as Column
+            .setEnabledIfAndEnabled { filterableWrapper.matchType != IAdvancedFilterable.MatchType.ORE_DICT }
+            .name("item_based_config_group") as Column
 
         // Ore-dict-based configuration widgets
         oreDictTextField = TextFieldWidget()
@@ -246,8 +248,8 @@ class AdvancedFilterWidget(
             .top(24)
             .child(oreDictList)
             .child(oreDictTextField)
-            .setEnabledIf { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ORE_DICT }
-            .debugName("ore_dict_based_config_group") as Column
+            .setEnabledIfAndEnabled { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ORE_DICT }
+            .name("ore_dict_based_config_group") as Column
 
         child(buttonRow)
             .child(itemBasedConfigurationGroup)
@@ -269,7 +271,7 @@ class AdvancedFilterWidget(
         }
     }
 
-    override fun isValidSyncHandler(syncHandler: SyncHandler?): Boolean {
+    override fun isValidSyncOrValue(syncHandler: ISyncOrValue): Boolean {
         if (syncHandler is UpgradeSlotSH)
             slotSyncHandler = syncHandler
         return slotSyncHandler != null
@@ -280,7 +282,7 @@ class AdvancedFilterWidget(
             private val BACKGROUND_TILE_TEXTURE = UITexture.builder()
                 .location(Tags.MOD_ID, "gui/gui_controls")
                 .imageSize(256, 256)
-                .uv(29, 146, 66, 56)
+                .xy(29, 146, 66, 56)
                 .adaptable(1)
                 .tiled()
                 .build()
@@ -295,7 +297,7 @@ class AdvancedFilterWidget(
     }
 
     private class OreDictEntryWidget(val parent: AdvancedFilterWidget, val text: String, width: Int) :
-        TextWidget(IKey.str(" $text")), Interactable {
+        TextWidget<OreDictEntryWidget>(IKey.str(" $text")), Interactable {
         companion object {
             private const val PAUSE_TIME = 60
         }
@@ -383,28 +385,30 @@ class AdvancedFilterWidget(
             return Interactable.Result.SUCCESS
         }
 
-        override fun draw(context: ModularGuiContext?, widgetTheme: WidgetTheme?) {
-            checkString()
+        override fun draw(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
+            checkStringClose()
             val renderer = TextRenderer.SHARED
-            renderer.setColor(color)
+            color?.let { renderer.color = it.asInt }
             renderer.setAlignment(alignment, (area.w() + 1).toFloat(), area.h().toFloat())
-            renderer.setShadow(isShadow)
+            isShadow?.let { renderer.setShadow(it) }
             renderer.setPos(area.padding.left, area.padding.top + 2)
             renderer.setScale(scale)
             renderer.setSimulate(false)
             renderer.drawCut(line)
         }
 
-        override fun drawOverlay(context: ModularGuiContext, widgetTheme: WidgetTheme) {
+        override fun drawOverlay(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
             if (!selected && !hovering)
                 return
+            context?.let {
+                val overlay = getCurrentOverlay(context.theme, widgetTheme)
 
-            val overlay = getCurrentOverlay(context.theme, widgetTheme)
+                overlay?.drawAtZero(context, area.width + 2, area.height + 2, widgetTheme.getThemeOrDefault())
+            }
 
-            overlay.drawAtZero(context, area.width + 2, area.height + 2, widgetTheme)
         }
 
-        private fun checkString() {
+        private fun checkStringClose() {
             val s = key.get()
 
             if (s != line.text) {

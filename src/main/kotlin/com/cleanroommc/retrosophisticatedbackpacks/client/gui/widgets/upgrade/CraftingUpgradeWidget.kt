@@ -5,8 +5,8 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.CraftingUp
 import com.cleanroommc.retrosophisticatedbackpacks.item.Items
 import net.minecraft.item.ItemStack
 
-class CraftingUpgradeWidget(slotIndex: Int, override val wrapper: CraftingUpgradeWrapper) :
-    ExpandedUpgradeTabWidget<CraftingUpgradeWrapper>(slotIndex, 4, ItemStack(Items.craftingUpgrade), "") {
+class CraftingUpgradeWidget(slotIndex: Int, wrap: CraftingUpgradeWrapper) :
+    ExpandedUpgradeTabWidget<CraftingUpgradeWrapper>(slotIndex, wrap, 4, ItemStack(Items.craftingUpgrade), "") {
     companion object {
         private const val SLOT_SIZE = 18
     }
@@ -17,12 +17,12 @@ class CraftingUpgradeWidget(slotIndex: Int, override val wrapper: CraftingUpgrad
     init {
         size(70, 150)
 
-//        val craftingMatrixSlotGroupsWidget = SlotGroupWidget().debugName("crafting_matrix")
+//        val craftingMatrixSlotGroupsWidget = SlotGroupWidget().name("crafting_matrix")
 //        craftingMatrixSlotGroupsWidget.flex().coverChildren().leftRel(0.5F).top(36)
 //
 //        craftingMatrix = Array(9) {
 //            val itemSlot = ItemSlot().syncHandler("crafting", it).pos(it % 3 * SLOT_SIZE, it / 3 * SLOT_SIZE)
-//                .debugName("crafting_slot_$it")
+//                .name("crafting_slot_$it")
 //
 //            craftingMatrixSlotGroupsWidget.child(itemSlot)
 //            itemSlot
@@ -30,10 +30,10 @@ class CraftingUpgradeWidget(slotIndex: Int, override val wrapper: CraftingUpgrad
 //
 //        child(craftingMatrixSlotGroupsWidget)
 //
-//        val craftingResult = SlotGroupWidget().debugName("crafting_result")
+//        val craftingResult = SlotGroupWidget().name("crafting_result")
 //        craftingResult.flex().coverChildren().leftRel(0.5F).top(120)
 //
-//        this@CraftingUpgradeWidget.craftingResult = ItemSlot().syncHandler("crafting_result", 0).debugName("crafting_result_slot")
+//        this@CraftingUpgradeWidget.craftingResult = ItemSlot().syncHandler("crafting_result", 0).name("crafting_result_slot")
 //        craftingResult.child(this@CraftingUpgradeWidget.craftingResult)
 //
 //        child(craftingResult)

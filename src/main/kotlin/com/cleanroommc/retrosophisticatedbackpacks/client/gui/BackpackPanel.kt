@@ -12,9 +12,8 @@ import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
-import com.cleanroommc.modularui.widget.WidgetTree
 import com.cleanroommc.modularui.widgets.ButtonWidget
-import com.cleanroommc.modularui.widgets.ItemSlot
+import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
@@ -28,7 +27,6 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.*
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.*
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.slot.BackpackSlot
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.upgrade.*
-import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackContainer
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiData
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularBackpackSlot
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularUpgradeSlot
@@ -41,6 +39,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.tileentity.BackpackTileEntity
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.ceilDiv
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.item.ItemStack
 import net.minecraftforge.items.wrapper.PlayerInvWrapper
 import net.minecraftforge.items.wrapper.PlayerMainInvWrapper
 import kotlin.math.min
@@ -49,15 +48,14 @@ class BackpackPanel(
     internal val player: EntityPlayer,
     internal val tileEntity: BackpackTileEntity?,
     internal val syncManager: PanelSyncManager,
-    internal val backpackWrapper: BackpackWrapper,
-    internal val backpackContainer: BackpackContainer
+    internal val backpackWrapper: BackpackWrapper
 ) : ModularPanel("backpack_gui") {
     companion object {
         private const val SLOT_SIZE = 18
         private val LAYERED_TAB_TEXTURE = UITexture.builder()
             .location(Tags.MOD_ID, "gui/gui_controls")
             .imageSize(256, 256)
-            .uv(132, 0, 124, 256)
+            .xy(132, 0, 124, 256)
             .adaptable(4)
             .tiled()
             .build() as AdaptableUITexture
@@ -90,9 +88,9 @@ class BackpackPanel(
             backpackSlotIndex: Int? = null,
         ): BackpackPanel {
             val panel =
-                BackpackPanel(player, tileEntity, syncManager, wrapper, BackpackContainer(wrapper, backpackSlotIndex))
+                BackpackPanel(player, tileEntity, syncManager, wrapper)
                     .size(width, height) as BackpackPanel
-            syncManager.containerCustomizer = panel.backpackContainer
+
             syncManager.bindPlayerInventory(player)
             panel.bindPlayerInventory()
 
@@ -138,10 +136,10 @@ class BackpackPanel(
                 it
             ).slotGroup("upgrade_inventory")
             val syncHandler = UpgradeSlotSH(upgradeSlot)
-
+            val index = it
             upgradeSlot.changeListener { lastStack, _, isClient, init ->
                 if (isClient)
-                    updateUpgradeWidgets()
+                    updateUpgradeWidgets(index,lastStack)
             }
 
             syncManager.syncValue("upgrades", it, syncHandler)
@@ -155,9 +153,9 @@ class BackpackPanel(
             UpgradeSlotUpdateGroup(this, backpackWrapper, it)
         }
 
-        settingPanel = syncManager.panel("setting_panel", { syncManager, syncHandler ->
+        settingPanel = syncManager.syncedPanel("setting_panel", true) { syncManager, syncHandler ->
             BackpackSettingPanel(this)
-        }, true)
+        }
     }
 
     // Currently only main hand slot will be locked if it's the backpack being opened
@@ -302,14 +300,14 @@ class BackpackPanel(
     }
 
     internal fun addBackpackInventorySlots() {
-        val backpackSlotGroupWidget = SlotGroupWidget().debugName("backpack_inventory")
+        val backpackSlotGroupWidget = SlotGroupWidget().name("backpack_inventory")
         backpackSlotGroupWidget.flex().coverChildren().leftRel(0.5F).top(17)
 
         for (i in 0 until backpackWrapper.backpackInventorySize()) {
             val itemSlot = BackpackSlot(this, backpackWrapper)
                 .syncHandler("backpack", i)
                 .pos(i % rowSize * SLOT_SIZE, i / rowSize * SLOT_SIZE)
-                .debugName("slot_${i}")
+                .name("slot_${i}")
 
             backpackSlotGroupWidget.child(itemSlot)
         }
@@ -318,11 +316,11 @@ class BackpackPanel(
     }
 
     internal fun addUpgradeSlots() {
-        upgradeSlotGroupWidget.debugName("upgrade_inventory")
+        upgradeSlotGroupWidget.name("upgrade_inventory")
         upgradeSlotGroupWidget.flex().size(23, 10 + backpackWrapper.upgradeSlotsSize() * 18).left(-21)
 
         for (i in 0 until backpackWrapper.upgradeSlotsSize()) {
-            val itemSlot = ItemSlot().syncHandler("upgrades", i).pos(5, 5 + i * 18).debugName("slot_${i}")
+            val itemSlot = ItemSlot().syncHandler("upgrades", i).pos(5, 5 + i * 18).name("slot_${i}")
 
             upgradeSlotWidgets.add(itemSlot)
             upgradeSlotGroupWidget.child(itemSlot)
@@ -337,7 +335,7 @@ class BackpackPanel(
 
     internal fun addUpgradeTabs() {
         for (i in 0 until backpackWrapper.upgradeSlotsSize()) {
-            val tab = TabWidget(i + 1).debugName("upgrade_tab_${i}")
+            val tab = TabWidget(i + 1).name("upgrade_tab_${i}")
 
             tab.isEnabled = false
             tabWidgets.add(tab)
@@ -355,14 +353,30 @@ class BackpackPanel(
         child(TextWidget(StringKey(player.inventory.displayName.formattedText)).pos(8, 18 + colSize * 18))
     }
 
-    private fun updateUpgradeWidgets() {
+    private inline fun <reified V: ExpandedUpgradeTabWidget<U>, reified U: UpgradeWrapper<*>> updateAndCheckRecreation(widget: ExpandedTabWidget?, wrapper: U): Boolean {
+        if (widget is V) {
+            widget.wrapper = wrapper
+            return false
+        }
+        return true
+    }
+
+    private inline fun <reified V: ExpandedUpgradeTabWidget<*>> updateAndCheckRecreation(widget: ExpandedTabWidget?, wrapper: Any): Boolean {
+        if (widget is V) {
+            return !widget.consumePossibleWrapper(wrapper)
+        }
+        return true
+    }
+
+
+    private fun updateUpgradeWidgets(index: Int?,lastStack: ItemStack?) {
         var tabIndex = 0
         var openedTabIndex: Int? = null
 
         resetTabState()
 
         for ((slotIndex, slotWidget) in upgradeSlotWidgets.withIndex()) {
-            val stack = slotWidget.slot.stack
+            val stack: ItemStack = slotWidget.slot.stack
             val item = stack.item
 
             if (!(item is UpgradeItem && item.hasTab))
@@ -383,21 +397,30 @@ class BackpackPanel(
                 openedTabIndex = slotIndex
             }
         }
+        // Shifted forward to account for settings tab.
+        var tabDisplayIndex = 1
 
         // Sync all tabs to their corresponding upgrade
         for (slotIndex in 0 until backpackWrapper.upgradeSlotsSize()) {
             val slot = upgradeSlotWidgets[slotIndex]
-            val stack = slot.slot.stack
+            val stack: ItemStack = slot.slot.stack
             val item = stack.item
 
-            if (!(item is UpgradeItem && item.hasTab))
-                continue
-
             val tabWidget = tabWidgets[tabIndex]
+
+            if (!(item is UpgradeItem && item.hasTab)) {
+                tabWidget.isEnabled = false
+                tabWidget.expandedWidget = null
+                tabIndex++
+                continue
+            }
+
             val upgradeSlotGroup = upgradeSlotGroups[slotIndex]
-            val wrapper = stack.getCapability(Capabilities.UPGRADE_CAPABILITY, null) ?: continue
+            val wrapper: UpgradeWrapper<*> = stack.getCapability(Capabilities.UPGRADE_CAPABILITY, null) ?: continue
             tabWidget.showExpanded = wrapper.isTabOpened
             tabWidget.isEnabled = true
+            // Ensure correct tab position
+            tabWidget.tabOrder = tabDisplayIndex
             tabWidget.tabIcon = ItemDrawable(slot.slot.stack)
             tabWidget.tooltip {
                 it.clearText()
@@ -405,55 +428,62 @@ class BackpackPanel(
                     .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
             }
 
-
             when (wrapper) {
                 is CraftingUpgradeWrapper -> {
-                    tabWidget.expandedWidget = CraftingUpgradeWidget(slotIndex, wrapper)
+                    if (updateAndCheckRecreation<CraftingUpgradeWidget, CraftingUpgradeWrapper>(tabWidget.expandedWidget, wrapper))
+                        tabWidget.expandedWidget = CraftingUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is AdvancedFeedingUpgradeWrapper -> {
                     upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
-                    tabWidget.expandedWidget = AdvancedFeedingUpgradeWidget(slotIndex, wrapper)
+                    if (updateAndCheckRecreation<AdvancedFeedingUpgradeWidget, AdvancedFeedingUpgradeWrapper>(tabWidget.expandedWidget, wrapper))
+                        tabWidget.expandedWidget = AdvancedFeedingUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is FeedingUpgradeWrapper -> {
                     upgradeSlotGroup.updateFilterDelegate(wrapper)
-                    tabWidget.expandedWidget = FeedingUpgradeWidget(slotIndex, wrapper)
+                    if (updateAndCheckRecreation<FeedingUpgradeWidget, FeedingUpgradeWrapper>(tabWidget.expandedWidget, wrapper))
+                        tabWidget.expandedWidget = FeedingUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is AdvancedFilterUpgradeWrapper -> {
                     upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
-                    tabWidget.expandedWidget = AdvancedFilterUpgradeWidget(slotIndex, wrapper)
+                    if (updateAndCheckRecreation<AdvancedFilterUpgradeWidget, AdvancedFilterUpgradeWrapper>(tabWidget.expandedWidget, wrapper))
+                        tabWidget.expandedWidget = AdvancedFilterUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is FilterUpgradeWrapper -> {
                     upgradeSlotGroup.updateFilterDelegate(wrapper)
-                    tabWidget.expandedWidget = FilterUpgradeWidget(slotIndex, wrapper)
+                    if (updateAndCheckRecreation<FilterUpgradeWidget, FilterUpgradeWrapper>(tabWidget.expandedWidget, wrapper))
+                        tabWidget.expandedWidget = FilterUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is IAdvancedFilterable -> {
                     upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
-                    tabWidget.expandedWidget = AdvancedExpandedTabWidget(
-                        slotIndex,
-                        wrapper,
-                        stack,
-                        wrapper.settingsLangKey
-                    )
+                    if (updateAndCheckRecreation<AdvancedExpandedTabWidget<*>>(tabWidget.expandedWidget, wrapper))
+                        tabWidget.expandedWidget = AdvancedExpandedTabWidget(
+                            slotIndex,
+                            wrapper,
+                            stack,
+                            wrapper.settingsLangKey
+                        )
                 }
 
                 is IBasicFilterable -> {
                     upgradeSlotGroup.updateFilterDelegate(wrapper)
-                    tabWidget.expandedWidget = BasicExpandedTabWidget(
-                        slotIndex,
-                        wrapper,
-                        stack,
-                        wrapper.settingsLangKey
-                    )
+                    if (updateAndCheckRecreation<BasicExpandedTabWidget<*>>(tabWidget.expandedWidget, wrapper))
+                        tabWidget.expandedWidget = BasicExpandedTabWidget(
+                            slotIndex,
+                            wrapper,
+                            stack,
+                            wrapper.settingsLangKey
+                        )
                 }
             }
 
-            context.jeiSettings.addJeiExclusionArea(tabWidget.expandedWidget)
+            context.recipeViewerSettings.addExclusionArea(tabWidget.expandedWidget)
             tabIndex++
+            tabDisplayIndex++
         }
 
         if (openedTabIndex != null) {
@@ -470,13 +500,13 @@ class BackpackPanel(
 
         disableUnusedTabWidgets(tabIndex)
         syncToggles()
-        WidgetTree.resize(this)
+        scheduleResize()
     }
 
     private fun resetTabState() {
         for (tabWidget in tabWidgets) {
             if (tabWidget.expandedWidget != null) {
-                context.jeiSettings.removeJeiExclusionArea(tabWidget.expandedWidget)
+                context.recipeViewerSettings.removeExclusionArea(tabWidget.expandedWidget)
             }
         }
     }
@@ -493,8 +523,8 @@ class BackpackPanel(
             val wrapper = toggleWidget.getWrapper()
 
             if (wrapper != null) {
-                toggleWidget.isEnabled = true
                 toggleWidget.isToggleEnabled = wrapper.enabled
+                toggleWidget.isEnabled = true
             } else {
                 toggleWidget.isEnabled = false
             }
@@ -502,12 +532,12 @@ class BackpackPanel(
     }
 
     override fun shouldAnimate(): Boolean =
-        ClientConfig.enableAnimation
+        ClientConfig.enableAnimation && super.shouldAnimate()
 
     override fun postDraw(context: ModularGuiContext, transformed: Boolean) {
         super.postDraw(context, transformed)
 
         // Nasty hack to draw over upgrade tabs
-        LAYERED_TAB_TEXTURE.draw(context, flex.area.width - 6, 0, 6, flex.area.height, WidgetTheme.getDefault())
+        LAYERED_TAB_TEXTURE.draw(context, flex.area.width - 6, 0, 6, flex.area.height, WidgetTheme.getDefault().theme)
     }
 }

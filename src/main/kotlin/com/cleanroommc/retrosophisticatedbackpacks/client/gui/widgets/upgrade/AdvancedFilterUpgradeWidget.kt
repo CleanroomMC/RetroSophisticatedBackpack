@@ -10,10 +10,10 @@ import net.minecraft.item.ItemStack
 
 class AdvancedFilterUpgradeWidget(
     slotIndex: Int,
-    wrapper: AdvancedFilterUpgradeWrapper
+    wrap: AdvancedFilterUpgradeWrapper
 ) : AdvancedExpandedTabWidget<AdvancedFilterUpgradeWrapper>(
     slotIndex,
-    wrapper,
+    wrap,
     ItemStack(Items.advancedFilterUpgrade),
     "gui.advanced_filter_settings".asTranslationKey(),
     coveredTabSize = 6

@@ -5,12 +5,15 @@ import com.cleanroommc.modularui.api.widget.Interactable
 import com.cleanroommc.modularui.drawable.GuiTextures
 import com.cleanroommc.modularui.drawable.TabTexture
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
-import com.cleanroommc.modularui.theme.WidgetTheme
+import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.widget.SingleChildWidget
+import com.cleanroommc.modularui.widget.sizer.Unit
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.getThemeOrDefault
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.setEnabledIfAndEnabled
 
 class TabWidget(
     private val tabIndex: Int,
-    top: Int = tabIndex * 30,
+    var tabOrder: Int = tabIndex,
     private val expandDirection: ExpandDirection = ExpandDirection.RIGHT
 ) :
     SingleChildWidget<TabWidget>(), Interactable {
@@ -19,13 +22,22 @@ class TabWidget(
     }
 
     var showExpanded = false
+        set(value) {
+            // Probably a hack, but should prevent minor flickering
+            expandedWidget?.isEnabled = value
+
+            field = value
+        }
+
     var expandedWidget: ExpandedTabWidget? = null
         set(value) {
             if (value != null) {
                 if (expandDirection == ExpandDirection.LEFT)
                     value.right(0)
 
-                child(value.setEnabledIf { showExpanded })
+                child(value.setEnabledIfAndEnabled { showExpanded })
+            } else {
+                child(null)
             }
 
             field = value
@@ -33,7 +45,7 @@ class TabWidget(
     var tabIcon: IDrawable? = null
 
     init {
-        size(TAB_TEXTURE.width, TAB_TEXTURE.height).top(top)
+        size(TAB_TEXTURE.width, TAB_TEXTURE.height).top({tabOrder * 30.0}, Unit.Measure.PIXEL)
 
         when (expandDirection) {
             ExpandDirection.LEFT -> left(-TAB_TEXTURE.width + 4)
@@ -42,7 +54,7 @@ class TabWidget(
     }
 
     override fun onInit() {
-        context.jeiSettings.addJeiExclusionArea(this)
+        context.recipeViewerSettings.addExclusionArea(this)
     }
 
     override fun onMousePressed(mouseButton: Int): Interactable.Result {
@@ -58,16 +70,16 @@ class TabWidget(
         return Interactable.Result.STOP
     }
 
-    override fun draw(context: ModularGuiContext, widgetTheme: WidgetTheme) {
+    override fun draw(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
         super.draw(context, widgetTheme)
 
         if (showExpanded)
             return
 
-        tabIcon?.draw(context, 8, 6, 16, 16, widgetTheme)
+        tabIcon?.draw(context, 8, 6, 16, 16, widgetTheme.getThemeOrDefault())
     }
 
-    override fun drawBackground(context: ModularGuiContext, widgetTheme: WidgetTheme) {
+    override fun drawBackground(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
         super.drawBackground(context, widgetTheme)
 
         if (showExpanded)
@@ -77,10 +89,10 @@ class TabWidget(
 
         when (expandDirection) {
             ExpandDirection.LEFT -> GuiTextures.TAB_LEFT.get(index, false)
-                .drawAtZero(context, TAB_TEXTURE.width, TAB_TEXTURE.height, widgetTheme)
+                .drawAtZero(context, TAB_TEXTURE.width, TAB_TEXTURE.height, widgetTheme.getThemeOrDefault())
 
             ExpandDirection.RIGHT -> GuiTextures.TAB_RIGHT.get(index, false)
-                .drawAtZero(context, TAB_TEXTURE.width, TAB_TEXTURE.height, widgetTheme)
+                .drawAtZero(context, TAB_TEXTURE.width, TAB_TEXTURE.height, widgetTheme.getThemeOrDefault())
         }
     }
 }

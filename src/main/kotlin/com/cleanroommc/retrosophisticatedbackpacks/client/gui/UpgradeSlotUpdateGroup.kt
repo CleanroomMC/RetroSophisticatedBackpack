@@ -16,10 +16,10 @@ class UpgradeSlotUpdateGroup(
     private val slotIndex: Int
 ) {
     // Common Filters
-    var commonFilterStackHandler = DelegatedStackHandlerSH(wrapper, slotIndex)
+    var commonFilterStackHandler = DelegatedStackHandlerSH(wrapper, slotIndex, 9)
     val commonFilterSlots: Array<ModularSlot>
 
-    var advancedCommonFilterStackHandler = DelegatedStackHandlerSH(wrapper, slotIndex)
+    var advancedCommonFilterStackHandler = DelegatedStackHandlerSH(wrapper, slotIndex, 16)
     val advancedCommonFilterSlots: Array<ModularSlot>
 
     // Feeding filters

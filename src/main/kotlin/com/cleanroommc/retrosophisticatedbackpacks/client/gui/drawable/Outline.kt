@@ -14,6 +14,6 @@ class Outline(val color: Int) : IDrawable {
         height: Int,
         widgetTheme: WidgetTheme
     ) {
-        GuiDraw.drawOutline(x, y, width, height, color)
+        GuiDraw.drawBorderInsideXYWH(x.toFloat(), y.toFloat(), width.toFloat(), height.toFloat(), color)
     }
 }
