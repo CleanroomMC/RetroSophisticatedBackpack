@@ -353,7 +353,7 @@ class BackpackPanel(
         child(TextWidget(StringKey(player.inventory.displayName.formattedText)).pos(8, 18 + colSize * 18))
     }
 
-    private inline fun <reified V: ExpandedUpgradeTabWidget<U>, reified U: UpgradeWrapper<*>> updateAndCheckRecreation(widget: ExpandedTabWidget?, wrapper: U): Boolean{
+    private inline fun <reified V: ExpandedUpgradeTabWidget<U>, reified U: UpgradeWrapper<*>> updateAndCheckRecreation(widget: ExpandedTabWidget?, wrapper: U): Boolean {
         if (widget is V) {
             widget.wrapper = wrapper
             return false
@@ -361,7 +361,7 @@ class BackpackPanel(
         return true
     }
 
-    private inline fun <reified V: ExpandedUpgradeTabWidget<*>> updateAndCheckRecreation(widget: ExpandedTabWidget?, wrapper: Any): Boolean{
+    private inline fun <reified V: ExpandedUpgradeTabWidget<*>> updateAndCheckRecreation(widget: ExpandedTabWidget?, wrapper: Any): Boolean {
         if (widget is V) {
             return !widget.consumePossibleWrapper(wrapper)
         }

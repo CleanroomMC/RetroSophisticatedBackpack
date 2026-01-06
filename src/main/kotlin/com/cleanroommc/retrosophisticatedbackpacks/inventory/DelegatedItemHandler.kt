@@ -3,25 +3,22 @@ package com.cleanroommc.retrosophisticatedbackpacks.inventory
 import net.minecraft.item.ItemStack
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.IItemHandlerModifiable
+import net.minecraftforge.items.wrapper.EmptyHandler
 
 class DelegatedItemHandler(var delegated: () -> IItemHandler, var wrappedSlotAmount: Int) : IItemHandlerModifiable {
 
-    /**
-     * Temporary flag to bypass ModularSlot's slot count requirement during construction, which would normally raise an error.
-     * getSlots needs to return 0 when there is no upgrade provided, since there isn't an ItemHandler to bind to.
-     * Furthermore, this may change depending on if a delegate is present, so hardcoding isn't an option here.
-     * Only enabled while ModularSlot instances are being created.
-     * @see com.cleanroommc.retrosophisticatedbackpacks.client.gui.UpgradeSlotUpdateGroup
-     */
-    var bypassSizeCheck = false
 
 
-    override fun getSlots(): Int{
-        val current = delegated().slots
-        if (current == 0 && bypassSizeCheck) {
-            return wrappedSlotAmount
-        }
-        return current;
+
+    override fun getSlots(): Int {
+        val delegated = delegated()
+
+        if (delegated != EmptyHandler.INSTANCE)
+            check(delegated.slots == wrappedSlotAmount) {
+                "Mismatched delegated item handler slot amount: assumed to have $wrappedSlotAmount but actually got ${delegated().slots}"
+            }
+
+        return wrappedSlotAmount
     }
 
     override fun getStackInSlot(slot: Int): ItemStack =

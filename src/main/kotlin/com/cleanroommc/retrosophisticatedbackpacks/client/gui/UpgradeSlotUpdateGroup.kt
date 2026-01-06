@@ -30,7 +30,7 @@ class UpgradeSlotUpdateGroup(
         val syncManager = panel.syncManager
 
         syncManager.syncValue("common_filter_delegation_$slotIndex", commonFilterStackHandler)
-        commonFilterStackHandler.delegatedStackHandler.bypassSizeCheck = true
+
         commonFilterSlots = Array(9) {
             val slot = ModularFilterSlot(commonFilterStackHandler.delegatedStackHandler, it)
             slot.slotGroup("common_filters_$slotIndex")
@@ -48,7 +48,6 @@ class UpgradeSlotUpdateGroup(
 
         syncManager.syncValue("adv_common_filter_delegation_$slotIndex", advancedCommonFilterStackHandler)
 
-        advancedCommonFilterStackHandler.delegatedStackHandler.bypassSizeCheck = true
         advancedCommonFilterSlots = Array(16) {
             val slot = ModularFilterSlot(advancedCommonFilterStackHandler.delegatedStackHandler, it)
             slot.slotGroup("adv_common_filters_$slotIndex")
@@ -92,8 +91,6 @@ class UpgradeSlotUpdateGroup(
 
             slot
         }
-        commonFilterStackHandler.delegatedStackHandler.bypassSizeCheck = false
-        advancedCommonFilterStackHandler.delegatedStackHandler.bypassSizeCheck = false
 
         syncManager.registerSlotGroup(SlotGroup("adv_feeding_filters_$slotIndex", 4, false))
     }

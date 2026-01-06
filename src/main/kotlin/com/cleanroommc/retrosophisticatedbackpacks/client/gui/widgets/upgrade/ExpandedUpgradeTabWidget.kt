@@ -38,7 +38,7 @@ abstract class ExpandedUpgradeTabWidget<U>(
      * this method, albeit hacky, is provided to allow for setting the wrapper without knowing the required class.
      * @return whether the cast was a success.
      */
-    fun consumePossibleWrapper(after: Any): Boolean{
+    fun consumePossibleWrapper(after: Any): Boolean {
         if (after::class == wrapper::class) {
             @Suppress("UNCHECKED_CAST")
             wrapper = after as U
