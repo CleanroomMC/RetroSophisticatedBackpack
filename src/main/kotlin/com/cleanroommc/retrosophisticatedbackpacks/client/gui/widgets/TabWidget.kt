@@ -5,9 +5,9 @@ import com.cleanroommc.modularui.api.widget.Interactable
 import com.cleanroommc.modularui.drawable.GuiTextures
 import com.cleanroommc.modularui.drawable.TabTexture
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
-import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.widget.SingleChildWidget
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.getThemeOrDefault
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.setEnabledIfAndEnabled
 
 class TabWidget(
@@ -34,7 +34,7 @@ class TabWidget(
                     value.right(0)
 
                 child(value.setEnabledIfAndEnabled { showExpanded })
-            }else{
+            } else {
                 child(null)
             }
 
@@ -74,7 +74,7 @@ class TabWidget(
         if (showExpanded)
             return
 
-        tabIcon?.draw(context, 8, 6, 16, 16, widgetTheme?.theme ?: WidgetTheme.getDefault().theme)
+        tabIcon?.draw(context, 8, 6, 16, 16, widgetTheme.getThemeOrDefault())
     }
 
     override fun drawBackground(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
@@ -87,10 +87,10 @@ class TabWidget(
 
         when (expandDirection) {
             ExpandDirection.LEFT -> GuiTextures.TAB_LEFT.get(index, false)
-                .drawAtZero(context, TAB_TEXTURE.width, TAB_TEXTURE.height, widgetTheme?.theme ?: WidgetTheme.getDefault().theme)
+                .drawAtZero(context, TAB_TEXTURE.width, TAB_TEXTURE.height, widgetTheme.getThemeOrDefault())
 
             ExpandDirection.RIGHT -> GuiTextures.TAB_RIGHT.get(index, false)
-                .drawAtZero(context, TAB_TEXTURE.width, TAB_TEXTURE.height, widgetTheme?.theme ?: WidgetTheme.getDefault().theme)
+                .drawAtZero(context, TAB_TEXTURE.width, TAB_TEXTURE.height, widgetTheme.getThemeOrDefault())
         }
     }
 }

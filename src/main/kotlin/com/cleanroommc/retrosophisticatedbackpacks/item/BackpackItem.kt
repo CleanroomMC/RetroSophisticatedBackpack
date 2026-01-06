@@ -199,7 +199,6 @@ class BackpackItem(
         if (nbt.hasKey("BackpackCapability")){
             wrapper.deserializeNBT(nbt.getCompoundTag("BackpackCapability"))
         }
-        //else wrapper.deserializeNBT(nbt)
     }
 
     override fun addInformation(
@@ -243,7 +242,7 @@ class BackpackItem(
         val stack = data.usedItemStack
         val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null)!!
         val slotIndex = if (data.inventoryType == InventoryType.PLAYER_INVENTORY) data.slotIndex else null
-        val containerSupplier: Supplier<ModularContainer> = Supplier {BackpackContainer(wrapper,slotIndex)}
+        val containerSupplier = { BackpackContainer(wrapper, slotIndex) }
         uiSettings.customContainer(containerSupplier)
         val holder: BackpackGuiHolder.ItemStackGuiHolder = BackpackGuiHolder.ItemStackGuiHolder(wrapper)
         return holder.buildUI(data, syncManager, uiSettings)

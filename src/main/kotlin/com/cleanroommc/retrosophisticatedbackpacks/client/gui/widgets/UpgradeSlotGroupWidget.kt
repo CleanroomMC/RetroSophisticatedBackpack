@@ -15,6 +15,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import net.minecraft.item.ItemStack
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.getThemeOrDefault
 
 class UpgradeSlotGroupWidget(panel: BackpackPanel, private val slotSize: Int) : SlotGroupWidget() {
     companion object {
@@ -52,14 +53,14 @@ class UpgradeSlotGroupWidget(panel: BackpackPanel, private val slotSize: Int) : 
         super.draw(context, widgetTheme)
         var y = 5
 
-        UPPER_TAB_TEXTURE.draw(context, 0, 0, 25, 5, widgetTheme?.theme ?: WidgetTheme.getDefault().theme)
+        UPPER_TAB_TEXTURE.draw(context, 0, 0, 25, 5, widgetTheme.getThemeOrDefault())
 
         for (i in 0 until slotSize) {
-            SLOT_SURROUNDING_TEXTURE.draw(context, 0, y, 25, 18, widgetTheme?.theme ?: WidgetTheme.getDefault().theme)
+            SLOT_SURROUNDING_TEXTURE.draw(context, 0, y, 25, 18, widgetTheme.getThemeOrDefault())
             y += 18
         }
 
-        LOWER_TAB_TEXTURE.draw(context, 0, y, 25, 5, widgetTheme?.theme ?: WidgetTheme.getDefault().theme)
+        LOWER_TAB_TEXTURE.draw(context, 0, y, 25, 5, widgetTheme.getThemeOrDefault())
     }
 
     class UpgradeToggleWidget(private val panel: BackpackPanel, private val slotIndex: Int) :
@@ -114,16 +115,16 @@ class UpgradeSlotGroupWidget(panel: BackpackPanel, private val slotSize: Int) : 
             super.drawOverlay(context, widgetTheme)
 
             if (isToggleEnabled) {
-                RSBTextures.TOGGLE_ENABLE_ICON.draw(context, 4, 4, 4, 10, widgetTheme?.theme ?: WidgetTheme.getDefault().theme)
+                RSBTextures.TOGGLE_ENABLE_ICON.draw(context, 4, 4, 4, 10, widgetTheme.getThemeOrDefault())
             } else {
-                RSBTextures.TOGGLE_DISABLE_ICON.draw(context, 4, 4, 4, 10, widgetTheme?.theme ?: WidgetTheme.getDefault().theme)
+                RSBTextures.TOGGLE_DISABLE_ICON.draw(context, 4, 4, 4, 10, widgetTheme.getThemeOrDefault())
             }
         }
 
         override fun drawBackground(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
             super.drawBackground(context, widgetTheme)
 
-            BACKGROUND_TAB_TEXTURE.draw(context, 0, 0, WIDTH, HEIGHT, widgetTheme?.theme ?: WidgetTheme.getDefault().theme)
+            BACKGROUND_TAB_TEXTURE.draw(context, 0, 0, WIDTH, HEIGHT, widgetTheme.getThemeOrDefault())
         }
     }
 }

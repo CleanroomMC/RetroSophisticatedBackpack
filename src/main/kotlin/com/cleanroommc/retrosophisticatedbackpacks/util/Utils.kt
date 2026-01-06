@@ -1,5 +1,7 @@
 package com.cleanroommc.retrosophisticatedbackpacks.util
 
+import com.cleanroommc.modularui.theme.WidgetTheme
+import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.widget.Widget
 import com.cleanroommc.retrosophisticatedbackpacks.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
@@ -38,4 +40,7 @@ object Utils {
         isEnabled = enable
         return `this`
     }
+
+    fun WidgetThemeEntry<out WidgetTheme>?.getThemeOrDefault(): WidgetTheme =
+        this?.theme ?: WidgetTheme.getDefault().theme
 }

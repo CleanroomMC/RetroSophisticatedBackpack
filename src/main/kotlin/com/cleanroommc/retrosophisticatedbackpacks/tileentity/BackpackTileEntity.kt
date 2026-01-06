@@ -85,7 +85,7 @@ class BackpackTileEntity(val wrapper: BackpackWrapper = BackpackWrapper()) :
         uiSettings: UISettings
     ): ModularPanel {
         val backpackInv = getCapability(Capabilities.BACKPACK_CAPABILITY, null)!!
-        val containerSupplier: Supplier<ModularContainer> = Supplier { BackpackContainer(backpackInv,null) }
+        val containerSupplier = { BackpackContainer(backpackInv, null) }
         uiSettings.customContainer(containerSupplier)
         val holder: BackpackGuiHolder.TileEntityGuiHolder = BackpackGuiHolder.TileEntityGuiHolder(backpackInv)
         return holder.buildUI(data, syncManager, uiSettings)

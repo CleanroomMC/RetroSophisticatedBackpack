@@ -7,7 +7,6 @@ import com.cleanroommc.modularui.drawable.UITexture
 import com.cleanroommc.modularui.drawable.text.TextRenderer
 import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
-import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.utils.Color
 import com.cleanroommc.modularui.widget.ParentWidget
@@ -24,6 +23,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.client.gui.drawable.Outline
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.CyclicVariantButtonWidget
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.getThemeOrDefault
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.setEnabledIfAndEnabled
 import net.minecraftforge.oredict.OreDictionary
 
@@ -403,7 +403,7 @@ class AdvancedFilterWidget(
             context?.let {
                 val overlay = getCurrentOverlay(context.theme, widgetTheme)
 
-                overlay?.drawAtZero(context, area.width + 2, area.height + 2, widgetTheme?.theme ?: WidgetTheme.getDefault().theme)
+                overlay?.drawAtZero(context, area.width + 2, area.height + 2, widgetTheme.getThemeOrDefault())
             }
 
         }

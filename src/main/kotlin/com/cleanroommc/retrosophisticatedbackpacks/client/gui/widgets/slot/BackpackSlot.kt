@@ -4,7 +4,6 @@ import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.api.widget.Interactable
 import com.cleanroommc.modularui.core.mixins.early.minecraft.GuiAccessor
 import com.cleanroommc.modularui.core.mixins.early.minecraft.GuiScreenAccessor
-import com.cleanroommc.modularui.drawable.text.TextRenderer
 import com.cleanroommc.modularui.screen.NEAAnimationHandler
 import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
@@ -33,13 +32,8 @@ import net.minecraftforge.fml.relauncher.SideOnly
 
 class BackpackSlot(private val panel: BackpackPanel, private val wrapper: BackpackWrapper) : ItemSlot() {
     companion object {
-        private val textRenderer = TextRenderer()
         val DECIMAL_TWO: NumberFormat.Params = NumberFormat.AMOUNT_TEXT.copyToBuilder()
             .maxLength(2)
-            .considerOnlyDecimalsForLength(true)
-            .build()
-        val DECIMAL_ONE: NumberFormat.Params = NumberFormat.AMOUNT_TEXT.copyToBuilder()
-            .maxLength(1)
             .considerOnlyDecimalsForLength(true)
             .build()
     }
@@ -64,7 +58,6 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
         if (!stack.isEmpty) {
             super.buildTooltip(stack, tooltip)
 
-            //NumberFormat.format(amount, NumberFormat.AMOUNT_TEXT);
             formattedCount = NumberFormat.format(stack.count.toDouble(), DECIMAL_TWO)
             formattedStackLimit = NumberFormat.format(slot.getItemStackLimit(stack).toDouble(), DECIMAL_TWO)
         } else {
@@ -165,7 +158,7 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
                 if (slot.stack.isEmpty && !memoryStack.isEmpty)
                     drawMemoryStack(memoryStack, context, widgetTheme)
 
-            }//drawNormalStack(context, widgetTheme)
+            }
         }
     }
 
@@ -185,16 +178,24 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
 
         RenderHelper.enableGUIStandardItemLighting()
         GlStateManager.disableLighting()
+
         val useMemory = slot.stack == null || slot.stack.isEmpty()
-        val chosenstack = if(useMemory) memoryStack else slot.stack
+        val chosenstack = if (useMemory) memoryStack else slot.stack
 
         val itemstack = NEAAnimationHandler.injectVirtualStack(chosenstack, guiContainer, slot)
 
         Platform.setupDrawItem()
-        if(!useMemory) NEAAnimationHandler.injectHoverScale(guiContainer, slot)
+
+        if (!useMemory) {
+            NEAAnimationHandler.injectHoverScale(guiContainer, slot)
+        }
+
         renderItem.renderItemIntoGUI(itemstack, 1, 1)
         Platform.endDrawItem()
-        if(!useMemory) NEAAnimationHandler.endHoverScale()
+
+        if (!useMemory) {
+            NEAAnimationHandler.endHoverScale()
+        }
 
         if (!memoryStack.isEmpty) {
             GlStateManager.depthFunc(516)
@@ -227,10 +228,9 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
         val itemstack = NEAAnimationHandler.injectVirtualStack(memoryStack, guiContainer, slot)
 
         Platform.setupDrawItem()
-        //val itemScale = NEAAnimationHandler.injectHoverScale(guiContainer, slotIn)
+
         renderItem.renderItemIntoGUI(itemstack, 1, 1)
         Platform.endDrawItem()
-        //NEAAnimationHandler.endHoverScale()
 
         if (!memoryStack.isEmpty) {
             GlStateManager.depthFunc(516)
@@ -239,8 +239,6 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
         }
         RenderHelper.enableStandardItemLighting()
         GlStateManager.disableLighting()
-        //GlStateManager.enableLighting()
-        //RenderHelper.disableStandardItemLighting()
 
         (guiScreen as GuiAccessor).zLevel = 0f
         renderItem.zLevel = 0f

@@ -6,10 +6,17 @@ import net.minecraftforge.items.IItemHandlerModifiable
 
 class DelegatedItemHandler(var delegated: () -> IItemHandler, var wrappedSlotAmount: Int) : IItemHandlerModifiable {
 
+    /**
+     * Temporary flag to bypass ModularSlot's slot count requirement during construction, which would normally raise an error.
+     * Only enabled while ModularSlot instances are being created.
+     * @see com.cleanroommc.retrosophisticatedbackpacks.client.gui.UpgradeSlotUpdateGroup
+     */
     var bypassSizeCheck = false
+
+
     override fun getSlots(): Int{
         val current = delegated().slots
-        if(bypassSizeCheck){
+        if(current != 0 && bypassSizeCheck){
             return wrappedSlotAmount
         }
         return current;

@@ -6,6 +6,7 @@ import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.widgets.ButtonWidget
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.getThemeOrDefault
 
 class TransferButtonWidget(private val matchedIcon: IDrawable, private val allIcon: IDrawable) :
     ButtonWidget<TransferButtonWidget>() {
@@ -13,9 +14,9 @@ class TransferButtonWidget(private val matchedIcon: IDrawable, private val allIc
         super.drawOverlay(context, widgetTheme)
 
         if (Interactable.hasShiftDown()) {
-            allIcon.drawAtZero(context, area, widgetTheme?.theme ?: WidgetTheme.getDefault().theme)
+            allIcon.drawAtZero(context, area, widgetTheme.getThemeOrDefault())
         } else {
-            matchedIcon.drawAtZero(context, area, widgetTheme?.theme ?: WidgetTheme.getDefault().theme)
+            matchedIcon.drawAtZero(context, area, widgetTheme.getThemeOrDefault())
         }
     }
 }

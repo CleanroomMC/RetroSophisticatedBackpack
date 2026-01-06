@@ -8,6 +8,7 @@ import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.getThemeOrDefault
 
 class CyclicVariantButtonWidget(
     private val variants: List<Variant>,
@@ -44,7 +45,9 @@ class CyclicVariantButtonWidget(
         super.drawOverlay(context, widgetTheme)
 
         val drawable = variants[index].drawable
-        context?.let{drawable.draw(context, iconOffset, iconOffset, iconSize, iconSize, widgetTheme?.theme ?: WidgetTheme.getDefault().theme)}
+        context?.let {
+            drawable.draw(context, iconOffset, iconOffset, iconSize, iconSize, widgetTheme.getThemeOrDefault())
+        }
     }
 
     data class Variant(val name: IKey, val drawable: IDrawable)

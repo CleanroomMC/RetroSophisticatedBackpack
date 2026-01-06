@@ -12,6 +12,7 @@ import com.cleanroommc.modularui.widget.Widget
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.getThemeOrDefault
 
 class SettingTabWidget : Widget<SettingTabWidget>(), Interactable {
     companion object {
@@ -53,6 +54,6 @@ class SettingTabWidget : Widget<SettingTabWidget>(), Interactable {
     override fun draw(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
         super.draw(context, widgetTheme)
 
-        RSBTextures.SETTING_ICON.draw(context, 8, 6, 16, 16, widgetTheme?.theme ?: WidgetTheme.getDefault().theme)
+        RSBTextures.SETTING_ICON.draw(context, 8, 6, 16, 16, widgetTheme.getThemeOrDefault())
     }
 }

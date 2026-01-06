@@ -28,6 +28,7 @@ open class BasicExpandedTabWidget<T>(
         super.onWrapperChange(after)
         filterWidget.filterableWrapper = after
     }
+
     init {
         val column = Column()
             .pos(8, 28)
