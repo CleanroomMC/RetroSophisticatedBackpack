@@ -27,6 +27,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.*
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.*
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.slot.BackpackSlot
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.upgrade.*
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackContainer
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiData
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularBackpackSlot
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularUpgradeSlot
@@ -158,6 +159,11 @@ class BackpackPanel(
             BackpackSettingPanel(this)
         }
     }
+
+    fun getBackpackContainer(): BackpackContainer {
+        return syncManager.container as BackpackContainer
+    }
+
 
     // Currently only main hand slot will be locked if it's the backpack being opened
     internal fun modifyPlayerSlot(
@@ -444,6 +450,7 @@ class BackpackPanel(
 
             when (wrapper) {
                 is CraftingUpgradeWrapper -> {
+                    upgradeSlotGroup.updateCraftingDelegate(wrapper)
                     if (updateAndCheckRecreation<CraftingUpgradeWidget, CraftingUpgradeWrapper>(
                             tabWidget.expandedWidget,
                             wrapper

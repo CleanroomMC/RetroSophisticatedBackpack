@@ -1,11 +1,16 @@
 package com.cleanroommc.retrosophisticatedbackpacks.client.gui
 
+import com.cleanroommc.modularui.value.sync.ItemSlotSH
+import com.cleanroommc.modularui.widgets.slot.ModularCraftingSlot
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.modularui.widgets.slot.SlotGroup
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.CraftingUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularFilterSlot
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.IndexedModularCraftingSlot
+import com.cleanroommc.retrosophisticatedbackpacks.sync.DelegatedCraftingStackHandlerSH
 import com.cleanroommc.retrosophisticatedbackpacks.sync.DelegatedStackHandlerSH
 import com.cleanroommc.retrosophisticatedbackpacks.sync.FilterSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.sync.FoodFilterSlotSH
@@ -26,6 +31,10 @@ class UpgradeSlotUpdateGroup(
     val feedingFilterSlots: Array<ModularSlot>
     val advancedFeedingFilterSlots: Array<ModularSlot>
 
+    // Crafting slots
+    var craftingStackHandler = DelegatedCraftingStackHandlerSH(panel::getBackpackContainer, wrapper, slotIndex, 10)
+    val craftingMatrixSlots: Array<ModularSlot>
+    val craftingOutputSlot: ModularCraftingSlot
     init {
         val syncManager = panel.syncManager
 
@@ -93,6 +102,39 @@ class UpgradeSlotUpdateGroup(
         }
 
         syncManager.registerSlotGroup(SlotGroup("adv_feeding_filters_$slotIndex", 4, false))
+
+        syncManager.syncValue("crafting_delegation_$slotIndex", craftingStackHandler)
+        craftingMatrixSlots = Array(9) {
+            val slot = ModularSlot(craftingStackHandler.delegatedStackHandler, it)
+            slot.slotGroup("crafting_matrix_$slotIndex")
+
+            syncManager.syncValue(
+                "crafting_matrix_$slotIndex",
+                it,
+                ItemSlotSH(slot)
+            )
+
+            slot
+        }
+        syncManager.registerSlotGroup(SlotGroup("crafting_matrix_$slotIndex", 3, true))
+
+
+
+        craftingOutputSlot = {
+            val slot = IndexedModularCraftingSlot(slotIndex, craftingStackHandler.delegatedStackHandler, 9)
+            slot.slotGroup("crafting_result_$slotIndex")
+
+            syncManager.syncValue(
+                "crafting_result_$slotIndex",
+                0,
+                ItemSlotSH(slot)
+            )
+
+            slot
+        }.invoke()
+        //craftingOutputSlot.setCraftMatrix(craftingStackHandler.inventoryCrafting)
+        syncManager.registerSlotGroup(SlotGroup("crafting_result_$slotIndex", 1, false))
+
     }
 
     fun updateFilterDelegate(wrapper: IBasicFilterable) {
@@ -103,5 +145,9 @@ class UpgradeSlotUpdateGroup(
     fun updateAdvancedFilterDelegate(wrapper: IAdvancedFilterable) {
         advancedCommonFilterStackHandler.setDelegatedStackHandler(wrapper::filterItems)
         advancedCommonFilterStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_FILTERABLE)
+    }
+    fun updateCraftingDelegate(wrapper: CraftingUpgradeWrapper){
+        craftingStackHandler.setDelegatedStackHandler(wrapper::craftMatrix)
+        craftingStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_CRAFTING)
     }
 }
