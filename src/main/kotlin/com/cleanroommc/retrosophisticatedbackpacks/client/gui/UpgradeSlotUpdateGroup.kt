@@ -8,6 +8,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.CraftingUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.CraftingSlotInfo
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularFilterSlot
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.IndexedModularCraftingSlot
 import com.cleanroommc.retrosophisticatedbackpacks.sync.DelegatedCraftingStackHandlerSH
@@ -35,6 +36,9 @@ class UpgradeSlotUpdateGroup(
     var craftingStackHandler = DelegatedCraftingStackHandlerSH(panel::getBackpackContainer, wrapper, slotIndex, 10)
     val craftingMatrixSlots: Array<ModularSlot>
     val craftingOutputSlot: ModularCraftingSlot
+
+    val craftingInfo: CraftingSlotInfo
+
     init {
         val syncManager = panel.syncManager
 
@@ -132,7 +136,8 @@ class UpgradeSlotUpdateGroup(
 
             slot
         }.invoke()
-        //craftingOutputSlot.setCraftMatrix(craftingStackHandler.inventoryCrafting)
+        craftingInfo = CraftingSlotInfo(craftingMatrixSlots, craftingOutputSlot)
+
         syncManager.registerSlotGroup(SlotGroup("crafting_result_$slotIndex", 1, false))
 
     }

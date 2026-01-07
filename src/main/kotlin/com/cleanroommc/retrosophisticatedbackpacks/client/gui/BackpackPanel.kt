@@ -29,8 +29,10 @@ import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.slot.Backp
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.upgrade.*
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackContainer
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiData
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.CraftingSlotInfo
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularBackpackSlot
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularUpgradeSlot
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularWrappedPlayerSlot
 import com.cleanroommc.retrosophisticatedbackpacks.config.ClientConfig
 import com.cleanroommc.retrosophisticatedbackpacks.item.UpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.sync.BackpackSH
@@ -179,9 +181,8 @@ class BackpackPanel(
         syncManager.itemSlot(
             "player",
             slotIndex,
-            object : ModularSlot(PlayerInvWrapper(player.inventory), slotIndex) {
-                override fun canTakeStack(playerIn: EntityPlayer): Boolean = false
-            }.slotGroup("player_inventory")
+            ModularWrappedPlayerSlot(PlayerInvWrapper(player.inventory), slotIndex)
+                .slotGroup("player_inventory")
         )
     }
 
@@ -580,5 +581,31 @@ class BackpackPanel(
 
         // Nasty hack to draw over upgrade tabs
         LAYERED_TAB_TEXTURE.draw(context, flex.area.width - 6, 0, 6, flex.area.height, WidgetTheme.getDefault().theme)
+    }
+
+    fun getOpenCraftingSlot(): Int? {
+
+        for (slotIndex in 0 until backpackWrapper.upgradeSlotsSize()) {
+            val slot = upgradeSlotWidgets[slotIndex]
+            val stack: ItemStack = slot.slot.stack
+            val item = stack.item
+
+            if (!(item is UpgradeItem && item.hasTab)) {
+                continue
+            }
+
+            val wrapper: UpgradeWrapper<*> = stack.getCapability(Capabilities.UPGRADE_CAPABILITY, null) ?: continue
+
+            if (wrapper is CraftingUpgradeWrapper) {
+                if (wrapper.isTabOpened) {
+                    return slotIndex
+                }
+            }
+        }
+        return null
+    }
+
+    fun getCraftingInfo(slotIndex: Int): CraftingSlotInfo {
+        return upgradeSlotGroups[slotIndex].craftingInfo
     }
 }

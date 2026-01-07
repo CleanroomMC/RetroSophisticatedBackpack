@@ -17,12 +17,12 @@ class CraftingUpgradeWidget(slotIndex: Int, wrap: CraftingUpgradeWrapper) :
         private const val SLOT_SIZE = 18
         private val CRAFTING_TYPE_VARIANTS = listOf(
             CyclicVariantButtonWidget.Variant(
-                IKey.lang("gui.sort_by_name".asTranslationKey()),
-                RSBTextures.SMALL_A_ICON
+                IKey.lang("gui.craft_into_backpack".asTranslationKey()),
+                RSBTextures.LEFT_ARROW_ICON
             ),
             CyclicVariantButtonWidget.Variant(
-                IKey.lang("gui.sort_by_mod_id".asTranslationKey()),
-                RSBTextures.SMALL_M_ICON
+                IKey.lang("gui.craft_into_player_inventory".asTranslationKey()),
+                RSBTextures.DOWN_ARROW_ICON
             )
         )
 
@@ -37,7 +37,7 @@ class CraftingUpgradeWidget(slotIndex: Int, wrap: CraftingUpgradeWrapper) :
         val craftingTypeButtonWidget = CyclicVariantButtonWidget(
             CRAFTING_TYPE_VARIANTS,
             wrapper.craftingDestination.ordinal,
-            iconSize = 12
+            iconSize = 16
         ) {
             val nextCraftDestination = CraftingUpgradeWrapper.CraftingDestination.entries[it]
 

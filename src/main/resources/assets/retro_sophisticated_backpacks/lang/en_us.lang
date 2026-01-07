@@ -132,6 +132,9 @@ retro_sophisticated_backpacks.gui.sort_by_mod_id=Sort By Mod ID
 retro_sophisticated_backpacks.gui.sort_by_count=Sort By Count
 retro_sophisticated_backpacks.gui.sort_by_ore_dict=Sort By Ore Dictionary
 
+retro_sophisticated_backpacks.gui.craft_into_backpack=Shift Click Result Into Backpack
+retro_sophisticated_backpacks.gui.craft_into_player_inventory=Shift Click Result Into Player's Inventory
+
 retro_sophisticated_backpacks.gui.transfer_to_player_inv=Transfer All Items to Player Inventory
 retro_sophisticated_backpacks.gui.transfer_to_player_inv_matched_1=Transfer Matched Items to Player Inventory
 retro_sophisticated_backpacks.gui.transfer_to_player_inv_matched_2=Shift To Transfer All

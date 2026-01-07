@@ -60,6 +60,9 @@ object RSBTextures {
     val DOT_DOWN_ARROW_ICON = icon("dot_down_arrow", 24, 156, 12, 12)
     val DOT_UP_ARROW_ICON = icon("dot_up_arrow", 36, 156, 12, 12)
 
+    val LEFT_ARROW_ICON = icon("left_arrow", 32, 48)
+    val DOWN_ARROW_ICON = icon("down_arrow", 48, 48)
+
     private fun icon(name: String, x: Int, y: Int, w: Int = 16, h: Int = 16): UITexture =
         UITexture.builder()
             .location(ICON_LOCATION)
