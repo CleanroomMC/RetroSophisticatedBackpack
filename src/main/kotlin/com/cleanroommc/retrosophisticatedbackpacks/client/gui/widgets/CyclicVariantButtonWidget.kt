@@ -9,7 +9,7 @@ import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.getThemeOrDefault
 
-class CyclicVariantButtonWidget(
+open class CyclicVariantButtonWidget(
     private val variants: List<Variant>,
     index: Int = 0,
     private var iconOffset: Int = 2,
