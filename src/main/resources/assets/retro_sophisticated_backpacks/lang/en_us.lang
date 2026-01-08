@@ -112,7 +112,7 @@ retro_sophisticated_backpacks.gui.add_ore_dict_entry=Add Ore Dict.
 retro_sophisticated_backpacks.gui.remove_ore_dict_entry=Remove Ore Dict.
 retro_sophisticated_backpacks.gui.ore_dict_input_help=You can input ore dictionary here,\nregex is supported.
 retro_sophisticated_backpacks.gui.ore_dict_input_help.pro_tip=Protip: You can hover item onto entry\n to check if the entry is applicable,\nor hover on textfield to see available entries.
-retro_sophisticated_backpacks.gui.ore_dict_list_entries=Available ore dict.:
+retro_sophisticated_backpacks.gui.ore_dict_list_entries=Available ore dict:
 retro_sophisticated_backpacks.gui.none=(None)
 
 retro_sophisticated_backpacks.gui.complete_hunger=Only feed when player is hungry enough\nto not waste any hunger points of the food at all

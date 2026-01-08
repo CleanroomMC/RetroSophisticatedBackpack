@@ -322,13 +322,8 @@ class AdvancedFilterWidget(
 
     private class OreDictEntryWidget(val parent: AdvancedFilterWidget, val text: String, width: Int) :
         TextWidget<OreDictEntryWidget>(IKey.str(" $text")), Interactable {
-        companion object {
-            private const val PAUSE_TIME = 60
-        }
-
         private val outline = Outline(Color.WHITE.main)
         private var line = TextRenderer.Line("", 0f)
-        private var hovering = false
         private var selected = false
 
         init {
@@ -360,29 +355,11 @@ class AdvancedFilterWidget(
 
         override fun onMouseStartHover() {
             super.onMouseStartHover()
-            hovering = true
             markTooltipDirty()
         }
 
         override fun onMouseEndHover() {
             super.onMouseEndHover()
-            hovering = false
-        }
-
-        override fun onUpdate() {
-            super.onUpdate()
-
-//            if (pauseTimer > 0) {
-//                if (++pauseTimer == PAUSE_TIME) {
-//                    pauseTimer = if (scroll == 0) 0 else 1
-//                    scroll = 0
-//                }
-//                return
-//            }
-//
-//            if (hovering && ++time % 2 == 0L && ++scroll == line.upperWidth() - area.width - 1) {
-//                pauseTimer = 1
-//            }
         }
 
         override fun onMousePressed(mouseButton: Int): Interactable.Result {
@@ -404,12 +381,11 @@ class AdvancedFilterWidget(
         }
 
         override fun drawOverlay(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
-            if (!selected && !hovering)
+            if (!selected && !isHovering)
                 return
             context?.let {
                 if (selected) outline.color = Color.WHITE.main
                 else outline.color = Color.GREY.main
-
 
                 outline.drawAtZero(context, area.width + 2, area.height + 2, widgetTheme.getThemeOrDefault())
             }

@@ -2,9 +2,11 @@ package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets
 
 import com.cleanroommc.modularui.api.value.ISyncOrValue
 import com.cleanroommc.modularui.api.widget.Interactable
+import com.cleanroommc.modularui.drawable.GuiDraw
 import com.cleanroommc.modularui.drawable.UITexture
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetThemeEntry
+import com.cleanroommc.modularui.utils.Color
 import com.cleanroommc.modularui.widget.Widget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
@@ -27,6 +29,7 @@ class UpgradeSlotGroupWidget(panel: BackpackPanel, private val slotSize: Int) : 
         private val LOWER_TAB_TEXTURE =
             UITexture.builder().location(Tags.MOD_ID, "gui/gui_controls.png").imageSize(256, 256)
                 .xy(0, 199, 25, 5).build()
+        private val SLOT_HOVERING_COLOR = Color.withAlpha(Color.WHITE.main, 0x50)
     }
 
     val toggleWidgets: List<UpgradeToggleWidget>
@@ -114,8 +117,14 @@ class UpgradeSlotGroupWidget(panel: BackpackPanel, private val slotSize: Int) : 
             super.drawOverlay(context, widgetTheme)
 
             if (isToggleEnabled) {
+                if (isHovering)
+                    GuiDraw.drawRect(4f, 4f, 4f, 10f, SLOT_HOVERING_COLOR)
+
                 RSBTextures.TOGGLE_ENABLE_ICON.draw(context, 4, 4, 4, 10, widgetTheme.getThemeOrDefault())
             } else {
+                if (isHovering)
+                    GuiDraw.drawRect(4f, 4f, 4f, 10f, SLOT_HOVERING_COLOR)
+
                 RSBTextures.TOGGLE_DISABLE_ICON.draw(context, 4, 4, 4, 10, widgetTheme.getThemeOrDefault())
             }
         }
