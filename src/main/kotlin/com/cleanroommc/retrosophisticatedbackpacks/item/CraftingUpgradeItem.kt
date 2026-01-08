@@ -21,6 +21,5 @@ class CraftingUpgradeItem(registryName: String) : UpgradeItem(registryName, true
 
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
         tooltip.add(TextComponentTranslation("tooltip.crafting_upgrade".asTranslationKey()).formattedText)
-        tooltip.add(TextComponentString("WIP Item, do not use!").setStyle(Style().setColor(TextFormatting.RED)).formattedText)
     }
 }
