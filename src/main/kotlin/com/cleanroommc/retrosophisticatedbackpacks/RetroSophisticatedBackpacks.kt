@@ -23,7 +23,7 @@ import org.apache.logging.log4j.LogManager
     modLanguageAdapter = "io.github.chaosunity.forgelin.KotlinAdapter",
     dependencies = "required-after:mixinbooter@[8.0,);" +
             "required-after:modularui@[3.0.6,);" +
-            "required-before:forgelin_continuous@[2.0.0.0,);" +
+            "required-after:forgelin_continuous@[2.0.0.0,);" +
             "after:fluidlogged_api@[1.7,);"
 )
 object RetroSophisticatedBackpacks {
