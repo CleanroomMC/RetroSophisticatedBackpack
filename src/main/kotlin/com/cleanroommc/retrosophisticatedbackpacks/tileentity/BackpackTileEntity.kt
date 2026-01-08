@@ -3,7 +3,6 @@ package com.cleanroommc.retrosophisticatedbackpacks.tileentity
 import com.cleanroommc.modularui.api.IGuiHolder
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.factory.TileEntityGuiFactory
-import com.cleanroommc.modularui.screen.ModularContainer
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.screen.UISettings
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
@@ -28,7 +27,6 @@ import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
-import java.util.function.Supplier
 
 class BackpackTileEntity(val wrapper: BackpackWrapper = BackpackWrapper()) :
     TileEntity(),

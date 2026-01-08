@@ -13,9 +13,9 @@ import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.modularui.widgets.ButtonWidget
-import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
+import com.cleanroommc.modularui.widgets.slot.ItemSlot
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.modularui.widgets.slot.SlotGroup
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
@@ -40,6 +40,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.ceilDiv
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
+import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.items.wrapper.PlayerInvWrapper
 import net.minecraftforge.items.wrapper.PlayerMainInvWrapper
 import kotlin.math.min
@@ -139,7 +140,7 @@ class BackpackPanel(
             val index = it
             upgradeSlot.changeListener { lastStack, _, isClient, init ->
                 if (isClient)
-                    updateUpgradeWidgets(index,lastStack)
+                    updateUpgradeWidgets(index, lastStack)
             }
 
             syncManager.syncValue("upgrades", it, syncHandler)
@@ -179,16 +180,37 @@ class BackpackPanel(
     }
 
     internal fun addSortingButtons() {
+        val rightAnchor = if (Loader.isModLoaded("bogosorter")) 30 else 7
+
+        val sortTypeButton = CyclicVariantButtonWidget(
+            SORT_TYPE_VARIANTS,
+            backpackWrapper.sortType.ordinal,
+            iconOffset = 0,
+            iconSize = 12
+        ) { mouseButton ->
+            val nextSortType = SortType.entries[mouseButton]
+
+            backpackSyncHandler.setSortType(nextSortType)
+            backpackSyncHandler.syncToServer(BackpackSH.UPDATE_SET_SORT_TYPE) {
+                it.writeEnumValue(nextSortType)
+            }
+        }
+            .setEnabledIf {
+                !settingPanel.isPanelOpen
+            }
+            .top(4)
+            .right(rightAnchor)
+            .size(12)
         val sortButton = ButtonWidget()
             .top(4)
-            .right(21)
+            .right(rightAnchor + 14)
             .size(12)
             .overlay(RSBTextures.SOLID_UP_ARROW_ICON)
             .setEnabledIf {
                 !settingPanel.isPanelOpen
             }
-            .onMousePressed {
-                if (it == 0) {
+            .onMousePressed { mouseButton ->
+                if (mouseButton == 0) {
                     Interactable.playButtonClickSound()
                     BackpackInventoryHelper.sortInventory(backpackWrapper)
                     backpackSyncHandler.syncToServer(BackpackSH.UPDATE_SORT_INV) {
@@ -203,74 +225,27 @@ class BackpackPanel(
                 it.addLine(IKey.lang("gui.sort_inventory".asTranslationKey()))
                     .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
             }
-        val sortTypeButton = CyclicVariantButtonWidget(
-            SORT_TYPE_VARIANTS,
-            backpackWrapper.sortType.ordinal,
-            iconOffset = 0,
-            iconSize = 12
-        ) {
-            val nextSortType = SortType.entries[it]
-
-            backpackSyncHandler.setSortType(nextSortType)
-            backpackSyncHandler.syncToServer(BackpackSH.UPDATE_SET_SORT_TYPE) {
-                it.writeEnumValue(nextSortType)
-            }
-        }
-            .setEnabledIf {
-                !settingPanel.isPanelOpen
-            }
-            .top(4)
-            .right(7)
-            .size(12)
 
         child(sortButton)
             .child(sortTypeButton)
     }
 
     internal fun addTransferButtons() {
-        val transferToPlayerButton =
-            TransferButtonWidget(RSBTextures.DOT_DOWN_ARROW_ICON, RSBTextures.SOLID_DOWN_ARROW_ICON)
-                .top(17 + colSize * 18)
-                .right(21)
-                .size(12)
-                .setEnabledIf {
-                    !settingPanel.isPanelOpen
-                }
-                .onMousePressed {
-                    if (it == 0) {
-                        val transferMatched = !Interactable.hasShiftDown()
+        val rightAnchor = if (Loader.isModLoaded("bogosorter")) {
+            if (backpackWrapper.backpackInventorySize() > 81) 57
+            else 30
+        } else 7
 
-                        Interactable.playButtonClickSound()
-                        backpackSyncHandler.transferToPlayerInventory(transferMatched)
-                        backpackSyncHandler.syncToServer(BackpackSH.UPDATE_TRANSFER_TO_PLAYER_INV) {
-                            it.writeBoolean(transferMatched)
-                        }
-                        true
-                    } else false
-                }
-                .tooltipAutoUpdate(true)
-                .tooltipDynamic {
-                    if (Interactable.hasShiftDown()) {
-                        it.addLine(IKey.lang("gui.transfer_to_player_inv".asTranslationKey()))
-                    } else {
-                        it.addLine(IKey.lang("gui.transfer_to_player_inv_matched_1".asTranslationKey()))
-                            .addLine(
-                                IKey.lang("gui.transfer_to_player_inv_matched_2".asTranslationKey()).style(IKey.GRAY)
-                            )
-                    }
-
-                    it.pos(RichTooltip.Pos.NEXT_TO_MOUSE)
-                }
         val transferToBackpackButton =
             TransferButtonWidget(RSBTextures.DOT_UP_ARROW_ICON, RSBTextures.SOLID_UP_ARROW_ICON)
                 .top(17 + colSize * 18)
-                .right(7)
+                .right(rightAnchor)
                 .size(12)
                 .setEnabledIf {
                     !settingPanel.isPanelOpen
                 }
-                .onMousePressed {
-                    if (it == 0) {
+                .onMousePressed { mouseButton ->
+                    if (mouseButton == 0) {
                         val transferMatched = !Interactable.hasShiftDown()
 
                         Interactable.playButtonClickSound()
@@ -289,6 +264,39 @@ class BackpackPanel(
                         it.addLine(IKey.lang("gui.transfer_to_backpack_inv_matched_1".asTranslationKey()))
                             .addLine(
                                 IKey.lang("gui.transfer_to_backpack_inv_matched_2".asTranslationKey()).style(IKey.GRAY)
+                            )
+                    }
+
+                    it.pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+                }
+        val transferToPlayerButton =
+            TransferButtonWidget(RSBTextures.DOT_DOWN_ARROW_ICON, RSBTextures.SOLID_DOWN_ARROW_ICON)
+                .top(17 + colSize * 18)
+                .right(rightAnchor + 14)
+                .size(12)
+                .setEnabledIf {
+                    !settingPanel.isPanelOpen
+                }
+                .onMousePressed { mouseButton ->
+                    if (mouseButton == 0) {
+                        val transferMatched = !Interactable.hasShiftDown()
+
+                        Interactable.playButtonClickSound()
+                        backpackSyncHandler.transferToPlayerInventory(transferMatched)
+                        backpackSyncHandler.syncToServer(BackpackSH.UPDATE_TRANSFER_TO_PLAYER_INV) {
+                            it.writeBoolean(transferMatched)
+                        }
+                        true
+                    } else false
+                }
+                .tooltipAutoUpdate(true)
+                .tooltipDynamic {
+                    if (Interactable.hasShiftDown()) {
+                        it.addLine(IKey.lang("gui.transfer_to_player_inv".asTranslationKey()))
+                    } else {
+                        it.addLine(IKey.lang("gui.transfer_to_player_inv_matched_1".asTranslationKey()))
+                            .addLine(
+                                IKey.lang("gui.transfer_to_player_inv_matched_2".asTranslationKey()).style(IKey.GRAY)
                             )
                     }
 
@@ -353,7 +361,10 @@ class BackpackPanel(
         child(TextWidget(StringKey(player.inventory.displayName.formattedText)).pos(8, 18 + colSize * 18))
     }
 
-    private inline fun <reified V: ExpandedUpgradeTabWidget<U>, reified U: UpgradeWrapper<*>> updateAndCheckRecreation(widget: ExpandedTabWidget?, wrapper: U): Boolean {
+    private inline fun <reified V : ExpandedUpgradeTabWidget<U>, reified U : UpgradeWrapper<*>> updateAndCheckRecreation(
+        widget: ExpandedTabWidget?,
+        wrapper: U
+    ): Boolean {
         if (widget is V) {
             widget.wrapper = wrapper
             return false
@@ -361,7 +372,10 @@ class BackpackPanel(
         return true
     }
 
-    private inline fun <reified V: ExpandedUpgradeTabWidget<*>> updateAndCheckRecreation(widget: ExpandedTabWidget?, wrapper: Any): Boolean {
+    private inline fun <reified V : ExpandedUpgradeTabWidget<*>> updateAndCheckRecreation(
+        widget: ExpandedTabWidget?,
+        wrapper: Any
+    ): Boolean {
         if (widget is V) {
             return !widget.consumePossibleWrapper(wrapper)
         }
@@ -369,7 +383,7 @@ class BackpackPanel(
     }
 
 
-    private fun updateUpgradeWidgets(index: Int?,lastStack: ItemStack?) {
+    private fun updateUpgradeWidgets(index: Int?, lastStack: ItemStack?) {
         var tabIndex = 0
         var openedTabIndex: Int? = null
 
@@ -430,31 +444,51 @@ class BackpackPanel(
 
             when (wrapper) {
                 is CraftingUpgradeWrapper -> {
-                    if (updateAndCheckRecreation<CraftingUpgradeWidget, CraftingUpgradeWrapper>(tabWidget.expandedWidget, wrapper))
+                    if (updateAndCheckRecreation<CraftingUpgradeWidget, CraftingUpgradeWrapper>(
+                            tabWidget.expandedWidget,
+                            wrapper
+                        )
+                    )
                         tabWidget.expandedWidget = CraftingUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is AdvancedFeedingUpgradeWrapper -> {
                     upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
-                    if (updateAndCheckRecreation<AdvancedFeedingUpgradeWidget, AdvancedFeedingUpgradeWrapper>(tabWidget.expandedWidget, wrapper))
+                    if (updateAndCheckRecreation<AdvancedFeedingUpgradeWidget, AdvancedFeedingUpgradeWrapper>(
+                            tabWidget.expandedWidget,
+                            wrapper
+                        )
+                    )
                         tabWidget.expandedWidget = AdvancedFeedingUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is FeedingUpgradeWrapper -> {
                     upgradeSlotGroup.updateFilterDelegate(wrapper)
-                    if (updateAndCheckRecreation<FeedingUpgradeWidget, FeedingUpgradeWrapper>(tabWidget.expandedWidget, wrapper))
+                    if (updateAndCheckRecreation<FeedingUpgradeWidget, FeedingUpgradeWrapper>(
+                            tabWidget.expandedWidget,
+                            wrapper
+                        )
+                    )
                         tabWidget.expandedWidget = FeedingUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is AdvancedFilterUpgradeWrapper -> {
                     upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
-                    if (updateAndCheckRecreation<AdvancedFilterUpgradeWidget, AdvancedFilterUpgradeWrapper>(tabWidget.expandedWidget, wrapper))
+                    if (updateAndCheckRecreation<AdvancedFilterUpgradeWidget, AdvancedFilterUpgradeWrapper>(
+                            tabWidget.expandedWidget,
+                            wrapper
+                        )
+                    )
                         tabWidget.expandedWidget = AdvancedFilterUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is FilterUpgradeWrapper -> {
                     upgradeSlotGroup.updateFilterDelegate(wrapper)
-                    if (updateAndCheckRecreation<FilterUpgradeWidget, FilterUpgradeWrapper>(tabWidget.expandedWidget, wrapper))
+                    if (updateAndCheckRecreation<FilterUpgradeWidget, FilterUpgradeWrapper>(
+                            tabWidget.expandedWidget,
+                            wrapper
+                        )
+                    )
                         tabWidget.expandedWidget = FilterUpgradeWidget(slotIndex, wrapper)
                 }
 

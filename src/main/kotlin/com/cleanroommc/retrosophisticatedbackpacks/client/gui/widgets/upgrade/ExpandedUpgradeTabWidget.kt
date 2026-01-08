@@ -6,7 +6,6 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.UpgradeWra
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.ExpandedTabWidget
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import net.minecraft.item.ItemStack
-import kotlin.reflect.full.isSubclassOf
 
 abstract class ExpandedUpgradeTabWidget<U>(
     slotIndex: Int,

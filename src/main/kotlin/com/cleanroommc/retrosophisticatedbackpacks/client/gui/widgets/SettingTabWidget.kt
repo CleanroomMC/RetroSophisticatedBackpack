@@ -6,7 +6,6 @@ import com.cleanroommc.modularui.drawable.GuiTextures
 import com.cleanroommc.modularui.drawable.TabTexture
 import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
-import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.widget.Widget
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel

@@ -45,7 +45,7 @@ class TabWidget(
     var tabIcon: IDrawable? = null
 
     init {
-        size(TAB_TEXTURE.width, TAB_TEXTURE.height).top({tabOrder * 30.0}, Unit.Measure.PIXEL)
+        size(TAB_TEXTURE.width, TAB_TEXTURE.height).top({ tabOrder * 30.0 }, Unit.Measure.PIXEL)
 
         when (expandDirection) {
             ExpandDirection.LEFT -> left(-TAB_TEXTURE.width + 4)

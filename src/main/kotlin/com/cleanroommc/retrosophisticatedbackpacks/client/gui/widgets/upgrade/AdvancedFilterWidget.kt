@@ -10,7 +10,10 @@ import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.utils.Color
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.*
+import com.cleanroommc.modularui.widgets.ButtonWidget
+import com.cleanroommc.modularui.widgets.ListWidget
+import com.cleanroommc.modularui.widgets.SlotGroupWidget
+import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot
@@ -208,11 +211,12 @@ class AdvancedFilterWidget(
         // Item-based configuration widgets
         val slotGroup = SlotGroupWidget().name("${syncKey}s")
         slotGroup.coverChildren().leftRel(0.5f)
-
+        slotGroup.disableSortButtons()
         filterSlots = mutableListOf<PhantomItemSlot>()
 
         for (i in 0 until 16) {
-            val slot = PhantomItemSlot().syncHandler("${syncKey}_$slotIndex", i).pos(i % 4 * 18, i / 4 * 18) as PhantomItemSlot
+            val slot =
+                PhantomItemSlot().syncHandler("${syncKey}_$slotIndex", i).pos(i % 4 * 18, i / 4 * 18) as PhantomItemSlot
 
             filterSlots.add(slot)
             slotGroup.child(slot)

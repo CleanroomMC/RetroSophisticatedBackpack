@@ -1,5 +1,6 @@
 package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.slot
 
+import com.cleanroommc.bogosorter.common.sort.GuiSortingContext
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.api.widget.Interactable
 import com.cleanroommc.modularui.core.mixins.early.minecraft.GuiAccessor
@@ -37,7 +38,6 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
             .considerOnlyDecimalsForLength(true)
             .build()
     }
-
 
     private val isInSettingMode: Boolean
         get() = panel.settingPanel.isPanelOpen
@@ -103,12 +103,14 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
             if (isMemorySet && mouseButton == 1) {
                 wrapper.unsetMemoryStack(slot.slotIndex)
                 syncHandler.syncToServer(BackpackSlotSH.UPDATE_UNSET_MEMORY_STACK)
+                GuiSortingContext.invalidateCurrent()
                 Interactable.Result.SUCCESS
             } else if (!isMemorySet && mouseButton == 0) {
                 wrapper.setMemoryStack(slot.slotIndex, panel.shouldMemorizeRespectNBT)
                 syncHandler.syncToServer(BackpackSlotSH.UPDATE_SET_MEMORY_STACK) {
                     it.writeBoolean(panel.shouldMemorizeRespectNBT)
                 }
+                GuiSortingContext.invalidateCurrent()
                 Interactable.Result.SUCCESS
             } else Interactable.Result.STOP
         } else if (isInSortSettingMode) {
@@ -117,10 +119,12 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
             if (isSlotLocked && mouseButton == 1) {
                 wrapper.setSlotLocked(slot.slotIndex, false)
                 syncHandler.syncToServer(BackpackSlotSH.UPDATE_UNSET_SLOT_LOCK)
+                GuiSortingContext.invalidateCurrent()
                 Interactable.Result.SUCCESS
             } else if (!isSlotLocked && mouseButton == 0) {
                 wrapper.setSlotLocked(slot.slotIndex, true)
                 syncHandler.syncToServer(BackpackSlotSH.UPDATE_SET_SLOT_LOCK)
+                GuiSortingContext.invalidateCurrent()
                 Interactable.Result.SUCCESS
             } else Interactable.Result.STOP
         } else if (isInSettingMode) {
@@ -157,7 +161,6 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
 
                 if (slot.stack.isEmpty && !memoryStack.isEmpty)
                     drawMemoryStack(memoryStack, context, widgetTheme)
-
             }
         }
     }
@@ -179,10 +182,9 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
         RenderHelper.enableGUIStandardItemLighting()
         GlStateManager.disableLighting()
 
-        val useMemory = slot.stack == null || slot.stack.isEmpty()
-        val chosenstack = if (useMemory) memoryStack else slot.stack
-
-        val itemstack = NEAAnimationHandler.injectVirtualStack(chosenstack, guiContainer, slot)
+        val useMemory = slot.stack.isEmpty
+        val chosenStack = if (useMemory) memoryStack else slot.stack
+        val itemStack = NEAAnimationHandler.injectVirtualStack(chosenStack, guiContainer, slot)
 
         Platform.setupDrawItem()
 
@@ -190,7 +192,7 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
             NEAAnimationHandler.injectHoverScale(guiContainer, slot)
         }
 
-        renderItem.renderItemIntoGUI(itemstack, 1, 1)
+        renderItem.renderItemIntoGUI(itemStack, 1, 1)
         Platform.endDrawItem()
 
         if (!useMemory) {
@@ -212,10 +214,9 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
 
     @SideOnly(Side.CLIENT)
     private fun drawMemoryStack(memoryStack: ItemStack, context: ModularGuiContext, widgetTheme: WidgetTheme) {
-        val memoryStack = wrapper.backpackItemStackHandler.memorizedSlotStack[slot.slotIndex]
         val guiScreen = screen.screenWrapper.guiScreen
         check(guiScreen is GuiContainer) { "The gui must be an instance of GuiContainer if it contains slots!" }
-        val guiContainer = guiScreen as GuiContainer
+        val guiContainer = guiScreen
         val renderItem = (guiScreen as GuiScreenAccessor).itemRender
 
         // makes sure items of different layers don't interfere with each other visually
@@ -251,5 +252,4 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
         Gui.drawRect(1, 1, 17, 17, Color.argb(139, 139, 139, 128))
         GlStateManager.depthFunc(515)
     }
-
 }

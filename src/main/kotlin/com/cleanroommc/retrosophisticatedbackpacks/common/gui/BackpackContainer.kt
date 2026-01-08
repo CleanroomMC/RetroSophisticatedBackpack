@@ -1,13 +1,18 @@
 package com.cleanroommc.retrosophisticatedbackpacks.common.gui
 
+import com.cleanroommc.bogosorter.api.ISlot
+import com.cleanroommc.bogosorter.api.ISortingContextBuilder
+import com.cleanroommc.modularui.ModularUI
 import com.cleanroommc.modularui.screen.ModularContainer
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularBackpackSlot
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularBackpackSlotWrapper
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.ClickType
 import net.minecraft.inventory.Container
 import net.minecraft.item.ItemStack
+import net.minecraftforge.fml.common.Optional
 import net.minecraftforge.items.ItemHandlerHelper
 import kotlin.math.min
 
@@ -165,5 +170,22 @@ class BackpackContainer(private val wrapper: BackpackWrapper, private val backpa
         }
 
         return super.transferItem(fromSlot, fromStack)
+    }
+
+    @Optional.Method(modid = ModularUI.BOGO_SORT)
+    override fun buildSortingContext(builder: ISortingContextBuilder) {
+        if (syncManager != null) {
+            val backpackWrapper = wrapper
+            val sortableSlots = backpackWrapper.getSortableSlotIndexes()
+            val slots = mutableListOf<ISlot>()
+
+            for (slot in inventorySlots) {
+                if (slot is ModularBackpackSlot && slot.slotIndex in sortableSlots) {
+                    slots.add(ModularBackpackSlotWrapper(slot))
+                }
+            }
+
+            builder.addSlotGroup(slots, if (backpackWrapper.backpackInventorySize() > 81) 12 else 9)
+        }
     }
 }

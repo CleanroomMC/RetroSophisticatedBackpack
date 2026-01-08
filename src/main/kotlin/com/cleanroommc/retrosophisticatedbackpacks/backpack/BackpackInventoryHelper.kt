@@ -139,7 +139,7 @@ object BackpackInventoryHelper {
 
                 if (transferMatched && wrapper.getStackInSlot(j).isEmpty)
                     continue
-                
+
                 stack = wrapper.insertItem(j, stack, false)
             }
 

@@ -4,7 +4,6 @@ import baubles.api.BaubleType
 import baubles.api.IBauble
 import com.cleanroommc.modularui.api.IGuiHolder
 import com.cleanroommc.modularui.api.widget.Interactable
-import com.cleanroommc.modularui.screen.ModularContainer
 import com.cleanroommc.modularui.screen.ModularPanel
 import com.cleanroommc.modularui.screen.UISettings
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
@@ -41,7 +40,6 @@ import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.ICapabilityProvider
 import net.minecraftforge.fml.common.Optional
-import java.util.function.Supplier
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles", striprefs = true)
 class BackpackItem(
@@ -238,13 +236,16 @@ class BackpackItem(
         }
     }
 
-    override fun buildUI(data: PlayerInventoryGuiData, syncManager: PanelSyncManager, uiSettings: UISettings): ModularPanel {
+    override fun buildUI(
+        data: PlayerInventoryGuiData,
+        syncManager: PanelSyncManager,
+        uiSettings: UISettings
+    ): ModularPanel {
         val stack = data.usedItemStack
         val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null)!!
         val slotIndex = if (data.inventoryType == InventoryType.PLAYER_INVENTORY) data.slotIndex else null
-        val containerSupplier = { BackpackContainer(wrapper, slotIndex) }
-        uiSettings.customContainer(containerSupplier)
-        val holder: BackpackGuiHolder.ItemStackGuiHolder = BackpackGuiHolder.ItemStackGuiHolder(wrapper)
+        uiSettings.customContainer { BackpackContainer(wrapper, slotIndex) }
+        val holder = BackpackGuiHolder.ItemStackGuiHolder(wrapper)
         return holder.buildUI(data, syncManager, uiSettings)
     }
 

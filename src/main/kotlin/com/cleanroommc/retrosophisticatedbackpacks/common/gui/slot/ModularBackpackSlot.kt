@@ -11,6 +11,9 @@ class ModularBackpackSlot(
     fun getMemoryStack(): ItemStack =
         wrapper.getMemorizedStack(slotIndex)
 
+    override fun getSlotStackLimit(): Int =
+        Int.MAX_VALUE
+
     override fun getItemStackLimit(stack: ItemStack): Int =
         stack.maxStackSize * wrapper.getTotalStackMultiplier()
 }

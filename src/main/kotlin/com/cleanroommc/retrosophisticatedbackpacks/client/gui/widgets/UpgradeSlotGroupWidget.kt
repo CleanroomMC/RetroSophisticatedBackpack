@@ -4,7 +4,6 @@ import com.cleanroommc.modularui.api.value.ISyncOrValue
 import com.cleanroommc.modularui.api.widget.Interactable
 import com.cleanroommc.modularui.drawable.UITexture
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
-import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.widget.Widget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
@@ -14,8 +13,8 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IToggleabl
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
-import net.minecraft.item.ItemStack
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.getThemeOrDefault
+import net.minecraft.item.ItemStack
 
 class UpgradeSlotGroupWidget(panel: BackpackPanel, private val slotSize: Int) : SlotGroupWidget() {
     companion object {

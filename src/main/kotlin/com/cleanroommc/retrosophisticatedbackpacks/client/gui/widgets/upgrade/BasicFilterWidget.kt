@@ -3,8 +3,8 @@ package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.upgrade
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.api.value.ISyncOrValue
 import com.cleanroommc.modularui.widget.ParentWidget
-import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
+import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.CyclicVariantButtonWidget
@@ -45,10 +45,12 @@ class BasicFilterWidget(
 
         val slotGroup = SlotGroupWidget().name("${syncKey}s")
         slotGroup.coverChildren().top(26)
+        slotGroup.disableSortButtons()
         filterSlots = mutableListOf<PhantomItemSlot>()
 
         for (i in 0 until 9) {
-            val slot = PhantomItemSlot().syncHandler("${syncKey}_$slotIndex", i).pos(i % 3 * 18, i / 3 * 18) as PhantomItemSlot
+            val slot =
+                PhantomItemSlot().syncHandler("${syncKey}_$slotIndex", i).pos(i % 3 * 18, i / 3 * 18) as PhantomItemSlot
 
             filterSlots.add(slot)
             slotGroup.child(slot)
