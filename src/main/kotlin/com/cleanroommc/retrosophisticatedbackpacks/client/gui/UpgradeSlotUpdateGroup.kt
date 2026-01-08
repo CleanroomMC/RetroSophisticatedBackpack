@@ -9,8 +9,8 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.CraftingUp
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.CraftingSlotInfo
-import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularFilterSlot
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.IndexedModularCraftingSlot
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularFilterSlot
 import com.cleanroommc.retrosophisticatedbackpacks.sync.DelegatedCraftingStackHandlerSH
 import com.cleanroommc.retrosophisticatedbackpacks.sync.DelegatedStackHandlerSH
 import com.cleanroommc.retrosophisticatedbackpacks.sync.FilterSlotSH
@@ -120,7 +120,7 @@ class UpgradeSlotUpdateGroup(
 
             slot
         }
-        syncManager.registerSlotGroup(SlotGroup("crafting_matrix_$slotIndex", 3, true))
+        syncManager.registerSlotGroup(SlotGroup("crafting_matrix_$slotIndex", 3, false))
 
 
 
@@ -151,8 +151,10 @@ class UpgradeSlotUpdateGroup(
         advancedCommonFilterStackHandler.setDelegatedStackHandler(wrapper::filterItems)
         advancedCommonFilterStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_FILTERABLE)
     }
-    fun updateCraftingDelegate(wrapper: CraftingUpgradeWrapper){
+
+    fun updateCraftingDelegate(wrapper: CraftingUpgradeWrapper) {
         craftingStackHandler.setDelegatedStackHandler(wrapper::craftMatrix)
-        craftingStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_CRAFTING)
+        craftingStackHandler.syncToServer(DelegatedCraftingStackHandlerSH.UPDATE_CRAFTING)
     }
+
 }

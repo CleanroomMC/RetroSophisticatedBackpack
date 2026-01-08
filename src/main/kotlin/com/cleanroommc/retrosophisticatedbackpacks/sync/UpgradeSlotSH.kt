@@ -22,7 +22,7 @@ class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
         const val UPDATE_ADVANCED_FILTERABLE = 9
         const val UPDATE_ADVANCED_FEEDING = 10
         const val UPDATE_FILTER_WAY = 11
-        const val UPDATE_CRAFTING_SHIFT = 12
+        const val UPDATE_CRAFTING_DESTINATION = 12
     }
 
     override fun readOnServer(id: Int, buf: PacketBuffer) {
@@ -35,7 +35,7 @@ class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
             UPDATE_ADVANCED_FILTERABLE -> updateAdvancedFilterable(buf)
             UPDATE_ADVANCED_FEEDING -> updateAdvanceFeedingUpgrade(buf)
             UPDATE_FILTER_WAY -> updateFilterUpgrade(buf)
-            UPDATE_CRAFTING_SHIFT -> updateCraftingUpgradeShift(buf)
+            UPDATE_CRAFTING_DESTINATION -> updateCraftingDestination(buf)
         }
     }
 
@@ -87,7 +87,7 @@ class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
         wrapper.filterWay = buf.readEnumValue(IFilterUpgrade.FilterWayType::class.java)
     }
 
-    private fun updateCraftingUpgradeShift(buf: PacketBuffer) {
+    private fun updateCraftingDestination(buf: PacketBuffer) {
         val wrapper = slot.stack.getCapability(Capabilities.CRAFTING_ITEM_HANDLER_CAPABILITY, null) ?: return
 
         wrapper.craftingDestination = buf.readEnumValue(CraftingDestination::class.java)

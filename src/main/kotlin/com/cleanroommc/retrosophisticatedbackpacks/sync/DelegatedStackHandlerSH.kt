@@ -1,15 +1,11 @@
 package com.cleanroommc.retrosophisticatedbackpacks.sync
 
-import com.cleanroommc.modularui.screen.ModularContainer
 import com.cleanroommc.modularui.value.sync.SyncHandler
-import com.cleanroommc.modularui.widgets.slot.InventoryCraftingWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
-import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackContainer
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.DelegatedItemHandler
 import net.minecraft.network.PacketBuffer
 import net.minecraftforge.items.IItemHandler
-import net.minecraftforge.items.IItemHandlerModifiable
 import net.minecraftforge.items.wrapper.EmptyHandler
 
 /**
@@ -24,24 +20,12 @@ open class DelegatedStackHandlerSH(
 ) : SyncHandler() {
     companion object {
         const val UPDATE_FILTERABLE = 0
-        const val UPDATE_CRAFTING = 1
     }
 
     var delegatedStackHandler: DelegatedItemHandler = DelegatedItemHandler(EmptyHandler::INSTANCE, wrappedSlotAmount)
 
     open fun setDelegatedStackHandler(delegated: () -> IItemHandler) {
         delegatedStackHandler.delegated = delegated
-    }
-
-    protected fun getBackpackContainer(): BackpackContainer {
-        check(isValid) {
-            "Sync handler $this isn't ready to provide a container yet!"
-        }
-        val cont: ModularContainer = getSyncManager().container
-        check(cont is BackpackContainer) {
-            "Container $cont tied to Backpack is not a BackpackContainer!"
-        }
-        return cont
     }
 
     override fun readOnClient(id: Int, buf: PacketBuffer) {

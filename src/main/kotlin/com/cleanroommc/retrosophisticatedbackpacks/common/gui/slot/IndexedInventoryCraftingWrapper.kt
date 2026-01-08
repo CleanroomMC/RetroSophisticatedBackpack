@@ -5,6 +5,13 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.CraftingUp
 import net.minecraft.inventory.Container
 import net.minecraftforge.items.IItemHandlerModifiable
 
-class IndexedInventoryCraftingWrapper(val upgradeSlotIndex: Int, cont: Container, width: Int, height: Int, delegate: IItemHandlerModifiable, startIndex: Int): InventoryCraftingWrapper(cont, width, height, delegate, startIndex) {
-    var shiftType: CraftingDestination = CraftingDestination.INVENTORY
+class IndexedInventoryCraftingWrapper(
+    val upgradeSlotIndex: Int,
+    cont: Container,
+    width: Int,
+    height: Int,
+    delegate: IItemHandlerModifiable,
+    startIndex: Int
+) : InventoryCraftingWrapper(cont, width, height, delegate, startIndex) {
+    var craftingDestination: CraftingDestination = CraftingDestination.INVENTORY
 }

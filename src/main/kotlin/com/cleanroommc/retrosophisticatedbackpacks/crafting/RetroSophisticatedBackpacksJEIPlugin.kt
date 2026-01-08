@@ -9,7 +9,7 @@ import mezz.jei.api.JEIPlugin
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry
 
 @JEIPlugin
-class RetroSophisticatedBackpacksJEIPlugin: IModPlugin {
+class RetroSophisticatedBackpacksJEIPlugin : IModPlugin {
     companion object {
         lateinit var helpers: IJeiHelpers
     }

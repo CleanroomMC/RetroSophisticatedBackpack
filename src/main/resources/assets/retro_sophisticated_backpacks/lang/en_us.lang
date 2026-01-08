@@ -88,6 +88,8 @@ retro_sophisticated_backpacks.gui.advanced_restock_settings=Adv. Restock Setting
 retro_sophisticated_backpacks.gui.filter_settings=Filter Settings
 retro_sophisticated_backpacks.gui.advanced_filter_settings=Adv. Filter Settings
 
+retro_sophisticated_backpacks.gui.crafting_upgrade=Crafting
+
 retro_sophisticated_backpacks.gui.memory_settings=Memory Settings
 retro_sophisticated_backpacks.gui.sorting_settings=Sorting Settings
 

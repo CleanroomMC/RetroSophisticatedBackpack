@@ -16,7 +16,6 @@ import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.TextWidget
 import com.cleanroommc.modularui.widgets.slot.ItemSlot
-import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.modularui.widgets.slot.SlotGroup
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackInventoryHelper
@@ -30,9 +29,9 @@ import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.upgrade.*
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackContainer
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiData
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.CraftingSlotInfo
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.LockedPlayerSlot
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularBackpackSlot
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularUpgradeSlot
-import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularWrappedPlayerSlot
 import com.cleanroommc.retrosophisticatedbackpacks.config.ClientConfig
 import com.cleanroommc.retrosophisticatedbackpacks.item.UpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.sync.BackpackSH
@@ -166,7 +165,6 @@ class BackpackPanel(
         return syncManager.container as BackpackContainer
     }
 
-
     // Currently only main hand slot will be locked if it's the backpack being opened
     internal fun modifyPlayerSlot(
         syncManager: PanelSyncManager,
@@ -181,7 +179,7 @@ class BackpackPanel(
         syncManager.itemSlot(
             "player",
             slotIndex,
-            ModularWrappedPlayerSlot(PlayerInvWrapper(player.inventory), slotIndex)
+            LockedPlayerSlot(PlayerInvWrapper(player.inventory), slotIndex)
                 .slotGroup("player_inventory")
         )
     }
@@ -583,7 +581,7 @@ class BackpackPanel(
         LAYERED_TAB_TEXTURE.draw(context, flex.area.width - 6, 0, 6, flex.area.height, WidgetTheme.getDefault().theme)
     }
 
-    fun getOpenCraftingSlot(): Int? {
+    fun getOpenCraftingUpgradeSlot(): Int? {
 
         for (slotIndex in 0 until backpackWrapper.upgradeSlotsSize()) {
             val slot = upgradeSlotWidgets[slotIndex]
@@ -596,10 +594,8 @@ class BackpackPanel(
 
             val wrapper: UpgradeWrapper<*> = stack.getCapability(Capabilities.UPGRADE_CAPABILITY, null) ?: continue
 
-            if (wrapper is CraftingUpgradeWrapper) {
-                if (wrapper.isTabOpened) {
-                    return slotIndex
-                }
+            if (wrapper is CraftingUpgradeWrapper && wrapper.isTabOpened) {
+                return slotIndex
             }
         }
         return null

@@ -9,9 +9,21 @@ import net.minecraft.network.PacketBuffer
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.wrapper.EmptyHandler
 
-class DelegatedCraftingStackHandlerSH(private val containerProvider: () -> BackpackContainer, private val wrapper: BackpackWrapper, private val slotIndex: Int, wrappedSlotAmount: Int): DelegatedStackHandlerSH(wrapper, slotIndex, wrappedSlotAmount) {
+class DelegatedCraftingStackHandlerSH(
+    private val containerProvider: () -> BackpackContainer,
+    private val wrapper: BackpackWrapper,
+    private val slotIndex: Int,
+    wrappedSlotAmount: Int
+) : DelegatedStackHandlerSH(wrapper, slotIndex, wrappedSlotAmount) {
+    companion object {
+        const val UPDATE_CRAFTING = 1
+    }
 
-
+    /**
+     * Wrapper around this sync handler's delegated inventory, necessary for crafting interactions.
+     * Delayed initialization due to the need for a Container.
+     */
+    private var inventoryCrafting: IndexedInventoryCraftingWrapper? = null
 
     override fun setDelegatedStackHandler(delegated: () -> IItemHandler) {
         super.setDelegatedStackHandler(delegated)
@@ -20,7 +32,8 @@ class DelegatedCraftingStackHandlerSH(private val containerProvider: () -> Backp
 
     fun updateInventoryCrafting() {
         if (null == inventoryCrafting) {
-            inventoryCrafting = IndexedInventoryCraftingWrapper(slotIndex, containerProvider(), 3, 3, delegatedStackHandler, 0)
+            inventoryCrafting =
+                IndexedInventoryCraftingWrapper(slotIndex, containerProvider(), 3, 3, delegatedStackHandler, 0)
             // We need to link InventoryCraftingWrapper and ModularCraftingSlot instances.
             // The container has methods custom built to do this, regardless of insertion order!
             containerProvider().registerInventoryCrafting(slotIndex, inventoryCrafting!!)
@@ -29,7 +42,7 @@ class DelegatedCraftingStackHandlerSH(private val containerProvider: () -> Backp
         val stack = wrapper.upgradeItemStackHandler.getStackInSlot(slotIndex)
         val wrapper: CraftingUpgradeWrapper? = stack.getCapability(Capabilities.CRAFTING_ITEM_HANDLER_CAPABILITY, null)
         wrapper?.let {
-            inventoryCrafting!!.shiftType = wrapper.craftingDestination
+            inventoryCrafting!!.craftingDestination = wrapper.craftingDestination
         }
 
         // Notify the container to get the recipe's output
@@ -42,14 +55,6 @@ class DelegatedCraftingStackHandlerSH(private val containerProvider: () -> Backp
         }
     }
 
-    /**
-     * Wrapper around this sync handler's delegated inventory, necessary for crafting interactions.
-     * Delayed initialization due to the need for a Container.
-     */
-    private var inventoryCrafting: IndexedInventoryCraftingWrapper? = null
-
-
-
     override fun readOnClient(id: Int, buf: PacketBuffer) {
         val stack = wrapper.upgradeItemStackHandler.getStackInSlot(slotIndex)
         when (id) {
@@ -60,6 +65,7 @@ class DelegatedCraftingStackHandlerSH(private val containerProvider: () -> Backp
         }
 
     }
+
     override fun readOnServer(id: Int, buf: PacketBuffer) {
         val stack = wrapper.upgradeItemStackHandler.getStackInSlot(slotIndex)
 
@@ -69,6 +75,7 @@ class DelegatedCraftingStackHandlerSH(private val containerProvider: () -> Backp
 
                 setDelegatedStackHandler(wrapper::filterItems)
             }
+
             UPDATE_CRAFTING -> {
                 val wrapper = stack.getCapability(Capabilities.CRAFTING_ITEM_HANDLER_CAPABILITY, null) ?: return
 
