@@ -236,9 +236,29 @@ class AdvancedFilterWidget(
             .leftRel(0.5f)
             .bottom(3)
             .tooltipDynamic {
-                it.addLine(IKey.lang("gui.ore_dict_input_help".asTranslationKey()))
-                    .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+                val stack = panel.context.mc.player.inventory.itemStack
+
+                if (!stack.isEmpty) {
+                    val oreDicts = OreDictionary.getOreIDs(stack)
+                        .map(OreDictionary::getOreName)
+
+                    it.addLine(IKey.lang("gui.ore_dict_list_entries".asTranslationKey()))
+                    // FIXME: Is there a better way to add a separator instead of relying on stretched texture?
+                    it.addLine(RSBTextures.REMOVE_ICON)
+
+                    if (oreDicts.isNotEmpty()) {
+                        for (oreDictName in oreDicts)
+                            it.addLine(IKey.str(oreDictName).style(IKey.GRAY))
+                    } else {
+                        it.addLine(IKey.lang("gui.none".asTranslationKey()).style(IKey.GRAY))
+                    }
+                } else
+                    it.addLine(IKey.lang("gui.ore_dict_input_help".asTranslationKey()))
+                        .addLine(RSBTextures.REMOVE_ICON)
+                        .addLine(IKey.lang("gui.ore_dict_input_help.pro_tip".asTranslationKey()))
+                        .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
             }
+            .tooltipAutoUpdate(true)
 
         oreDictList = OreDictRegexListWidget()
             .size(82, 65)
@@ -306,20 +326,17 @@ class AdvancedFilterWidget(
             private const val PAUSE_TIME = 60
         }
 
+        private val outline = Outline(Color.WHITE.main)
         private var line = TextRenderer.Line("", 0f)
-        private var time: Long = 0
-        private var scroll = 0
         private var hovering = false
-        private var pauseTimer = 0
         private var selected = false
 
         init {
             size(width, 12)
-                .overlay(Outline(Color.WHITE.main))
                 .color(Color.GREY.main)
                 .shadow(true)
 
-            tooltipBuilder {
+            tooltipDynamic {
                 it.pos(RichTooltip.Pos.NEXT_TO_MOUSE)
 
                 if (line.width > area.width)
@@ -331,44 +348,41 @@ class AdvancedFilterWidget(
                     val testMatched = OreDictionary
                         .getOreIDs(stack)
                         .map(OreDictionary::getOreName)
-                        .any { Regex(text).matches(it) }
+                        .any { oreDictName -> Regex(text).matches(oreDictName) }
 
                     if (testMatched)
-                        it.addLine(RSBTextures.CHECK_ICON)
+                        it.addLine(RSBTextures.CHECK_ICON.asIcon().width(9))
+                    else
+                        it.addLine(RSBTextures.CROSS_ICON.asIcon().width(9))
                 }
             }
         }
 
         override fun onMouseStartHover() {
+            super.onMouseStartHover()
             hovering = true
-
             markTooltipDirty()
-            if (!selected)
-                overlay(Outline(Color.GREY.main))
         }
 
         override fun onMouseEndHover() {
+            super.onMouseEndHover()
             hovering = false
-            scroll = 0
-            time = 0
-            markTooltipDirty()
-            overlay(Outline(Color.WHITE.main))
         }
 
         override fun onUpdate() {
             super.onUpdate()
 
-            if (pauseTimer > 0) {
-                if (++pauseTimer == PAUSE_TIME) {
-                    pauseTimer = if (scroll == 0) 0 else 1
-                    scroll = 0
-                }
-                return
-            }
-
-            if (hovering && ++time % 2 == 0L && ++scroll == line.upperWidth() - area.width - 1) {
-                pauseTimer = 1
-            }
+//            if (pauseTimer > 0) {
+//                if (++pauseTimer == PAUSE_TIME) {
+//                    pauseTimer = if (scroll == 0) 0 else 1
+//                    scroll = 0
+//                }
+//                return
+//            }
+//
+//            if (hovering && ++time % 2 == 0L && ++scroll == line.upperWidth() - area.width - 1) {
+//                pauseTimer = 1
+//            }
         }
 
         override fun onMousePressed(mouseButton: Int): Interactable.Result {
@@ -389,37 +403,15 @@ class AdvancedFilterWidget(
             return Interactable.Result.SUCCESS
         }
 
-        override fun draw(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
-            checkStringClose()
-            val renderer = TextRenderer.SHARED
-            color?.let { renderer.color = it.asInt }
-            renderer.setAlignment(alignment, (area.w() + 1).toFloat(), area.h().toFloat())
-            isShadow?.let { renderer.setShadow(it) }
-            renderer.setPos(area.padding.left, area.padding.top + 2)
-            renderer.setScale(scale)
-            renderer.setSimulate(false)
-            renderer.drawCut(line)
-        }
-
         override fun drawOverlay(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
             if (!selected && !hovering)
                 return
             context?.let {
-                val overlay = getCurrentOverlay(context.theme, widgetTheme)
+                if (selected) outline.color = Color.WHITE.main
+                else outline.color = Color.GREY.main
 
-                overlay?.drawAtZero(context, area.width + 2, area.height + 2, widgetTheme.getThemeOrDefault())
-            }
 
-        }
-
-        private fun checkStringClose() {
-            val s = key.get()
-
-            if (s != line.text) {
-                TextRenderer.SHARED.setScale(scale)
-                line = TextRenderer.SHARED.line(s)
-                scroll = 0
-                markTooltipDirty()
+                outline.drawAtZero(context, area.width + 2, area.height + 2, widgetTheme.getThemeOrDefault())
             }
         }
     }
