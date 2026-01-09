@@ -88,6 +88,8 @@ retro_sophisticated_backpacks.gui.advanced_restock_settings=進階取貨設定
 retro_sophisticated_backpacks.gui.filter_settings=過濾設定
 retro_sophisticated_backpacks.gui.advanced_filter_settings=進階過濾設定
 
+retro_sophisticated_backpacks.gui.crafting_upgrade=合成
+
 retro_sophisticated_backpacks.gui.memory_settings=記憶設定
 retro_sophisticated_backpacks.gui.sorting_settings=整理設定
 
@@ -101,6 +103,9 @@ retro_sophisticated_backpacks.gui.blacklist=黑名單
 retro_sophisticated_backpacks.gui.match_item=根據物品屬性
 retro_sophisticated_backpacks.gui.match_mod_id=根據模組 ID
 retro_sophisticated_backpacks.gui.match_ore_dict=根據礦物詞典
+
+retro_sophisticated_backpacks.gui.craft_into_backpack=Shift 點擊合成結果轉移至背包
+retro_sophisticated_backpacks.gui.craft_into_player_inventory=Shift 點擊合成結果轉移至玩家物品欄
 
 retro_sophisticated_backpacks.gui.match_durability=考慮耐久
 retro_sophisticated_backpacks.gui.ignore_durability=無視耐久
