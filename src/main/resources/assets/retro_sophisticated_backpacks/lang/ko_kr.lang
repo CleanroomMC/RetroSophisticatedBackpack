@@ -1,8 +1,11 @@
+# Blocks
 tile.retro_sophisticated_backpacks.backpack_leather.name=가죽 가방
 tile.retro_sophisticated_backpacks.backpack_iron.name=철 가방
 tile.retro_sophisticated_backpacks.backpack_gold.name=금 가방
 tile.retro_sophisticated_backpacks.backpack_diamond.name=다이아몬드 가방
 tile.retro_sophisticated_backpacks.backpack_obsidian.name=흑요석 가방
+
+# Items
 item.retro_sophisticated_backpacks.upgrade_base.name=업그레이드 기반
 item.retro_sophisticated_backpacks.stack_upgrade_starter_tier.name=묶음 업그레이드 기본 단계
 item.retro_sophisticated_backpacks.stack_upgrade_tier_1.name=묶음 업그레이드 1단계
@@ -22,79 +25,132 @@ item.retro_sophisticated_backpacks.restock_upgrade.name=재보급 업그레이�
 item.retro_sophisticated_backpacks.advanced_restock_upgrade.name=고급 재보급 업그레이드
 item.retro_sophisticated_backpacks.filter_upgrade.name=필터 업그레이드
 item.retro_sophisticated_backpacks.advanced_filter_upgrade.name=고급 필터 업그레이드
+
+# Creative Tabs
 itemGroup.retro_sophisticated_backpacks.creative_tab=레트로 복잡한 배낭
+
+# Keybinds
 retro_sophisticated_backpacks.key.open_backpack.desc=인벤토리에서 가방 열기
 retro_sophisticated_backpacks.key.category=레트로 복잡한 배낭
+
+# Tooltips
 retro_sophisticated_backpacks.tooltip.backpack.inventory_size=인벤토리 크기: %d
 retro_sophisticated_backpacks.tooltip.backpack.upgrade_slots_size=업그레이드 슬롯: %d
 retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> 묶음 배율: %d %s
-retro_sophisticated_backpacks.tooltip.upgrade_base=아무 기능도 없습니다! 업그레이드 슬롯에 자유롭게 넣으세요!
-retro_sophisticated_backpacks.tooltip.stack_upgrade=아이템 묶음 크기를 %d배로 늘립니다
+
+retro_sophisticated_backpacks.tooltip.upgrade_base=아무 기능도 없습니다! 업그레이드 슬롯에 마음껏 넣으세요!
+
+retro_sophisticated_backpacks.tooltip.stack_upgrade=아이템 스택 크기를 %d배로 늘립니다
+
 retro_sophisticated_backpacks.tooltip.exponential_stack_upgrade=묶음 배율이 더하기가 아닌 곱하기로 중첩됩니다
+
 retro_sophisticated_backpacks.tooltip.crafting_upgrade=가방 측면에 추가 조합 그리드를 추가합니다
+
 retro_sophisticated_backpacks.tooltip.inception_upgrade=가방 안에 가방을 보관할 수 있게 합니다
+
 retro_sophisticated_backpacks.tooltip.pickup_upgrade=가방이 아이템을 주울 수 있게 합니다
+
 retro_sophisticated_backpacks.tooltip.advanced_pickup_upgrade=가방이 더 많은 설정으로 아이템을 주울 수 있게 합니다
+
 retro_sophisticated_backpacks.tooltip.feeding_upgrade=가방이 플레이어에게 자동으로 음식을 공급합니다
-retro_sophisticated_backpacks.tooltip.advanced_feeding_upgrade=가방이 더 많은 설정으로 플레이어에게 자동으로 음식을 공급합니다
+
+retro_sophisticated_backpacks.tooltip.advanced_feeding_upgrade=가방이 더 자세한 설정에 맞춰 플레이어에게 자동으로 음식을 공급합니다
+
 retro_sophisticated_backpacks.tooltip.deposit_upgrade=웅크린 채 우클릭한 인벤토리로 가방의 아이템을 보관합니다
+
 retro_sophisticated_backpacks.tooltip.advanced_deposit_upgrade=더 많은 설정으로, 웅크린 채 우클릭한 인벤토리로 가방의 아이템을 보관합니다
+
 retro_sophisticated_backpacks.tooltip.restock_upgrade=웅크린 채 우클릭한 인벤토리에서 가방으로 아이템을 재보급합니다
+
 retro_sophisticated_backpacks.tooltip.advanced_restock_upgrade=더 많은 설정으로, 웅크린 채 우클릭한 인벤토리에서 가방으로 아이템을 재보급합니다
+
 retro_sophisticated_backpacks.tooltip.filter_upgrade=월드에 설치 시 넣는 아이템을 필터링합니다
+
 retro_sophisticated_backpacks.tooltip.advanced_filter_upgrade=더 많은 설정으로, 월드에 설치 시 넣는 아이템을 필터링합니다
+
 retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Shift 키를 눌러 확인>
+
+# Gui Elements
 retro_sophisticated_backpacks.container.backpack=가방
+
 retro_sophisticated_backpacks.gui.pickup_settings=아이템 줍기 설정
 retro_sophisticated_backpacks.gui.advanced_pickup_settings=고급 아이템 줍기 설정
+
 retro_sophisticated_backpacks.gui.feeding_settings=음식 공급 설정
 retro_sophisticated_backpacks.gui.advanced_feeding_settings=고급 음식 공급 설정
+
 retro_sophisticated_backpacks.gui.deposit_settings=보관 설정
 retro_sophisticated_backpacks.gui.advanced_deposit_settings=고급 보관 설정
+
 retro_sophisticated_backpacks.gui.restock_settings=재보급 설정
 retro_sophisticated_backpacks.gui.advanced_restock_settings=고급 재보급 설정
+
 retro_sophisticated_backpacks.gui.filter_settings=필터 설정
 retro_sophisticated_backpacks.gui.advanced_filter_settings=고급 필터 설정
+
+retro_sophisticated_backpacks.gui.crafting_upgrade=제작
+
 retro_sophisticated_backpacks.gui.memory_settings=기억 설정
 retro_sophisticated_backpacks.gui.sorting_settings=정렬 설정
+
+# Gui Tooltips
 retro_sophisticated_backpacks.gui.stack_size_extra=개수: %s / %s
 retro_sophisticated_backpacks.gui.not_in_effect=효과 없음
+
 retro_sophisticated_backpacks.gui.whitelist=허용 목록
 retro_sophisticated_backpacks.gui.blacklist=금지 목록
+
 retro_sophisticated_backpacks.gui.match_item=아이템 기준
 retro_sophisticated_backpacks.gui.match_mod_id=모드 ID 기준
 retro_sophisticated_backpacks.gui.match_ore_dict=광물 사전 기준
+
 retro_sophisticated_backpacks.gui.match_durability=내구성 일치
 retro_sophisticated_backpacks.gui.ignore_durability=내구성 무시
+
 retro_sophisticated_backpacks.gui.match_nbt=NBT 데이터 일치
 retro_sophisticated_backpacks.gui.ignore_nbt=NBT 데이터 무시
+
 retro_sophisticated_backpacks.gui.add_ore_dict_entry=광물 사전 추가
 retro_sophisticated_backpacks.gui.remove_ore_dict_entry=광물 사전 제거
-retro_sophisticated_backpacks.gui.ore_dict_input_help=여기에 광물 사전을 입력할 수 있습니다. 정규식을 지원합니다.
+retro_sophisticated_backpacks.gui.ore_dict_input_help=여기에 광물 사전을 입력할 수 있습니다. \n정규식을 지원합니다.
+retro_sophisticated_backpacks.gui.ore_dict_input_help.pro_tip=꿀팁: 목록 위에 아이템을 올리면\n해당 목록을 적용 가능한지 볼 수 있고,\n텍스트 필드 위에 아이템을 올리면 적용 가능한 엔트리를 볼 수 있습니다.
+retro_sophisticated_backpacks.gui.ore_dict_list_entries=사용 가능한 광물 사전:
+retro_sophisticated_backpacks.gui.none=(없음)
+
 retro_sophisticated_backpacks.gui.complete_hunger=음식의 허기 포인트를 전혀 낭비하지\n않을 만큼 배고플 때만 음식을 공급합니다
 retro_sophisticated_backpacks.gui.half_hunger=음식의 허기 포인트를 최대 절반만\n낭비할 만큼 배고플 때만 음식을 공급합니다
 retro_sophisticated_backpacks.gui.immediate_hunger=플레이어가 조금이라도 배고프면 즉시 음식을\n공급합니다. 음식의 허기 포인트를 꽤 낭비합니다
+
 retro_sophisticated_backpacks.gui.ignore_health=체력을 고려하지 않음\n플레이어의 체력을 무시하고 허기 설정에 따라 음식을 공급합니다
 retro_sophisticated_backpacks.gui.consider_health=피해를 입으면 즉시 음식 공급\n플레이어의 체력이 최대가 아닐 경우 허기 설정을 무시합니다
+
 retro_sophisticated_backpacks.gui.input_output=입력 및 출력
 retro_sophisticated_backpacks.gui.input=입력만
 retro_sophisticated_backpacks.gui.output=출력만
+
 retro_sophisticated_backpacks.gui.sort_inventory=가방 인벤토리 정렬
 retro_sophisticated_backpacks.gui.sort_by_name=이름순 정렬
 retro_sophisticated_backpacks.gui.sort_by_mod_id=모드 ID순 정렬
 retro_sophisticated_backpacks.gui.sort_by_count=개수순 정렬
 retro_sophisticated_backpacks.gui.sort_by_ore_dict=광물 사전순 정렬
+
+retro_sophisticated_backpacks.gui.craft_into_backpack=결과물을 배낭으로 한꺼번에 옮기기
+retro_sophisticated_backpacks.gui.craft_into_player_inventory=결과물을 플레이어의 인벤토리로 한꺼번에 옮기기
+
 retro_sophisticated_backpacks.gui.transfer_to_player_inv=모든 아이템을 플레이어 인벤토리로 옮기기
 retro_sophisticated_backpacks.gui.transfer_to_player_inv_matched_1=일치하는 아이템을 플레이어 인벤토리로 옮기기
 retro_sophisticated_backpacks.gui.transfer_to_player_inv_matched_2=Shift 키를 눌러 모두 옮기기
 retro_sophisticated_backpacks.gui.transfer_to_backpack_inv=모든 아이템을 가방 인벤토리로 옮기기
 retro_sophisticated_backpacks.gui.transfer_to_backpack_inv_matched_1=일치하는 아이템을 가방 인벤토리로 옮기기
 retro_sophisticated_backpacks.gui.transfer_to_backpack_inv_matched_2=Shift 키를 눌러 모두 옮기기
+
 retro_sophisticated_backpacks.gui.settings=설정
 retro_sophisticated_backpacks.gui.configuration_tab=구성 탭
-retro_sophisticated_backpacks.gui.memorized_slot=기억된 슬롯
+
+retro_sophisticated_backpacks.gui.memorized_slot=기억하는 슬롯
 retro_sophisticated_backpacks.gui.memorize_all=모든 슬롯 기억하기
-retro_sophisticated_backpacks.gui.unmemorize_all=모든 슬롯 기억 해제
-retro_sophisticated_backpacks.gui.no_sorting_slot=정렬 안 함 슬롯
-retro_sophisticated_backpacks.gui.lock_all_sort=모든 슬롯 정렬 안 함으로 선택
-retro_sophisticated_backpacks.gui.unlock_all_sort=모든 슬롯 정렬함으로 선택
+retro_sophisticated_backpacks.gui.unmemorize_all=모든 슬롯 잊기
+
+retro_sophisticated_backpacks.gui.no_sorting_slot=정렬 안 하는 슬롯
+retro_sophisticated_backpacks.gui.lock_all_sort=모든 슬롯을 정렬 안 하도록 선택
+retro_sophisticated_backpacks.gui.unlock_all_sort=모든 슬롯을 정렬하도록 선택
