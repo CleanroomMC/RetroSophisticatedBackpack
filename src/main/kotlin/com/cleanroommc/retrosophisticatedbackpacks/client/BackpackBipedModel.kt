@@ -8,6 +8,7 @@ import net.minecraft.entity.Entity
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
+import sun.audio.AudioPlayer.player
 
 @SideOnly(Side.CLIENT)
 class BackpackBipedModel(private val backpackItemStack: ItemStack) : ModelBiped() {
@@ -28,6 +29,11 @@ class BackpackBipedModel(private val backpackItemStack: ItemStack) : ModelBiped(
         bipedBody.postRender(0.0625f)
         GlStateManager.translate(0.0, 0.3, 0.225)
         GlStateManager.rotate(180f, 1f, 0f, 0f)
+
+        if (entityIn.isSneaking) {
+            GlStateManager.translate(0.0f, -0.05f, 0.0f)
+            GlStateManager.rotate(28.647888f, 1.0f, 0.0f, 0.0f)
+        }
 
         val mc = Minecraft.getMinecraft()
 
