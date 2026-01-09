@@ -4,6 +4,7 @@ import com.cleanroommc.modularui.value.sync.ItemSlotSH
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedFeedingUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.CraftingUpgradeWrapper.CraftingDestination
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IFilterUpgrade
@@ -21,6 +22,7 @@ class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
         const val UPDATE_ADVANCED_FILTERABLE = 9
         const val UPDATE_ADVANCED_FEEDING = 10
         const val UPDATE_FILTER_WAY = 11
+        const val UPDATE_CRAFTING_DESTINATION = 12
     }
 
     override fun readOnServer(id: Int, buf: PacketBuffer) {
@@ -33,6 +35,7 @@ class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
             UPDATE_ADVANCED_FILTERABLE -> updateAdvancedFilterable(buf)
             UPDATE_ADVANCED_FEEDING -> updateAdvanceFeedingUpgrade(buf)
             UPDATE_FILTER_WAY -> updateFilterUpgrade(buf)
+            UPDATE_CRAFTING_DESTINATION -> updateCraftingDestination(buf)
         }
     }
 
@@ -82,5 +85,11 @@ class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
         val wrapper = slot.stack.getCapability(Capabilities.IFILTER_UPGRADE_CAPABILITY, null) ?: return
 
         wrapper.filterWay = buf.readEnumValue(IFilterUpgrade.FilterWayType::class.java)
+    }
+
+    private fun updateCraftingDestination(buf: PacketBuffer) {
+        val wrapper = slot.stack.getCapability(Capabilities.CRAFTING_ITEM_HANDLER_CAPABILITY, null) ?: return
+
+        wrapper.craftingDestination = buf.readEnumValue(CraftingDestination::class.java)
     }
 }

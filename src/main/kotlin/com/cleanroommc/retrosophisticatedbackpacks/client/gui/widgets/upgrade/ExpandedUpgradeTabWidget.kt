@@ -20,7 +20,7 @@ abstract class ExpandedUpgradeTabWidget<U>(
     titleKey,
     width
 ) where U : UpgradeWrapper<*> {
-    private var slotSyncHandler: UpgradeSlotSH? = null
+    protected var slotSyncHandler: UpgradeSlotSH? = null
     open var wrapper: U = wrap
         set(value) {
             field = value
