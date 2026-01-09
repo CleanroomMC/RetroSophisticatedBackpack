@@ -116,17 +116,13 @@ class UpgradeSlotGroupWidget(panel: BackpackPanel, private val slotSize: Int) : 
         override fun drawOverlay(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
             super.drawOverlay(context, widgetTheme)
 
-            if (isToggleEnabled) {
-                if (isHovering)
-                    GuiDraw.drawRect(4f, 4f, 4f, 10f, SLOT_HOVERING_COLOR)
-
+            if (isHovering)
+                GuiDraw.drawRect(4f, 4f, 4f, 10f, SLOT_HOVERING_COLOR)
+            
+            if (isToggleEnabled)
                 RSBTextures.TOGGLE_ENABLE_ICON.draw(context, 4, 4, 4, 10, widgetTheme.getThemeOrDefault())
-            } else {
-                if (isHovering)
-                    GuiDraw.drawRect(4f, 4f, 4f, 10f, SLOT_HOVERING_COLOR)
-
+            else
                 RSBTextures.TOGGLE_DISABLE_ICON.draw(context, 4, 4, 4, 10, widgetTheme.getThemeOrDefault())
-            }
         }
 
         override fun drawBackground(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
