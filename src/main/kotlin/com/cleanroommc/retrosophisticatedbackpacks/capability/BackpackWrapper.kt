@@ -31,6 +31,9 @@ class BackpackWrapper(
         private const val BACKPACK_INVENTORY_SIZE_TAG = "BackpackInventorySize"
         private const val UPGRADE_SLOTS_SIZE_TAG = "UpgradeSlotsSize"
 
+        private const val MAIN_COLOR_TAG = "MainColor"
+        private const val ACCENT_COLOR_TAG = "AccentColor"
+        
         private const val MEMORY_STACK_ITEMS_TAG = "MemoryItems"
         private const val MEMORY_STACK_RESPECT_NBT_TAG = "MemoryRespectNBT"
         private const val SORT_TYPE_TAG = "SortType"
@@ -262,6 +265,9 @@ class BackpackWrapper(
         nbt.setTag(UPGRADE_SLOTS_TAG, upgradesNbt)
         nbt.setInteger(BACKPACK_INVENTORY_SIZE_TAG, backpackInventorySize())
         nbt.setInteger(UPGRADE_SLOTS_SIZE_TAG, upgradeSlotsSize())
+        
+        nbt.setInteger(MAIN_COLOR_TAG, mainColor)
+        nbt.setInteger(ACCENT_COLOR_TAG, accentColor)
 
         // Settings
         val memoryNbt = NBTTagCompound()
@@ -292,6 +298,9 @@ class BackpackWrapper(
 
         backpackItemStackHandler = BackpackItemStackHandler(backpackInventorySize(), this)
         upgradeItemStackHandler = UpgradeItemStackHandler(upgradeSlotsSize())
+        
+        mainColor = nbt.getInteger(MAIN_COLOR_TAG)
+        accentColor = nbt.getInteger(ACCENT_COLOR_TAG)
 
         if (nbt.hasKey(BACKPACK_INVENTORY_TAG))
             BackpackItemStackHelper.loadAllItemsExtended(

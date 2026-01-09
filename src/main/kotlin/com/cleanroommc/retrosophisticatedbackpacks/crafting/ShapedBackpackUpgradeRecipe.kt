@@ -31,7 +31,15 @@ class ShapedBackpackUpgradeRecipe(
             for (i in 0 until backpackWrapper.backpackInventorySize()) {
                 newBackpackWrapper.backpackItemStackHandler.inventory[i] =
                     backpackWrapper.backpackItemStackHandler.inventory[i]
+                newBackpackWrapper.backpackItemStackHandler.memorizedSlotStack[i] =
+                    backpackWrapper.backpackItemStackHandler.memorizedSlotStack[i]
+                newBackpackWrapper.backpackItemStackHandler.sortLockedSlots[i] =
+                    backpackWrapper.backpackItemStackHandler.sortLockedSlots[i]
             }
+
+            newBackpackWrapper.sortType = backpackWrapper.sortType
+            newBackpackWrapper.mainColor = backpackWrapper.mainColor
+            newBackpackWrapper.accentColor = backpackWrapper.accentColor
 
             for (i in 0 until backpackWrapper.upgradeSlotsSize()) {
                 newBackpackWrapper.upgradeItemStackHandler.inventory[i] =
@@ -42,16 +50,5 @@ class ShapedBackpackUpgradeRecipe(
         return outputStack
     }
 
-    class Factory : IRecipeFactory {
-        override fun parse(
-            context: JsonContext,
-            json: JsonObject
-        ): IRecipe {
-            val group = JsonUtils.getString(json, "group", "")
-            val primer = RecipeUtil.parseShaped(context, json)
-            val result = CraftingHelper.getItemStack(JsonUtils.getJsonObject(json, "result"), context)
-
-            return ShapedBackpackUpgradeRecipe(if (group.isEmpty()) null else ResourceLocation(group), result, primer)
-        }
-    }
+    class Factory : RecipeFactoryTemplate<ShapedBackpackUpgradeRecipe>(::ShapedBackpackUpgradeRecipe)
 }

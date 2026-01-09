@@ -46,17 +46,5 @@ class ShapedUpgradeRecipe(
         return outputStack
     }
 
-    class Factory : IRecipeFactory {
-        override fun parse(
-            context: JsonContext,
-            json: JsonObject
-        ): IRecipe {
-            val group = JsonUtils.getString(json, "group", "")
-            val primer = RecipeUtil.parseShaped(context, json)
-            val result = CraftingHelper.getItemStack(JsonUtils.getJsonObject(json, "result"), context)
-
-            return ShapedUpgradeRecipe(if (group.isEmpty()) null else ResourceLocation(group), result, primer)
-        }
-
-    }
+    class Factory : RecipeFactoryTemplate<ShapedUpgradeRecipe>(::ShapedUpgradeRecipe)
 }

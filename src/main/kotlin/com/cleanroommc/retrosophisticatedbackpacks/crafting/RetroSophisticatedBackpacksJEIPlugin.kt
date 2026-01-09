@@ -15,11 +15,11 @@ class RetroSophisticatedBackpacksJEIPlugin : IModPlugin {
     }
 
     override fun register(registry: IModRegistry) {
-        helpers = registry.getJeiHelpers()
+        helpers = registry.jeiHelpers
 
         // By hijacking vanilla recipe types
         // We can utilize JEI's built-in recipe transfer handler
-        val recipeTransferRegistry: IRecipeTransferRegistry = registry.getRecipeTransferRegistry()
+        val recipeTransferRegistry: IRecipeTransferRegistry = registry.recipeTransferRegistry
         recipeTransferRegistry.addRecipeTransferHandler<BackpackContainer>(BackpackCraftingTransferInfo())
     }
 }
