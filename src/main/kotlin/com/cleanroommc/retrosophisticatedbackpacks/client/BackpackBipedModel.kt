@@ -8,10 +8,25 @@ import net.minecraft.entity.Entity
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
-import sun.audio.AudioPlayer.player
 
 @SideOnly(Side.CLIENT)
 class BackpackBipedModel(private val backpackItemStack: ItemStack) : ModelBiped() {
+    companion object {
+        fun renderBackpack(backpackItemStack: ItemStack, entityIn: Entity) {
+            GlStateManager.translate(0.0, 0.3, 0.225)
+            GlStateManager.rotate(180f, 1f, 0f, 0f)
+
+            if (entityIn.isSneaking) {
+                GlStateManager.translate(0.0f, -0.05f, 0.0f)
+                GlStateManager.rotate(28.647888f, 1.0f, 0.0f, 0.0f)
+            }
+
+            val mc = Minecraft.getMinecraft()
+
+            mc.renderItem.renderItem(backpackItemStack, ItemCameraTransforms.TransformType.FIXED)
+        }
+    }
+
     override fun render(
         entityIn: Entity,
         limbSwing: Float,
@@ -21,23 +36,10 @@ class BackpackBipedModel(private val backpackItemStack: ItemStack) : ModelBiped(
         headPitch: Float,
         scale: Float
     ) {
-        if (backpackItemStack.isEmpty)
-            return
-
         GlStateManager.pushMatrix()
 
         bipedBody.postRender(0.0625f)
-        GlStateManager.translate(0.0, 0.3, 0.225)
-        GlStateManager.rotate(180f, 1f, 0f, 0f)
-
-        if (entityIn.isSneaking) {
-            GlStateManager.translate(0.0f, -0.05f, 0.0f)
-            GlStateManager.rotate(28.647888f, 1.0f, 0.0f, 0.0f)
-        }
-
-        val mc = Minecraft.getMinecraft()
-
-        mc.renderItem.renderItem(backpackItemStack, ItemCameraTransforms.TransformType.FIXED)
+        renderBackpack(backpackItemStack, entityIn)
 
         GlStateManager.popMatrix()
     }

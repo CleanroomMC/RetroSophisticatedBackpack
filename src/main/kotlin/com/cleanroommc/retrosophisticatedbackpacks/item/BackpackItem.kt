@@ -24,10 +24,8 @@ import com.cleanroommc.retrosophisticatedbackpacks.handler.CapabilityHandler
 import com.cleanroommc.retrosophisticatedbackpacks.handler.RegistryHandler
 import com.cleanroommc.retrosophisticatedbackpacks.util.IModelRegister
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
-import net.minecraft.client.Minecraft
 import net.minecraft.client.model.ModelBiped
 import net.minecraft.client.renderer.GlStateManager
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
@@ -62,7 +60,7 @@ class BackpackItem(
     // FIXME: Later when adding tank upgrade and its corresponding model, we should change this implementation to
     // hashmap, and the key would depends on the count of tanks upgrades
     private var cachedBipedModel: BackpackBipedModel? = null
-    
+
     init {
         setMaxStackSize(1)
         setCreativeTab(RetroSophisticatedBackpacks.CREATIVE_TAB)
@@ -207,7 +205,7 @@ class BackpackItem(
                 cachedBipedModel = BackpackBipedModel(itemStack)
                 cachedBipedModel
             }
-            
+
             model?.setModelAttributes(_default)
             return model
         }
@@ -309,18 +307,8 @@ class BackpackItem(
             return
 
         GlStateManager.pushMatrix()
-        GlStateManager.translate(0.0, 0.3, 0.225)
-        GlStateManager.rotate(180f, 1f, 0f, 0f)
-        
-        if (entityPlayer.isSneaking) {
-            GlStateManager.translate(0.0f, -0.05f, 0.0f)
-            GlStateManager.rotate(28.647888f, 1.0f, 0.0f, 0.0f)
-        }
+        BackpackBipedModel.renderBackpack(itemStack, entityPlayer)
 
-        val mc = Minecraft.getMinecraft()
-
-        mc.renderItem.renderItem(itemStack, ItemCameraTransforms.TransformType.FIXED)
-    
         GlStateManager.popMatrix()
     }
 }
