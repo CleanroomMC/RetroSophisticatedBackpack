@@ -13,6 +13,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackTier
 import com.cleanroommc.retrosophisticatedbackpacks.block.BackpackBlock
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.client.BackpackBipedModel
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackContainer
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackGuiHolder
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiData
@@ -22,12 +23,14 @@ import com.cleanroommc.retrosophisticatedbackpacks.handler.CapabilityHandler
 import com.cleanroommc.retrosophisticatedbackpacks.handler.RegistryHandler
 import com.cleanroommc.retrosophisticatedbackpacks.util.IModelRegister
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
+import net.minecraft.client.model.ModelBiped
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.init.SoundEvents
+import net.minecraft.inventory.EntityEquipmentSlot
 import net.minecraft.item.ItemBlock
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
@@ -173,6 +176,26 @@ class BackpackItem(
         }
 
         super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected)
+    }
+
+    override fun isValidArmor(stack: ItemStack, armorType: EntityEquipmentSlot, entity: Entity): Boolean =
+        armorType == EntityEquipmentSlot.CHEST
+
+    override fun getEquipmentSlot(stack: ItemStack): EntityEquipmentSlot = EntityEquipmentSlot.CHEST
+
+    override fun getArmorModel(
+        entityLiving: EntityLivingBase,
+        itemStack: ItemStack,
+        armorSlot: EntityEquipmentSlot,
+        _default: ModelBiped
+    ): ModelBiped? {
+        if (armorSlot == EntityEquipmentSlot.CHEST) {
+            val model = BackpackBipedModel(itemStack)
+            model.setModelAttributes(_default)
+            return model
+        }
+
+        return null
     }
 
     override fun getNBTShareTag(stack: ItemStack): NBTTagCompound? {
