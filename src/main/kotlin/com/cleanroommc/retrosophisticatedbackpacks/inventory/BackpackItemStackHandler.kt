@@ -1,6 +1,7 @@
 package com.cleanroommc.retrosophisticatedbackpacks.inventory
 
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.config.Config
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
 import net.minecraft.item.ItemStack
 import net.minecraft.util.NonNullList
@@ -13,7 +14,8 @@ class BackpackItemStackHandler(size: Int, private val wrapper: BackpackWrapper) 
     val sortLockedSlots: MutableList<Boolean> = MutableList(size) { false }
 
     override fun isItemValid(slot: Int, stack: ItemStack): Boolean =
-        if (memorizedSlotStack[slot].isEmpty) stack.item !is BackpackItem || wrapper.canNestBackpack()
+        if (Config.blacklistedItems.contains(stack.item.registryName?.toString())) false
+        else if (memorizedSlotStack[slot].isEmpty) stack.item !is BackpackItem || wrapper.canNestBackpack()
         else if (memorizedSlotRespectNbtList[slot]) ItemStack.areItemStacksEqual(stack, memorizedSlotStack[slot])
         else stack.isItemEqualIgnoreDurability(memorizedSlotStack[slot])
 
@@ -27,7 +29,7 @@ class BackpackItemStackHandler(size: Int, private val wrapper: BackpackWrapper) 
      * gui-based interaction get unexpected insertion result.
      */
     fun prioritizedInsertion(slotIndex: Int, stack: ItemStack, simulate: Boolean): ItemStack {
-        var stack = insertItemToMemorySlots(stack, simulate)
+        val stack = insertItemToMemorySlots(stack, simulate)
         return insertItem(slotIndex, stack, simulate)
     }
 

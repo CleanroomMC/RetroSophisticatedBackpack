@@ -2,10 +2,14 @@ package com.cleanroommc.retrosophisticatedbackpacks.config
 
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import net.minecraftforge.common.config.Config
-import net.minecraftforge.common.config.Config.RequiresMcRestart
 
 @Config(modid = Tags.MOD_ID, name = "${Tags.MOD_ID}_general")
 object Config {
+    @JvmField
+    @Config.Comment("Items that cannot be stored in backpack")
+    @Config.RequiresMcRestart
+    var blacklistedItems = arrayOf<String>()
+    
     @JvmField
     val leatherBackpack = LeatherBackpackConfig()
 
@@ -26,73 +30,73 @@ object Config {
 
     class LeatherBackpackConfig {
         @JvmField
-        @RequiresMcRestart
+        @Config.RequiresMcRestart
         var slots = 27
 
         @JvmField
-        @RequiresMcRestart
+        @Config.RequiresMcRestart
         var upgradeSlots = 1
     }
 
     class IronBackpackConfig {
         @JvmField
-        @RequiresMcRestart
+        @Config.RequiresMcRestart
         var slots = 54
 
         @JvmField
-        @RequiresMcRestart
+        @Config.RequiresMcRestart
         var upgradeSlots = 2
     }
 
     class GoldBackpackConfig {
         @JvmField
-        @RequiresMcRestart
+        @Config.RequiresMcRestart
         var slots = 81
 
         @JvmField
-        @RequiresMcRestart
+        @Config.RequiresMcRestart
         var upgradeSlots = 3
     }
 
     class DiamondBackpackConfig {
         @JvmField
-        @RequiresMcRestart
+        @Config.RequiresMcRestart
         var slots = 108
 
         @JvmField
-        @RequiresMcRestart
+        @Config.RequiresMcRestart
         var upgradeSlots = 5
     }
 
     class ObsidianBackpackConfig {
         @JvmField
-        @RequiresMcRestart
+        @Config.RequiresMcRestart
         var slots = 120
 
         @JvmField
-        @RequiresMcRestart
+        @Config.RequiresMcRestart
         var upgradeSlots = 7
     }
 
     class StackUpgradeConfig {
         @JvmField
-        @RequiresMcRestart
+        @Config.RequiresMcRestart
         var leatherMultiplier = 2
 
         @JvmField
-        @RequiresMcRestart
+        @Config.RequiresMcRestart
         var ironMultiplier = 4
 
         @JvmField
-        @RequiresMcRestart
+        @Config.RequiresMcRestart
         var goldMultiplier = 8
 
         @JvmField
-        @RequiresMcRestart
+        @Config.RequiresMcRestart
         var diamondMultiplier = 16
 
         @JvmField
-        @RequiresMcRestart
+        @Config.RequiresMcRestart
         var obsidianMultiplier = 32
     }
 }
