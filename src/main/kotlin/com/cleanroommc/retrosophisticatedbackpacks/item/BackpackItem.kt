@@ -43,6 +43,8 @@ import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.ICapabilityProvider
 import net.minecraftforge.fml.common.Optional
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
 @Optional.Interface(iface = "baubles.api.IBauble", modid = "baubles", striprefs = true)
 class BackpackItem(
@@ -52,6 +54,10 @@ class BackpackItem(
     val numberOfUpgradeSlots: () -> Int,
     val tier: BackpackTier,
 ) : ItemBlock(backpackBlock), IModelRegister, IGuiHolder<PlayerInventoryGuiData>, IBauble {
+    // FIXME: Later when adding tank upgrade and its corresponding model, we should change this implementation to
+    // hashmap, and the key would depends on the count of tanks upgrades
+    private var cachedBipedModel: BackpackBipedModel? = null
+    
     init {
         setMaxStackSize(1)
         setCreativeTab(RetroSophisticatedBackpacks.CREATIVE_TAB)
@@ -183,6 +189,7 @@ class BackpackItem(
 
     override fun getEquipmentSlot(stack: ItemStack): EntityEquipmentSlot = EntityEquipmentSlot.CHEST
 
+    @SideOnly(Side.CLIENT)
     override fun getArmorModel(
         entityLiving: EntityLivingBase,
         itemStack: ItemStack,
@@ -190,8 +197,13 @@ class BackpackItem(
         _default: ModelBiped
     ): ModelBiped? {
         if (armorSlot == EntityEquipmentSlot.CHEST) {
-            val model = BackpackBipedModel(itemStack)
-            model.setModelAttributes(_default)
+            val model = if (cachedBipedModel != null) cachedBipedModel
+            else {
+                cachedBipedModel = BackpackBipedModel(itemStack)
+                cachedBipedModel
+            }
+            
+            model?.setModelAttributes(_default)
             return model
         }
 

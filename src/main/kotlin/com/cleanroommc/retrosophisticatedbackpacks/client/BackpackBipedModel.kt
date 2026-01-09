@@ -6,7 +6,10 @@ import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms
 import net.minecraft.entity.Entity
 import net.minecraft.item.ItemStack
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
+@SideOnly(Side.CLIENT)
 class BackpackBipedModel(private val backpackItemStack: ItemStack) : ModelBiped() {
     override fun render(
         entityIn: Entity,
