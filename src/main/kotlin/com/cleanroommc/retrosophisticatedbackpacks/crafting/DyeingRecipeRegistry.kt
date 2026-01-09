@@ -3,25 +3,29 @@ package com.cleanroommc.retrosophisticatedbackpacks.crafting
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
-import com.cleanroommc.retrosophisticatedbackpacks.mixin.GameRegistryAccessor
 import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.ItemStack
+import net.minecraft.item.crafting.IRecipe
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.crafting.CraftingHelper
 
 object DyeingRecipeRegistry {
-    fun register(backpackItem: BackpackItem, mainColor: EnumDyeColor?, accentColor: EnumDyeColor?) {
+    fun constructRecipe(
+        backpackItem: BackpackItem,
+        mainColor: EnumDyeColor?,
+        accentColor: EnumDyeColor?
+    ): IRecipe? {
         if (mainColor == null && accentColor == null)
-            return
+            return null
 
         val backpackStack = ItemStack(backpackItem, 1)
-        val backpackWrapper = backpackStack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return
+        val backpackWrapper = backpackStack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return null
 
         mainColor?.let { backpackWrapper.mainColor = it.colorValue }
         accentColor?.let { backpackWrapper.accentColor = it.colorValue }
 
-        if (mainColor != null && accentColor != null) {
-            addShapeDyeingNBTdRecipe(
+        return if (mainColor != null && accentColor != null) {
+            constructRecipe(
                 ResourceLocation(
                     Tags.MOD_ID,
                     "${backpackItem.registryName?.path}_dye_both_${mainColor.dyeDamage}_${accentColor.dyeDamage}"
@@ -38,7 +42,7 @@ object DyeingRecipeRegistry {
                 ItemStack(net.minecraft.init.Items.DYE, 1, accentColor.dyeDamage)
             )
         } else if (mainColor != null) {
-            addShapeDyeingNBTdRecipe(
+            constructRecipe(
                 ResourceLocation(Tags.MOD_ID, "${backpackItem.registryName?.path}_dye_main_${mainColor.dyeDamage}"),
                 backpackStack,
                 "   ",
@@ -50,7 +54,7 @@ object DyeingRecipeRegistry {
                 ItemStack(net.minecraft.init.Items.DYE, 1, mainColor.dyeDamage)
             )
         } else if (accentColor != null) {
-            addShapeDyeingNBTdRecipe(
+            constructRecipe(
                 ResourceLocation(Tags.MOD_ID, "${backpackItem.registryName?.path}_dye_accent_${accentColor.dyeDamage}"),
                 backpackStack,
                 "   ",
@@ -61,16 +65,14 @@ object DyeingRecipeRegistry {
                 'D',
                 ItemStack(net.minecraft.init.Items.DYE, 1, accentColor.dyeDamage)
             )
-        }
+        } else null
     }
 
-    fun addShapeDyeingNBTdRecipe(name: ResourceLocation, output: ItemStack, vararg params: Any) {
+    fun constructRecipe(name: ResourceLocation, output: ItemStack, vararg params: Any): IRecipe {
         val primer = CraftingHelper.parseShaped(*params)
-        GameRegistryAccessor.invokeRegister(
-            ShapedDyeingNBTRecipe(
-                primer.input,
-                output
-            ).setRegistryName(name)
-        )
+        return ShapedDyeingNBTRecipe(
+            primer.input,
+            output
+        ).setRegistryName(name)
     }
 }

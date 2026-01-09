@@ -3,13 +3,16 @@ package com.cleanroommc.retrosophisticatedbackpacks.handler
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.block.Blocks
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.crafting.DyeingRecipeRegistry
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.Items
 import com.cleanroommc.retrosophisticatedbackpacks.tileentity.BackpackTileEntity
 import com.cleanroommc.retrosophisticatedbackpacks.util.IModelRegister
 import net.minecraft.block.Block
+import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.item.crafting.IRecipe
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.ResourceLocation
 import net.minecraftforge.client.event.ModelRegistryEvent
@@ -38,6 +41,19 @@ object RegistryHandler {
         event.registry.registerAll(*Blocks.BLOCKS.toTypedArray())
 
         GameRegistry.registerTileEntity(BackpackTileEntity::class.java, ResourceLocation(Tags.MOD_ID, "backpack"))
+    }
+    
+    @SubscribeEvent
+    @JvmStatic
+    fun onRecipeRegister(event: RegistryEvent.Register<IRecipe>) {
+        for (backpackItem in Items.BACKPACK_ITEMS) {
+            val iter = EnumDyeColor.entries.toMutableList<EnumDyeColor?>()
+            iter.add(null)
+
+            for ((mainColor, accentColor) in iter.flatMap { a -> iter.map { a to it } }) {
+                DyeingRecipeRegistry.constructRecipe(backpackItem, mainColor, accentColor)?.let(event.registry::register)
+            }
+        }
     }
 
     @SubscribeEvent
