@@ -88,6 +88,8 @@ retro_sophisticated_backpacks.gui.advanced_restock_settings=Adv. Restock Setting
 retro_sophisticated_backpacks.gui.filter_settings=Filter Settings
 retro_sophisticated_backpacks.gui.advanced_filter_settings=Adv. Filter Settings
 
+retro_sophisticated_backpacks.gui.crafting_upgrade=Crafting
+
 retro_sophisticated_backpacks.gui.memory_settings=Memory Settings
 retro_sophisticated_backpacks.gui.sorting_settings=Sorting Settings
 
@@ -110,7 +112,10 @@ retro_sophisticated_backpacks.gui.ignore_nbt=Ignore NBT
 
 retro_sophisticated_backpacks.gui.add_ore_dict_entry=Add Ore Dict.
 retro_sophisticated_backpacks.gui.remove_ore_dict_entry=Remove Ore Dict.
-retro_sophisticated_backpacks.gui.ore_dict_input_help=You can input ore dictionary here, regex is supported
+retro_sophisticated_backpacks.gui.ore_dict_input_help=You can input ore dictionary here,\nregex is supported.
+retro_sophisticated_backpacks.gui.ore_dict_input_help.pro_tip=Protip: You can hover item onto entry\n to check if the entry is applicable,\nor hover on textfield to see available entries.
+retro_sophisticated_backpacks.gui.ore_dict_list_entries=Available ore dict:
+retro_sophisticated_backpacks.gui.none=(None)
 
 retro_sophisticated_backpacks.gui.complete_hunger=Only feed when player is hungry enough\nto not waste any hunger points of the food at all
 retro_sophisticated_backpacks.gui.half_hunger=Only feed when player is hungry enough\nto only waste half hunger points of the food at most
@@ -128,6 +133,9 @@ retro_sophisticated_backpacks.gui.sort_by_name=Sort By Name
 retro_sophisticated_backpacks.gui.sort_by_mod_id=Sort By Mod ID
 retro_sophisticated_backpacks.gui.sort_by_count=Sort By Count
 retro_sophisticated_backpacks.gui.sort_by_ore_dict=Sort By Ore Dictionary
+
+retro_sophisticated_backpacks.gui.craft_into_backpack=Shift Click Result Into Backpack
+retro_sophisticated_backpacks.gui.craft_into_player_inventory=Shift Click Result Into Player's Inventory
 
 retro_sophisticated_backpacks.gui.transfer_to_player_inv=Transfer All Items to Player Inventory
 retro_sophisticated_backpacks.gui.transfer_to_player_inv_matched_1=Transfer Matched Items to Player Inventory

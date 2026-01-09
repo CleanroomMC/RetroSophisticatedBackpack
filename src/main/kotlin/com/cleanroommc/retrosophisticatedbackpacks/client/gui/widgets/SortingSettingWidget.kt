@@ -1,5 +1,6 @@
 package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets
 
+import com.cleanroommc.bogosorter.common.sort.GuiSortingContext
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.widgets.ButtonWidget
@@ -42,6 +43,7 @@ class SortingSettingWidget(
                 panel.backpackSlotSyncHandlers.forEach { syncHandler ->
                     syncHandler.syncToServer(BackpackSlotSH.UPDATE_SET_SLOT_LOCK)
                 }
+                GuiSortingContext.invalidateCurrent()
 
                 return@onMousePressed true
             }
@@ -67,6 +69,7 @@ class SortingSettingWidget(
                 panel.backpackSlotSyncHandlers.forEach { syncHandler ->
                     syncHandler.syncToServer(BackpackSlotSH.UPDATE_UNSET_SLOT_LOCK)
                 }
+                GuiSortingContext.invalidateCurrent()
 
                 return@onMousePressed true
             }

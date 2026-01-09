@@ -5,7 +5,7 @@ import com.cleanroommc.modularui.drawable.GuiDraw
 import com.cleanroommc.modularui.screen.viewport.GuiContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 
-class Outline(val color: Int) : IDrawable {
+class Outline(var color: Int) : IDrawable {
     override fun draw(
         context: GuiContext,
         x: Int,
@@ -14,6 +14,6 @@ class Outline(val color: Int) : IDrawable {
         height: Int,
         widgetTheme: WidgetTheme
     ) {
-        GuiDraw.drawOutline(x, y, width, height, color)
+        GuiDraw.drawBorderInsideXYWH(x.toFloat(), y.toFloat(), width.toFloat(), height.toFloat(), color)
     }
 }

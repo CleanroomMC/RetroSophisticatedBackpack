@@ -24,13 +24,13 @@ object BackpackInventoryHelper {
             for (i in 0 until min(list1.size, list2.size)) {
                 val item1 = list1[i]
                 val item2 = list2[i]
-                val comparedValue = item1.compareTo(item2)
+                val comparedValue = item2.compareTo(item1)
 
                 if (comparedValue != 0)
                     return comparedValue
             }
 
-            return list1.size.compareTo(list2.size)
+            return list2.size.compareTo(list1.size)
         }
 
         // Merges all slots first
@@ -38,7 +38,7 @@ object BackpackInventoryHelper {
             if (wrapper.isSlotLocked(i))
                 continue
 
-            var isMemorizedSlot = wrapper.isSlotMemorized(i)
+            val isMemorizedSlot = wrapper.isSlotMemorized(i)
             val baseStack = wrapper.getStackInSlot(i)
             val maxSize = baseStack.maxStackSize * wrapper.getTotalStackMultiplier()
 
@@ -85,15 +85,15 @@ object BackpackInventoryHelper {
 
             when (wrapper.sortType) {
                 SortType.BY_NAME -> {
-                    item1.getItemStackDisplayName(stack1).compareTo(item2.getItemStackDisplayName(stack2))
+                    item2.getItemStackDisplayName(stack2).compareTo(item1.getItemStackDisplayName(stack1))
                 }
 
                 SortType.BY_MOD_ID -> {
-                    item1.registryName!!.namespace.compareTo(item2.registryName!!.namespace)
+                    item2.registryName!!.namespace.compareTo(item1.registryName!!.namespace)
                 }
 
                 SortType.BY_COUNT -> {
-                    stack1.count.compareTo(stack2.count)
+                    stack2.count.compareTo(stack1.count)
                 }
 
                 SortType.BY_ORE_DICT -> {
@@ -139,7 +139,7 @@ object BackpackInventoryHelper {
 
                 if (transferMatched && wrapper.getStackInSlot(j).isEmpty)
                     continue
-                
+
                 stack = wrapper.insertItem(j, stack, false)
             }
 
@@ -224,7 +224,7 @@ object BackpackInventoryHelper {
             return false
 
         for (i in 0 until source.slots) {
-            var sourceStack = source.getStackInSlot(i)
+            val sourceStack = source.getStackInSlot(i)
 
             if (sourceStack.isEmpty)
                 continue
@@ -245,9 +245,11 @@ object BackpackInventoryHelper {
     }
 
     private fun getHandler(handler: Any, facing: EnumFacing?): IItemHandler? =
-        if (handler is ISidedInventory) SidedInvWrapper(handler, facing)
-        else if (handler is IInventory) InvWrapper(handler)
-        else handler as? IItemHandler
+        when (handler) {
+            is ISidedInventory -> SidedInvWrapper(handler, facing)
+            is IInventory -> InvWrapper(handler)
+            else -> handler as? IItemHandler
+        }
 
     private fun isFull(handler: IItemHandler): Boolean {
         for (i in 0 until handler.slots) {

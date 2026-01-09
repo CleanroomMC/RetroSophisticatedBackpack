@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "T": {
+      "item": "minecraft:crafting_table"
+    },
+    "C": {
+      "type": "forge:ore_dict",
+      "ore": "chest"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "B": {
+      "item": "retro_sophisticated_backpacks:upgrade_base"
+    }
+  },
+  "pattern": [
+    " T ",
+    "IBI",
+    " C "
+  ],
+  "result": {
+    "item": "retro_sophisticated_backpacks:crafting_upgrade"
+  }
+}

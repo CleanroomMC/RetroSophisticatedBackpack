@@ -220,6 +220,10 @@ class BackpackWrapper(
         backpackItemStackHandler.sortLockedSlots[slotIndex] = locked
     }
 
+    // This is only meant to used for bogosorter as RSB already implemented a sorting mechanism
+    fun getSortableSlotIndexes(): List<Int> =
+        (0..<backpackInventorySize()).filter { !backpackItemStackHandler.sortLockedSlots[it] && backpackItemStackHandler.memorizedSlotStack[it].isEmpty }
+
     // Overrides
 
     fun getDisplayName(): ITextComponent =

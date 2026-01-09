@@ -88,6 +88,8 @@ retro_sophisticated_backpacks.gui.advanced_restock_settings=進階取貨設定
 retro_sophisticated_backpacks.gui.filter_settings=過濾設定
 retro_sophisticated_backpacks.gui.advanced_filter_settings=進階過濾設定
 
+retro_sophisticated_backpacks.gui.crafting_upgrade=合成
+
 retro_sophisticated_backpacks.gui.memory_settings=記憶設定
 retro_sophisticated_backpacks.gui.sorting_settings=整理設定
 
@@ -102,6 +104,9 @@ retro_sophisticated_backpacks.gui.match_item=根據物品屬性
 retro_sophisticated_backpacks.gui.match_mod_id=根據模組 ID
 retro_sophisticated_backpacks.gui.match_ore_dict=根據礦物詞典
 
+retro_sophisticated_backpacks.gui.craft_into_backpack=Shift 點擊合成結果轉移至背包
+retro_sophisticated_backpacks.gui.craft_into_player_inventory=Shift 點擊合成結果轉移至玩家物品欄
+
 retro_sophisticated_backpacks.gui.match_durability=考慮耐久
 retro_sophisticated_backpacks.gui.ignore_durability=無視耐久
 
@@ -110,7 +115,10 @@ retro_sophisticated_backpacks.gui.ignore_nbt=無視 NBT
 
 retro_sophisticated_backpacks.gui.add_ore_dict_entry=新增礦物詞典
 retro_sophisticated_backpacks.gui.remove_ore_dict_entry=移除礦物詞典
-retro_sophisticated_backpacks.gui.ore_dict_input_help=可以在這裡輸入礦物詞典，支援正規表示式
+retro_sophisticated_backpacks.gui.ore_dict_input_help=可以在這裡輸入礦物詞典，\n支援正規表示式 (Regex)。
+retro_sophisticated_backpacks.gui.ore_dict_input_help.pro_tip=提示：你可以將物品懸浮在詞典條目上\n以確認物品是否符合，\n或是懸浮於輸入欄上檢視可用的礦物詞典
+retro_sophisticated_backpacks.gui.ore_dict_list_entries=可用的礦物詞典:
+retro_sophisticated_backpacks.gui.none=(無)
 
 retro_sophisticated_backpacks.gui.complete_hunger=只在玩家夠餓時餵食\n不會浪費食物提供的任何飢餓值
 retro_sophisticated_backpacks.gui.half_hunger=只在玩家夠餓時餵食\n最多浪費食物提供的一半飢餓值

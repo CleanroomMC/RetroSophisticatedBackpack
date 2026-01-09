@@ -13,14 +13,18 @@ import net.minecraftforge.items.wrapper.EmptyHandler
  * item handler, and it's supposed to be able to dynamically introduced in container, which later could bind to certain
  * slots.
  */
-class DelegatedStackHandlerSH(private val wrapper: BackpackWrapper, private val slotIndex: Int) : SyncHandler() {
+open class DelegatedStackHandlerSH(
+    private val wrapper: BackpackWrapper,
+    private val slotIndex: Int,
+    private val wrappedSlotAmount: Int
+) : SyncHandler() {
     companion object {
         const val UPDATE_FILTERABLE = 0
     }
 
-    var delegatedStackHandler: DelegatedItemHandler = DelegatedItemHandler(EmptyHandler::INSTANCE)
+    var delegatedStackHandler: DelegatedItemHandler = DelegatedItemHandler(EmptyHandler::INSTANCE, wrappedSlotAmount)
 
-    fun setDelegatedStackHandler(delegated: () -> IItemHandler) {
+    open fun setDelegatedStackHandler(delegated: () -> IItemHandler) {
         delegatedStackHandler.delegated = delegated
     }
 

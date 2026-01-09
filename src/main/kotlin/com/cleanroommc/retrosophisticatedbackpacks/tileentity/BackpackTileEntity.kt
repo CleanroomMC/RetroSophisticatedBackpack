@@ -4,10 +4,12 @@ import com.cleanroommc.modularui.api.IGuiHolder
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.factory.TileEntityGuiFactory
 import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.screen.UISettings
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.retrosophisticatedbackpacks.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackContainer
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackGuiHolder
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import net.minecraft.block.state.IBlockState
@@ -77,10 +79,14 @@ class BackpackTileEntity(val wrapper: BackpackWrapper = BackpackWrapper()) :
 
     override fun buildUI(
         data: PosGuiData,
-        syncManager: PanelSyncManager
+        syncManager: PanelSyncManager,
+        uiSettings: UISettings
     ): ModularPanel {
         val backpackInv = getCapability(Capabilities.BACKPACK_CAPABILITY, null)!!
-        return BackpackGuiHolder.TileEntityGuiHolder(backpackInv).buildUI(data, syncManager)
+        val containerSupplier = { BackpackContainer(backpackInv, null) }
+        uiSettings.customContainer(containerSupplier)
+        val holder: BackpackGuiHolder.TileEntityGuiHolder = BackpackGuiHolder.TileEntityGuiHolder(backpackInv)
+        return holder.buildUI(data, syncManager, uiSettings)
     }
 
     override fun getDisplayName(): ITextComponent =

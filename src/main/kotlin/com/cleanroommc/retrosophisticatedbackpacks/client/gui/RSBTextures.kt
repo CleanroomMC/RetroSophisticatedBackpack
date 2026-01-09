@@ -60,11 +60,37 @@ object RSBTextures {
     val DOT_DOWN_ARROW_ICON = icon("dot_down_arrow", 24, 156, 12, 12)
     val DOT_UP_ARROW_ICON = icon("dot_up_arrow", 36, 156, 12, 12)
 
+    val LEFT_ARROW_ICON = icon("left_arrow", 32, 48)
+    val DOWN_ARROW_ICON = icon("down_arrow", 48, 48)
+
+    val STANDARD_BUTTON = UITexture.builder()
+        .location(Tags.MOD_ID, "gui/gui_controls.png")
+        .imageSize(256, 256)
+        .xy(29, 0, 18, 18)
+        .build()
+    val STANDARD_BUTTON_HOVERED = UITexture.builder()
+        .location(Tags.MOD_ID, "gui/gui_controls.png")
+        .imageSize(256, 256)
+        .xy(47, 0, 18, 18)
+        .build()
+
+    val BIG_SLOT_TEXTURE = UITexture.builder()
+        .location(Tags.MOD_ID, "gui/gui_controls.png")
+        .imageSize(256, 256)
+        .xy(71, 216, 26, 26)
+        .build()
+
+    val CRAFTING_ARROW = UITexture.builder()
+        .location(Tags.MOD_ID, "gui/gui_controls.png")
+        .imageSize(256, 256)
+        .xy(97, 209, 16, 16)
+        .build()
+
     private fun icon(name: String, x: Int, y: Int, w: Int = 16, h: Int = 16): UITexture =
         UITexture.builder()
             .location(ICON_LOCATION)
             .imageSize(256, 256)
-            .uv(x, y, w, h)
+            .xy(x, y, w, h)
             .name(name)
             .build()
 }

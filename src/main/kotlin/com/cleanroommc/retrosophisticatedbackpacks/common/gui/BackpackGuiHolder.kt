@@ -3,6 +3,7 @@ package com.cleanroommc.retrosophisticatedbackpacks.common.gui
 import com.cleanroommc.modularui.api.IGuiHolder
 import com.cleanroommc.modularui.factory.PosGuiData
 import com.cleanroommc.modularui.screen.ModularPanel
+import com.cleanroommc.modularui.screen.UISettings
 import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
@@ -50,7 +51,8 @@ sealed class BackpackGuiHolder(protected val backpackWrapper: BackpackWrapper) {
         IGuiHolder<PosGuiData> {
         override fun buildUI(
             data: PosGuiData,
-            syncManager: PanelSyncManager
+            syncManager: PanelSyncManager,
+            uiSettings: UISettings
         ): ModularPanel {
             val tileEntity = data.world.getTileEntity(data.blockPos) as BackpackTileEntity
             val panel = createPanel(syncManager, data.player, tileEntity)
@@ -63,7 +65,8 @@ sealed class BackpackGuiHolder(protected val backpackWrapper: BackpackWrapper) {
         IGuiHolder<PlayerInventoryGuiData> {
         override fun buildUI(
             data: PlayerInventoryGuiData,
-            syncManager: PanelSyncManager
+            syncManager: PanelSyncManager,
+            uiSettings: UISettings
         ): ModularPanel {
             val panel = createPanel(syncManager, data.player, null, data.inventoryType, data.slotIndex)
             addCommonWidgets(panel, data.player)

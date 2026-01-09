@@ -1,8 +1,11 @@
 package com.cleanroommc.retrosophisticatedbackpacks.proxy
 
+import com.cleanroommc.bogosorter.BogoSortAPI
 import com.cleanroommc.modularui.factory.GuiManager
 import com.cleanroommc.retrosophisticatedbackpacks.client.BackpackDynamicModel
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiFactory
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularBackpackSlot
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularBackpackSlotWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.client.settings.KeyBinding
@@ -10,6 +13,7 @@ import net.minecraft.item.Item
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.client.model.ModelLoaderRegistry
 import net.minecraftforge.fml.client.registry.ClientRegistry
+import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
@@ -18,6 +22,11 @@ import org.lwjgl.input.Keyboard
 abstract class RSBProxy {
     open fun preInit(event: FMLPreInitializationEvent) {
         GuiManager.registerFactory(PlayerInventoryGuiFactory)
+
+        if (Loader.isModLoaded("bogosorter")) {
+            BogoSortAPI.INSTANCE.addSlotGetter(ModularBackpackSlot::class.java, ::ModularBackpackSlotWrapper)
+            // BackpackContainer compat is added in its class
+        }
     }
 
     open fun init(event: FMLInitializationEvent) {}
