@@ -12,12 +12,12 @@ import net.minecraft.item.ItemStack
 
 class FilterUpgradeWidget(
     slotIndex: Int,
-    wrap: FilterUpgradeWrapper
+    wrapper: FilterUpgradeWrapper
 ) : BasicExpandedTabWidget<FilterUpgradeWrapper>(
     slotIndex,
-    wrap,
+    wrapper,
     ItemStack(Items.filterUpgrade),
-    "gui.filter_settings".asTranslationKey(),
+    wrapper.settingsLangKey,
     coveredTabSize = 5
 ) {
     companion object {
@@ -41,7 +41,7 @@ class FilterUpgradeWidget(
 
     init {
         filterWayButtonWidget = CyclicVariantButtonWidget(FILTER_WAY_VARIANTS, wrapper.filterWay.ordinal) {
-            wrapper.filterWay = IFilterUpgrade.FilterWayType.entries[it]
+            this@FilterUpgradeWidget.wrapper.filterWay = IFilterUpgrade.FilterWayType.entries[it]
             updateWrapper()
         }
 
@@ -54,7 +54,7 @@ class FilterUpgradeWidget(
 
     fun updateWrapper() {
         filterWidget.slotSyncHandler?.syncToServer(UpgradeSlotSH.UPDATE_FILTER_WAY) {
-            it.writeEnumValue(wrapper.filterWay)
+            it.writeEnumValue(this@FilterUpgradeWidget.wrapper.filterWay)
         }
     }
 }

@@ -15,13 +15,13 @@ import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.getThemeOrDefault
 import net.minecraft.item.ItemStack
 
-class CraftingUpgradeWidget(slotIndex: Int, wrap: CraftingUpgradeWrapper) :
+class CraftingUpgradeWidget(slotIndex: Int, wrapper: CraftingUpgradeWrapper) :
     ExpandedUpgradeTabWidget<CraftingUpgradeWrapper>(
         slotIndex,
-        wrap,
+        wrapper,
         4,
         ItemStack(Items.craftingUpgrade),
-        "gui.crafting_upgrade".asTranslationKey()
+        wrapper.settingsLangKey
     ) {
     companion object {
         private const val SLOT_SIZE = 18
@@ -46,13 +46,13 @@ class CraftingUpgradeWidget(slotIndex: Int, wrap: CraftingUpgradeWrapper) :
 
         val craftingTypeButtonWidget = CyclicVariantButtonWidget(
             CRAFTING_TYPE_VARIANTS,
-            wrapper.craftingDestination.ordinal,
+            this@CraftingUpgradeWidget.wrapper.craftingDestination.ordinal,
             iconOffset = 2,
             iconSize = 16,
         ) {
             val nextCraftDestination = CraftingUpgradeWrapper.CraftingDestination.entries[it]
 
-            wrapper.craftingDestination = nextCraftDestination
+            this@CraftingUpgradeWidget.wrapper.craftingDestination = nextCraftDestination
             slotSyncHandler?.syncToServer(UpgradeSlotSH.UPDATE_CRAFTING_DESTINATION) {
                 it.writeEnumValue(nextCraftDestination)
             }
@@ -77,9 +77,9 @@ class CraftingUpgradeWidget(slotIndex: Int, wrap: CraftingUpgradeWrapper) :
         val craftingResult = SlotGroupWidget().name("crafting_result_$slotIndex").disableSortButtons()
         craftingResult.flex().coverChildren().leftRel(0.5F).top(126)
 
-        this@CraftingUpgradeWidget.craftingResult =
+        this.craftingResult =
             BigItemSlot().syncHandler("crafting_result_$slotIndex", 0).name("crafting_result_slot")
-        craftingResult.child(this@CraftingUpgradeWidget.craftingResult)
+        craftingResult.child(this.craftingResult)
 
         child(craftingResult)
     }

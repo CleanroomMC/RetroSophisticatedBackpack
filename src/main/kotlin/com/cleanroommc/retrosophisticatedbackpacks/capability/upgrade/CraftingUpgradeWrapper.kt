@@ -3,6 +3,7 @@ package com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.ExposedItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.item.CraftingUpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
@@ -13,7 +14,7 @@ class CraftingUpgradeWrapper() : UpgradeWrapper<CraftingUpgradeItem>() {
         private const val CRAFTING_DEST_TAG = "CraftingDest"
     }
 
-    override val settingsLangKey: String = ""
+    override val settingsLangKey: String = "gui.crafting_settings".asTranslationKey()
 
     var craftingDestination = CraftingDestination.INVENTORY
 

@@ -10,6 +10,6 @@ class FeedingUpgradeWidget(slotIndex: Int, wrapper: FeedingUpgradeWrapper) :
         slotIndex,
         wrapper,
         ItemStack(Items.feedingUpgrade),
-        "gui.feeding_settings".asTranslationKey(),
+        wrapper.settingsLangKey,
         filterSyncKey = "feeding_filter"
     )
