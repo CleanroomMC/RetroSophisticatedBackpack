@@ -1,6 +1,5 @@
 package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.slot
 
-import com.cleanroommc.bogosorter.common.sort.GuiSortingContext
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.api.widget.Interactable
 import com.cleanroommc.modularui.core.mixins.early.minecraft.GuiAccessor
@@ -19,6 +18,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularBackpackSlot
 import com.cleanroommc.retrosophisticatedbackpacks.sync.BackpackSlotSH
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import net.minecraft.client.gui.Gui
 import net.minecraft.client.gui.inventory.GuiContainer
@@ -103,14 +103,14 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
             if (isMemorySet && mouseButton == 1) {
                 wrapper.unsetMemoryStack(slot.slotIndex)
                 syncHandler.syncToServer(BackpackSlotSH.UPDATE_UNSET_MEMORY_STACK)
-                GuiSortingContext.invalidateCurrent()
+                Utils.invalidateSortingContext()
                 Interactable.Result.SUCCESS
             } else if (!isMemorySet && mouseButton == 0) {
                 wrapper.setMemoryStack(slot.slotIndex, panel.shouldMemorizeRespectNBT)
                 syncHandler.syncToServer(BackpackSlotSH.UPDATE_SET_MEMORY_STACK) {
                     it.writeBoolean(panel.shouldMemorizeRespectNBT)
                 }
-                GuiSortingContext.invalidateCurrent()
+                Utils.invalidateSortingContext()
                 Interactable.Result.SUCCESS
             } else Interactable.Result.STOP
         } else if (isInSortSettingMode) {
@@ -119,12 +119,12 @@ class BackpackSlot(private val panel: BackpackPanel, private val wrapper: Backpa
             if (isSlotLocked && mouseButton == 1) {
                 wrapper.setSlotLocked(slot.slotIndex, false)
                 syncHandler.syncToServer(BackpackSlotSH.UPDATE_UNSET_SLOT_LOCK)
-                GuiSortingContext.invalidateCurrent()
+                Utils.invalidateSortingContext()
                 Interactable.Result.SUCCESS
             } else if (!isSlotLocked && mouseButton == 0) {
                 wrapper.setSlotLocked(slot.slotIndex, true)
                 syncHandler.syncToServer(BackpackSlotSH.UPDATE_SET_SLOT_LOCK)
-                GuiSortingContext.invalidateCurrent()
+                Utils.invalidateSortingContext()
                 Interactable.Result.SUCCESS
             } else Interactable.Result.STOP
         } else if (isInSettingMode) {

@@ -1,9 +1,11 @@
 package com.cleanroommc.retrosophisticatedbackpacks.util
 
+import com.cleanroommc.bogosorter.common.sort.GuiSortingContext
 import com.cleanroommc.modularui.theme.WidgetTheme
 import com.cleanroommc.modularui.theme.WidgetThemeEntry
 import com.cleanroommc.modularui.widget.Widget
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
+import net.minecraftforge.fml.common.Loader
 import java.util.function.Predicate
 import kotlin.math.absoluteValue
 import kotlin.math.sign
@@ -15,6 +17,12 @@ object Utils {
     fun Int.ceilDiv(other: Int): Int =
         this.floorDiv(other) + this.rem(other).sign.absoluteValue
 
+    fun invalidateSortingContext() {
+        if (Loader.isModLoaded("bogosorter")) {
+            GuiSortingContext.invalidateCurrent()
+        }
+    }
+    
     /**
      * Sets both a predicate for whether the widget should be enabled, and the current enabled value for this widget to what the predicate outputs.
      * @see Widget.setEnabledIf

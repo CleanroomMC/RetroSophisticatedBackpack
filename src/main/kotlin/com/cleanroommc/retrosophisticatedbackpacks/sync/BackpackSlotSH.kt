@@ -1,9 +1,9 @@
 package com.cleanroommc.retrosophisticatedbackpacks.sync
 
-import com.cleanroommc.bogosorter.common.sort.GuiSortingContext
 import com.cleanroommc.modularui.value.sync.ItemSlotSH
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils
 import net.minecraft.network.PacketBuffer
 
 class BackpackSlotSH(private val wrapper: BackpackWrapper, slot: ModularSlot) : ItemSlotSH(slot) {
@@ -20,22 +20,22 @@ class BackpackSlotSH(private val wrapper: BackpackWrapper, slot: ModularSlot) : 
                 val respectNBT = buf.readBoolean()
 
                 wrapper.setMemoryStack(slot.slotIndex, respectNBT)
-                GuiSortingContext.invalidateCurrent()
+                Utils.invalidateSortingContext()
             }
 
             UPDATE_UNSET_MEMORY_STACK -> {
                 wrapper.unsetMemoryStack(slot.slotIndex)
-                GuiSortingContext.invalidateCurrent()
+                Utils.invalidateSortingContext()
             }
 
             UPDATE_SET_SLOT_LOCK -> {
                 wrapper.setSlotLocked(slot.slotIndex, true)
-                GuiSortingContext.invalidateCurrent()
+                Utils.invalidateSortingContext()
             }
 
             UPDATE_UNSET_SLOT_LOCK -> {
                 wrapper.setSlotLocked(slot.slotIndex, false)
-                GuiSortingContext.invalidateCurrent()
+                Utils.invalidateSortingContext()
             }
 
             else -> super.readOnServer(id, buf)
