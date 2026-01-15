@@ -496,7 +496,7 @@ class BackpackPanel(
                     )
                         tabWidget.expandedWidget = FilterUpgradeWidget(slotIndex, wrapper)
                 }
-                
+
                 is AdvancedVoidUpgradeWrapper -> {
                     upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
                     if (updateAndCheckRecreation<AdvancedVoidUpgradeWidget, AdvancedVoidUpgradeWrapper>(
@@ -571,13 +571,13 @@ class BackpackPanel(
     }
 
     private fun disableUnusedTabWidgets(startTabIndex: Int) {
-        for (i in startTabIndex until backpackWrapper.upgradeSlotsSize()) {
+        for (i in startTabIndex..<backpackWrapper.upgradeSlotsSize()) {
             tabWidgets[i].isEnabled = false
         }
     }
 
     private fun syncToggles() {
-        for (i in 0 until backpackWrapper.upgradeSlotsSize()) {
+        for (i in 0..<backpackWrapper.upgradeSlotsSize()) {
             val toggleWidget = upgradeSlotGroupWidget.toggleWidgets[i]
             val wrapper = toggleWidget.getWrapper()
 
@@ -601,26 +601,22 @@ class BackpackPanel(
     }
 
     fun getOpenCraftingUpgradeSlot(): Int? {
-
-        for (slotIndex in 0 until backpackWrapper.upgradeSlotsSize()) {
+        for (slotIndex in 0..<backpackWrapper.upgradeSlotsSize()) {
             val slot = upgradeSlotWidgets[slotIndex]
-            val stack: ItemStack = slot.slot.stack
+            val stack = slot.slot.stack
             val item = stack.item
 
-            if (!(item is UpgradeItem && item.hasTab)) {
+            if (!(item is UpgradeItem && item.hasTab))
                 continue
-            }
 
-            val wrapper: UpgradeWrapper<*> = stack.getCapability(Capabilities.UPGRADE_CAPABILITY, null) ?: continue
+            val wrapper = stack.getCapability(Capabilities.UPGRADE_CAPABILITY, null) ?: continue
 
-            if (wrapper is CraftingUpgradeWrapper && wrapper.isTabOpened) {
+            if (wrapper is CraftingUpgradeWrapper && wrapper.isTabOpened)
                 return slotIndex
-            }
         }
         return null
     }
 
-    fun getCraftingInfo(slotIndex: Int): CraftingSlotInfo {
-        return upgradeSlotGroups[slotIndex].craftingInfo
-    }
+    fun getCraftingInfo(slotIndex: Int): CraftingSlotInfo =
+        upgradeSlotGroups[slotIndex].craftingInfo
 }
