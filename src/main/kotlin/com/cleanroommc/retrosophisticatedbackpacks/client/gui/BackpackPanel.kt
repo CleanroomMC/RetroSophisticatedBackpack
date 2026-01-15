@@ -139,10 +139,9 @@ class BackpackPanel(
                 it
             ).slotGroup("upgrade_inventory")
             val syncHandler = UpgradeSlotSH(upgradeSlot)
-            val index = it
             upgradeSlot.changeListener { lastStack, _, isClient, init ->
                 if (isClient)
-                    updateUpgradeWidgets(index, lastStack)
+                    updateUpgradeWidgets()
             }
 
             syncManager.syncValue("upgrades", it, syncHandler)
@@ -388,7 +387,7 @@ class BackpackPanel(
     }
 
 
-    private fun updateUpgradeWidgets(index: Int?, lastStack: ItemStack?) {
+    private fun updateUpgradeWidgets() {
         var tabIndex = 0
         var openedTabIndex: Int? = null
 
@@ -496,6 +495,26 @@ class BackpackPanel(
                         )
                     )
                         tabWidget.expandedWidget = FilterUpgradeWidget(slotIndex, wrapper)
+                }
+                
+                is AdvancedVoidUpgradeWrapper -> {
+                    upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
+                    if (updateAndCheckRecreation<AdvancedVoidUpgradeWidget, AdvancedVoidUpgradeWrapper>(
+                            tabWidget.expandedWidget,
+                            wrapper
+                        )
+                    )
+                        tabWidget.expandedWidget = AdvancedVoidUpgradeWidget(slotIndex, wrapper)
+                }
+
+                is VoidUpgradeWrapper -> {
+                    upgradeSlotGroup.updateFilterDelegate(wrapper)
+                    if (updateAndCheckRecreation<VoidUpgradeWidget, VoidUpgradeWrapper>(
+                            tabWidget.expandedWidget,
+                            wrapper
+                        )
+                    )
+                        tabWidget.expandedWidget = VoidUpgradeWidget(slotIndex, wrapper)
                 }
 
                 is IAdvancedFilterable -> {

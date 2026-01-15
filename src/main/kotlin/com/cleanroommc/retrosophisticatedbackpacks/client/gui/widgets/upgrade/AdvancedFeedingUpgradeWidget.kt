@@ -16,7 +16,7 @@ class AdvancedFeedingUpgradeWidget(
     slotIndex,
     wrapper,
     ItemStack(Items.advancedFeedingUpgrade),
-    "gui.advanced_feeding_settings".asTranslationKey(),
+    wrapper.settingsLangKey,
     coveredTabSize = 6,
     filterSyncKey = "adv_feeding_filter"
 ) {

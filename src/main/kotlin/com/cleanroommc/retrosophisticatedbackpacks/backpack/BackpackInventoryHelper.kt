@@ -135,8 +135,6 @@ object BackpackInventoryHelper {
             }
 
             for (j in 0 until wrapper.backpackInventorySize()) {
-                stack = wrapper.backpackItemStackHandler.insertItemToMemorySlots(stack, false)
-
                 if (transferMatched && wrapper.getStackInSlot(j).isEmpty)
                     continue
 
@@ -232,11 +230,16 @@ object BackpackInventoryHelper {
             var copiedSourceStack = sourceStack.copy()
 
             if (wrapper.canRestock(copiedSourceStack)) {
-                copiedSourceStack = ItemHandlerHelper.insertItemStacked(backpackInventory, copiedSourceStack, false)
+                for (slotIndex in 0 ..< wrapper.backpackInventorySize()) {
+                    copiedSourceStack = backpackInventory.insertItem(slotIndex, copiedSourceStack, false)
 
-                if (!ItemStack.areItemStacksEqual(sourceStack, copiedSourceStack)) {
-                    transferred = true
-                    source.setStackInSlot(i, copiedSourceStack)
+                    if (!ItemStack.areItemStacksEqual(sourceStack, copiedSourceStack)) {
+                        transferred = true
+                        source.setStackInSlot(i, copiedSourceStack)
+                    }
+                    
+                    if (copiedSourceStack.isEmpty)
+                        break
                 }
             }
         }

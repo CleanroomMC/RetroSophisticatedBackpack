@@ -6,16 +6,19 @@ import com.cleanroommc.modularui.ModularUI
 import com.cleanroommc.modularui.screen.ModularContainer
 import com.cleanroommc.modularui.utils.Platform
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
+import com.cleanroommc.modularui.widgets.slot.PlayerSlotGroup
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.CraftingUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IVoidUpgrade
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.IndexedInventoryCraftingWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.IndexedModularCraftingSlot
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularBackpackSlot
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularBackpackSlotWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularUpgradeSlot
+import com.cleanroommc.retrosophisticatedbackpacks.item.UpgradeItem
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.inventory.ClickType
-import net.minecraft.inventory.Container
 import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.CraftingManager
@@ -26,7 +29,7 @@ import kotlin.math.min
 class BackpackContainer(private val wrapper: BackpackWrapper, private val backpackSlotIndex: Int?) :
     ModularContainer() {
     companion object {
-        private val DROP_TO_WORLD: Int = -999
+        private const val DROP_TO_WORLD: Int = -999
         private const val LEFT_MOUSE: Int = 0
         private const val RIGHT_MOUSE: Int = 1
     }
@@ -51,16 +54,15 @@ class BackpackContainer(private val wrapper: BackpackWrapper, private val backpa
     override fun onCraftMatrixChanged(inventoryIn: IInventory) {
         if (!guiData.isClient && inventoryIn is IndexedInventoryCraftingWrapper) {
             val playerMP = player as EntityPlayerMP
-            val inventoryCrafting: IndexedInventoryCraftingWrapper = inventoryIn
-            var stack: ItemStack = Platform.EMPTY_STACK
-            val recipe = CraftingManager.findMatchingRecipe(inventoryCrafting, player.world)
+            var stack = Platform.EMPTY_STACK
+            val recipe = CraftingManager.findMatchingRecipe(inventoryIn, player.world)
 
             if (recipe != null && (recipe.isDynamic || !player.world.gameRules.getBoolean("doLimitedCrafting") || playerMP.recipeBook.isUnlocked(
                     recipe
                 ))
             ) {
-                craftingSlotInstances[inventoryCrafting.upgradeSlotIndex]?.setRecipeUsed(recipe)
-                stack = recipe.getCraftingResult(inventoryCrafting)
+                craftingSlotInstances[inventoryIn.upgradeSlotIndex]?.setRecipeUsed(recipe)
+                stack = recipe.getCraftingResult(inventoryIn)
             }
             inventoryIn.setSlot(9, stack, false)
         }
@@ -76,6 +78,40 @@ class BackpackContainer(private val wrapper: BackpackWrapper, private val backpa
         ) {
             val clickedSlot = getSlot(slotId)
             val slotStack = clickedSlot.stack
+
+            if (clickedSlot is ModularBackpackSlot && wrapper.canVoid(
+                    heldStack,
+                    IVoidUpgrade.TransferSource.ALL,
+                    IVoidUpgrade.VoidType.ANY
+                )
+            ) {
+                playerInventory.itemStack = ItemStack.EMPTY
+                detectAndSendChanges()
+                return ItemStack.EMPTY
+            }
+
+            if (clickedSlot is ModularBackpackSlot && wrapper.canVoid(
+                    heldStack,
+                    IVoidUpgrade.TransferSource.ALL,
+                    IVoidUpgrade.VoidType.OVERFLOW
+                )
+            ) {
+                if (slotStack.isEmpty) {
+                    playerInventory.itemStack = ItemStack.EMPTY
+                    detectAndSendChanges()
+                    return ItemStack.EMPTY
+                }
+
+                if (ItemHandlerHelper.canItemStacksStack(slotStack, heldStack)) {
+                    val free = clickedSlot.getItemStackLimit(slotStack) - slotStack.count
+                    val toRemove = min(heldStack.count, free)
+                    playerInventory.itemStack = ItemStack.EMPTY
+                    slotStack.count += toRemove
+                    clickedSlot.onSlotChanged()
+                    detectAndSendChanges()
+                    return ItemStack.EMPTY
+                }
+            }
 
             if (clickedSlot is ModularBackpackSlot && !slotStack.isEmpty && heldStack.isEmpty) {
                 val s = min(slotStack.count, clickedSlot.getItemStackLimit(slotStack))
@@ -109,7 +145,7 @@ class BackpackContainer(private val wrapper: BackpackWrapper, private val backpa
                             continue
                         }
 
-                        if (slot1.hasStack && Container.canAddItemToSlot(slot1, heldStack, true) &&
+                        if (slot1.hasStack && canAddItemToSlot(slot1, heldStack, true) &&
                             slot1.canTakeStack(player) && canMergeSlot(heldStack, slot1)
                         ) {
                             val itemstack2 = slot1.stack
@@ -156,27 +192,30 @@ class BackpackContainer(private val wrapper: BackpackWrapper, private val backpa
 
             if (inventoryCrafting == null) {
                 // Shouldn't normally happen, but just in case...
-                return transferItemFiltered(fromSlot, fromStack) {
-                    it.slotGroupName == "player_inventory"
-                }
+                return transferItemFiltered(fromSlot, fromStack, false, {
+                    it.slotGroup is PlayerSlotGroup
+                })
             } else if (inventoryCrafting.craftingDestination == CraftingUpgradeWrapper.CraftingDestination.BACKPACK) {
                 // Force transfer to backpack at all costs
-                return transferItemFiltered(fromSlot, fromStack, {
+                return transferItemFiltered(fromSlot, fromStack, true, {
                     it is ModularBackpackSlot && wrapper.isSlotMemorized(it.slotIndex)
                 }, {
                     it is ModularBackpackSlot
                 })
             } else {
                 // Force transfer to player inventory at all costs
-                return transferItemFiltered(fromSlot, fromStack) {
-                    it.slotGroupName == "player_inventory"
-                }
+                return transferItemFiltered(fromSlot, fromStack, false, {
+                    it.slotGroup is PlayerSlotGroup
+                })
             }
-        } else if (fromSlot.slotGroupName == "player_inventory") {
-            return transferItemFiltered(fromSlot, fromStack) {
-                if (it !is ModularBackpackSlot) false
-                else wrapper.isSlotMemorized(it.slotIndex)
-            }
+        } else if (fromSlot.slotGroup is PlayerSlotGroup) {
+            return transferItemFiltered(fromSlot, fromStack, true, {
+                it is ModularUpgradeSlot
+            }, {
+                it is ModularBackpackSlot && wrapper.isSlotMemorized(it.slotIndex)
+            }, {
+                it is ModularBackpackSlot
+            })
         }
 
         return super.transferItem(fromSlot, fromStack)
@@ -189,13 +228,29 @@ class BackpackContainer(private val wrapper: BackpackWrapper, private val backpa
     fun transferItemFiltered(
         fromSlot: ModularSlot,
         fromStack: ItemStack,
+        respectVoiding: Boolean,
         vararg slotFilters: (ModularSlot) -> Boolean
     ): ItemStack {
         val fromSlotGroup = fromSlot.slotGroup
-        for (slotFilter in slotFilters) {
-            val memorizedSlots = shiftClickSlots.filter(slotFilter)
+        val isUpgradeSlotFree =
+            fromStack.item is UpgradeItem && wrapper.upgradeItemStackHandler.inventory.any { it == ItemStack.EMPTY }
 
-            for (toSlot in memorizedSlots) {
+        // Avoiding upgrade item transferring to upgrade slot if there's free upgrade slot and the shift clicked item stack
+        // is an upgrade item
+        if (respectVoiding && !isUpgradeSlotFree && wrapper.canVoid(
+                fromStack,
+                IVoidUpgrade.TransferSource.ALL,
+                IVoidUpgrade.VoidType.ANY
+            )
+        ) return ItemStack.EMPTY
+
+        val shouldVoidRemaining =
+            wrapper.canVoid(fromStack, IVoidUpgrade.TransferSource.ALL, IVoidUpgrade.VoidType.OVERFLOW)
+
+        for (slotFilter in slotFilters) {
+            val filteredSlot = shiftClickSlots.filter(slotFilter)
+
+            for (toSlot in filteredSlot) {
                 val slotGroup = toSlot.slotGroup
                 if (slotGroup !== fromSlotGroup && toSlot.isEnabled && toSlot.isItemValid(fromStack)) {
                     val toStack = toSlot.stack.copy()
@@ -210,26 +265,32 @@ class BackpackContainer(private val wrapper: BackpackWrapper, private val backpa
                         }
                     } else if (ItemHandlerHelper.canItemStacksStack(fromStack, toStack)) {
                         val j = toStack.count + fromStack.count
-                        val maxSize: Int =
-                            toSlot.getItemStackLimit(fromStack) //Math.min(toSlot.getSlotStackLimit(), fromStack.getMaxStackSize());
+                        val maxSize = toSlot.getItemStackLimit(fromStack)
 
                         if (j <= maxSize) {
-                            fromStack.setCount(0)
-                            toStack.setCount(j)
+                            fromStack.count = 0
+                            toStack.count = j
                             toSlot.putStack(toStack)
                         } else if (toStack.count < maxSize) {
                             fromStack.shrink(maxSize - toStack.count)
-                            toStack.setCount(maxSize)
+                            toStack.count = maxSize
                             toSlot.putStack(toStack)
                         }
 
                         if (fromStack.isEmpty)
                             return fromStack
+                        else if (!fromStack.isEmpty && respectVoiding && shouldVoidRemaining) {
+                            fromStack.count = 0
+                            return fromStack
+                        }
                     }
                 }
             }
 
-            for (emptySlot in memorizedSlots) {
+            if (respectVoiding && shouldVoidRemaining)
+                continue
+            
+            for (emptySlot in filteredSlot) {
                 val stack = emptySlot.stack
                 val slotGroup = emptySlot.slotGroup
                 if (slotGroup !== fromSlotGroup && emptySlot.isEnabled && stack.isEmpty && emptySlot.isItemValid(
@@ -247,74 +308,12 @@ class BackpackContainer(private val wrapper: BackpackWrapper, private val backpa
                 }
             }
         }
-        return super.transferItem(fromSlot, fromStack)
-    }
-
-    /**
-     * Attempts to transfer the provided stack from the provided slot to another available slot, based on shift priority and the provided filter.
-     * @param fromSlot The slot being transferred from.
-     * @param fromStack The stack being transferred.
-     * @param slotFilter The filter to choose what slots are available as destinations.
-     */
-    fun transferItemFiltered(
-        fromSlot: ModularSlot,
-        fromStack: ItemStack,
-        slotFilter: (ModularSlot) -> Boolean
-    ): ItemStack {
-        val fromSlotGroup = fromSlot.slotGroup
-        val memorizedSlots = shiftClickSlots.filter(slotFilter)
-
-        for (toSlot in memorizedSlots) {
-            val slotGroup = toSlot.slotGroup
-            if (slotGroup !== fromSlotGroup && toSlot.isEnabled && toSlot.isItemValid(fromStack)) {
-                val toStack = toSlot.stack.copy()
-                if (toSlot.isPhantom) {
-                    if (toStack.isEmpty || (ItemHandlerHelper.canItemStacksStack(
-                            fromStack,
-                            toStack
-                        ) && toStack.count < toSlot.getItemStackLimit(toStack))
-                    ) {
-                        toSlot.putStack(fromStack.copy())
-                        return fromStack
-                    }
-                } else if (ItemHandlerHelper.canItemStacksStack(fromStack, toStack)) {
-                    val j = toStack.count + fromStack.count
-                    val maxSize: Int =
-                        toSlot.getItemStackLimit(fromStack) //Math.min(toSlot.getSlotStackLimit(), fromStack.getMaxStackSize());
-
-                    if (j <= maxSize) {
-                        fromStack.setCount(0)
-                        toStack.setCount(j)
-                        toSlot.putStack(toStack)
-                    } else if (toStack.count < maxSize) {
-                        fromStack.shrink(maxSize - toStack.count)
-                        toStack.setCount(maxSize)
-                        toSlot.putStack(toStack)
-                    }
-
-                    if (fromStack.isEmpty)
-                        return fromStack
-                }
-            }
+        
+        if (respectVoiding && shouldVoidRemaining) {
+            fromStack.count = 0
+            return fromStack
         }
-
-        for (emptySlot in memorizedSlots) {
-            val stack = emptySlot.stack
-            val slotGroup = emptySlot.slotGroup
-            if (slotGroup !== fromSlotGroup && emptySlot.isEnabled && stack.isEmpty && emptySlot.isItemValid(
-                    fromStack
-                )
-            ) {
-                if (fromStack.count > emptySlot.getItemStackLimit(fromStack)) {
-                    emptySlot.putStack(fromStack.splitStack(emptySlot.getItemStackLimit(fromStack)))
-                } else {
-                    emptySlot.putStack(fromStack.splitStack(fromStack.count))
-                }
-                if (fromStack.count < 1) {
-                    return fromStack
-                }
-            }
-        }
+        
         return super.transferItem(fromSlot, fromStack)
     }
 

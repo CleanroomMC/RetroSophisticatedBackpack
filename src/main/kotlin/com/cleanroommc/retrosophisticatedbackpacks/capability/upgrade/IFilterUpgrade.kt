@@ -21,8 +21,7 @@ sealed interface IFilterUpgrade : ISidelessCapabilityProvider, IToggleable, INBT
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =
         capability == Capabilities.IFILTER_UPGRADE_CAPABILITY
-
-
+    
     enum class FilterWayType {
         IN_OUT,
         IN,

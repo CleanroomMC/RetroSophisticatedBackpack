@@ -9,6 +9,10 @@ import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.INBTSerializable
 import net.minecraftforge.items.IItemHandler
 
+sealed interface IFeedingUpgrade : IToggleable, ISidelessCapabilityProvider, INBTSerializable<NBTTagCompound> {
+    // This considers upgrade's settings, and split 1 food from (backpack only) inventory and returns it
+    // if it meets requirements
+    fun getFeedingStack(handler: IItemHandler, foodLevel: Int, health: Float, maxHealth: Float): ItemStack
 sealed interface IFeedingUpgrade : ISidelessCapabilityProvider, INBTSerializable<NBTTagCompound> {
 
     /**

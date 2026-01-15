@@ -62,7 +62,7 @@ object EntityEventHandler {
     private fun attemptPickup(targetInventory: IItemHandler, stack: ItemStack): ItemStack {
         var stack = stack
 
-        for (i in 0 until targetInventory.slots) {
+        targetInv@for (i in 0 until targetInventory.slots) {
             val backpackStack = targetInventory.getStackInSlot(i)
 
             if (backpackStack.item !is BackpackItem)
@@ -72,16 +72,13 @@ object EntityEventHandler {
 
             if (!wrapper.canPickupItem(stack))
                 continue
-
-            var slotIndex = 0
-            while (!stack.isEmpty && slotIndex < wrapper.slots) {
-                stack = wrapper.backpackItemStackHandler.prioritizedInsertion(slotIndex, stack, false)
-
-                slotIndex++
+            
+            for (slotIndex in 0..<wrapper.backpackInventorySize()) {
+                stack = wrapper.backpackItemStackHandler.insertItem(slotIndex, stack, false)
+                
+                if (stack.isEmpty)
+                    break@targetInv
             }
-
-            if (stack.isEmpty)
-                break
         }
 
         return stack

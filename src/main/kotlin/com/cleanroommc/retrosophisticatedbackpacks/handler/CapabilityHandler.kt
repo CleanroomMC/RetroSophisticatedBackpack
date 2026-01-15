@@ -101,6 +101,18 @@ object CapabilityHandler {
             CapabilityStorageProvider<AdvancedFilterUpgradeWrapper>(),
             ::AdvancedFilterUpgradeWrapper
         )
+        
+        instance.register(
+            VoidUpgradeWrapper::class.java,
+            CapabilityStorageProvider<VoidUpgradeWrapper>(),
+            ::VoidUpgradeWrapper
+        )
+        
+        instance.register(
+            AdvancedVoidUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AdvancedVoidUpgradeWrapper>(),
+            ::AdvancedVoidUpgradeWrapper
+        )
 
         // Interfaces
         instance.register(
@@ -151,6 +163,12 @@ object CapabilityHandler {
             IFilterUpgrade::class.java,
             NOPCapabilityStorage<IFilterUpgrade>(),
             ::FilterUpgradeWrapper
+        )
+        
+        instance.register(
+            IVoidUpgrade::class.java,
+            NOPCapabilityStorage<IVoidUpgrade>(),
+            ::VoidUpgradeWrapper
         )
     }
 

@@ -8,7 +8,7 @@ import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.INBTSerializable
 
-sealed interface IRestockUpgrade : ISidelessCapabilityProvider, INBTSerializable<NBTTagCompound> {
+sealed interface IRestockUpgrade : IToggleable, ISidelessCapabilityProvider, INBTSerializable<NBTTagCompound> {
     fun canRestock(stack: ItemStack): Boolean
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =

@@ -56,9 +56,11 @@ class BackpackTileEntity(val wrapper: BackpackWrapper = BackpackWrapper()) :
 
     @Suppress("UNCHECKED_CAST")
     override fun <T> getCapability(capability: Capability<T>, facing: EnumFacing?): T? =
-        if (capability == Capabilities.BACKPACK_CAPABILITY) wrapper as T
-        else if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) this as T
-        else null
+        when (capability) {
+            Capabilities.BACKPACK_CAPABILITY -> wrapper as T
+            CapabilityItemHandler.ITEM_HANDLER_CAPABILITY -> this as T
+            else -> null
+        }
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =
         wrapper.hasCapability(capability, facing)
@@ -103,7 +105,7 @@ class BackpackTileEntity(val wrapper: BackpackWrapper = BackpackWrapper()) :
         stack: ItemStack,
         simulate: Boolean
     ): ItemStack =
-        if (wrapper.canInsert(stack)) wrapper.backpackItemStackHandler.prioritizedInsertion(slot, stack, simulate)
+        if (wrapper.canInsert(stack)) wrapper.backpackItemStackHandler.insertItem(slot, stack, simulate)
         else stack
 
     override fun extractItem(

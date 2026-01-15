@@ -1,6 +1,7 @@
 package com.cleanroommc.retrosophisticatedbackpacks.inventory
 
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IVoidUpgrade
 import com.cleanroommc.retrosophisticatedbackpacks.config.Config
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
 import net.minecraft.item.ItemStack
@@ -22,25 +23,26 @@ class BackpackItemStackHandler(size: Int, private val wrapper: BackpackWrapper) 
     override fun getStackLimit(slotIndex: Int, stack: ItemStack): Int =
         stacks[slotIndex].maxStackSize * wrapper.getTotalStackMultiplier()
 
-    /**
-     * Prioritize insertion by tries inserting on memorized slot first.
-     *
-     * Only used by backpack tile entity for other block's insertion interaction, to prevent
-     * gui-based interaction get unexpected insertion result.
-     */
-    fun prioritizedInsertion(slotIndex: Int, stack: ItemStack, simulate: Boolean): ItemStack {
-        val stack = insertItemToMemorySlots(stack, simulate)
-        return insertItem(slotIndex, stack, simulate)
-    }
-
-    fun insertItemToMemorySlots(stack: ItemStack, simulate: Boolean): ItemStack {
+    private fun insertItemToMemorySlots(stack: ItemStack, simulate: Boolean): ItemStack {
+        val shouldVoidIfOverflow = wrapper.canVoid(
+            stack,
+            IVoidUpgrade.TransferSource.UPGRADE_OR_WORLD_INTERACTION,
+            IVoidUpgrade.VoidType.OVERFLOW
+        )
         var stack = stack
+
+        if (stack.isEmpty)
+            return ItemStack.EMPTY
 
         for ((slotIndex, memorizedStack) in memorizedSlotStack.withIndex()) {
             if (memorizedStack.isEmpty || !ItemStack.areItemsEqual(stack, memorizedStack))
                 continue
 
+            val beforeSize = stack.count
             stack = insertItem(slotIndex, stack, simulate)
+
+            if (shouldVoidIfOverflow && stack.count < beforeSize)
+                return ItemStack.EMPTY
 
             if (stack.isEmpty)
                 return stack
@@ -49,40 +51,47 @@ class BackpackItemStackHandler(size: Int, private val wrapper: BackpackWrapper) 
         return stack
     }
 
+    private fun insertItemRespectOverflowVoiding(stack: ItemStack, simulate: Boolean): ItemStack {
+        if (!wrapper.canVoid(
+                stack,
+                IVoidUpgrade.TransferSource.UPGRADE_OR_WORLD_INTERACTION,
+                IVoidUpgrade.VoidType.OVERFLOW
+            )
+        )
+            return stack
+
+        var firstEmptySlotIndex: Int? = null
+
+        if (stack.isEmpty)
+            return ItemStack.EMPTY
+
+        for (slotIndex in 0..<slots) {
+            val slotStack = getStackInSlot(slotIndex)
+
+            if (ItemHandlerHelper.canItemStacksStack(slotStack, stack)) {
+                if (slotStack.count < getStackLimit(slotIndex, slotStack))
+                    super.insertItem(slotIndex, stack, simulate)
+                return ItemStack.EMPTY
+            } else if (slotStack.isEmpty && firstEmptySlotIndex == null)
+                firstEmptySlotIndex = slotIndex
+        }
+
+        if (firstEmptySlotIndex != null)
+            return super.insertItem(firstEmptySlotIndex, stack, simulate)
+
+        return ItemStack.EMPTY
+    }
+
     override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {
         if (stack.isEmpty)
             return ItemStack.EMPTY
 
-        validateSlotIndex(slot)
+        if (wrapper.canVoid(stack, IVoidUpgrade.TransferSource.UPGRADE_OR_WORLD_INTERACTION, IVoidUpgrade.VoidType.ANY))
+            return ItemStack.EMPTY
 
-        val existing = stacks[slot]
-        var limit = getStackLimit(slot, stack)
-
-        if (!existing.isEmpty) {
-            if (!ItemHandlerHelper.canItemStacksStack(stack, existing))
-                return stack
-
-            limit -= existing.count
-        }
-
-        if (limit <= 0) return stack
-
-        val reachedLimit = stack.count > limit
-
-        if (!simulate) {
-            if (existing.isEmpty) {
-                stacks[slot] =
-                    if (reachedLimit) ItemHandlerHelper.copyStackWithSize(stack, limit)
-                    else stack
-            } else {
-                existing.grow(if (reachedLimit) limit else stack.count)
-            }
-
-            onContentsChanged(slot)
-        }
-
-        return if (reachedLimit) ItemHandlerHelper.copyStackWithSize(stack, stack.count - limit)
-        else ItemStack.EMPTY
+        var stack = insertItemToMemorySlots(stack, simulate)
+        stack = insertItemRespectOverflowVoiding(stack, simulate)
+        return super.insertItem(slot, stack, simulate)
     }
 
     override fun extractItem(slotIndex: Int, amount: Int, simulate: Boolean): ItemStack {

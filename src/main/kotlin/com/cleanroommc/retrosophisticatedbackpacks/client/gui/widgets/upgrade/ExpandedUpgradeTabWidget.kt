@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack
 
 abstract class ExpandedUpgradeTabWidget<U>(
     slotIndex: Int,
-    wrap: U,
+    wrapper: U,
     coveredTabSize: Int,
     delegatedIconStack: ItemStack,
     titleKey: String,
@@ -21,7 +21,7 @@ abstract class ExpandedUpgradeTabWidget<U>(
     width
 ) where U : UpgradeWrapper<*> {
     protected var slotSyncHandler: UpgradeSlotSH? = null
-    open var wrapper: U = wrap
+    open var wrapper: U = wrapper
         set(value) {
             field = value
             onWrapperChange(value)
@@ -38,9 +38,9 @@ abstract class ExpandedUpgradeTabWidget<U>(
      * @return whether the cast was a success.
      */
     fun consumePossibleWrapper(after: Any): Boolean {
-        if (after::class == wrapper::class) {
+        if (after::class == this@ExpandedUpgradeTabWidget.wrapper::class) {
             @Suppress("UNCHECKED_CAST")
-            wrapper = after as U
+            this@ExpandedUpgradeTabWidget.wrapper = after as U
             return true
         }
         return false
@@ -51,9 +51,9 @@ abstract class ExpandedUpgradeTabWidget<U>(
     }
 
     override fun updateTabState() {
-        wrapper.isTabOpened = !wrapper.isTabOpened
+        this@ExpandedUpgradeTabWidget.wrapper.isTabOpened = !this@ExpandedUpgradeTabWidget.wrapper.isTabOpened
         slotSyncHandler?.syncToServer(UpgradeSlotSH.UPDATE_UPGRADE_TAB_STATE) {
-            it.writeBoolean(wrapper.isTabOpened)
+            it.writeBoolean(this@ExpandedUpgradeTabWidget.wrapper.isTabOpened)
         }
     }
 

@@ -1,0 +1,39 @@
+package com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade
+
+import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IVoidUpgrade.TransferSource
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IVoidUpgrade.VoidType
+import com.cleanroommc.retrosophisticatedbackpacks.item.VoidUpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
+import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.EnumFacing
+import net.minecraftforge.common.capabilities.Capability
+
+class VoidUpgradeWrapper() : BasicUpgradeWrapper<VoidUpgradeItem>(), IVoidUpgrade {
+    override val settingsLangKey: String = "gui.void_settings".asTranslationKey()
+    override var transferSource: TransferSource = TransferSource.UPGRADE_OR_WORLD_INTERACTION
+    override var voidType: VoidType = VoidType.ANY
+
+    override fun canVoid(stack: ItemStack, transferSource: TransferSource, voidType: VoidType): Boolean =
+        checkFilter(stack) && this.voidType == voidType &&
+                (this.transferSource == TransferSource.ALL || this.transferSource == transferSource)
+
+    override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =
+        capability == Capabilities.VOID_UPGRADE_CAPABILITY ||
+                super<IVoidUpgrade>.hasCapability(capability, facing) ||
+                super<BasicUpgradeWrapper>.hasCapability(capability, facing)
+
+    override fun serializeNBT(): NBTTagCompound {
+        val nbt = super.serializeNBT()
+        nbt.setByte(IVoidUpgrade.TRANSFER_SOURCE_TAG, transferSource.ordinal.toByte())
+        nbt.setByte(IVoidUpgrade.VOID_TYPE_TAG, voidType.ordinal.toByte())
+        return nbt
+    }
+
+    override fun deserializeNBT(nbt: NBTTagCompound) {
+        super.deserializeNBT(nbt)
+        transferSource = TransferSource.entries[nbt.getByte(IVoidUpgrade.TRANSFER_SOURCE_TAG).toInt()]
+        voidType = VoidType.entries[nbt.getByte(IVoidUpgrade.VOID_TYPE_TAG).toInt()]
+    }
+}

@@ -1,6 +1,8 @@
 package com.cleanroommc.retrosophisticatedbackpacks.capability
 
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.SortType
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IToggleable
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IVoidUpgrade
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.BackpackItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.UpgradeItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
@@ -19,6 +21,7 @@ import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.INBTSerializable
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
+import net.minecraftforge.items.ItemHandlerHelper
 import java.util.*
 
 class BackpackWrapper(
@@ -34,7 +37,7 @@ class BackpackWrapper(
 
         private const val MAIN_COLOR_TAG = "MainColor"
         private const val ACCENT_COLOR_TAG = "AccentColor"
-        
+
         private const val MEMORY_STACK_ITEMS_TAG = "MemoryItems"
         private const val MEMORY_STACK_RESPECT_NBT_TAG = "MemoryRespectNBT"
         private const val SORT_TYPE_TAG = "SortType"
@@ -142,10 +145,12 @@ class BackpackWrapper(
 
     fun canPickupItem(stack: ItemStack): Boolean =
         gatherCapabilityUpgrades(Capabilities.IPICKUP_UPGRADE_CAPABILITY)
+            .filter(IToggleable::enabled)
             .any { it.canPickup(stack) }
 
     fun feed(entity: EntityPlayer, handler: IItemHandler): Boolean {
         val feedingUpgrades = gatherCapabilityUpgrades(Capabilities.IFEEDING_UPGRADE_CAPABILITY)
+            .filter(IToggleable::enabled)
 
         for (upgrade in feedingUpgrades)
             return upgrade.feed(entity, handler)
@@ -155,29 +160,43 @@ class BackpackWrapper(
 
     fun canDeposit(slotIndex: Int): Boolean {
         val stack = getStackInSlot(slotIndex)
-        return gatherCapabilityUpgrades(Capabilities.IDEPOSIT_UPGRADE_CAPABILITY)
-            .any { it.canDeposit(stack) }
+        val depositUpgrades = gatherCapabilityUpgrades(Capabilities.IDEPOSIT_UPGRADE_CAPABILITY)
+            .filter(IToggleable::enabled)
+        
+        return depositUpgrades.any { it.canDeposit(stack) }
     }
 
     fun canRestock(stack: ItemStack): Boolean =
         gatherCapabilityUpgrades(Capabilities.IRESTOCK_UPGRADE_CAPABILITY)
+            .filter(IToggleable::enabled)
             .any { it.canRestock(stack) }
 
     fun canInsert(stack: ItemStack): Boolean {
         val filterUpgrades = gatherCapabilityUpgrades(Capabilities.IFILTER_UPGRADE_CAPABILITY)
-            .filter { it.enabled }
-
-        return if (filterUpgrades.isEmpty()) true
-        else filterUpgrades.any { it.canInsert(stack) }
+            .filter(IToggleable::enabled)
+        
+        return filterUpgrades.isEmpty() || filterUpgrades.any { it.canInsert(stack) }
     }
 
     fun canExtract(slotIndex: Int): Boolean {
         val stack = getStackInSlot(slotIndex)
         val filterUpgrades = gatherCapabilityUpgrades(Capabilities.IFILTER_UPGRADE_CAPABILITY)
-            .filter { it.enabled }
+            .filter(IToggleable::enabled)
 
-        return if (filterUpgrades.isEmpty()) true
-        else filterUpgrades.any { it.canInsert(stack) }
+        return filterUpgrades.isEmpty() || filterUpgrades.any { it.canExtract(stack) }
+    }
+
+    fun canVoid(
+        stack: ItemStack,
+        transferSource: IVoidUpgrade.TransferSource,
+        voidType: IVoidUpgrade.VoidType
+    ): Boolean {
+        val voidUpgrades = gatherCapabilityUpgrades(Capabilities.IVOID_UPGRADE_CAPABILITY)
+            .filter(IToggleable::enabled)
+
+        return voidUpgrades.any {
+            it.canVoid(stack, transferSource, voidType)
+        }
     }
 
     // Setting related
@@ -262,7 +281,7 @@ class BackpackWrapper(
         nbt.setTag(UPGRADE_SLOTS_TAG, upgradesNbt)
         nbt.setInteger(BACKPACK_INVENTORY_SIZE_TAG, backpackInventorySize())
         nbt.setInteger(UPGRADE_SLOTS_SIZE_TAG, upgradeSlotsSize())
-        
+
         nbt.setInteger(MAIN_COLOR_TAG, mainColor)
         nbt.setInteger(ACCENT_COLOR_TAG, accentColor)
 
@@ -295,7 +314,7 @@ class BackpackWrapper(
 
         backpackItemStackHandler = BackpackItemStackHandler(backpackInventorySize(), this)
         upgradeItemStackHandler = UpgradeItemStackHandler(upgradeSlotsSize())
-        
+
         mainColor = nbt.getInteger(MAIN_COLOR_TAG)
         accentColor = nbt.getInteger(ACCENT_COLOR_TAG)
 

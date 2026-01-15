@@ -8,18 +8,18 @@ import net.minecraft.item.ItemStack
 
 open class BasicExpandedTabWidget<T>(
     slotIndex: Int,
-    wrap: T,
+    wrapper: T,
     delegatedIconStack: ItemStack,
     titleKey: String,
     filterSyncKey: String = "common_filter",
     coveredTabSize: Int = 4,
     width: Int = 75,
-) : ExpandedUpgradeTabWidget<T>(slotIndex, wrap, coveredTabSize, delegatedIconStack, titleKey, width)
+) : ExpandedUpgradeTabWidget<T>(slotIndex, wrapper, coveredTabSize, delegatedIconStack, titleKey, width)
         where T : IBasicFilterable, T : UpgradeWrapper<*> {
     protected val startingRow: Row = Row()
         .height(0)
         .name("starting_row") as Row
-    protected val filterWidget: BasicFilterWidget = BasicFilterWidget(wrap, slotIndex, filterSyncKey)
+    protected val filterWidget: BasicFilterWidget = BasicFilterWidget(wrapper, slotIndex, filterSyncKey)
         .width(64)
         .coverChildrenHeight()
         .name("filter_widget")
