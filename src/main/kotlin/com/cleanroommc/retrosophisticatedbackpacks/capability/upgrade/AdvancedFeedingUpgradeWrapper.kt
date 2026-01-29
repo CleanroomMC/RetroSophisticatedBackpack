@@ -36,9 +36,6 @@ class AdvancedFeedingUpgradeWrapper : AdvancedUpgradeWrapper<FeedingUpgradeItem>
         for (i in 0 until size) {
             val stack = handler.getStackInSlot(i)
 
-            if (stack.isEmpty)
-                continue
-
             if (!checkFilter(stack))
                 continue
 
