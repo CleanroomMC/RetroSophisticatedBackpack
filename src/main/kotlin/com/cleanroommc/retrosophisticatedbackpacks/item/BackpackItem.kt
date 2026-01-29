@@ -34,6 +34,7 @@ import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.init.SoundEvents
 import net.minecraft.inventory.EntityEquipmentSlot
 import net.minecraft.item.ItemBlock
+import net.minecraft.item.ItemFood
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.*
@@ -179,12 +180,16 @@ class BackpackItem(
         if (!worldIn.isRemote && entityIn is EntityPlayerMP) {
             val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return
 
-            if (!wrapper.isCached) {
-                CapabilityHandler.cacheBackpackInventory(wrapper)
+            // Feeding upgrade logic
+            if (entityIn.ticksExisted % 20 == 0 && entityIn.canEat(false)) {
+                val feedingStack = wrapper.getFeedingStack(entityIn.foodStats.foodLevel, entityIn.health, entityIn.maxHealth)
+                if (!feedingStack.isEmpty)
+                    feedingStack.onItemUseFinish(worldIn, entityIn)
             }
-        }
 
-        super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected)
+            if (!wrapper.isCached)
+                CapabilityHandler.cacheBackpackInventory(wrapper)
+        }
     }
 
     override fun isValidArmor(stack: ItemStack, armorType: EntityEquipmentSlot, entity: Entity): Boolean =

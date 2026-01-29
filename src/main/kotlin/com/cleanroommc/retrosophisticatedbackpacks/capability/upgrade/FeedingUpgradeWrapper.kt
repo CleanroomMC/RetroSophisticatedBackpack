@@ -26,20 +26,26 @@ class FeedingUpgradeWrapper : BasicUpgradeWrapper<FeedingUpgradeItem>(), IFeedin
     override fun getFeedingStack(handler: IItemHandler, foodLevel: Int, health: Float, maxHealth: Float): ItemStack {
         val size = handler.slots
 
+        var candidateSlot = -1
+        var candidateHealingAmount = Integer.MAX_VALUE
         for (i in 0 until size) {
             val stack = handler.getStackInSlot(i)
 
-            if (stack.isEmpty)
+            if (!checkFilter(stack))
                 continue
 
             val item = stack.item as? ItemFood ?: continue
             val healingAmount = item.getHealAmount(stack)
 
-            if (healingAmount <= 20 - foodLevel && checkFilter(stack))
+            if (healingAmount <= 20 - foodLevel)
                 return handler.extractItem(i, 1, false)
+            else if (healingAmount < candidateHealingAmount) {
+                candidateSlot = i
+                candidateHealingAmount = healingAmount
+            }
         }
 
-        return ItemStack.EMPTY
+        return if (candidateSlot == -1) ItemStack.EMPTY else handler.extractItem(candidateSlot, 1, false)
     }
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =
