@@ -184,12 +184,10 @@ object BackpackInventoryHelper {
             return false
 
         for (i in 0 until backpackInventory.slots) {
-            if (wrapper.canDeposit(i)) {
-                val stack = wrapper.getStackInSlot(i)
-
-                if (stack.isEmpty)
-                    continue
-
+            val stack = wrapper.getStackInSlot(i)
+            if (stack.isEmpty)
+                continue
+            if (wrapper.canDeposit(stack)) {
                 var copiedStack = stack.copy()
                 copiedStack = ItemHandlerHelper.insertItemStacked(destination, copiedStack, false)
 
