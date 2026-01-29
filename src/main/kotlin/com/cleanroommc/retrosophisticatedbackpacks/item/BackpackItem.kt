@@ -297,6 +297,11 @@ class BackpackItem(
     }
 
     @Optional.Method(modid = "baubles")
+    override fun onWornTick(stack: ItemStack, player: EntityLivingBase) {
+        this.onUpdate(stack, player.world, player, -1, false)
+    }
+
+    @Optional.Method(modid = "baubles")
     override fun getBaubleType(stack: ItemStack): BaubleType =
         BaubleType.BODY
 
