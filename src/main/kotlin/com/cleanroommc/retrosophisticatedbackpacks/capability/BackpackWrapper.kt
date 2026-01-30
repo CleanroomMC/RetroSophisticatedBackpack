@@ -9,6 +9,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.item.InceptionUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.StackUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.util.BackpackItemStackHelper
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
+import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
@@ -143,17 +144,13 @@ class BackpackWrapper(
         gatherCapabilityUpgrades(Capabilities.IPICKUP_UPGRADE_CAPABILITY)
             .any { it.canPickup(stack) }
 
-    fun getFeedingStack(foodLevel: Int, health: Float, maxHealth: Float): ItemStack {
+    fun feed(entity: EntityPlayer, handler: IItemHandler): Boolean {
         val feedingUpgrades = gatherCapabilityUpgrades(Capabilities.IFEEDING_UPGRADE_CAPABILITY)
 
-        for (upgrade in feedingUpgrades) {
-            val feedingStack = upgrade.getFeedingStack(this, foodLevel, health, maxHealth)
+        for (upgrade in feedingUpgrades)
+            return upgrade.feed(entity, handler)
 
-            if (!feedingStack.isEmpty)
-                return feedingStack
-        }
-
-        return ItemStack.EMPTY
+        return false
     }
 
     fun canDeposit(slotIndex: Int): Boolean {

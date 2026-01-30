@@ -180,12 +180,8 @@ class BackpackItem(
         if (!worldIn.isRemote && entityIn is EntityPlayerMP) {
             val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return
 
-            // Feeding upgrade logic
-            if (entityIn.ticksExisted % 20 == 0 && entityIn.canEat(false)) {
-                val feedingStack = wrapper.getFeedingStack(entityIn.foodStats.foodLevel, entityIn.health, entityIn.maxHealth)
-                if (!feedingStack.isEmpty)
-                    feedingStack.onItemUseFinish(worldIn, entityIn)
-            }
+            if (entityIn.ticksExisted % 20 == 0)
+                wrapper.feed(entityIn, wrapper)
 
             if (!wrapper.isCached)
                 CapabilityHandler.cacheBackpackInventory(wrapper)

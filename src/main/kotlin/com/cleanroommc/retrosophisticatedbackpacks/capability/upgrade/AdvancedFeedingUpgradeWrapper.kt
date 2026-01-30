@@ -30,11 +30,9 @@ class AdvancedFeedingUpgradeWrapper : AdvancedUpgradeWrapper<FeedingUpgradeItem>
     override fun checkFilter(stack: ItemStack): Boolean =
         stack.item is ItemFood && super.checkFilter(stack)
 
-    override fun getFeedingStack(handler: IItemHandler, foodLevel: Int, health: Float, maxHealth: Float): ItemStack {
-        val size = handler.slots
-
-        for (i in 0 until size) {
-            val stack = handler.getStackInSlot(i)
+    override fun getFoodSlot(handler: IItemHandler, foodLevel: Int, health: Float, maxHealth: Float): Int {
+        for (slot in 0 until handler.slots) {
+            val stack = handler.getStackInSlot(slot)
 
             if (!checkFilter(stack))
                 continue
@@ -43,7 +41,7 @@ class AdvancedFeedingUpgradeWrapper : AdvancedUpgradeWrapper<FeedingUpgradeItem>
             val healingAmount = item.getHealAmount(stack)
 
             if (maxHealth > health && healthFeedingStrategy == FeedingStrategy.HEALTH.ALWAYS)
-                return handler.extractItem(i, 1, false)
+                return slot
 
             val flag = when (hungerFeedingStrategy) {
                 FeedingStrategy.Hunger.FULL -> healingAmount <= 20 - foodLevel
@@ -52,10 +50,10 @@ class AdvancedFeedingUpgradeWrapper : AdvancedUpgradeWrapper<FeedingUpgradeItem>
             }
 
             if (flag)
-                return handler.extractItem(i, 1, false)
+                return slot
         }
 
-        return ItemStack.EMPTY
+        return -1
     }
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =
