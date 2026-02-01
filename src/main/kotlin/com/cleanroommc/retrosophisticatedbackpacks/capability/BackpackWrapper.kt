@@ -162,11 +162,6 @@ class BackpackWrapper(
             .any { it.canDeposit(stack) }
     }
 
-    fun canDeposit(stack: ItemStack): Boolean {
-        return gatherCapabilityUpgrades(Capabilities.IDEPOSIT_UPGRADE_CAPABILITY)
-            .any { it.canDeposit(stack) }
-    }
-
     fun canRestock(stack: ItemStack): Boolean =
         gatherCapabilityUpgrades(Capabilities.IRESTOCK_UPGRADE_CAPABILITY)
             .any { it.canRestock(stack) }
