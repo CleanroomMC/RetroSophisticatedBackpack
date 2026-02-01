@@ -3,6 +3,7 @@ package com.cleanroommc.retrosophisticatedbackpacks.crafting
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
+import com.cleanroommc.retrosophisticatedbackpacks.mixin.EnumDyeColorAccessor
 import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.IRecipe
@@ -21,8 +22,10 @@ object DyeingRecipeRegistry {
         val backpackStack = ItemStack(backpackItem, 1)
         val backpackWrapper = backpackStack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return null
 
-        mainColor?.let { backpackWrapper.mainColor = it.colorValue }
-        accentColor?.let { backpackWrapper.accentColor = it.colorValue }
+        if (mainColor is EnumDyeColorAccessor)
+            backpackWrapper.mainColor = mainColor.`rsb$getColorValue`()
+        if (accentColor is EnumDyeColorAccessor)
+            backpackWrapper.accentColor = accentColor.`rsb$getColorValue`()
 
         return if (mainColor != null && accentColor != null) {
             constructRecipe(
