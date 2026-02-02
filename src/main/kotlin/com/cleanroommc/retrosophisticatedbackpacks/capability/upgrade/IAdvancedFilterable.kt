@@ -56,6 +56,9 @@ interface IAdvancedFilterable : IBasicFilterable {
     }
 
     private fun matchOreDict(stack: ItemStack): Boolean {
+        if (stack.isEmpty)
+            return false
+
         val stackOreDictionaries = OreDictionary.getOreIDs(stack).map { OreDictionary.getOreName(it) }
 
         for (oreDictEntry in oreDictEntries) {
