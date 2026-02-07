@@ -34,6 +34,7 @@ import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.init.SoundEvents
 import net.minecraft.inventory.EntityEquipmentSlot
 import net.minecraft.item.ItemBlock
+import net.minecraft.item.ItemFood
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.*
@@ -179,12 +180,12 @@ class BackpackItem(
         if (!worldIn.isRemote && entityIn is EntityPlayerMP) {
             val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return
 
-            if (!wrapper.isCached) {
-                CapabilityHandler.cacheBackpackInventory(wrapper)
-            }
-        }
+            if (entityIn.ticksExisted % 20 == 0)
+                wrapper.feed(entityIn, wrapper)
 
-        super.onUpdate(stack, worldIn, entityIn, itemSlot, isSelected)
+            if (!wrapper.isCached)
+                CapabilityHandler.cacheBackpackInventory(wrapper)
+        }
     }
 
     override fun isValidArmor(stack: ItemStack, armorType: EntityEquipmentSlot, entity: Entity): Boolean =
@@ -289,6 +290,11 @@ class BackpackItem(
 
     override fun registerModels() {
         RetroSophisticatedBackpacks.proxy.registerItemRenderer(this, 0, "inventory")
+    }
+
+    @Optional.Method(modid = "baubles")
+    override fun onWornTick(stack: ItemStack, player: EntityLivingBase) {
+        this.onUpdate(stack, player.world, player, -1, false)
     }
 
     @Optional.Method(modid = "baubles")

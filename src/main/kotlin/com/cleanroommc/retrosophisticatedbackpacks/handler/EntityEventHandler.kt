@@ -3,12 +3,10 @@ package com.cleanroommc.retrosophisticatedbackpacks.handler
 import baubles.api.BaublesApi
 import com.cleanroommc.retrosophisticatedbackpacks.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
-import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackFeedingHelper
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackInventoryHelper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
 import net.minecraft.entity.item.EntityItem
-import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.init.SoundEvents
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumActionResult
@@ -17,13 +15,11 @@ import net.minecraftforge.event.entity.player.EntityItemPickupEvent
 import net.minecraftforge.event.entity.player.PlayerInteractEvent
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
-import net.minecraftforge.fml.common.gameevent.TickEvent
 import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.items.wrapper.InvWrapper
 
 @Mod.EventBusSubscriber(modid = Tags.MOD_ID)
 object EntityEventHandler {
-    private var feedTickCounter = 0
 
     @SubscribeEvent
     @JvmStatic
@@ -119,28 +115,6 @@ object EntityEventHandler {
                     event.isCanceled = true
                     event.cancellationResult = EnumActionResult.SUCCESS
                 }
-            }
-        }
-    }
-
-    @SubscribeEvent
-    @JvmStatic
-    fun onPlayerTicking(event: TickEvent.PlayerTickEvent) {
-        val player = event.player
-
-        if (player !is EntityPlayerMP)
-            return
-
-        if (event.phase == TickEvent.Phase.END) {
-            feedTickCounter++
-
-            if (feedTickCounter % 20 == 0) {
-                feedTickCounter = 0
-
-                if (player.isCreative)
-                    return
-
-                BackpackFeedingHelper.attemptFeed(player)
             }
         }
     }

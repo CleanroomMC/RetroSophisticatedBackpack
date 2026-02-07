@@ -23,23 +23,21 @@ class FeedingUpgradeWrapper : BasicUpgradeWrapper<FeedingUpgradeItem>(), IFeedin
     override fun checkFilter(stack: ItemStack): Boolean =
         stack.item is ItemFood && super.checkFilter(stack)
 
-    override fun getFeedingStack(handler: IItemHandler, foodLevel: Int, health: Float, maxHealth: Float): ItemStack {
-        val size = handler.slots
+    override fun getFoodSlot(handler: IItemHandler, foodLevel: Int, health: Float, maxHealth: Float): Int {
+        for (slot in 0 until handler.slots) {
+            val stack = handler.getStackInSlot(slot)
 
-        for (i in 0 until size) {
-            val stack = handler.getStackInSlot(i)
-
-            if (stack.isEmpty)
+            if (!checkFilter(stack))
                 continue
 
             val item = stack.item as? ItemFood ?: continue
             val healingAmount = item.getHealAmount(stack)
 
-            if (healingAmount <= 20 - foodLevel && checkFilter(stack))
-                return handler.extractItem(i, 1, false)
+            if (healingAmount <= 20 - foodLevel)
+                return slot
         }
 
-        return ItemStack.EMPTY
+        return -1
     }
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =
@@ -51,4 +49,5 @@ class FeedingUpgradeWrapper : BasicUpgradeWrapper<FeedingUpgradeItem>(), IFeedin
         super.deserializeNBT(nbt)
         BackpackDataFixer.fixFeedingUpgrade(filterItems)
     }
+
 }
