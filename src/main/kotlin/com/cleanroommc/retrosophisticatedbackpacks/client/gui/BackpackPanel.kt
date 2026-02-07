@@ -314,7 +314,7 @@ class BackpackPanel(
 
     internal fun addBackpackInventorySlots() {
         val backpackSlotGroupWidget = SlotGroupWidget().name("backpack_inventory")
-        backpackSlotGroupWidget.flex().coverChildren().leftRel(0.5F).top(17)
+        backpackSlotGroupWidget.coverChildren().leftRel(0.5F).top(17)
 
         for (i in 0 until backpackWrapper.backpackInventorySize()) {
             val itemSlot = BackpackSlot(this, backpackWrapper)
@@ -330,7 +330,7 @@ class BackpackPanel(
 
     internal fun addUpgradeSlots() {
         upgradeSlotGroupWidget.name("upgrade_inventory")
-        upgradeSlotGroupWidget.flex().size(23, 10 + backpackWrapper.upgradeSlotsSize() * 18).left(-21)
+        upgradeSlotGroupWidget.size(23, 10 + backpackWrapper.upgradeSlotsSize() * 18).left(-21)
 
         for (i in 0 until backpackWrapper.upgradeSlotsSize()) {
             val itemSlot = ItemSlot().syncHandler("upgrades", i).pos(5, 5 + i * 18).name("slot_${i}")
@@ -578,7 +578,7 @@ class BackpackPanel(
         super.postDraw(context, transformed)
 
         // Nasty hack to draw over upgrade tabs
-        LAYERED_TAB_TEXTURE.draw(context, flex.area.width - 6, 0, 6, flex.area.height, WidgetTheme.getDefault().theme)
+        LAYERED_TAB_TEXTURE.draw(context, area.width - 6, 0, 6, area.height, WidgetTheme.getDefault().theme)
     }
 
     fun getOpenCraftingUpgradeSlot(): Int? {

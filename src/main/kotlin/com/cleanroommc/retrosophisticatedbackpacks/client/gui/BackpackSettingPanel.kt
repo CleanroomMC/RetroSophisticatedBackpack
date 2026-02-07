@@ -106,6 +106,6 @@ class BackpackSettingPanel(private val parent: BackpackPanel) : ModularPanel("ba
         super.postDraw(context, transformed)
 
         // Nasty hack to draw over upgrade tabs
-        LAYERED_TAB_TEXTURE.draw(context, 0, 0, 6, flex.area.height, WidgetTheme.getDefault().theme)
+        LAYERED_TAB_TEXTURE.draw(context, 0, 0, 6, area.height, WidgetTheme.getDefault().theme)
     }
 }
