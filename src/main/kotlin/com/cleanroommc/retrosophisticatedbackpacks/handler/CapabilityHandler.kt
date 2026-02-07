@@ -114,26 +114,26 @@ object CapabilityHandler {
             ::AdvancedVoidUpgradeWrapper
         )
 
-        // Interfaces
+        // Abstract clesses & Interfaces
         instance.register(
             UpgradeWrapper::class.java,
             NOPCapabilityStorage<UpgradeWrapper<*>>(),
         ) { UpgradeWrapper.Impl }
 
         instance.register(
+            BasicUpgradeWrapper::class.java,
+            CapabilityStorageProvider<BasicUpgradeWrapper<*>>(),
+        ) { BasicUpgradeWrapper.Impl }
+
+        instance.register(
+            AdvancedUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AdvancedUpgradeWrapper<*>>(),
+        ) { AdvancedUpgradeWrapper.Impl }
+        
+        instance.register(
             IToggleable::class.java,
             NOPCapabilityStorage<IToggleable>()
         ) { IToggleable.Impl }
-
-        instance.register(
-            IBasicFilterable::class.java,
-            NOPCapabilityStorage<IBasicFilterable>()
-        ) { IBasicFilterable.Impl }
-
-        instance.register(
-            IAdvancedFilterable::class.java,
-            NOPCapabilityStorage<IAdvancedFilterable>()
-        ) { IAdvancedFilterable.Impl }
 
         instance.register(
             IPickupUpgrade::class.java,

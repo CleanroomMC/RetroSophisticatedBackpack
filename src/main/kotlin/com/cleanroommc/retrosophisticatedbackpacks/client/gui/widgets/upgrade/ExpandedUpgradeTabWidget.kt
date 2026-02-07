@@ -46,9 +46,7 @@ abstract class ExpandedUpgradeTabWidget<U>(
         return false
     }
 
-    open fun onWrapperChange(after: U) {
-
-    }
+    abstract fun onWrapperChange(after: U)
 
     override fun updateTabState() {
         this@ExpandedUpgradeTabWidget.wrapper.isTabOpened = !this@ExpandedUpgradeTabWidget.wrapper.isTabOpened

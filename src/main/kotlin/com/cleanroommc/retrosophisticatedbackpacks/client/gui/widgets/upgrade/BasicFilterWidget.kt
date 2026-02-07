@@ -5,14 +5,14 @@ import com.cleanroommc.modularui.api.value.ISyncOrValue
 import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.BasicUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.CyclicVariantButtonWidget
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 
 class BasicFilterWidget(
-    var filterableWrapper: IBasicFilterable,
+    var filterableWrapper: BasicUpgradeWrapper<*>,
     slotIndex: Int,
     syncKey: String = "common_filter"
 ) :
@@ -36,7 +36,7 @@ class BasicFilterWidget(
             FILTER_TYPE_VARIANTS,
             filterableWrapper.filterType.ordinal
         ) { index ->
-            filterableWrapper.filterType = IBasicFilterable.FilterType.entries[index]
+            filterableWrapper.filterType = BasicUpgradeWrapper.FilterType.entries[index]
             slotSyncHandler?.syncToServer(UpgradeSlotSH.UPDATE_BASIC_FILTERABLE) {
                 it.writeEnumValue(filterableWrapper.filterType)
             }

@@ -71,7 +71,7 @@ class DelegatedCraftingStackHandlerSH(
 
         when (id) {
             UPDATE_FILTERABLE -> {
-                val wrapper = stack.getCapability(Capabilities.BASIC_FILTERABLE_CAPABILITY, null) ?: return
+                val wrapper = stack.getCapability(Capabilities.BASIC_UPGRADE_CAPABILITY, null) ?: return
 
                 setDelegatedStackHandler(wrapper::filterItems)
             }

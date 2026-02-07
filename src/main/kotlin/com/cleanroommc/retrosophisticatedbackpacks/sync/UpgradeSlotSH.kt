@@ -4,12 +4,13 @@ import com.cleanroommc.modularui.value.sync.ItemSlotSH
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedFeedingUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.BasicUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.CraftingUpgradeWrapper.CraftingDestination
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IFilterUpgrade
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IVoidUpgrade
 import net.minecraft.network.PacketBuffer
+import kotlin.jvm.java
 
 /**
  * Used to synchronize upgrade item's capability, this is only fired from client to reflect client's action to server
@@ -53,16 +54,16 @@ class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
     }
 
     private fun updateBasicFilterable(buf: PacketBuffer) {
-        val wrapper = slot.stack.getCapability(Capabilities.BASIC_FILTERABLE_CAPABILITY, null) ?: return
+        val wrapper = slot.stack.getCapability(Capabilities.BASIC_UPGRADE_CAPABILITY, null) ?: return
 
-        wrapper.filterType = buf.readEnumValue(IBasicFilterable.FilterType::class.java)
+        wrapper.filterType = buf.readEnumValue(BasicUpgradeWrapper.FilterType::class.java)
     }
 
     private fun updateAdvancedFilterable(buf: PacketBuffer) {
-        val wrapper = slot.stack.getCapability(Capabilities.ADVANCED_FILTERABLE_CAPABILITY, null) ?: return
+        val wrapper = slot.stack.getCapability(Capabilities.ADVANCED_UPGRADE_CAPABILITY, null) ?: return
 
-        wrapper.filterType = buf.readEnumValue(IBasicFilterable.FilterType::class.java)
-        wrapper.matchType = buf.readEnumValue(IAdvancedFilterable.MatchType::class.java)
+        wrapper.filterType = buf.readEnumValue(BasicUpgradeWrapper.FilterType::class.java)
+        wrapper.matchType = buf.readEnumValue(AdvancedUpgradeWrapper.MatchType::class.java)
         wrapper.ignoreDurability = buf.readBoolean()
         wrapper.ignoreNBT = buf.readBoolean()
 

@@ -16,7 +16,7 @@ class VoidUpgradeWidget(
 ) : BasicExpandedTabWidget<VoidUpgradeWrapper>(
     slotIndex,
     wrapper,
-    ItemStack(Items.filterUpgrade),
+    ItemStack(Items.voidUpgrade),
     wrapper.settingsLangKey,
     coveredTabSize = 5
 ) {

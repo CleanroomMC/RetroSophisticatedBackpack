@@ -84,6 +84,8 @@ class CraftingUpgradeWidget(slotIndex: Int, wrapper: CraftingUpgradeWrapper) :
         child(craftingResult)
     }
 
+    override fun onWrapperChange(after: CraftingUpgradeWrapper) {}
+    
     override fun drawOverlay(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
         super.drawOverlay(context, widgetTheme)
 
@@ -91,5 +93,4 @@ class CraftingUpgradeWidget(slotIndex: Int, wrapper: CraftingUpgradeWrapper) :
             RSBTextures.CRAFTING_ARROW.draw(context, 32, 106, 16, 16, widgetTheme.getThemeOrDefault())
         }
     }
-
 }

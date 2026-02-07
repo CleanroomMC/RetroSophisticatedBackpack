@@ -2,7 +2,7 @@ package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.upgrade
 
 import com.cleanroommc.modularui.widgets.layout.Column
 import com.cleanroommc.modularui.widgets.layout.Row
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.BasicUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.UpgradeWrapper
 import net.minecraft.item.ItemStack
 
@@ -15,7 +15,7 @@ open class BasicExpandedTabWidget<T>(
     coveredTabSize: Int = 4,
     width: Int = 75,
 ) : ExpandedUpgradeTabWidget<T>(slotIndex, wrapper, coveredTabSize, delegatedIconStack, titleKey, width)
-        where T : IBasicFilterable, T : UpgradeWrapper<*> {
+        where T : BasicUpgradeWrapper<*> {
     protected val startingRow: Row = Row()
         .height(0)
         .name("starting_row") as Row
@@ -25,7 +25,6 @@ open class BasicExpandedTabWidget<T>(
         .name("filter_widget")
 
     override fun onWrapperChange(after: T) {
-        super.onWrapperChange(after)
         filterWidget.filterableWrapper = after
     }
 

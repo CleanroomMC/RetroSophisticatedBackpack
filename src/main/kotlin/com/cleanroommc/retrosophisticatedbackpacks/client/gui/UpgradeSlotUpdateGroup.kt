@@ -5,9 +5,9 @@ import com.cleanroommc.modularui.widgets.slot.ModularCraftingSlot
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.modularui.widgets.slot.SlotGroup
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.BasicUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.CraftingUpgradeWrapper
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.CraftingSlotInfo
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.IndexedModularCraftingSlot
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularFilterSlot
@@ -142,12 +142,12 @@ class UpgradeSlotUpdateGroup(
 
     }
 
-    fun updateFilterDelegate(wrapper: IBasicFilterable) {
+    fun updateFilterDelegate(wrapper: BasicUpgradeWrapper<*>) {
         commonFilterStackHandler.setDelegatedStackHandler(wrapper::filterItems)
         commonFilterStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_FILTERABLE)
     }
 
-    fun updateAdvancedFilterDelegate(wrapper: IAdvancedFilterable) {
+    fun updateAdvancedFilterDelegate(wrapper: AdvancedUpgradeWrapper<*>) {
         advancedCommonFilterStackHandler.setDelegatedStackHandler(wrapper::filterItems)
         advancedCommonFilterStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_FILTERABLE)
     }

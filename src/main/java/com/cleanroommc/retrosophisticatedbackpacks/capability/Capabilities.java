@@ -54,14 +54,14 @@ public final class Capabilities {
     @CapabilityInject(UpgradeWrapper.class)
     public static final @NotNull Capability<UpgradeWrapper<?>> UPGRADE_CAPABILITY = null;
 
+    @CapabilityInject(BasicUpgradeWrapper.class)
+    public static final @NotNull Capability<BasicUpgradeWrapper<?>> BASIC_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(AdvancedUpgradeWrapper.class)
+    public static final @NotNull Capability<AdvancedUpgradeWrapper<?>> ADVANCED_UPGRADE_CAPABILITY = null;
+
     @CapabilityInject(IToggleable.class)
     public static final @NotNull Capability<IToggleable> TOGGLEABLE_CAPABILITY = null;
-
-    @CapabilityInject(IBasicFilterable.class)
-    public static final @NotNull Capability<IBasicFilterable> BASIC_FILTERABLE_CAPABILITY = null;
-
-    @CapabilityInject(IAdvancedFilterable.class)
-    public static final @NotNull Capability<IAdvancedFilterable> ADVANCED_FILTERABLE_CAPABILITY = null;
 
     @CapabilityInject(IPickupUpgrade.class)
     public static final @NotNull Capability<IPickupUpgrade> IPICKUP_UPGRADE_CAPABILITY = null;

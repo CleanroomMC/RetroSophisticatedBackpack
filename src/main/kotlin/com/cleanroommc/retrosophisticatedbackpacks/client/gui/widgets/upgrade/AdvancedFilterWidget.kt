@@ -19,8 +19,8 @@ import com.cleanroommc.modularui.widgets.layout.Row
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot
 import com.cleanroommc.modularui.widgets.textfield.TextFieldWidget
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.BasicUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.drawable.Outline
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.CyclicVariantButtonWidget
@@ -32,7 +32,7 @@ import net.minecraftforge.oredict.OreDictionary
 
 class AdvancedFilterWidget(
     slotIndex: Int,
-    var filterableWrapper: IAdvancedFilterable,
+    var filterableWrapper: AdvancedUpgradeWrapper<*>,
     syncKey: String = "adv_common_filter",
 ) : ParentWidget<AdvancedFilterWidget>() {
     companion object {
@@ -102,7 +102,7 @@ class AdvancedFilterWidget(
             FILTER_TYPE_VARIANTS,
             filterableWrapper.filterType.ordinal
         ) { index ->
-            filterableWrapper.filterType = IBasicFilterable.FilterType.entries[index]
+            filterableWrapper.filterType = BasicUpgradeWrapper.FilterType.entries[index]
             updateWrapper()
         }
 
@@ -110,11 +110,11 @@ class AdvancedFilterWidget(
             MATCH_TYPE_VARIANTS,
             filterableWrapper.matchType.ordinal
         ) {
-            filterableWrapper.matchType = IAdvancedFilterable.MatchType.entries[it]
+            filterableWrapper.matchType = AdvancedUpgradeWrapper.MatchType.entries[it]
             updateWrapper()
         }
 
-        val inEffect = filterableWrapper.matchType == IAdvancedFilterable.MatchType.ITEM
+        val inEffect = filterableWrapper.matchType == AdvancedUpgradeWrapper.MatchType.ITEM
 
         ignoreDurabilityButton = CyclicVariantButtonWidget(
             IGNORE_DURABILITY_VARIANTS,
@@ -146,7 +146,7 @@ class AdvancedFilterWidget(
             .left(44)
             .child(ignoreDurabilityButton)
             .child(ignoreNBTButton)
-            .setEnabledIfAndEnabled { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ITEM }
+            .setEnabledIfAndEnabled { filterableWrapper.matchType == AdvancedUpgradeWrapper.MatchType.ITEM }
             .name("item_based_button_list")
 
         val addOreDictEntryButton = ButtonWidget()
@@ -198,7 +198,7 @@ class AdvancedFilterWidget(
             .left(44)
             .child(addOreDictEntryButton)
             .child(removeOreDictEntryButton)
-            .setEnabledIfAndEnabled { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ORE_DICT }
+            .setEnabledIfAndEnabled { filterableWrapper.matchType == AdvancedUpgradeWrapper.MatchType.ORE_DICT }
             .name("ore_dict_based_config_buttons")
 
         buttonRow
@@ -227,7 +227,7 @@ class AdvancedFilterWidget(
             .leftRel(0.5f)
             .top(24)
             .child(slotGroup)
-            .setEnabledIfAndEnabled { filterableWrapper.matchType != IAdvancedFilterable.MatchType.ORE_DICT }
+            .setEnabledIfAndEnabled { filterableWrapper.matchType != AdvancedUpgradeWrapper.MatchType.ORE_DICT }
             .name("item_based_config_group") as Column
 
         // Ore-dict-based configuration widgets
@@ -272,7 +272,7 @@ class AdvancedFilterWidget(
             .top(24)
             .child(oreDictList)
             .child(oreDictTextField)
-            .setEnabledIfAndEnabled { filterableWrapper.matchType == IAdvancedFilterable.MatchType.ORE_DICT }
+            .setEnabledIfAndEnabled { filterableWrapper.matchType == AdvancedUpgradeWrapper.MatchType.ORE_DICT }
             .name("ore_dict_based_config_group") as Column
 
         child(buttonRow)
