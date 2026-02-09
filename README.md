@@ -27,7 +27,9 @@ Here is a list of implemented feature and considered features to be implemented:
 - [x] Sorting system
 - [x] Memory slot
 - [ ] Lockable by player
-- [ ] Backpack model render on player's back when equipped
+- [x] Backpack model render on player's back when equipped
+  - Supported on vanilla and Bauble, BaubleEx is not supported yet.
+- [x] Dyeing
 
 ### Upgrades
 
@@ -41,7 +43,7 @@ Here is a list of implemented feature and considered features to be implemented:
 - [x] filter upgrade (b/a)
 - [ ] magnet upgrade (b/a)
 - [ ] void upgrade (b/a)
-- [ ] crafting upgrade
+- [x] crafting upgrade
 - [ ] everlasting upgrade
 - [ ] jukebox upgrade (low priority)
 
@@ -49,4 +51,4 @@ Here is a list of implemented feature and considered features to be implemented:
 
 **This mod IS NOT OFFICIAL WORK of original author P3pp3rF1y, please do not report any issue to original author.**
 
-**This mod is licensed under GPLv3, all assets are forked before Sophisticated Backpack changes license to All Right Reserve.**
+**This mod is licensed under GPLv3, all assets are forked before Sophisticated Backpack changed license to All Right Reserve.**
