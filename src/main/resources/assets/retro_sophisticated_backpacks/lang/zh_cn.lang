@@ -88,6 +88,8 @@ retro_sophisticated_backpacks.gui.advanced_restock_settings=高级取货设置
 retro_sophisticated_backpacks.gui.filter_settings=过滤设置
 retro_sophisticated_backpacks.gui.advanced_filter_settings=高级过滤设置
 
+retro_sophisticated_backpacks.gui.crafting_settings=合成
+
 retro_sophisticated_backpacks.gui.memory_settings=记忆设置
 retro_sophisticated_backpacks.gui.sorting_settings=整理设置
 
@@ -110,7 +112,10 @@ retro_sophisticated_backpacks.gui.ignore_nbt=忽略NBT
 
 retro_sophisticated_backpacks.gui.add_ore_dict_entry=添加矿物词典
 retro_sophisticated_backpacks.gui.remove_ore_dict_entry=移除矿物词典
-retro_sophisticated_backpacks.gui.ore_dict_input_help=可在此输入矿物词典，支持正则表达式
+retro_sophisticated_backpacks.gui.ore_dict_input_help=可在此输入矿物词典，\n支持正则表达式。
+retro_sophisticated_backpacks.gui.ore_dict_input_help.pro_tip=提示：你可以将物品悬停在词典条目上\n以确认其是否符合条目，\n或将其悬停在输入栏上以查看可用的矿物词典。
+retro_sophisticated_backpacks.gui.ore_dict_list_entries=可用的矿物词典：
+retro_sophisticated_backpacks.gui.none=（无）
 
 retro_sophisticated_backpacks.gui.complete_hunger=仅在玩家足够饥饿时喂食\n不会浪费食物提供的任何饥饿值
 retro_sophisticated_backpacks.gui.half_hunger=仅在玩家足够饥饿时喂食\n最多浪费食物提供的一半饥饿值
@@ -128,6 +133,9 @@ retro_sophisticated_backpacks.gui.sort_by_name=按名称整理
 retro_sophisticated_backpacks.gui.sort_by_mod_id=按模组ID整理
 retro_sophisticated_backpacks.gui.sort_by_count=按数量整理
 retro_sophisticated_backpacks.gui.sort_by_ore_dict=按矿物词典整理
+
+retro_sophisticated_backpacks.gui.craft_into_backpack=Shift点击合成产物转移至背包
+retro_sophisticated_backpacks.gui.craft_into_player_inventory=Shift点击合成产物转移至玩家物品栏
 
 retro_sophisticated_backpacks.gui.transfer_to_player_inv=转移所有物品至玩家物品栏
 retro_sophisticated_backpacks.gui.transfer_to_player_inv_matched_1=转移匹配物品至玩家物品栏
