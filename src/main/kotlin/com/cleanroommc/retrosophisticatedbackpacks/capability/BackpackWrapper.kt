@@ -1,6 +1,7 @@
 package com.cleanroommc.retrosophisticatedbackpacks.capability
 
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.SortType
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IToggleable
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.BackpackItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.UpgradeItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
@@ -164,8 +165,7 @@ class BackpackWrapper(
         val filterUpgrades = gatherCapabilityUpgrades(Capabilities.IFILTER_UPGRADE_CAPABILITY)
             .filter { it.enabled }
 
-        return if (filterUpgrades.isEmpty()) true
-        else filterUpgrades.any { it.canInsert(stack) }
+        return filterUpgrades.isEmpty() || filterUpgrades.any { it.canInsert(stack) }
     }
 
     fun canExtract(slotIndex: Int): Boolean {
@@ -173,8 +173,7 @@ class BackpackWrapper(
         val filterUpgrades = gatherCapabilityUpgrades(Capabilities.IFILTER_UPGRADE_CAPABILITY)
             .filter { it.enabled }
 
-        return if (filterUpgrades.isEmpty()) true
-        else filterUpgrades.any { it.canInsert(stack) }
+        return filterUpgrades.isEmpty() || filterUpgrades.any { it.canExtract(stack) }
     }
 
     // Setting related

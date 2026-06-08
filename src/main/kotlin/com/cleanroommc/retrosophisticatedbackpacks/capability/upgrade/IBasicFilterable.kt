@@ -36,7 +36,7 @@ interface IBasicFilterable : ISidelessCapabilityProvider {
             get() = FilterType.WHITELIST
             set(_) {}
 
-        override fun checkFilter(itemStack: ItemStack): Boolean =
+        override fun checkFilter(stack: ItemStack): Boolean =
             false
     }
 }

@@ -78,24 +78,16 @@ interface IAdvancedFilterable : IBasicFilterable {
         if (filterStack.isEmpty)
             return false
 
-        var flag = if (ignoreDurability) {
-            ItemStack.areItemsEqualIgnoreDurability(filterStack, stack)
-        } else {
-            filterStack.isItemEqual(stack)
-        }
-
-        flag = flag && if (ignoreNBT) {
-            true
-        } else {
-            filterStack.tagCompound == stack.tagCompound
-        }
+        var flag = (ignoreDurability && ItemStack.areItemsEqualIgnoreDurability(filterStack, stack))
+                || filterStack.isItemEqual(stack)
+        flag = flag && (ignoreNBT || filterStack.tagCompound == stack.tagCompound)
 
         return flag
     }
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =
         capability == Capabilities.ADVANCED_FILTERABLE_CAPABILITY ||
-                super<IBasicFilterable>.hasCapability(capability, facing)
+                super.hasCapability(capability, facing)
 
     enum class MatchType {
         ITEM,
@@ -110,7 +102,7 @@ interface IAdvancedFilterable : IBasicFilterable {
             get() = IBasicFilterable.Impl.filterType
             set(_) {}
 
-        override fun checkFilter(itemStack: ItemStack): Boolean =
+        override fun checkFilter(stack: ItemStack): Boolean =
             false
 
         override var matchType: MatchType
