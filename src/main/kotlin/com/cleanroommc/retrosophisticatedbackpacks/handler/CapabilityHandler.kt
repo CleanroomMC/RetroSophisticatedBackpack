@@ -102,6 +102,18 @@ object CapabilityHandler {
             ::AdvancedFilterUpgradeWrapper
         )
 
+        instance.register(
+            VoidUpgradeWrapper::class.java,
+            CapabilityStorageProvider<VoidUpgradeWrapper>(),
+            ::VoidUpgradeWrapper
+        )
+
+        instance.register(
+            AdvancedVoidUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AdvancedVoidUpgradeWrapper>(),
+            ::AdvancedVoidUpgradeWrapper
+        )
+
         // Interfaces
         instance.register(
             UpgradeWrapper::class.java,
@@ -152,6 +164,12 @@ object CapabilityHandler {
             NOPCapabilityStorage<IFilterUpgrade>(),
             ::FilterUpgradeWrapper
         )
+
+        instance.register(
+            IVoidUpgrade::class.java,
+            NOPCapabilityStorage<IVoidUpgrade>(),
+            ::VoidUpgradeWrapper
+        )
     }
 
     fun cacheBackpackInventory(backpackWrapper: BackpackWrapper) {
@@ -160,17 +178,13 @@ object CapabilityHandler {
             return
         }
 
-        BACKPACK_INVENTORY_CACHE.put(backpackWrapper.uuid, backpackWrapper)
+        BACKPACK_INVENTORY_CACHE[backpackWrapper.uuid] = backpackWrapper
         backpackWrapper.isCached = true
         RetroSophisticatedBackpacks.LOGGER.info("Backpack ${backpackWrapper.uuid} is cached")
     }
 
     fun updateBackpackInventory(backpackWrapper: BackpackWrapper) {
-        val backpack = BACKPACK_INVENTORY_CACHE[backpackWrapper.uuid]
-
-        if (backpack == null) {
-            return
-        }
+        val backpack = BACKPACK_INVENTORY_CACHE[backpackWrapper.uuid] ?: return
 
         backpack.deserializeNBT(backpackWrapper.serializeNBT())
         RetroSophisticatedBackpacks.LOGGER.info("Backpack ${backpackWrapper.uuid} is updated")

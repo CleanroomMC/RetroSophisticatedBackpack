@@ -497,6 +497,26 @@ class BackpackPanel(
                         tabWidget.expandedWidget = FilterUpgradeWidget(slotIndex, wrapper)
                 }
 
+                is AdvancedVoidUpgradeWrapper -> {
+                    upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
+                    if (updateAndCheckRecreation<AdvancedVoidUpgradeWidget, AdvancedVoidUpgradeWrapper>(
+                            tabWidget.expandedWidget,
+                            wrapper
+                        )
+                    )
+                        tabWidget.expandedWidget = AdvancedVoidUpgradeWidget(slotIndex, wrapper)
+                }
+
+                is VoidUpgradeWrapper -> {
+                    upgradeSlotGroup.updateFilterDelegate(wrapper)
+                    if (updateAndCheckRecreation<VoidUpgradeWidget, VoidUpgradeWrapper>(
+                            tabWidget.expandedWidget,
+                            wrapper
+                        )
+                    )
+                        tabWidget.expandedWidget = VoidUpgradeWidget(slotIndex, wrapper)
+                }
+
                 is IAdvancedFilterable -> {
                     upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
                     if (updateAndCheckRecreation<AdvancedExpandedTabWidget<*>>(tabWidget.expandedWidget, wrapper))

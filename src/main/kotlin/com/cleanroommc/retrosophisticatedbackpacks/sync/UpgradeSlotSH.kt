@@ -3,11 +3,8 @@ package com.cleanroommc.retrosophisticatedbackpacks.sync
 import com.cleanroommc.modularui.value.sync.ItemSlotSH
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedFeedingUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.*
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.CraftingUpgradeWrapper.CraftingDestination
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IFilterUpgrade
 import net.minecraft.network.PacketBuffer
 
 /**
@@ -23,6 +20,7 @@ class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
         const val UPDATE_ADVANCED_FEEDING = 10
         const val UPDATE_FILTER_WAY = 11
         const val UPDATE_CRAFTING_DESTINATION = 12
+        const val UPDATE_VOID = 13
     }
 
     override fun readOnServer(id: Int, buf: PacketBuffer) {
@@ -36,6 +34,7 @@ class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
             UPDATE_ADVANCED_FEEDING -> updateAdvanceFeedingUpgrade(buf)
             UPDATE_FILTER_WAY -> updateFilterUpgrade(buf)
             UPDATE_CRAFTING_DESTINATION -> updateCraftingDestination(buf)
+            UPDATE_VOID -> updateVoidUpgrade(buf)
         }
     }
 
@@ -91,5 +90,12 @@ class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
         val wrapper = slot.stack.getCapability(Capabilities.CRAFTING_ITEM_HANDLER_CAPABILITY, null) ?: return
 
         wrapper.craftingDestination = buf.readEnumValue(CraftingDestination::class.java)
+    }
+
+    private fun updateVoidUpgrade(buf: PacketBuffer) {
+        val wrapper = slot.stack.getCapability(Capabilities.IVOID_UPGRADE_CAPABILITY, null) ?: return
+
+        wrapper.transferSource = buf.readEnumValue(IVoidUpgrade.TransferSource::class.java)
+        wrapper.voidType = buf.readEnumValue(IVoidUpgrade.VoidType::class.java)
     }
 }
