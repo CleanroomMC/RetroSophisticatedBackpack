@@ -1,7 +1,7 @@
 package com.cleanroommc.retrosophisticatedbackpacks.capability
 
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.SortType
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IToggleable
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IVoidUpgrade
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.BackpackItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.UpgradeItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
@@ -174,6 +174,18 @@ class BackpackWrapper(
             .filter { it.enabled }
 
         return filterUpgrades.isEmpty() || filterUpgrades.any { it.canExtract(stack) }
+    }
+
+    fun tryVoid(stack: ItemStack, transferSource: IVoidUpgrade.TransferSource): ItemStack {
+        var currentStack = stack
+        val upgrades = gatherCapabilityUpgrades(Capabilities.IVOID_UPGRADE_CAPABILITY)
+
+        for (upgrade in upgrades) {
+            currentStack = upgrade.tryVoid(this, backpackItemStackHandler, currentStack, transferSource)
+            if (currentStack.isEmpty) return currentStack
+        }
+
+        return currentStack
     }
 
     // Setting related

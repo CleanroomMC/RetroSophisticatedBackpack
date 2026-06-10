@@ -5,6 +5,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackInventoryHelper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IVoidUpgrade
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiData
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiFactory
 import com.cleanroommc.retrosophisticatedbackpacks.config.Config
@@ -107,7 +108,12 @@ object EntityEventHandler {
 
             var slotIndex = 0
             while (!stack.isEmpty && slotIndex < wrapper.slots) {
-                stack = wrapper.backpackItemStackHandler.prioritizedInsertion(slotIndex, stack, false)
+                stack = wrapper.backpackItemStackHandler.prioritizedInsertionRespectVoid(
+                    slotIndex,
+                    stack,
+                    false,
+                    IVoidUpgrade.TransferSource.UPGRADE_OR_WORLD_INTERACTION
+                )
 
                 slotIndex++
             }

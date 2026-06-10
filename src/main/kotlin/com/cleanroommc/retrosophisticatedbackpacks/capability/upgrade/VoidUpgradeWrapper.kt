@@ -15,11 +15,9 @@ class VoidUpgradeWrapper : BasicUpgradeWrapper<VoidUpgradeItem>(), IVoidUpgrade 
 
     override fun canVoid(
         stack: ItemStack,
-        transferSource: IVoidUpgrade.TransferSource,
-        voidType: IVoidUpgrade.VoidType
+        transferSource: IVoidUpgrade.TransferSource
     ): Boolean =
-        checkFilter(stack) && this.voidType == voidType &&
-                (this.transferSource == IVoidUpgrade.TransferSource.ALL || this.transferSource == transferSource)
+        checkFilter(stack) && (this.transferSource == IVoidUpgrade.TransferSource.ALL || this.transferSource == transferSource)
 
     override fun hasCapability(
         capability: Capability<*>,

@@ -9,6 +9,7 @@ import com.cleanroommc.modularui.value.sync.PanelSyncManager
 import com.cleanroommc.retrosophisticatedbackpacks.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IVoidUpgrade
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackContainer
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackGuiHolder
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
@@ -126,7 +127,12 @@ class BackpackTileEntity(val wrapper: BackpackWrapper = BackpackWrapper()) :
         stack: ItemStack,
         simulate: Boolean
     ): ItemStack =
-        if (wrapper.canInsert(stack)) wrapper.backpackItemStackHandler.prioritizedInsertion(slot, stack, simulate)
+        if (wrapper.canInsert(stack)) wrapper.backpackItemStackHandler.prioritizedInsertionRespectVoid(
+            slot,
+            stack,
+            simulate,
+            IVoidUpgrade.TransferSource.UPGRADE_OR_WORLD_INTERACTION
+        )
         else stack
 
     override fun extractItem(

@@ -13,9 +13,11 @@ class AdvancedVoidUpgradeWrapper : AdvancedUpgradeWrapper<VoidUpgradeItem>(), IV
     override var transferSource: IVoidUpgrade.TransferSource = IVoidUpgrade.TransferSource.UPGRADE_OR_WORLD_INTERACTION
     override var voidType: IVoidUpgrade.VoidType = IVoidUpgrade.VoidType.ANY
 
-    override fun canVoid(stack: ItemStack, transferSource: IVoidUpgrade.TransferSource, voidType: IVoidUpgrade.VoidType): Boolean =
-        checkFilter(stack) && this.voidType == voidType &&
-                (this.transferSource == IVoidUpgrade.TransferSource.ALL || this.transferSource == transferSource)
+    override fun canVoid(
+        stack: ItemStack,
+        transferSource: IVoidUpgrade.TransferSource
+    ): Boolean =
+        checkFilter(stack) && (this.transferSource == IVoidUpgrade.TransferSource.ALL || this.transferSource == transferSource)
 
     override fun hasCapability(capability: Capability<*>, facing: EnumFacing?): Boolean =
         capability == Capabilities.ADVANCED_VOID_UPGRADE_CAPABILITY ||
