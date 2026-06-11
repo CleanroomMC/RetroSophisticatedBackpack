@@ -529,11 +529,10 @@ class BackpackPanel(
                     )
                         tabWidget.expandedWidget = JukeboxUpgradeWidget(
                             slotIndex,
+                            backpackWrapper,
                             wrapper,
                             player,
                             tileEntity,
-                            inventoryType,
-                            backpackSlotIndex
                         )
                 }
 

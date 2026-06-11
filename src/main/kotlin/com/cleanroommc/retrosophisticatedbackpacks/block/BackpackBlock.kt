@@ -3,8 +3,9 @@ package com.cleanroommc.retrosophisticatedbackpacks.block
 import com.cleanroommc.retrosophisticatedbackpacks.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackTier
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
-import com.cleanroommc.retrosophisticatedbackpacks.client.sound.BackpackSoundManager
+import com.cleanroommc.retrosophisticatedbackpacks.handler.NetworkHandler
 import com.cleanroommc.retrosophisticatedbackpacks.handler.RegistryHandler
+import com.cleanroommc.retrosophisticatedbackpacks.network.C2CJukeboxUpgradePacket
 import com.cleanroommc.retrosophisticatedbackpacks.tileentity.BackpackTileEntity
 import com.cleanroommc.retrosophisticatedbackpacks.util.IModelRegister
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
@@ -178,7 +179,15 @@ class BackpackBlock(
         val tileEntity = worldIn.getTileEntity(pos) as? BackpackTileEntity ?: return
 
         tileEntity.wrapper.deserializeNBT(wrapper.serializeNBT())
-        BackpackSoundManager.transferPlayingOwnership(null, tileEntity, wrapper)
+
+        if (worldIn.isRemote)
+            NetworkHandler.INSTANCE.sendToServer(
+                C2CJukeboxUpgradePacket.Stationary(
+                    C2CJukeboxUpgradePacket.PlayingAction.TRANSFER,
+                    "",
+                    tileEntity.getPos()
+                )
+            )
 
         if (stack.hasDisplayName())
             tileEntity.setCustomName(stack.displayName)
@@ -243,7 +252,7 @@ class BackpackBlock(
         val tileEntityBackpackInventory = tileEntity.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return
         val stackBackpackInventory = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return
         stackBackpackInventory.deserializeNBT(tileEntityBackpackInventory.serializeNBT())
-        
+
         if (tileEntity.hasCustomName())
             stack.setStackDisplayName(tileEntity.name)
 

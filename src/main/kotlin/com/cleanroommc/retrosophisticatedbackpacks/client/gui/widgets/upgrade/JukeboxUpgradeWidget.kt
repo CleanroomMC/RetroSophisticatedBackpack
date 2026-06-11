@@ -4,12 +4,12 @@ import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.cleanroommc.modularui.widgets.slot.ItemSlot
+import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.JukeboxUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
-import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiData
 import com.cleanroommc.retrosophisticatedbackpacks.handler.NetworkHandler
 import com.cleanroommc.retrosophisticatedbackpacks.item.Items
-import com.cleanroommc.retrosophisticatedbackpacks.network.C2SJukeboxUpgradePacket
+import com.cleanroommc.retrosophisticatedbackpacks.network.C2CJukeboxUpgradePacket
 import com.cleanroommc.retrosophisticatedbackpacks.tileentity.BackpackTileEntity
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemRecord
@@ -17,11 +17,10 @@ import net.minecraft.item.ItemStack
 
 class JukeboxUpgradeWidget(
     slotIndex: Int,
+    backpackWrapper: BackpackWrapper,
     wrapper: JukeboxUpgradeWrapper,
     playerEntity: EntityPlayer,
-    tileEntity: BackpackTileEntity?,
-    inventoryType: PlayerInventoryGuiData.InventoryType?,
-    slotIndexInInv: Int?
+    tileEntity: BackpackTileEntity?
 ) :
     ExpandedUpgradeTabWidget<JukeboxUpgradeWrapper>(
         slotIndex,
@@ -38,13 +37,13 @@ class JukeboxUpgradeWidget(
     init {
         val JukeboxSlotGroupsWidget = SlotGroupWidget().name("jukebox_slots_$slotIndex").disableSortButtons()
         JukeboxSlotGroupsWidget.flex().coverChildren().leftRel(0.5F).top(32)
-        
+
         recordSlot =
             ItemSlot().syncHandler("jukebox_slot_$slotIndex", 0)
                 .name("jukebox_slot_0")
 
         JukeboxSlotGroupsWidget.child(recordSlot)
-        
+
         buttonRow = Row()
             .leftRel(0.5F)
             .top(28)
@@ -53,28 +52,13 @@ class JukeboxUpgradeWidget(
 
         stopButton = ButtonWidget().name("stop_button")
             .onMousePressed {
-                val record = wrapper.records.getStackInSlot(0)
-                val item = record.item
-
-                if (record.isEmpty || item !is ItemRecord)
-                    return@onMousePressed false
-
                 if (tileEntity != null) {
                     NetworkHandler.INSTANCE.sendToServer(
-                        C2SJukeboxUpgradePacket.Stationary(
-                            C2SJukeboxUpgradePacket.PlayingAction.STOP,
-                            item.sound.soundName.toString(),
-                            tileEntity.pos
-                        )
+                        C2CJukeboxUpgradePacket.Stationary.stopPlaying(tileEntity.pos)
                     )
                 } else {
                     NetworkHandler.INSTANCE.sendToServer(
-                        C2SJukeboxUpgradePacket.Moving(
-                            C2SJukeboxUpgradePacket.PlayingAction.STOP,
-                            item.sound.soundName.toString(),
-                            inventoryType!!,
-                            slotIndexInInv!!
-                        )
+                        C2CJukeboxUpgradePacket.Moving.stopPlaying(backpackWrapper)
                     )
                 }
 
@@ -91,19 +75,19 @@ class JukeboxUpgradeWidget(
 
                 if (tileEntity != null) {
                     NetworkHandler.INSTANCE.sendToServer(
-                        C2SJukeboxUpgradePacket.Stationary(
-                            C2SJukeboxUpgradePacket.PlayingAction.PLAY,
+                        C2CJukeboxUpgradePacket.Stationary(
+                            C2CJukeboxUpgradePacket.PlayingAction.PLAY,
                             item.sound.soundName.toString(),
                             tileEntity.pos
                         )
                     )
                 } else {
                     NetworkHandler.INSTANCE.sendToServer(
-                        C2SJukeboxUpgradePacket.Moving(
-                            C2SJukeboxUpgradePacket.PlayingAction.PLAY,
+                        C2CJukeboxUpgradePacket.Moving(
+                            C2CJukeboxUpgradePacket.PlayingAction.PLAY,
                             item.sound.soundName.toString(),
-                            inventoryType!!,
-                            slotIndexInInv!!
+                            backpackWrapper,
+                            playerEntity.entityId
                         )
                     )
                 }
@@ -114,7 +98,7 @@ class JukeboxUpgradeWidget(
 
         buttonRow.child(stopButton)
             .child(playButton)
-        
+
         child(JukeboxSlotGroupsWidget)
             .child(buttonRow)
     }

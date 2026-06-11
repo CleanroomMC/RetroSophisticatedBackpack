@@ -15,6 +15,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.block.BackpackBlock
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.client.BackpackBipedModel
+import com.cleanroommc.retrosophisticatedbackpacks.client.sound.BackpackSoundManager
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackContainer
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackGuiHolder
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiData
@@ -29,6 +30,7 @@ import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
+import net.minecraft.entity.item.EntityItem
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.init.SoundEvents
@@ -178,16 +180,24 @@ class BackpackItem(
     }
 
     override fun onUpdate(stack: ItemStack, worldIn: World, entityIn: Entity, itemSlot: Int, isSelected: Boolean) {
-        if (!worldIn.isRemote && entityIn is EntityPlayerMP) {
-            val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return
+        val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return
 
+        if (!wrapper.isCached)
+            CapabilityHandler.cacheBackpackInventory(wrapper)
+
+        if (!worldIn.isRemote && entityIn is EntityPlayerMP) {
             if (entityIn.ticksExisted % 20 == 0)
                 wrapper.feed(entityIn, wrapper)
-
-            // Only cache on server
-            if (!wrapper.isCached)
-                CapabilityHandler.cacheBackpackInventory(wrapper)
         }
+    }
+
+    override fun onEntityItemUpdate(entityItem: EntityItem): Boolean {
+        if (entityItem.world.isRemote) {
+            val wrapper = entityItem.item.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return false
+            BackpackSoundManager.transferPlayingOwnership(entityItem, null, wrapper)
+        }
+
+        return super.onEntityItemUpdate(entityItem)
     }
 
     override fun isValidArmor(stack: ItemStack, armorType: EntityEquipmentSlot, entity: Entity): Boolean =

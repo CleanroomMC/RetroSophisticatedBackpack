@@ -6,8 +6,9 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.*
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.CraftingUpgradeWrapper.CraftingDestination
-import com.cleanroommc.retrosophisticatedbackpacks.client.sound.BackpackSoundManager
+import com.cleanroommc.retrosophisticatedbackpacks.handler.NetworkHandler
 import com.cleanroommc.retrosophisticatedbackpacks.item.JukeboxUpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.network.C2CJukeboxUpgradePacket
 import net.minecraft.item.ItemStack
 import net.minecraft.network.PacketBuffer
 
@@ -31,7 +32,7 @@ class UpgradeSlotSH(slot: ModularSlot, private val wrapper: BackpackWrapper) : I
 
     override fun onSlotUpdate(stack: ItemStack, onlyAmountChanged: Boolean, client: Boolean, init: Boolean) {
         if (initialUpdated && stack.item !is JukeboxUpgradeItem)
-            BackpackSoundManager.stopRecord(wrapper)
+            NetworkHandler.INSTANCE.sendToServer(C2CJukeboxUpgradePacket.Moving.stopPlaying(wrapper))
         else
             initialUpdated = true
 

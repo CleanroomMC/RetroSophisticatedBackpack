@@ -1,6 +1,6 @@
 package com.cleanroommc.retrosophisticatedbackpacks.handler
 
-import com.cleanroommc.retrosophisticatedbackpacks.network.C2SJukeboxUpgradePacket
+import com.cleanroommc.retrosophisticatedbackpacks.network.C2CJukeboxUpgradePacket
 import com.cleanroommc.retrosophisticatedbackpacks.network.C2SOpenBackpackPacket
 import net.minecraftforge.fml.common.network.NetworkRegistry
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper
@@ -26,17 +26,31 @@ object NetworkHandler {
         )
 
         INSTANCE.registerMessage(
-            C2SJukeboxUpgradePacket.Moving.Handler::class.java,
-            C2SJukeboxUpgradePacket.Moving::class.java,
+            C2CJukeboxUpgradePacket.Moving.ServerHandler::class.java,
+            C2CJukeboxUpgradePacket.Moving::class.java,
             idGenerator.next(),
             Side.SERVER
         )
 
         INSTANCE.registerMessage(
-            C2SJukeboxUpgradePacket.Stationary.Handler::class.java,
-            C2SJukeboxUpgradePacket.Stationary::class.java,
+            C2CJukeboxUpgradePacket.Moving.ClientHandler::class.java,
+            C2CJukeboxUpgradePacket.Moving::class.java,
+            idGenerator.next(),
+            Side.CLIENT
+        )
+
+        INSTANCE.registerMessage(
+            C2CJukeboxUpgradePacket.Stationary.ServerHandler::class.java,
+            C2CJukeboxUpgradePacket.Stationary::class.java,
             idGenerator.next(),
             Side.SERVER
+        )
+        
+        INSTANCE.registerMessage(
+            C2CJukeboxUpgradePacket.Stationary.ClientHandler::class.java,
+            C2CJukeboxUpgradePacket.Stationary::class.java,
+            idGenerator.next(),
+            Side.CLIENT
         )
     }
 }
