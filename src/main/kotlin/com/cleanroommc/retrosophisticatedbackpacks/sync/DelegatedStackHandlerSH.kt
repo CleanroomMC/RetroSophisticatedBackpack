@@ -20,6 +20,7 @@ open class DelegatedStackHandlerSH(
 ) : SyncHandler() {
     companion object {
         const val UPDATE_FILTERABLE = 0
+        const val UPDATE_JUKEBOX = 1
     }
 
     var delegatedStackHandler: DelegatedItemHandler = DelegatedItemHandler(EmptyHandler::INSTANCE, wrappedSlotAmount)
@@ -39,6 +40,11 @@ open class DelegatedStackHandlerSH(
                 val wrapper = stack.getCapability(Capabilities.BASIC_FILTERABLE_CAPABILITY, null) ?: return
 
                 setDelegatedStackHandler(wrapper::filterItems)
+            }
+            UPDATE_JUKEBOX -> {
+                val wrapper = stack.getCapability(Capabilities.IJUKEBOX_UPGRADE_CAPABILITY, null) ?: return
+                
+                setDelegatedStackHandler(wrapper::records)
             }
         }
     }

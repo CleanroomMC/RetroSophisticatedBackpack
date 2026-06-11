@@ -2,16 +2,20 @@ package com.cleanroommc.retrosophisticatedbackpacks.sync
 
 import com.cleanroommc.modularui.value.sync.ItemSlotSH
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
+import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.*
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.CraftingUpgradeWrapper.CraftingDestination
+import com.cleanroommc.retrosophisticatedbackpacks.client.sound.BackpackSoundManager
+import com.cleanroommc.retrosophisticatedbackpacks.item.JukeboxUpgradeItem
+import net.minecraft.item.ItemStack
 import net.minecraft.network.PacketBuffer
 
 /**
  * Used to synchronize upgrade item's capability, this is only fired from client to reflect client's action to server
  * side.
  */
-class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
+class UpgradeSlotSH(slot: ModularSlot, private val wrapper: BackpackWrapper) : ItemSlotSH(slot) {
     companion object {
         const val UPDATE_UPGRADE_TAB_STATE = 6
         const val UPDATE_UPGRADE_TOGGLE = 7
@@ -21,6 +25,17 @@ class UpgradeSlotSH(slot: ModularSlot) : ItemSlotSH(slot) {
         const val UPDATE_FILTER_WAY = 11
         const val UPDATE_CRAFTING_DESTINATION = 12
         const val UPDATE_VOID = 13
+    }
+
+    private var initialUpdated = false
+
+    override fun onSlotUpdate(stack: ItemStack, onlyAmountChanged: Boolean, client: Boolean, init: Boolean) {
+        if (initialUpdated && stack.item !is JukeboxUpgradeItem)
+            BackpackSoundManager.stopRecord(wrapper)
+        else
+            initialUpdated = true
+
+        super.onSlotUpdate(stack, onlyAmountChanged, client, init)
     }
 
     override fun readOnServer(id: Int, buf: PacketBuffer) {

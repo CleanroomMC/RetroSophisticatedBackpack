@@ -8,6 +8,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.CraftingUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.JukeboxUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.CraftingSlotInfo
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.IndexedModularCraftingSlot
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularFilterSlot
@@ -15,6 +16,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.sync.DelegatedCraftingStackHa
 import com.cleanroommc.retrosophisticatedbackpacks.sync.DelegatedStackHandlerSH
 import com.cleanroommc.retrosophisticatedbackpacks.sync.FilterSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.sync.FoodFilterSlotSH
+import com.cleanroommc.retrosophisticatedbackpacks.sync.JukeboxSlotSH
 
 class UpgradeSlotUpdateGroup(
     private val panel: BackpackPanel,
@@ -38,6 +40,10 @@ class UpgradeSlotUpdateGroup(
     val craftingOutputSlot: ModularCraftingSlot
 
     val craftingInfo: CraftingSlotInfo
+    
+    // Jukebox slots
+    val jukeboxStackHandler = DelegatedStackHandlerSH(wrapper, slotIndex, 12)
+    var jukeboxSlots: Array<ModularSlot>
 
     init {
         val syncManager = panel.syncManager
@@ -139,6 +145,21 @@ class UpgradeSlotUpdateGroup(
         craftingInfo = CraftingSlotInfo(craftingMatrixSlots, craftingOutputSlot)
 
         syncManager.registerSlotGroup(SlotGroup("crafting_result_$slotIndex", 1, false))
+
+        syncManager.syncValue("jukebox_delegation_$slotIndex", jukeboxStackHandler)
+        jukeboxSlots = Array(12) {
+            val slot = ModularSlot(jukeboxStackHandler.delegatedStackHandler, it)
+            slot.slotGroup("jukebox_slots_$slotIndex")
+
+            syncManager.syncValue(
+                "jukebox_slot_$slotIndex",
+                it,
+                JukeboxSlotSH(slot, wrapper)
+            )
+
+            slot
+        }
+        syncManager.registerSlotGroup(SlotGroup("jukebox_slots_$slotIndex", 4, false))
     }
 
     fun updateFilterDelegate(wrapper: IBasicFilterable) {
@@ -154,6 +175,11 @@ class UpgradeSlotUpdateGroup(
     fun updateCraftingDelegate(wrapper: CraftingUpgradeWrapper) {
         craftingStackHandler.setDelegatedStackHandler(wrapper::craftMatrix)
         craftingStackHandler.syncToServer(DelegatedCraftingStackHandlerSH.UPDATE_CRAFTING)
+    }
+    
+    fun updateJukeboxDelegate(wrapper: JukeboxUpgradeWrapper) {
+        jukeboxStackHandler.setDelegatedStackHandler(wrapper::records)
+        jukeboxStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_JUKEBOX)
     }
 
 }

@@ -63,7 +63,6 @@ class DelegatedCraftingStackHandlerSH(
                 wrapper.craftMatrix.setStackInSlot(9, buf.readItemStack())
             }
         }
-
     }
 
     override fun readOnServer(id: Int, buf: PacketBuffer) {

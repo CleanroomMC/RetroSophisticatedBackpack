@@ -170,7 +170,10 @@ class BackpackItem(
 
     override fun initCapabilities(stack: ItemStack, nbt: NBTTagCompound?): ICapabilityProvider {
         val wrapper = BackpackWrapper(numberOfSlots, numberOfUpgradeSlots)
-        nbt?.let(wrapper::deserializeNBT)
+        if (nbt != null) {
+            val data = if (nbt.hasKey("Parent")) nbt.getCompoundTag("Parent") else nbt
+            wrapper.deserializeNBT(data)
+        }
         return wrapper
     }
 
@@ -283,7 +286,7 @@ class BackpackItem(
         val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null)!!
         val slotIndex = if (data.inventoryType == InventoryType.PLAYER_INVENTORY) data.slotIndex else null
         uiSettings.customContainer { BackpackContainer(wrapper, slotIndex) }
-        uiSettings.canInteractWith { 
+        uiSettings.canInteractWith {
             if (data.targetEntity.isDead) false
             else it.getDistance(data.targetEntity) <= 4.0
         }

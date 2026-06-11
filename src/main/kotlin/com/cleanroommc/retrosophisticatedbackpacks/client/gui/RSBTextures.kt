@@ -39,6 +39,9 @@ object RSBTextures {
     val ADD_ICON = icon("add", 96, 32)
     val REMOVE_ICON = icon("remove", 112, 32)
     val BRAIN_ICON = icon("brain", 128, 32)
+    
+    val STOP_ICON = icon("stop", 0, 64)
+    val PLAY_ICON = icon("play", 16, 64)
 
     val ONE_IN_FOUR_SLOT_ICON = icon("one_in_four_slot", 0, 80)
     val ALL_FOUR_SLOT_ICON = icon("all_in_four_slot", 16, 80)

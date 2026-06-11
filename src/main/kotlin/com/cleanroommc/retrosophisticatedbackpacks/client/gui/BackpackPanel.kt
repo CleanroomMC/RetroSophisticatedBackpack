@@ -51,7 +51,9 @@ class BackpackPanel(
     internal val player: EntityPlayer,
     internal val tileEntity: BackpackTileEntity?,
     internal val syncManager: PanelSyncManager,
-    internal val backpackWrapper: BackpackWrapper
+    internal val backpackWrapper: BackpackWrapper,
+    internal val inventoryType: PlayerInventoryGuiData.InventoryType?,
+    internal val backpackSlotIndex: Int?,
 ) : ModularPanel("backpack_gui") {
     companion object {
         private const val SLOT_SIZE = 18
@@ -88,10 +90,11 @@ class BackpackPanel(
             wrapper: BackpackWrapper,
             width: Int,
             height: Int,
+            inventoryType: PlayerInventoryGuiData.InventoryType? = null,
             backpackSlotIndex: Int? = null,
         ): BackpackPanel {
             val panel =
-                BackpackPanel(player, tileEntity, syncManager, wrapper)
+                BackpackPanel(player, tileEntity, syncManager, wrapper, inventoryType, backpackSlotIndex)
                     .size(width, height) as BackpackPanel
 
             syncManager.bindPlayerInventory(player)
@@ -138,7 +141,7 @@ class BackpackPanel(
                 backpackWrapper,
                 it
             ).slotGroup("upgrade_inventory")
-            val syncHandler = UpgradeSlotSH(upgradeSlot)
+            val syncHandler = UpgradeSlotSH(upgradeSlot, backpackWrapper)
             val index = it
             upgradeSlot.changeListener { lastStack, _, isClient, init ->
                 if (isClient)
@@ -515,6 +518,23 @@ class BackpackPanel(
                         )
                     )
                         tabWidget.expandedWidget = VoidUpgradeWidget(slotIndex, wrapper)
+                }
+
+                is JukeboxUpgradeWrapper -> {
+                    upgradeSlotGroup.updateJukeboxDelegate(wrapper)
+                    if (updateAndCheckRecreation<JukeboxUpgradeWidget, JukeboxUpgradeWrapper>(
+                            tabWidget.expandedWidget,
+                            wrapper
+                        )
+                    )
+                        tabWidget.expandedWidget = JukeboxUpgradeWidget(
+                            slotIndex,
+                            wrapper,
+                            player,
+                            tileEntity,
+                            inventoryType,
+                            backpackSlotIndex
+                        )
                 }
 
                 is IAdvancedFilterable -> {

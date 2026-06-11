@@ -7,6 +7,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.inventory.UpgradeItemStackHan
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.ExponentialStackUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.InceptionUpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.item.JukeboxUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.StackUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.util.BackpackItemStackHelper
 import net.minecraft.entity.player.EntityPlayer
@@ -129,6 +130,10 @@ class BackpackWrapper(
 
         return true
     }
+    
+    fun canAddJukeboxUpgrade(): Boolean =
+        upgradeItemStackHandler.inventory.map(ItemStack::getItem).filterIsInstance<JukeboxUpgradeItem>()
+            .isEmpty()
 
     fun canNestBackpack(): Boolean =
         upgradeItemStackHandler.inventory.map(ItemStack::getItem).filterIsInstance<InceptionUpgradeItem>().any()
@@ -163,7 +168,6 @@ class BackpackWrapper(
 
     fun canInsert(stack: ItemStack): Boolean {
         val filterUpgrades = gatherCapabilityUpgrades(Capabilities.IFILTER_UPGRADE_CAPABILITY)
-            .filter { it.enabled }
 
         return filterUpgrades.isEmpty() || filterUpgrades.any { it.canInsert(stack) }
     }
@@ -171,7 +175,6 @@ class BackpackWrapper(
     fun canExtract(slotIndex: Int): Boolean {
         val stack = getStackInSlot(slotIndex)
         val filterUpgrades = gatherCapabilityUpgrades(Capabilities.IFILTER_UPGRADE_CAPABILITY)
-            .filter { it.enabled }
 
         return filterUpgrades.isEmpty() || filterUpgrades.any { it.canExtract(stack) }
     }

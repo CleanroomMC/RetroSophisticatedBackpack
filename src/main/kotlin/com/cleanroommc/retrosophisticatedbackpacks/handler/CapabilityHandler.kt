@@ -113,6 +113,12 @@ object CapabilityHandler {
             CapabilityStorageProvider<AdvancedVoidUpgradeWrapper>(),
             ::AdvancedVoidUpgradeWrapper
         )
+        
+        instance.register(
+            JukeboxUpgradeWrapper::class.java,
+            CapabilityStorageProvider<JukeboxUpgradeWrapper>(),
+            ::JukeboxUpgradeWrapper
+        )
 
         // Interfaces
         instance.register(
@@ -169,6 +175,12 @@ object CapabilityHandler {
             IVoidUpgrade::class.java,
             NOPCapabilityStorage<IVoidUpgrade>(),
             ::VoidUpgradeWrapper
+        )
+        
+        instance.register(
+            IJukeboxUpgrade::class.java,
+            NOPCapabilityStorage<IJukeboxUpgrade>(),
+            ::JukeboxUpgradeWrapper
         )
     }
 

@@ -123,4 +123,7 @@ object Items {
 
     @JvmField
     val advancedVoidUpgrade = VoidUpgradeItem("advanced_void_upgrade", ::AdvancedVoidUpgradeWrapper)
+    
+    @JvmField
+    val jukeboxUpgrade = JukeboxUpgradeItem("jukebox_upgrade", ::JukeboxUpgradeWrapper)
 }

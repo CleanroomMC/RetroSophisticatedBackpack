@@ -5,6 +5,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
 import com.cleanroommc.retrosophisticatedbackpacks.item.ExponentialStackUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.InceptionUpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.item.JukeboxUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.StackUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.UpgradeItem
 import net.minecraft.entity.player.EntityPlayer
@@ -51,6 +52,7 @@ class ModularUpgradeSlot(
     override fun isItemValid(stack: ItemStack): Boolean = when (val item = stack.item) {
         is StackUpgradeItem -> wrapper.canAddStackUpgrade(item.multiplier())
         is ExponentialStackUpgradeItem -> wrapper.canAddExponentialStackUpgrade()
+        is JukeboxUpgradeItem -> wrapper.canAddJukeboxUpgrade()
         else -> item is UpgradeItem
     }
 }

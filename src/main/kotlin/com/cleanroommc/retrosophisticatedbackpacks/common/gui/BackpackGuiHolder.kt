@@ -34,6 +34,7 @@ sealed class BackpackGuiHolder(protected val backpackWrapper: BackpackWrapper) {
             backpackWrapper,
             14 + rowSize * SLOT_SIZE,
             112 + colSize * SLOT_SIZE,
+            inventoryType,
             inventoryType?.let { if (it == InventoryType.PLAYER_INVENTORY) slotIndex else null },
         )
 

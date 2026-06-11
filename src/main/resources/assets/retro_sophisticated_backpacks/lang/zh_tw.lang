@@ -27,6 +27,7 @@ item.retro_sophisticated_backpacks.filter_upgrade.name=過濾升級
 item.retro_sophisticated_backpacks.advanced_filter_upgrade.name=進階過濾升級
 item.retro_sophisticated_backpacks.void_upgrade.name=虛空升級
 item.retro_sophisticated_backpacks.advanced_void_upgrade.name=進階虛空升級
+item.retro_sophisticated_backpacks.jukebox_upgrade.name=唱片機升級
 
 # Creative Tabs
 itemGroup.retro_sophisticated_backpacks.creative_tab=復古精緻背包
@@ -74,6 +75,8 @@ retro_sophisticated_backpacks.tooltip.void_upgrade=銷毀過濾清單中選定�
 
 retro_sophisticated_backpacks.tooltip.advanced_void_upgrade=根據更多配置銷毀過濾清單中選定的物品
 
+retro_sophisticated_backpacks.tooltip.jukebox_upgrade=在背包中播放唱片！
+
 retro_sophisticated_backpacks.tooltip.shift_to_reveal=<按 Shift 顯示>
 
 # Gui Elements
@@ -98,6 +101,8 @@ retro_sophisticated_backpacks.gui.void_settings=虛空設定
 retro_sophisticated_backpacks.gui.advanced_void_settings=進階虛空設定
 
 retro_sophisticated_backpacks.gui.crafting_settings=合成
+
+retro_sophisticated_backpacks.gui.jukebox_settings=唱片機
 
 retro_sophisticated_backpacks.gui.memory_settings=記憶設定
 retro_sophisticated_backpacks.gui.sorting_settings=整理設定

@@ -27,6 +27,7 @@ item.retro_sophisticated_backpacks.filter_upgrade.name=Filter Upgrade
 item.retro_sophisticated_backpacks.advanced_filter_upgrade.name=Advanced Filter Upgrade
 item.retro_sophisticated_backpacks.void_upgrade.name=Void Upgrade
 item.retro_sophisticated_backpacks.advanced_void_upgrade.name=Advanced Void Upgrade
+item.retro_sophisticated_backpacks.jukebox_upgrade.name=Jukebox Upgrade
 
 # Creative Tabs
 itemGroup.retro_sophisticated_backpacks.creative_tab=Retro Sophisticated Backpacks
@@ -74,6 +75,8 @@ retro_sophisticated_backpacks.tooltip.void_upgrade=Voids items selected in filte
 
 retro_sophisticated_backpacks.tooltip.advanced_void_upgrade=Voids items selected in filter with more configurations
 
+retro_sophisticated_backpacks.tooltip.jukebox_upgrade=Plays discs in your backpack!
+
 retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Shift to reveal>
 
 # Gui Elements
@@ -98,6 +101,8 @@ retro_sophisticated_backpacks.gui.void_settings=Void Settings
 retro_sophisticated_backpacks.gui.advanced_void_settings=Adv. Void Settings
 
 retro_sophisticated_backpacks.gui.crafting_settings=Crafting
+
+retro_sophisticated_backpacks.gui.jukebox_settings=Jukebox Interface
 
 retro_sophisticated_backpacks.gui.memory_settings=Memory Settings
 retro_sophisticated_backpacks.gui.sorting_settings=Sorting Settings

@@ -3,6 +3,7 @@ package com.cleanroommc.retrosophisticatedbackpacks.block
 import com.cleanroommc.retrosophisticatedbackpacks.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackTier
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.client.sound.BackpackSoundManager
 import com.cleanroommc.retrosophisticatedbackpacks.handler.RegistryHandler
 import com.cleanroommc.retrosophisticatedbackpacks.tileentity.BackpackTileEntity
 import com.cleanroommc.retrosophisticatedbackpacks.util.IModelRegister
@@ -173,10 +174,11 @@ class BackpackBlock(
         placer: EntityLivingBase,
         stack: ItemStack
     ) {
-        val backpackInventory = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return
+        val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return
         val tileEntity = worldIn.getTileEntity(pos) as? BackpackTileEntity ?: return
 
-        tileEntity.wrapper.deserializeNBT(backpackInventory.serializeNBT())
+        tileEntity.wrapper.deserializeNBT(wrapper.serializeNBT())
+        BackpackSoundManager.transferPlayingOwnership(null, tileEntity, wrapper)
 
         if (stack.hasDisplayName())
             tileEntity.setCustomName(stack.displayName)

@@ -49,6 +49,9 @@ public final class Capabilities {
 
     @CapabilityInject(AdvancedVoidUpgradeWrapper.class)
     public static final @NotNull Capability<AdvancedVoidUpgradeWrapper> ADVANCED_VOID_UPGRADE_CAPABILITY = null;
+    
+    @CapabilityInject(JukeboxUpgradeWrapper.class)
+    public static final @NotNull Capability<JukeboxUpgradeWrapper> JUKEBOX_UPGRADE_CAPABILITY = null;
 
     // Abstract capabilities
     @CapabilityInject(UpgradeWrapper.class)
@@ -80,4 +83,7 @@ public final class Capabilities {
 
     @CapabilityInject(IVoidUpgrade.class)
     public static final @NotNull Capability<IVoidUpgrade> IVOID_UPGRADE_CAPABILITY = null;
+    
+    @CapabilityInject(IJukeboxUpgrade.class)
+    public static final @NotNull Capability<IJukeboxUpgrade> IJUKEBOX_UPGRADE_CAPABILITY = null;
 }
