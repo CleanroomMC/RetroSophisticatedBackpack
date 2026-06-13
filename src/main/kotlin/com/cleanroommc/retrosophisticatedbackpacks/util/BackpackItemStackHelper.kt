@@ -53,7 +53,7 @@ object BackpackItemStackHelper {
 
     /**
      * Returns the hunger value of the food in the slot, if it is a food item
-     * 
+     *
      * @return the hunger value of the food in the slot, or null if the slot is not a food item
      */
     fun getHungerFromSlot(handler: IItemHandler, slot: Int, predicate: (ItemStack) -> Boolean): Int? {

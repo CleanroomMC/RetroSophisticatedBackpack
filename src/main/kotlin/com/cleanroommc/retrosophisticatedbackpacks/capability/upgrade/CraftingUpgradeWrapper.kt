@@ -32,8 +32,10 @@ class CraftingUpgradeWrapper() : UpgradeWrapper<CraftingUpgradeItem>() {
 
     override fun deserializeNBT(nbt: NBTTagCompound) {
         super.deserializeNBT(nbt)
-        craftingDestination = CraftingDestination.entries[nbt.getByte(CRAFTING_DEST_TAG).toInt()]
-        craftMatrix.deserializeNBT(nbt.getCompoundTag(MATRIX_TAG))
+        if (nbt.hasKey(CRAFTING_DEST_TAG))
+            craftingDestination = CraftingDestination.entries.getOrElse(nbt.getByte(CRAFTING_DEST_TAG).toInt()) { craftingDestination }
+        if (nbt.hasKey(MATRIX_TAG))
+            craftMatrix.deserializeNBT(nbt.getCompoundTag(MATRIX_TAG))
     }
 
     enum class CraftingDestination {

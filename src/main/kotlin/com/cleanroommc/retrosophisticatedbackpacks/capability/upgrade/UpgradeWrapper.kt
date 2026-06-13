@@ -20,6 +20,8 @@ abstract class UpgradeWrapper<T> : INBTSerializable<NBTTagCompound>, ISidelessCa
 
     abstract val settingsLangKey: String
 
+    open fun onBeforeRemoved() {}
+
     override fun serializeNBT(): NBTTagCompound {
         val nbt = NBTTagCompound()
         nbt.setBoolean(TAB_STATE_TAG, isTabOpened)

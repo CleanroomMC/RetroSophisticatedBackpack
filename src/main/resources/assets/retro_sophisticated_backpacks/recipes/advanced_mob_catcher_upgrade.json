@@ -1,0 +1,34 @@
+{
+  "type": "retro_sophisticated_backpacks:upgrade_shaped",
+  "key": {
+    "H": {
+      "item": "minecraft:skull",
+      "data": 1
+    },
+    "D": {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    },
+    "E": {
+      "item": "minecraft:ender_eye"
+    },
+    "G": {
+      "type": "forge:ore_dict",
+      "ore": "ingotGold"
+    },
+    "B": {
+      "item": "retro_sophisticated_backpacks:mob_catcher_upgrade"
+    },
+    "S": {
+      "item": "minecraft:soul_sand"
+    }
+  },
+  "pattern": [
+    "HDE",
+    "GBG",
+    "SSS"
+  ],
+  "result": {
+    "item": "retro_sophisticated_backpacks:advanced_mob_catcher_upgrade"
+  }
+}

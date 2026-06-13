@@ -1,0 +1,26 @@
+{
+  "type": "retro_sophisticated_backpacks:upgrade_shaped",
+  "key": {
+    "E": {
+      "item": "minecraft:ender_pearl"
+    },
+    "I": {
+      "type": "forge:ore_dict",
+      "ore": "ingotIron"
+    },
+    "B": {
+      "item": "retro_sophisticated_backpacks:upgrade_base"
+    },
+    "L": {
+      "item": "minecraft:lead"
+    }
+  },
+  "pattern": [
+    " E ",
+    "IBI",
+    "L L"
+  ],
+  "result": {
+    "item": "retro_sophisticated_backpacks:mob_catcher_upgrade"
+  }
+}

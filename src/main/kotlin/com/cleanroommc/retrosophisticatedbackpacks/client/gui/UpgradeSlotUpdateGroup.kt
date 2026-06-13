@@ -8,6 +8,10 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.CraftingUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AnvilUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.BatteryUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.JukeboxUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.TankUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.CraftingSlotInfo
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.IndexedModularCraftingSlot
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularFilterSlot
@@ -38,6 +42,18 @@ class UpgradeSlotUpdateGroup(
     val craftingOutputSlot: ModularCraftingSlot
 
     val craftingInfo: CraftingSlotInfo
+
+    var jukeboxDiscStackHandler = DelegatedStackHandlerSH(wrapper, slotIndex, 12)
+    val jukeboxDiscSlots: Array<ModularSlot>
+
+    var tankStackHandler = DelegatedStackHandlerSH(wrapper, slotIndex, 4)
+    val tankSlots: Array<ModularSlot>
+
+    var batteryStackHandler = DelegatedStackHandlerSH(wrapper, slotIndex, 2)
+    val batterySlots: Array<ModularSlot>
+
+    var anvilStackHandler = DelegatedStackHandlerSH(wrapper, slotIndex, 2)
+    val anvilSlots: Array<ModularSlot>
 
     init {
         val syncManager = panel.syncManager
@@ -139,6 +155,57 @@ class UpgradeSlotUpdateGroup(
         craftingInfo = CraftingSlotInfo(craftingMatrixSlots, craftingOutputSlot)
 
         syncManager.registerSlotGroup(SlotGroup("crafting_result_$slotIndex", 1, false))
+
+        syncManager.syncValue("jukebox_disc_delegation_$slotIndex", jukeboxDiscStackHandler)
+        jukeboxDiscSlots = Array(12) {
+            val slot = ModularSlot(jukeboxDiscStackHandler.delegatedStackHandler, it)
+            slot.slotGroup("jukebox_discs_$slotIndex")
+
+            syncManager.syncValue(
+                "jukebox_discs_$slotIndex",
+                it,
+                ItemSlotSH(slot)
+            )
+
+            slot
+        }
+        syncManager.registerSlotGroup(SlotGroup("jukebox_discs_$slotIndex", 4, false))
+
+        syncManager.syncValue("tank_delegation_$slotIndex", tankStackHandler)
+        tankSlots = Array(4) {
+            val slot = ModularSlot(tankStackHandler.delegatedStackHandler, it)
+            slot.slotGroup("tank_$slotIndex")
+            if (it >= 2) {
+                slot.accessibility(false, true)
+            }
+
+            syncManager.syncValue(
+                "tank_$slotIndex",
+                it,
+                ItemSlotSH(slot)
+            )
+
+            slot
+        }
+        syncManager.registerSlotGroup(SlotGroup("tank_$slotIndex", 2, false))
+
+        syncManager.syncValue("battery_delegation_$slotIndex", batteryStackHandler)
+        batterySlots = Array(2) {
+            val slot = ModularSlot(batteryStackHandler.delegatedStackHandler, it)
+            slot.slotGroup("battery_$slotIndex")
+            syncManager.syncValue("battery_$slotIndex", it, ItemSlotSH(slot))
+            slot
+        }
+        syncManager.registerSlotGroup(SlotGroup("battery_$slotIndex", 2, false))
+
+        syncManager.syncValue("anvil_delegation_$slotIndex", anvilStackHandler)
+        anvilSlots = Array(2) {
+            val slot = ModularSlot(anvilStackHandler.delegatedStackHandler, it)
+            slot.slotGroup("anvil_$slotIndex")
+            syncManager.syncValue("anvil_$slotIndex", it, ItemSlotSH(slot))
+            slot
+        }
+        syncManager.registerSlotGroup(SlotGroup("anvil_$slotIndex", 2, false))
     }
 
     fun updateFilterDelegate(wrapper: IBasicFilterable) {
@@ -151,9 +218,33 @@ class UpgradeSlotUpdateGroup(
         advancedCommonFilterStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_FILTERABLE)
     }
 
+    fun updateLargeBasicFilterDelegate(wrapper: IBasicFilterable) {
+        advancedCommonFilterStackHandler.setDelegatedStackHandler(wrapper::filterItems)
+        advancedCommonFilterStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_FILTERABLE)
+    }
+
     fun updateCraftingDelegate(wrapper: CraftingUpgradeWrapper) {
         craftingStackHandler.setDelegatedStackHandler(wrapper::craftMatrix)
         craftingStackHandler.syncToServer(DelegatedCraftingStackHandlerSH.UPDATE_CRAFTING)
     }
 
+    fun updateJukeboxDelegate(wrapper: JukeboxUpgradeWrapper) {
+        jukeboxDiscStackHandler.setDelegatedStackHandler(wrapper::discInventory)
+        jukeboxDiscStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_JUKEBOX)
+    }
+
+    fun updateTankDelegate(wrapper: TankUpgradeWrapper) {
+        tankStackHandler.setDelegatedStackHandler(wrapper::getInventory)
+        tankStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_TANK)
+    }
+
+    fun updateBatteryDelegate(wrapper: BatteryUpgradeWrapper) {
+        batteryStackHandler.setDelegatedStackHandler(wrapper::getInventory)
+        batteryStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_BATTERY)
+    }
+
+    fun updateAnvilDelegate(wrapper: AnvilUpgradeWrapper) {
+        anvilStackHandler.setDelegatedStackHandler(wrapper::getInventory)
+        anvilStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_ANVIL)
+    }
 }

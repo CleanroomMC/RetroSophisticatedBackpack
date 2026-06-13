@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "N": {
+      "item": "minecraft:nether_star"
+    },
+    "O": {
+      "item": "minecraft:obsidian"
+    },
+    "B": {
+      "item": "retro_sophisticated_backpacks:upgrade_base"
+    }
+  },
+  "pattern": [
+    "O O",
+    "OBO",
+    " N "
+  ],
+  "result": {
+    "item": "retro_sophisticated_backpacks:everlasting_upgrade"
+  }
+}

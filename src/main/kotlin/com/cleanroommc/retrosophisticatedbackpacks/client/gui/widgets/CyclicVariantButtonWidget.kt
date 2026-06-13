@@ -9,6 +9,7 @@ import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.getThemeOrDefault
+import net.minecraft.client.renderer.GlStateManager
 
 class CyclicVariantButtonWidget(
     private val variants: List<Variant>,
@@ -26,6 +27,11 @@ class CyclicVariantButtonWidget(
         private set
     var inEffect: Boolean = true
 
+    fun selectIndex(index: Int) {
+        this.index = index.coerceIn(0, variants.lastIndex)
+        markTooltipDirty()
+    }
+
     init {
         size(buttonWidth, buttonHeight)
             .onMousePressed {
@@ -35,8 +41,12 @@ class CyclicVariantButtonWidget(
                 mousePressedUpdater(this.index)
                 markTooltipDirty()
                 true
-            }.tooltipDynamic {
+            }.tooltipAutoUpdate(true)
+            .tooltipDynamic {
                 it.addLine(variants[this.index].name)
+                for (detailLine in variants[this.index].detailLines) {
+                    it.addLine(detailLine)
+                }
 
                 if (!inEffect) {
                     it.addLine(IKey.lang("gui.not_in_effect".asTranslationKey()).style(IKey.RED))
@@ -46,15 +56,18 @@ class CyclicVariantButtonWidget(
             }
     }
 
-    override fun draw(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
-        if (hasCustomTexture) {
-            if (isHovering) {
-                hoveredTexture.draw(context, 0, 0, buttonWidth, buttonHeight, widgetTheme.getThemeOrDefault())
-            } else {
-                notHoveredTexture.draw(context, 0, 0, buttonWidth, buttonHeight, widgetTheme.getThemeOrDefault())
+    override fun drawBackground(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
+        if (hasCustomTexture || buttonWidth != 20 || buttonHeight != 20) {
+            val texture = when {
+                buttonWidth == 12 && buttonHeight == 12 && isHovering -> RSBTextures.SMALL_BUTTON_HOVERED
+                buttonWidth == 12 && buttonHeight == 12 -> RSBTextures.SMALL_BUTTON
+                isHovering -> hoveredTexture
+                else -> notHoveredTexture
             }
+            texture.draw(context, 0, 0, buttonWidth, buttonHeight, widgetTheme.getThemeOrDefault())
+        } else {
+            super.drawBackground(context, widgetTheme)
         }
-        super.draw(context, widgetTheme)
     }
 
     override fun drawOverlay(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
@@ -62,9 +75,11 @@ class CyclicVariantButtonWidget(
 
         val drawable = variants[index].drawable
         context?.let {
+            GlStateManager.color(1f, 1f, 1f, 1f)
             drawable.draw(context, iconOffset, iconOffset, iconSize, iconSize, widgetTheme.getThemeOrDefault())
+            GlStateManager.color(1f, 1f, 1f, 1f)
         }
     }
 
-    data class Variant(val name: IKey, val drawable: IDrawable)
+    data class Variant(val name: IKey, val drawable: IDrawable, val detailLines: List<IKey> = emptyList())
 }

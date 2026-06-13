@@ -14,13 +14,19 @@ class BackpackItemStackHandler(size: Int, private val wrapper: BackpackWrapper) 
     val sortLockedSlots: MutableList<Boolean> = MutableList(size) { false }
 
     override fun isItemValid(slot: Int, stack: ItemStack): Boolean =
-        if (Config.blacklistedItems.contains(stack.item.registryName?.toString())) false
+        if (wrapper.isSlotBlockedByMobCatcher(slot)) false
+        else if (Config.isItemDisallowed(stack)) false
         else if (memorizedSlotStack[slot].isEmpty) stack.item !is BackpackItem || wrapper.canNestBackpack()
         else if (memorizedSlotRespectNbtList[slot]) ItemStack.areItemStacksEqual(stack, memorizedSlotStack[slot])
         else stack.isItemEqualIgnoreDurability(memorizedSlotStack[slot])
 
     override fun getStackLimit(slotIndex: Int, stack: ItemStack): Int =
-        stacks[slotIndex].maxStackSize * wrapper.getTotalStackMultiplier()
+        wrapper.getStackLimit(stack)
+
+    override fun setStackInSlot(slot: Int, stack: ItemStack) {
+        super.setStackInSlot(slot, stack)
+        if (wrapper.shouldHandleSlotChangeFromGui()) wrapper.onGuiSlotChanged(slot)
+    }
 
     /**
      * Prioritize insertion by tries inserting on memorized slot first.
@@ -55,6 +61,12 @@ class BackpackItemStackHandler(size: Int, private val wrapper: BackpackWrapper) 
 
         validateSlotIndex(slot)
 
+        if (wrapper.isSlotBlockedByMobCatcher(slot))
+            return stack
+
+        if (!isItemValid(slot, stack))
+            return stack
+
         val existing = stacks[slot]
         var limit = getStackLimit(slot, stack)
 
@@ -79,6 +91,7 @@ class BackpackItemStackHandler(size: Int, private val wrapper: BackpackWrapper) 
             }
 
             onContentsChanged(slot)
+            if (wrapper.shouldHandleSlotChangeFromGui()) wrapper.onGuiSlotChanged(slot) else wrapper.onSlotChanged(slot)
         }
 
         return if (reachedLimit) ItemHandlerHelper.copyStackWithSize(stack, stack.count - limit)
@@ -91,18 +104,22 @@ class BackpackItemStackHandler(size: Int, private val wrapper: BackpackWrapper) 
 
         validateSlotIndex(slotIndex)
 
+        if (wrapper.isSlotBlockedByMobCatcher(slotIndex))
+            return ItemStack.EMPTY
+
         val stack = stacks[slotIndex]
 
         if (stack.isEmpty)
             return ItemStack.EMPTY
 
-        val slotMaxStackSize = stack.maxStackSize * wrapper.getTotalStackMultiplier()
+        val slotMaxStackSize = wrapper.getStackLimit(stack)
         val toExtract = min(amount, slotMaxStackSize)
 
         if (stack.count <= toExtract) {
             if (!simulate) {
                 stacks[slotIndex] = ItemStack.EMPTY
                 onContentsChanged(slotIndex)
+                if (wrapper.shouldHandleSlotChangeFromGui()) wrapper.onGuiSlotChanged(slotIndex) else wrapper.onSlotChanged(slotIndex)
             }
 
             return stack
@@ -110,6 +127,7 @@ class BackpackItemStackHandler(size: Int, private val wrapper: BackpackWrapper) 
             if (!simulate) {
                 stacks[slotIndex] = ItemHandlerHelper.copyStackWithSize(stack, stack.count - toExtract)
                 onContentsChanged(slotIndex)
+                if (wrapper.shouldHandleSlotChangeFromGui()) wrapper.onGuiSlotChanged(slotIndex) else wrapper.onSlotChanged(slotIndex)
             }
 
             return ItemHandlerHelper.copyStackWithSize(stack, toExtract)

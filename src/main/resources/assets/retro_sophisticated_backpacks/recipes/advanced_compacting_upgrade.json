@@ -1,0 +1,25 @@
+{
+  "type": "retro_sophisticated_backpacks:upgrade_shaped",
+  "key": {
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "C": {
+      "item": "retro_sophisticated_backpacks:compacting_upgrade"
+    }
+  },
+  "pattern": [
+    " D ",
+    "GCG",
+    "RRR"
+  ],
+  "result": {
+    "item": "retro_sophisticated_backpacks:advanced_compacting_upgrade"
+  }
+}

@@ -3,9 +3,7 @@ package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.widgets.ButtonWidget
-import com.cleanroommc.modularui.widgets.layout.Row
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
-import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackSettingPanel
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
 import com.cleanroommc.retrosophisticatedbackpacks.sync.BackpackSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils
@@ -13,14 +11,14 @@ import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 
 class MemorySettingWidget(
     private val panel: BackpackPanel,
-    private val settingPanel: BackpackSettingPanel,
     private val parentTabWidget: TabWidget
 ) : ExpandedTabWidget(
     2,
     RSBTextures.BRAIN_ICON,
     "gui.memory_settings".asTranslationKey(),
     width = 75,
-    expandDirection = ExpandDirection.LEFT
+    tabHeight = 48,
+    expandDirection = ExpandDirection.RIGHT
 ) {
     companion object {
         private val RESPECT_NBT_VARIANTS = listOf(
@@ -35,14 +33,9 @@ class MemorySettingWidget(
         )
     }
 
-    private val buttonRow: Row = Row()
-        .leftRel(0.5f)
-        .height(20)
-        .coverChildrenWidth()
-        .childPadding(2) as Row
-
     private val memorizeAllButton: ButtonWidget<*> = ButtonWidget()
-        .size(20)
+        .pos(3, 24)
+        .size(18)
         .overlay(RSBTextures.ALL_FOUR_SLOT_ICON)
         .onMousePressed {
             if (it == 0) {
@@ -70,7 +63,8 @@ class MemorySettingWidget(
         }
 
     private val unmemorizeAllButton: ButtonWidget<*> = ButtonWidget()
-        .size(20)
+        .pos(21, 24)
+        .size(18)
         .overlay(RSBTextures.NONE_FOUR_SLOT_ICON)
         .onMousePressed {
             if (it == 0) {
@@ -96,25 +90,20 @@ class MemorySettingWidget(
         }
     private val respectNBTButton: CyclicVariantButtonWidget = CyclicVariantButtonWidget(
         RESPECT_NBT_VARIANTS
-    ) {
-        this@MemorySettingWidget.panel.shouldMemorizeRespectNBT = it != 0
-    }
+    ) { this@MemorySettingWidget.panel.shouldMemorizeRespectNBT = it != 0 }
+        .pos(39, 24)
+        .size(18)
 
     init {
-        buttonRow.top(28)
-            .child(memorizeAllButton)
+        child(memorizeAllButton)
             .child(unmemorizeAllButton)
             .child(respectNBTButton)
-
-        child(buttonRow)
     }
 
     fun isRespectNBT(): Boolean =
         respectNBTButton.index != 0
 
     override fun updateTabState() {
-        parentTabWidget.showExpanded = !parentTabWidget.showExpanded
-        panel.isMemorySettingTabOpened = parentTabWidget.showExpanded
-        settingPanel.updateTabState(0)
+        panel.openMemorySettings(parentTabWidget, !parentTabWidget.showExpanded)
     }
 }

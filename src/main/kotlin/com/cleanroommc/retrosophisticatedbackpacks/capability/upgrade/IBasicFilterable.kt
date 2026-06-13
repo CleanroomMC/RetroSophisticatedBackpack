@@ -14,6 +14,7 @@ interface IBasicFilterable : ISidelessCapabilityProvider {
     }
 
     val filterItems: ExposedItemStackHandler
+    val slotsInRow: Int
     var filterType: FilterType
 
     fun checkFilter(stack: ItemStack): Boolean = when (filterType) {
@@ -32,6 +33,8 @@ interface IBasicFilterable : ISidelessCapabilityProvider {
     object Impl : IBasicFilterable {
         override val filterItems: ExposedItemStackHandler
             get() = ExposedItemStackHandler(0)
+        override val slotsInRow: Int
+            get() = 1
         override var filterType: FilterType
             get() = FilterType.WHITELIST
             set(_) {}

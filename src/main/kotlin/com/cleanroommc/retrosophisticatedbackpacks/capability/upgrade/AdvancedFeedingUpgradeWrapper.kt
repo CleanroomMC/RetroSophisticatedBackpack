@@ -1,22 +1,21 @@
 package com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade
 
-import com.cleanroommc.retrosophisticatedbackpacks.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackDataFixer
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.config.Config
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.ExposedItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.item.FeedingUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.util.BackpackItemStackHelper
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
-import net.minecraft.item.ItemFood
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
-import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.items.IItemHandler
-import squeek.applecore.api.AppleCoreAPI
 
-class AdvancedFeedingUpgradeWrapper : AdvancedUpgradeWrapper<FeedingUpgradeItem>(), IFeedingUpgrade {
+class AdvancedFeedingUpgradeWrapper :
+    AdvancedUpgradeWrapper<FeedingUpgradeItem>(Config.advancedFeedingUpgrade.filterSlots, Config.advancedFeedingUpgrade.slotsInRow),
+    IFeedingUpgrade {
     companion object {
         private const val HUNGER_FEEDING_STRATEGY_TAG = "HungerFeedingStrategy"
         private const val HURT_FEEDING_STRATEGY_TAG = "HurtFeedingStrategy"
@@ -24,7 +23,7 @@ class AdvancedFeedingUpgradeWrapper : AdvancedUpgradeWrapper<FeedingUpgradeItem>
 
     override val settingsLangKey: String = "gui.advanced_feeding_settings".asTranslationKey()
 
-    override val filterItems: ExposedItemStackHandler = object : ExposedItemStackHandler(16) {
+    override val filterItems: ExposedItemStackHandler = object : ExposedItemStackHandler(Config.advancedFeedingUpgrade.filterSlots) {
         override fun isItemValid(slot: Int, stack: ItemStack): Boolean =
             IFeedingUpgrade.isValidFood(stack)
     }

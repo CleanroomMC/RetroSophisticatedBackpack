@@ -59,7 +59,7 @@ object RetroSophisticatedBackpacks {
         appleCoreLoaded = Loader.isModLoaded("applecore")
 
         proxy.preInit(event)
-        
+
         FMLInterModComms.sendFunctionMessage("theoneprobe", "getTheOneProbe", OneProbePlugin::class.java.name)
     }
 

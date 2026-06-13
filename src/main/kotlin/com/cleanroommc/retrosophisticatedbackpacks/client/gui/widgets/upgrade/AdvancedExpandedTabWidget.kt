@@ -14,13 +14,18 @@ open class AdvancedExpandedTabWidget<T>(
     filterSyncKey: String = "adv_common_filter",
     coveredTabSize: Int = 5,
     width: Int = 100,
+    contentX: Int = 8,
+    contentY: Int = 28,
+    contentWidth: Int = 88,
+    contentPadding: Int = 2,
+    filterWidth: Int = 88,
 ) : ExpandedUpgradeTabWidget<T>(slotIndex, wrap, coveredTabSize, delegatedIconStack, titleKey, width)
         where T : IAdvancedFilterable, T : UpgradeWrapper<*> {
     protected val startingRow: Row = Row()
         .height(0)
         .name("starting_row") as Row
     protected val filterWidget: AdvancedFilterWidget = AdvancedFilterWidget(slotIndex, wrap, filterSyncKey)
-        .width(88)
+        .width(filterWidth)
         .coverChildrenHeight()
         .name("adv_filter_widget")
 
@@ -31,9 +36,9 @@ open class AdvancedExpandedTabWidget<T>(
 
     init {
         val column = Column()
-            .pos(8, 28)
-            .width(88)
-            .childPadding(2)
+            .pos(contentX, contentY)
+            .width(contentWidth)
+            .childPadding(contentPadding)
             .child(startingRow)
             .child(filterWidget)
 

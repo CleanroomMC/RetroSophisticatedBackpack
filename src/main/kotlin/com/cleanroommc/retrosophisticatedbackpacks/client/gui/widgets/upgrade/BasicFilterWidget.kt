@@ -6,21 +6,30 @@ import com.cleanroommc.modularui.widget.ParentWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.slot.PhantomItemSlot
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IContentsFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.RSBTextures
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.CyclicVariantButtonWidget
 import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.setEnabledIfAndEnabled
 
 class BasicFilterWidget(
     var filterableWrapper: IBasicFilterable,
     slotIndex: Int,
-    syncKey: String = "common_filter"
+    syncKey: String = "common_filter",
+    private val showFilterButton: Boolean = true,
+    private val slotFactory: (Int, () -> UpgradeSlotSH?) -> PhantomItemSlot = { _, _ -> PhantomItemSlot() }
 ) :
     ParentWidget<BasicFilterWidget>() {
     companion object {
         private val FILTER_TYPE_VARIANTS = listOf(
             CyclicVariantButtonWidget.Variant(IKey.lang("gui.whitelist".asTranslationKey()), RSBTextures.CHECK_ICON),
             CyclicVariantButtonWidget.Variant(IKey.lang("gui.blacklist".asTranslationKey()), RSBTextures.CROSS_ICON),
+        )
+        private val CONTENTS_FILTER_TYPE_VARIANTS = listOf(
+            CyclicVariantButtonWidget.Variant(IKey.lang("gui.allow".asTranslationKey()), RSBTextures.CHECK_ICON),
+            CyclicVariantButtonWidget.Variant(IKey.lang("gui.block".asTranslationKey()), RSBTextures.CROSS_ICON),
+            CyclicVariantButtonWidget.Variant(IKey.lang("gui.match_backpack_contents".asTranslationKey()), RSBTextures.MATCH_BACKPACK_CONTENTS_ICON),
         )
     }
 
@@ -33,31 +42,60 @@ class BasicFilterWidget(
         syncHandler("upgrades", slotIndex)
 
         filterTypeButton = CyclicVariantButtonWidget(
-            FILTER_TYPE_VARIANTS,
-            filterableWrapper.filterType.ordinal
+            if (filterableWrapper is IContentsFilterable) CONTENTS_FILTER_TYPE_VARIANTS else FILTER_TYPE_VARIANTS,
+            filterButtonIndex(),
+            iconOffset = 1,
+            buttonWidth = 18,
+            buttonHeight = 18,
+            hasCustomTexture = true
         ) { index ->
-            filterableWrapper.filterType = IBasicFilterable.FilterType.entries[index]
-            slotSyncHandler?.syncToServer(UpgradeSlotSH.UPDATE_BASIC_FILTERABLE) {
-                it.writeEnumValue(filterableWrapper.filterType)
-            }
+            updateFilterType(index)
         }
-            .size(20, 20)
+            .size(18, 18)
 
         val slotGroup = SlotGroupWidget().name("${syncKey}s")
-        slotGroup.coverChildren().top(26)
+        slotGroup.coverChildren().top(if (showFilterButton) 21 else 0)
         slotGroup.disableSortButtons()
+        slotGroup.setEnabledIfAndEnabled {
+            (filterableWrapper as? IContentsFilterable)?.contentsFilterType != IContentsFilterable.ContentsFilterType.STORAGE
+        }
         filterSlots = mutableListOf<PhantomItemSlot>()
 
-        for (i in 0 until 9) {
+        val filterSlotCount = filterableWrapper.filterItems.slots
+        val slotsInRow = if (filterSlotCount > 0) filterableWrapper.slotsInRow.coerceIn(1, filterSlotCount) else 1
+        for (i in 0 until filterSlotCount) {
             val slot =
-                PhantomItemSlot().syncHandler("${syncKey}_$slotIndex", i).pos(i % 3 * 18, i / 3 * 18) as PhantomItemSlot
+                slotFactory(i) { slotSyncHandler }.syncHandler("${syncKey}_$slotIndex", i)
+                    .pos(i % slotsInRow * 18, i / slotsInRow * 18) as PhantomItemSlot
 
             filterSlots.add(slot)
             slotGroup.child(slot)
         }
 
-        child(filterTypeButton)
-            .child(slotGroup)
+        if (showFilterButton) {
+            child(filterTypeButton)
+        }
+        child(slotGroup)
+    }
+
+    private fun filterButtonIndex(): Int =
+        (filterableWrapper as? IContentsFilterable)?.contentsFilterType?.ordinal ?: filterableWrapper.filterType.ordinal
+
+    private fun updateFilterType(index: Int) {
+        val contentsFilterable = filterableWrapper as? IContentsFilterable
+        if (contentsFilterable != null) {
+            val filterType = IContentsFilterable.ContentsFilterType.entries[index]
+            contentsFilterable.contentsFilterType = filterType
+            slotSyncHandler?.syncToServer(UpgradeSlotSH.UPDATE_CONTENTS_FILTERABLE) {
+                it.writeEnumValue(filterType)
+            }
+            return
+        }
+
+        filterableWrapper.filterType = IBasicFilterable.FilterType.entries[index]
+        slotSyncHandler?.syncToServer(UpgradeSlotSH.UPDATE_BASIC_FILTERABLE) {
+            it.writeEnumValue(filterableWrapper.filterType)
+        }
     }
 
     override fun isValidSyncOrValue(syncHandler: ISyncOrValue): Boolean {

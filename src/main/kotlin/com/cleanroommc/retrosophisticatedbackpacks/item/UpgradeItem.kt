@@ -4,13 +4,14 @@ import com.cleanroommc.retrosophisticatedbackpacks.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.handler.RegistryHandler
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
+import net.minecraft.client.resources.I18n
 import net.minecraft.client.util.ITooltipFlag
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.util.text.TextComponentTranslation
+import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 
-abstract class UpgradeItem(registryName: String, val hasTab: Boolean = false) : ItemBase() {
+abstract class UpgradeItem(registryName: String, val hasTab: Boolean = false, val upgradeGroup: String? = null) : ItemBase() {
     init {
         setCreativeTab(RetroSophisticatedBackpacks.CREATIVE_TAB)
         setRegistryName(registryName)
@@ -21,7 +22,19 @@ abstract class UpgradeItem(registryName: String, val hasTab: Boolean = false) : 
     }
 
     override fun addInformation(stack: ItemStack, worldIn: World?, tooltip: MutableList<String>, flagIn: ITooltipFlag) {
-        tooltip.add(TextComponentTranslation("tooltip.${registryName!!.path}".asTranslationKey()).formattedText)
+        addUpgradeTooltip(tooltip)
+    }
+
+    protected fun addUpgradeTooltip(tooltip: MutableList<String>, vararg args: Any) {
+        val path = registryName!!.path
+        val key = "item.${registryName!!.namespace}.$path.tooltip"
+        val legacyKey = "tooltip.$path".asTranslationKey()
+        val tooltipText = when {
+            I18n.hasKey(key) -> I18n.format(key, *args)
+            I18n.hasKey(legacyKey) -> I18n.format(legacyKey, *args)
+            else -> return
+        }
+        tooltipText.replace("\\n", "\n").split('\n').forEach { tooltip.add(TextFormatting.DARK_GRAY.toString() + it) }
     }
 
     override fun getNBTShareTag(stack: ItemStack): NBTTagCompound? {

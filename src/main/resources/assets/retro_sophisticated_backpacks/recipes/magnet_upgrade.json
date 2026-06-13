@@ -1,0 +1,29 @@
+{
+  "type": "retro_sophisticated_backpacks:upgrade_shaped",
+  "key": {
+    "E": {
+      "item": "minecraft:ender_pearl"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "L": {
+      "item": "minecraft:dye",
+      "data": 4
+    },
+    "P": {
+      "item": "retro_sophisticated_backpacks:pickup_upgrade"
+    }
+  },
+  "pattern": [
+    "EIE",
+    "IPI",
+    "R L"
+  ],
+  "result": {
+    "item": "retro_sophisticated_backpacks:magnet_upgrade"
+  }
+}

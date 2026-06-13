@@ -6,15 +6,25 @@ import com.cleanroommc.modularui.screen.ClientScreenHandler
 import com.cleanroommc.retrosophisticatedbackpacks.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedRefillUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGuiData
+import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
 import com.cleanroommc.retrosophisticatedbackpacks.network.C2SOpenBackpackPacket
+import com.cleanroommc.retrosophisticatedbackpacks.network.C2SRefillBlockPickPacket
+import com.cleanroommc.retrosophisticatedbackpacks.network.C2SToolSwapBlockPacket
+import com.cleanroommc.retrosophisticatedbackpacks.network.C2SToolSwapEntityPacket
 import com.cleanroommc.retrosophisticatedbackpacks.proxy.RSBProxy
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.inventory.GuiContainer
+import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemStack
+import net.minecraft.util.math.RayTraceResult
+import net.minecraft.util.text.TextComponentTranslation
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.InputEvent
+import net.minecraftforge.items.IItemHandler
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
@@ -66,6 +76,96 @@ object KeyInputHandler {
                 )
             }
         }
+
+        if (RSBProxy.ClientProxy.TOOL_SWAP_KEYBIND.isPressed) {
+            sendToolSwapPacket(mc)
+        }
+
+        if (mc.gameSettings.keyBindPickBlock.isPressed) {
+            sendRefillBlockPickPacket(mc)
+        }
+    }
+
+    @SubscribeEvent
+    @JvmStatic
+    fun onMouseInput(event: InputEvent.MouseInputEvent) {
+        val mc = Minecraft.getMinecraft()
+        if (RSBProxy.ClientProxy.TOOL_SWAP_KEYBIND.isPressed) {
+            sendToolSwapPacket(mc)
+        }
+        if (mc.gameSettings.keyBindPickBlock.isPressed) {
+            sendRefillBlockPickPacket(mc)
+        }
+    }
+
+    private fun sendToolSwapPacket(mc: Minecraft) {
+        val player = mc.player ?: return
+        val target = mc.objectMouseOver ?: return
+        if (player.heldItemMainhand.item is BackpackItem) {
+            player.sendStatusMessage(TextComponentTranslation("gui.status.unable_to_swap_tool_for_backpack".asTranslationKey()), true)
+            return
+        }
+
+        when (target.typeOfHit) {
+            RayTraceResult.Type.BLOCK -> NetworkHandler.INSTANCE.sendToServer(C2SToolSwapBlockPacket(target.blockPos))
+            RayTraceResult.Type.ENTITY -> target.entityHit?.let { NetworkHandler.INSTANCE.sendToServer(C2SToolSwapEntityPacket(it.entityId)) }
+            else -> Unit
+        }
+    }
+
+    private fun sendRefillBlockPickPacket(mc: Minecraft) {
+        val player = mc.player ?: return
+        val target = mc.objectMouseOver ?: return
+        if (player.isCreative || target.typeOfHit != RayTraceResult.Type.BLOCK || !hasAdvancedRefillBackpack(player.inventory) &&
+            (!RetroSophisticatedBackpacks.baublesLoaded || !hasAdvancedRefillBackpack(BaublesApi.getBaublesHandler(player)))) {
+            return
+        }
+
+        val pos = target.blockPos
+        val state = mc.world.getBlockState(pos)
+        if (state.block.isAir(state, mc.world, pos)) {
+            return
+        }
+
+        val pickedStack = state.block.getPickBlock(state, target, mc.world, pos, player)
+        if (!pickedStack.isEmpty && !hasMatchingStack(player.inventory, pickedStack)) {
+            NetworkHandler.INSTANCE.sendToServer(C2SRefillBlockPickPacket(pickedStack))
+        }
+    }
+
+    private fun hasAdvancedRefillBackpack(inventory: IInventory): Boolean {
+        for (slot in 0 until inventory.sizeInventory) {
+            val wrapper = inventory.getStackInSlot(slot).getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: continue
+            if (wrapper.gatherCapabilityUpgrades(Capabilities.ADVANCED_REFILL_UPGRADE_CAPABILITY)
+                    .filterIsInstance<AdvancedRefillUpgradeWrapper>()
+                    .any { it.enabled }
+            ) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun hasMatchingStack(inventory: IInventory, stack: ItemStack): Boolean {
+        for (slot in 0 until inventory.sizeInventory) {
+            if (net.minecraftforge.items.ItemHandlerHelper.canItemStacksStack(inventory.getStackInSlot(slot), stack)) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun hasAdvancedRefillBackpack(inventory: IItemHandler): Boolean {
+        for (slot in 0 until inventory.slots) {
+            val wrapper = inventory.getStackInSlot(slot).getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: continue
+            if (wrapper.gatherCapabilityUpgrades(Capabilities.ADVANCED_REFILL_UPGRADE_CAPABILITY)
+                    .filterIsInstance<AdvancedRefillUpgradeWrapper>()
+                    .any { it.enabled }
+            ) {
+                return true
+            }
+        }
+        return false
     }
 
     @JvmStatic

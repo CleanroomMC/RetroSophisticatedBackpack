@@ -20,6 +20,10 @@ open class DelegatedStackHandlerSH(
 ) : SyncHandler() {
     companion object {
         const val UPDATE_FILTERABLE = 0
+        const val UPDATE_JUKEBOX = 1
+        const val UPDATE_TANK = 2
+        const val UPDATE_BATTERY = 3
+        const val UPDATE_ANVIL = 4
     }
 
     var delegatedStackHandler: DelegatedItemHandler = DelegatedItemHandler(EmptyHandler::INSTANCE, wrappedSlotAmount)
@@ -39,6 +43,28 @@ open class DelegatedStackHandlerSH(
                 val wrapper = stack.getCapability(Capabilities.BASIC_FILTERABLE_CAPABILITY, null) ?: return
 
                 setDelegatedStackHandler(wrapper::filterItems)
+            }
+
+            UPDATE_JUKEBOX -> {
+                val wrapper = stack.getCapability(Capabilities.IJUKEBOX_UPGRADE_CAPABILITY, null) ?: return
+
+                setDelegatedStackHandler(wrapper::discInventory)
+            }
+
+            UPDATE_TANK -> {
+                val wrapper = stack.getCapability(Capabilities.ITANK_UPGRADE_CAPABILITY, null) ?: return
+
+                setDelegatedStackHandler(wrapper::getInventory)
+            }
+
+            UPDATE_BATTERY -> {
+                val wrapper = stack.getCapability(Capabilities.IBATTERY_UPGRADE_CAPABILITY, null) ?: return
+                setDelegatedStackHandler(wrapper::getInventory)
+            }
+
+            UPDATE_ANVIL -> {
+                val wrapper = stack.getCapability(Capabilities.IANVIL_UPGRADE_CAPABILITY, null) ?: return
+                setDelegatedStackHandler(wrapper::getInventory)
             }
         }
     }

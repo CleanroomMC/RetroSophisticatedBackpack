@@ -1,5 +1,6 @@
 package com.cleanroommc.retrosophisticatedbackpacks.mixin;
 
+import com.cleanroommc.retrosophisticatedbackpacks.handler.ClientGuiStashHandler;
 import com.cleanroommc.retrosophisticatedbackpacks.handler.KeyInputHandler;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -13,5 +14,12 @@ public class GuiContainerMixin extends GuiScreen {
     @Inject(method = "keyTyped", at = @At("TAIL"))
     private void keyTyped(char typedChar, int keyCode, CallbackInfo info) {
         KeyInputHandler.onKeyInputInGuiScreen(keyCode);
+    }
+
+    @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
+    private void rsb$mouseClicked(int mouseX, int mouseY, int mouseButton, CallbackInfo info) {
+        if (ClientGuiStashHandler.handleMouseClicked((GuiContainer) (Object) this, mouseX, mouseY, mouseButton)) {
+            info.cancel();
+        }
     }
 }

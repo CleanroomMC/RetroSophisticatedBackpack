@@ -4,6 +4,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.Tags
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackTier
 import com.cleanroommc.retrosophisticatedbackpacks.block.BackpackBlock
 import com.cleanroommc.retrosophisticatedbackpacks.block.Blocks
+import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.google.common.collect.ImmutableMap
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.block.model.*
@@ -32,7 +33,7 @@ class BackpackDynamicModel private constructor(
 ) : IModel {
     companion object {
         private val BACKPACK_MODELS_RESOURCE_LOCATION = ModelPart.entries.filter {
-            it == ModelPart.BASE || it.name.endsWith("POUCH")
+            it == ModelPart.BASE || it.name.endsWith("POUCH") || it.name.endsWith("TANK")
         }.associateBy({ it }, {
             val path = "block/backpack_${it.name.lowercase(Locale.ENGLISH)}"
 
@@ -41,6 +42,7 @@ class BackpackDynamicModel private constructor(
 
         private val BACKPACK_CLOTH_RESOURCE_LOCATION = ResourceLocation(Tags.MOD_ID, "block/backpack_cloth")
         private val BACKPACK_BORDER_RESOURCE_LOCATION = ResourceLocation(Tags.MOD_ID, "block/backpack_border")
+        private val BACKPACK_MODULES_RESOURCE_LOCATION = ResourceLocation(Tags.MOD_ID, "block/backpack_modules")
         private val BACKPACK_CLIP_RESOURCE_LOCATIONS = BackpackTier.entries.associateBy(
             { it },
             { ResourceLocation(Tags.MOD_ID, "block/${it.registryName}_clips") }
@@ -48,6 +50,7 @@ class BackpackDynamicModel private constructor(
         private val BACKPACK_TEXTURE_RESOURCE_LOCATIONS = listOf(
             BACKPACK_CLOTH_RESOURCE_LOCATION,
             BACKPACK_BORDER_RESOURCE_LOCATION,
+            BACKPACK_MODULES_RESOURCE_LOCATION,
             *BACKPACK_CLIP_RESOURCE_LOCATIONS.values.toTypedArray()
         )
     }
@@ -125,6 +128,12 @@ class BackpackDynamicModel private constructor(
             ret.addAll(models[ModelPart.FRONT_POUCH]!!.getQuads(state, side, rand))
             ret.addAll(models[ModelPart.LEFT_POUCH]!!.getQuads(state, side, rand))
             ret.addAll(models[ModelPart.RIGHT_POUCH]!!.getQuads(state, side, rand))
+            if (state?.getValue(BackpackBlock.LEFT_TANK) ?: tankLeft) {
+                ret.addAll(models[ModelPart.LEFT_TANK]!!.getQuads(state, side, rand))
+            }
+            if (state?.getValue(BackpackBlock.RIGHT_TANK) ?: tankRight) {
+                ret.addAll(models[ModelPart.RIGHT_TANK]!!.getQuads(state, side, rand))
+            }
 
             if (state != null) {
                 val facing = state.getValue(BackpackBlock.FACING)
@@ -142,7 +151,7 @@ class BackpackDynamicModel private constructor(
             true
 
         override fun isBuiltInRenderer(): Boolean =
-            false
+            true
 
         override fun getParticleTexture(): TextureAtlasSprite =
             models[ModelPart.BASE]!!.particleTexture
@@ -164,6 +173,11 @@ class BackpackDynamicModel private constructor(
             backpackModel.tankLeft = false
             backpackModel.tankRight = false
             backpackModel.battery = false
+            stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null)?.let {
+                val (left, right) = it.tankRenderSides()
+                backpackModel.tankLeft = left
+                backpackModel.tankRight = right
+            }
 
             return backpackModel
         }

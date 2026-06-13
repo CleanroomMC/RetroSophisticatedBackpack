@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "A": {
+      "item": "minecraft:iron_axe"
+    },
+    "S": {
+      "item": "minecraft:iron_shovel"
+    },
+    "B": {
+      "item": "retro_sophisticated_backpacks:upgrade_base"
+    }
+  },
+  "pattern": [
+    " P ",
+    "ABA",
+    " S "
+  ],
+  "result": {
+    "item": "retro_sophisticated_backpacks:tool_swapper_upgrade"
+  }
+}

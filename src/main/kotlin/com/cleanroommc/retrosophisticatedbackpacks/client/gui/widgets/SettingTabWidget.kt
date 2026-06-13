@@ -21,7 +21,7 @@ class SettingTabWidget : Widget<SettingTabWidget>(), Interactable {
     init {
         size(TAB_TEXTURE.width, TAB_TEXTURE.height)
             .right(-TAB_TEXTURE.width + 4)
-            .top(0)
+            .top(TabWidget.TAB_TOP_OFFSET)
             .background(TAB_TEXTURE.get(-1, false))
             .tooltipStatic {
                 it.addLine(IKey.lang("gui.settings".asTranslationKey()))
@@ -33,16 +33,18 @@ class SettingTabWidget : Widget<SettingTabWidget>(), Interactable {
         context.recipeViewerSettings.addExclusionArea(this)
     }
 
+    override fun dispose() {
+        if (isValid)
+            context.recipeViewerSettings.removeExclusionArea(this)
+        super.dispose()
+    }
+
     override fun onMousePressed(mouseButton: Int): Interactable.Result {
         if (mouseButton == 0) {
             val panel = panel as BackpackPanel
 
             Interactable.playButtonClickSound()
-            if (panel.settingPanel.isPanelOpen) {
-                panel.settingPanel.closePanel()
-            } else {
-                panel.settingPanel.openPanel()
-            }
+            panel.isSettingMode = true
 
             return Interactable.Result.SUCCESS
         }

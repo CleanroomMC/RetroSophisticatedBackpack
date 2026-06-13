@@ -27,7 +27,7 @@ interface IAdvancedFilterable : IBasicFilterable {
     }
 
     private fun matchItem(stack: ItemStack): Boolean {
-        val filterResult = BooleanArray(16)
+        val filterResult = BooleanArray(filterItems.slots)
 
         for ((i, filterStack) in filterItems.inventory.withIndex()) {
             if (filterStack.item != stack.item)
@@ -43,10 +43,16 @@ interface IAdvancedFilterable : IBasicFilterable {
     }
 
     private fun matchMod(stack: ItemStack): Boolean {
-        val filterResult = BooleanArray(16)
+        val filterResult = BooleanArray(filterItems.slots)
 
         for ((i, filterStack) in filterItems.inventory.withIndex()) {
-            filterResult[i] = stack.item.registryName?.namespace == filterStack.item.registryName?.namespace
+            if (filterStack.isEmpty)
+                continue
+
+            val modMatches = stack.item.registryName?.namespace == filterStack.item.registryName?.namespace
+            val damageMatches = ignoreDurability || stack.itemDamage == filterStack.itemDamage
+            val nbtMatches = ignoreNBT || stack.tagCompound == filterStack.tagCompound
+            filterResult[i] = modMatches && damageMatches && nbtMatches
         }
 
         return when (filterType) {
@@ -106,6 +112,8 @@ interface IAdvancedFilterable : IBasicFilterable {
     object Impl : IAdvancedFilterable {
         override val filterItems: ExposedItemStackHandler
             get() = ExposedItemStackHandler(0)
+        override val slotsInRow: Int
+            get() = 1
         override var filterType: IBasicFilterable.FilterType
             get() = IBasicFilterable.Impl.filterType
             set(_) {}

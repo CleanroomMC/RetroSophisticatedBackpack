@@ -1,6 +1,7 @@
 package com.cleanroommc.retrosophisticatedbackpacks.capability;
 
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.*;
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.mobcatcher.MobCatcherUpgradeWrapper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import org.jetbrains.annotations.NotNull;
@@ -44,6 +45,63 @@ public final class Capabilities {
     @CapabilityInject(AdvancedFilterUpgradeWrapper.class)
     public static final @NotNull Capability<AdvancedFilterUpgradeWrapper> ADVANCED_FILTER_UPGRADE_WRAPPER_CAPABILITY = null;
 
+    @CapabilityInject(MagnetUpgradeWrapper.class)
+    public static final @NotNull Capability<MagnetUpgradeWrapper> MAGNET_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(AdvancedMagnetUpgradeWrapper.class)
+    public static final @NotNull Capability<AdvancedMagnetUpgradeWrapper> ADVANCED_MAGNET_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(VoidUpgradeWrapper.class)
+    public static final @NotNull Capability<VoidUpgradeWrapper> VOID_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(AdvancedVoidUpgradeWrapper.class)
+    public static final @NotNull Capability<AdvancedVoidUpgradeWrapper> ADVANCED_VOID_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(RefillUpgradeWrapper.class)
+    public static final @NotNull Capability<RefillUpgradeWrapper> REFILL_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(AdvancedRefillUpgradeWrapper.class)
+    public static final @NotNull Capability<AdvancedRefillUpgradeWrapper> ADVANCED_REFILL_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(CompactingUpgradeWrapper.class)
+    public static final @NotNull Capability<CompactingUpgradeWrapper> COMPACTING_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(AdvancedCompactingUpgradeWrapper.class)
+    public static final @NotNull Capability<AdvancedCompactingUpgradeWrapper> ADVANCED_COMPACTING_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(EverlastingUpgradeWrapper.class)
+    public static final @NotNull Capability<EverlastingUpgradeWrapper> EVERLASTING_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(ToolSwapperUpgradeWrapper.class)
+    public static final @NotNull Capability<ToolSwapperUpgradeWrapper> TOOL_SWAPPER_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(AdvancedToolSwapperUpgradeWrapper.class)
+    public static final @NotNull Capability<AdvancedToolSwapperUpgradeWrapper> ADVANCED_TOOL_SWAPPER_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(TankUpgradeWrapper.class)
+    public static final @NotNull Capability<TankUpgradeWrapper> TANK_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(JukeboxUpgradeWrapper.class)
+    public static final @NotNull Capability<JukeboxUpgradeWrapper> JUKEBOX_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(AdvancedJukeboxUpgradeWrapper.class)
+    public static final @NotNull Capability<AdvancedJukeboxUpgradeWrapper> ADVANCED_JUKEBOX_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(PumpUpgradeWrapper.class)
+    public static final @NotNull Capability<PumpUpgradeWrapper> PUMP_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(AdvancedPumpUpgradeWrapper.class)
+    public static final @NotNull Capability<AdvancedPumpUpgradeWrapper> ADVANCED_PUMP_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(BatteryUpgradeWrapper.class)
+    public static final @NotNull Capability<BatteryUpgradeWrapper> BATTERY_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(AnvilUpgradeWrapper.class)
+    public static final @NotNull Capability<AnvilUpgradeWrapper> ANVIL_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(MobCatcherUpgradeWrapper.class)
+    public static final @NotNull Capability<MobCatcherUpgradeWrapper> MOB_CATCHER_UPGRADE_CAPABILITY = null;
+
     // Abstract capabilities
     @CapabilityInject(UpgradeWrapper.class)
     public static final @NotNull Capability<UpgradeWrapper<?>> UPGRADE_CAPABILITY = null;
@@ -71,4 +129,37 @@ public final class Capabilities {
 
     @CapabilityInject(IFilterUpgrade.class)
     public static final @NotNull Capability<IFilterUpgrade> IFILTER_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(IMagnetUpgrade.class)
+    public static final @NotNull Capability<IMagnetUpgrade> IMAGNET_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(IVoidUpgrade.class)
+    public static final @NotNull Capability<IVoidUpgrade> IVOID_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(IRefillUpgrade.class)
+    public static final @NotNull Capability<IRefillUpgrade> IREFILL_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(ICompactingUpgrade.class)
+    public static final @NotNull Capability<ICompactingUpgrade> ICOMPACTING_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(IEverlastingUpgrade.class)
+    public static final @NotNull Capability<IEverlastingUpgrade> IEVERLASTING_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(IToolSwapperUpgrade.class)
+    public static final @NotNull Capability<IToolSwapperUpgrade> ITOOL_SWAPPER_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(ITankUpgrade.class)
+    public static final @NotNull Capability<ITankUpgrade> ITANK_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(IJukeboxUpgrade.class)
+    public static final @NotNull Capability<IJukeboxUpgrade> IJUKEBOX_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(IPumpUpgrade.class)
+    public static final @NotNull Capability<IPumpUpgrade> IPUMP_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(IBatteryUpgrade.class)
+    public static final @NotNull Capability<IBatteryUpgrade> IBATTERY_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(IAnvilUpgrade.class)
+    public static final @NotNull Capability<IAnvilUpgrade> IANVIL_UPGRADE_CAPABILITY = null;
 }

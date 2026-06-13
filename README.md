@@ -41,11 +41,18 @@ Here is a list of implemented feature and considered features to be implemented:
 - [x] deposit upgrade (b/a)
 - [x] restock upgrade (b/a)
 - [x] filter upgrade (b/a)
-- [ ] magnet upgrade (b/a)
-- [ ] void upgrade (b/a)
+- [x] magnet upgrade (b/a)
+- [x] void upgrade (b/a)
+- [x] refill_upgrade (b/a)
+- [x] compacting_upgrade (b/a)
 - [x] crafting upgrade
-- [ ] everlasting upgrade
-- [ ] jukebox upgrade (low priority)
+- [x] everlasting upgrade
+- [x] tool_swapper_upgrade (b/a)
+- [x] jukebox upgrade (low priority)
+- [x] tank_upgrade
+- [x] pump_upgrade (b/a)
+- [x] battery_upgrade
+- [x] mob_catcher_upgrade (b/a)
 
 ## Disclaimer
 

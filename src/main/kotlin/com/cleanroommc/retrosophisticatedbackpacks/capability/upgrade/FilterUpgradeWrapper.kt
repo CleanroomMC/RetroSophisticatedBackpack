@@ -1,6 +1,7 @@
 package com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade
 
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.config.Config
 import com.cleanroommc.retrosophisticatedbackpacks.item.FilterUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import net.minecraft.item.ItemStack
@@ -8,7 +9,9 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 
-class FilterUpgradeWrapper : BasicUpgradeWrapper<FilterUpgradeItem>(), IFilterUpgrade {
+class FilterUpgradeWrapper :
+    BasicUpgradeWrapper<FilterUpgradeItem>(Config.filterUpgrade.filterSlots, Config.filterUpgrade.slotsInRow),
+    IFilterUpgrade {
     override val settingsLangKey: String = "gui.filter_settings".asTranslationKey()
     override var filterWay: IFilterUpgrade.FilterWayType = IFilterUpgrade.FilterWayType.IN_OUT
 
@@ -39,6 +42,7 @@ class FilterUpgradeWrapper : BasicUpgradeWrapper<FilterUpgradeItem>(), IFilterUp
 
     override fun deserializeNBT(nbt: NBTTagCompound) {
         super.deserializeNBT(nbt)
-        filterWay = IFilterUpgrade.FilterWayType.entries[nbt.getByte(IFilterUpgrade.FILTER_WAY_TAG).toInt()]
+        if (nbt.hasKey(IFilterUpgrade.FILTER_WAY_TAG))
+            filterWay = IFilterUpgrade.FilterWayType.entries.getOrElse(nbt.getByte(IFilterUpgrade.FILTER_WAY_TAG).toInt()) { filterWay }
     }
 }

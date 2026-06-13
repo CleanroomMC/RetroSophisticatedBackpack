@@ -6,18 +6,19 @@ tile.retro_sophisticated_backpacks.backpack_diamond.name=Diamentowy plecak
 tile.retro_sophisticated_backpacks.backpack_obsidian.name=Obsydianowy plecak
 
 # Przedmioty
-item.retro_sophisticated_backpacks.upgrade_base.name=Podstawa ulepszeń
-item.retro_sophisticated_backpacks.stack_upgrade_starter_tier.name=Podstawowe ulepszenie stosu
-item.retro_sophisticated_backpacks.stack_upgrade_tier_1.name=Ulepszenie stosu poziomu 1
-item.retro_sophisticated_backpacks.stack_upgrade_tier_2.name=Ulepszenie stosu poziomu 2
-item.retro_sophisticated_backpacks.stack_upgrade_tier_3.name=Ulepszenie stosu poziomu 3
-item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=Ulepszenie stosu poziomu 4
-item.retro_sophisticated_backpacks.crafting_upgrade.name=Ulepszenie rzemieślnicze
-item.retro_sophisticated_backpacks.inception_upgrade.name=Ulepszenie incepcyjne
-item.retro_sophisticated_backpacks.pickup_upgrade.name=Ulepszenie zbierające
-item.retro_sophisticated_backpacks.advanced_pickup_upgrade.name=Zaawansowane ulepszenie zbierające
-item.retro_sophisticated_backpacks.feeding_upgrade.name=Ulepszenie karmiące
-item.retro_sophisticated_backpacks.advanced_feeding_upgrade.name=Zaawansoawane ulepszenie karmiące
+item.retro_sophisticated_backpacks.upgrade_base.name=Moduł ulepszenia
+item.retro_sophisticated_backpacks.stack_upgrade_starter_tier.name=Ulepszenie stosów bazowe
+item.retro_sophisticated_backpacks.stack_upgrade_tier_1.name=Ulepszenie stosów poziom 1
+item.retro_sophisticated_backpacks.stack_upgrade_tier_2.name=Ulepszenie stosów poziom 2
+item.retro_sophisticated_backpacks.stack_upgrade_tier_3.name=Ulepszenie stosów poziom 3
+item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=Ulepszenie stosów poziom 4
+item.retro_sophisticated_backpacks.exponential_stack_upgrade.name=Ulepszenie stosów wykładnicze
+item.retro_sophisticated_backpacks.crafting_upgrade.name=Ulepszenie wytwarzania
+item.retro_sophisticated_backpacks.inception_upgrade.name=Ulepszenie incepcji
+item.retro_sophisticated_backpacks.pickup_upgrade.name=Ulepszenie podnoszenia
+item.retro_sophisticated_backpacks.advanced_pickup_upgrade.name=Zaawansowane ulepszenie podnoszenia
+item.retro_sophisticated_backpacks.feeding_upgrade.name=Ulepszenie karmienia
+item.retro_sophisticated_backpacks.advanced_feeding_upgrade.name=Zaawansowane ulepszenie Karmienia
 
 # Zakładki trybu kreatywnego
 itemGroup.retro_sophisticated_backpacks.creative_tab=Retro Sophisticated Backpack
@@ -29,60 +30,314 @@ retro_sophisticated_backpacks.key.category=Retro Sophisticated Backpack
 # Podpowiedzi
 retro_sophisticated_backpacks.tooltip.backpack.inventory_size=Rozmiar ekwipunku: %d
 retro_sophisticated_backpacks.tooltip.backpack.upgrade_slots_size=Sloty ulepszeń: %d
-retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> Mnożnik stosu: %d %s
+retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=Stack Size Multiplier: %s
+retro_sophisticated_backpacks.tooltip.backpack.fluid=%s mB %s
+retro_sophisticated_backpacks.tooltip.backpack.fluid_empty=Empty tank
+retro_sophisticated_backpacks.tooltip.backpack.energy=%s FE
+retro_sophisticated_backpacks.tooltip.backpack.fluid_title=Fluids
+retro_sophisticated_backpacks.tooltip.backpack.energy_title=Energy
+retro_sophisticated_backpacks.tooltip.backpack.upgrades_title=Upgrades
+retro_sophisticated_backpacks.tooltip.backpack.inventory_title=Inventory
+retro_sophisticated_backpacks.tooltip.backpack.empty=No Upgrades or Inventory Contents
+retro_sophisticated_backpacks.tooltip.backpack.press_for_contents=Press <%s> to View Contents
+retro_sophisticated_backpacks.tooltip.backpack.shift=Left Shift
 
-retro_sophisticated_backpacks.tooltip.upgrade_base=Nic nie robi! Możesz umieścić ją w miejscu na ulepszenia!
 
-retro_sophisticated_backpacks.tooltip.stack_upgrade=Mnoży rozmiar stosu o %d
 
-retro_sophisticated_backpacks.tooltip.crafting_upgrade=Dodaje siatkę rzemieślniczą z boku plecaka
 
-retro_sophisticated_backpacks.tooltip.inception_upgrade=Pozwala umieścić plecaki w plecaku
 
-retro_sophisticated_backpacks.tooltip.pickup_upgrade=Pozwala plecakom podnosić przedmioty
 
-retro_sophisticated_backpacks.tooltip.advanced_pickup_upgrade=Pozwala plecakom podnosić przedmioty z większą ilością konfiguracji
 
-retro_sophisticated_backpacks.tooltip.feeding_upgrade=Pozwala plecakom automatycznie karmić gracza
 
-retro_sophisticated_backpacks.tooltip.advanced_feeding_upgrade=Pozwala plecakom automatycznie karmić z większą ilością konfiguracji
 
-retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Kliknij Shift aby odkryć>
 
 # Elementy interfejsu
 retro_sophisticated_backpacks.container.backpack=Plecak
 
-retro_sophisticated_backpacks.gui.pickup_settings=Ustawienia zbierania
+retro_sophisticated_backpacks.gui.pickup_settings=Pickup
 
-retro_sophisticated_backpacks.gui.advanced_pickup_settings=Zaaw. ustawienia zbierania
+retro_sophisticated_backpacks.gui.advanced_pickup_settings=Adv. Pickup
 
-retro_sophisticated_backpacks.gui.feeding_settings=Ustawienia karmienia
+retro_sophisticated_backpacks.gui.feeding_settings=Feeding
 
-retro_sophisticated_backpacks.gui.advanced_feeding_settings=Zaaw. ustawienia karmienia
+retro_sophisticated_backpacks.gui.advanced_feeding_settings=Adv. Feeding
 
 # Podpowiedzi interfejsu
 retro_sophisticated_backpacks.gui.not_in_effect=Wyłączone
 
-retro_sophisticated_backpacks.gui.whitelist=Biała lista
-retro_sophisticated_backpacks.gui.blacklist=Czarna lista
+retro_sophisticated_backpacks.gui.whitelist=Allow
+retro_sophisticated_backpacks.gui.blacklist=Block
 
-retro_sophisticated_backpacks.gui.match_item=Po przedmiocie
-retro_sophisticated_backpacks.gui.match_mod_id=Po Mod ID
+retro_sophisticated_backpacks.gui.match_item=Match Item
+retro_sophisticated_backpacks.gui.match_mod_id=Match Mod
 retro_sophisticated_backpacks.gui.match_ore_dict=Po Ore Dictionary
 
-retro_sophisticated_backpacks.gui.consider_durability=Dopasuj zużycie
-retro_sophisticated_backpacks.gui.ignore_durability=Ignoruj zużycie
+retro_sophisticated_backpacks.gui.ignore_durability=Ignore Durability
 
-retro_sophisticated_backpacks.gui.consider_nbt=Dopasuj NBT
-retro_sophisticated_backpacks.gui.ignore_nbt=Ignoruj NBT
+retro_sophisticated_backpacks.gui.ignore_nbt=Ignore NBT
 
 retro_sophisticated_backpacks.gui.add_ore_dict_entry=Dodaj Ore Dict.
 retro_sophisticated_backpacks.gui.remove_ore_dict_entry=Usuń Ore Dict.
 retro_sophisticated_backpacks.gui.ore_dict_input_help=Tu możesz wprowadzić ore dictionary, regex jest wspierany
 
-retro_sophisticated_backpacks.gui.complete_hunger=Karm gracza tylko jeśli jest wystarczająco głodny\naby nie marnować żadnych punktów głodu jedzenia
-retro_sophisticated_backpacks.gui.half_hunger=Karm gracza tylko jeśli jest wystarczająco głodny\naby marnować co najwyżej połowę punktów głodu jedzenia
-retro_sophisticated_backpacks.gui.immediate_hunger=Karm gracza kiedy tylko stanie się głodny\nmarnuje sporo punktów głodu jedzenia
+retro_sophisticated_backpacks.gui.complete_hunger=Only feed when player is hungry enough\nto not waste any hunger points of the food at all
+retro_sophisticated_backpacks.gui.half_hunger=Only feed when player is hungry enough\nto only waste half hunger points of the food at most
+retro_sophisticated_backpacks.gui.immediate_hunger=Feed as soon as player is tiny bit hungry\nwastes quite a few hunger points of the food
 
-retro_sophisticated_backpacks.gui.ignore_health=Nie bierz pod uwagę zdrowia\nIgnoruje punkty zdrowia gracza i karmi go tylko na podstawie ustawienia głodu
-retro_sophisticated_backpacks.gui.consider_health=Karm gracza natychmiast po otrzymaniu obrażeń\nIgnoruje ustawienia głodu kiedy gracz nie ma wszystkich punktów zdrowia
+retro_sophisticated_backpacks.gui.ignore_health=Do not consider health\nIgnores player's health and only feeds based on hunger setting
+retro_sophisticated_backpacks.gui.consider_health=Feed player immediately when hurt\nIgnores hunger setting when player is not at max health
+
+item.retro_sophisticated_backpacks.magnet_upgrade.name=Ulepszenie magnesu
+item.retro_sophisticated_backpacks.advanced_magnet_upgrade.name=Zaawansowane ulepszenie magnesu
+item.retro_sophisticated_backpacks.void_upgrade.name=Ulepszenie pustki
+item.retro_sophisticated_backpacks.advanced_void_upgrade.name=Zaawansowane ulepszenie pustki
+item.retro_sophisticated_backpacks.refill_upgrade.name=Ulepszenie zapasu
+item.retro_sophisticated_backpacks.advanced_refill_upgrade.name=Zaawansowane ulepszenie zapasu
+item.retro_sophisticated_backpacks.compacting_upgrade.name=Ulepszenie kompaktujące
+item.retro_sophisticated_backpacks.advanced_compacting_upgrade.name=Zaawansowane ulepszenie kompaktujące
+retro_sophisticated_backpacks.gui.magnet_settings=Magnet
+retro_sophisticated_backpacks.gui.advanced_magnet_settings=Adv. Magnet
+retro_sophisticated_backpacks.gui.void_settings=Void
+retro_sophisticated_backpacks.gui.advanced_void_settings=Adv. Void
+retro_sophisticated_backpacks.gui.refill_settings=Zapas
+retro_sophisticated_backpacks.gui.advanced_refill_settings=Zaaw. zapas
+retro_sophisticated_backpacks.gui.compacting_settings=Compa...
+retro_sophisticated_backpacks.gui.advanced_compacting_settings=Adv. Compacting
+retro_sophisticated_backpacks.gui.void_always=Void Always
+retro_sophisticated_backpacks.gui.void_slot_overflow=Void Slot Overflow
+retro_sophisticated_backpacks.gui.void_storage_overflow=Void Storage Overflow
+retro_sophisticated_backpacks.gui.refill_target_any=Dowolny slot
+retro_sophisticated_backpacks.gui.refill_target_main_hand=Główna ręka
+retro_sophisticated_backpacks.gui.refill_target_off_hand=Druga ręka
+retro_sophisticated_backpacks.gui.refill_target_hotbar_1=Slot paska narzędzi 1
+retro_sophisticated_backpacks.gui.refill_target_hotbar_2=Slot paska narzędzi 2
+retro_sophisticated_backpacks.gui.refill_target_hotbar_3=Slot paska narzędzi 3
+retro_sophisticated_backpacks.gui.refill_target_hotbar_4=Slot paska narzędzi 4
+retro_sophisticated_backpacks.gui.refill_target_hotbar_5=Slot paska narzędzi 5
+retro_sophisticated_backpacks.gui.refill_target_hotbar_6=Slot paska narzędzi 6
+retro_sophisticated_backpacks.gui.refill_target_hotbar_7=Slot paska narzędzi 7
+retro_sophisticated_backpacks.gui.refill_target_hotbar_8=Slot paska narzędzi 8
+retro_sophisticated_backpacks.gui.refill_target_hotbar_9=Slot paska narzędzi 9
+retro_sophisticated_backpacks.gui.allow=Allow
+retro_sophisticated_backpacks.gui.block=Block
+retro_sophisticated_backpacks.gui.match_backpack_contents=Dopasuj zawartość plecaka
+retro_sophisticated_backpacks.gui.pickup_items=Pickup Items
+retro_sophisticated_backpacks.gui.do_not_pickup_items=Do Not Pickup Items
+retro_sophisticated_backpacks.gui.compact_only_uncraftable=Compact Only Uncraftable
+retro_sophisticated_backpacks.gui.compact_anything=Compact Anything
+retro_sophisticated_backpacks.gui.only_automatic=Only works with other upgrades/automation
+retro_sophisticated_backpacks.gui.works_in_gui=Works in GUI as well
+retro_sophisticated_backpacks.gui.void_slot_overflow_detail=Allows single slot to be filled with the item\nand voids anything that overflows
+retro_sophisticated_backpacks.gui.void_storage_overflow_detail=Allows whole storage to be filled with the item\n and voids anything that overflows
+retro_sophisticated_backpacks.gui.refill_target_tooltip=Uzupełnij %s
+retro_sophisticated_backpacks.gui.refill_scroll_tooltip=Przewiń, aby zmienić docelowy slot.
+item.retro_sophisticated_backpacks.everlasting_upgrade.name=Ulepszenie wieczne
+item.retro_sophisticated_backpacks.jukebox_upgrade.name=Ulepszenie szafy grającej
+item.retro_sophisticated_backpacks.advanced_jukebox_upgrade.name=Advanced Jukebox Upgrade
+item.retro_sophisticated_backpacks.tool_swapper_upgrade.name=Ulepszenie zamiany narzędzi
+item.retro_sophisticated_backpacks.advanced_tool_swapper_upgrade.name=Zaawansowane ulepszenie zamiany narzędzi
+item.retro_sophisticated_backpacks.tank_upgrade.name=Ulepszenie zbiornika
+item.retro_sophisticated_backpacks.pump_upgrade.name=Ulepszenie pompy
+item.retro_sophisticated_backpacks.advanced_pump_upgrade.name=Zaawansowane ulepszenie Pompy
+item.retro_sophisticated_backpacks.battery_upgrade.name=Ulepszenie baterii
+item.retro_sophisticated_backpacks.anvil_upgrade.name=Ulepszenie kowadła
+retro_sophisticated_backpacks.gui.everlasting_settings=Everlasting
+retro_sophisticated_backpacks.gui.jukebox_settings=Jukebox
+retro_sophisticated_backpacks.gui.advanced_jukebox_settings=Jukebox
+retro_sophisticated_backpacks.gui.tool_swapper_settings=Zamiana narzędzi
+retro_sophisticated_backpacks.gui.advanced_tool_swapper_settings=Zamiana narzędzi
+retro_sophisticated_backpacks.gui.tank_settings=Tank
+retro_sophisticated_backpacks.gui.pump_settings=Pump
+retro_sophisticated_backpacks.gui.advanced_pump_settings=Adv. Pump
+retro_sophisticated_backpacks.gui.battery_settings=Batt.
+retro_sophisticated_backpacks.gui.anvil_settings=Kowadło
+retro_sophisticated_backpacks.gui.pump_input=Input
+retro_sophisticated_backpacks.gui.pump_fluid_handlers=Interact With Tanks & Pipes
+retro_sophisticated_backpacks.gui.pump_world=Interact With World
+retro_sophisticated_backpacks.gui.pump_hand=Interact With\nFluid Container in Hand
+retro_sophisticated_backpacks.gui.anvil_no_result=No Result
+retro_sophisticated_backpacks.gui.anvil_shift_click_storage=Shift-click result into storage
+retro_sophisticated_backpacks.gui.jukebox_play=Play
+retro_sophisticated_backpacks.gui.jukebox_stop=Stop
+retro_sophisticated_backpacks.gui.jukebox_previous=Previous
+retro_sophisticated_backpacks.gui.jukebox_next=Next
+retro_sophisticated_backpacks.gui.jukebox_shuffle_disabled=Shuffle Disabled
+retro_sophisticated_backpacks.gui.jukebox_shuffle_enabled=Shuffle Enabled
+retro_sophisticated_backpacks.gui.jukebox_repeat_all=Repeat All
+retro_sophisticated_backpacks.gui.jukebox_repeat_one=Repeat One
+retro_sophisticated_backpacks.gui.jukebox_repeat_no=Repeat Disabled
+retro_sophisticated_backpacks.gui.tool_swapper_swap_weapon_disabled=Do Not Swap Weapons
+retro_sophisticated_backpacks.gui.tool_swapper_swap_weapon_enabled=Swap Weapons
+retro_sophisticated_backpacks.gui.tool_swapper_any=Swap Any Item
+retro_sophisticated_backpacks.gui.tool_swapper_only_tools=Only Swap Tools
+retro_sophisticated_backpacks.gui.tool_swapper_no_swap=Do Not Auto Swap Tools
+retro_sophisticated_backpacks.gui.back_to_backpack.tooltip=Wróć Do plecaka
+retro_sophisticated_backpacks.gui.memory_settings.tooltip=Slot Memory Settings
+retro_sophisticated_backpacks.gui.memory_settings.tooltip_detail=Allows selecting slots that remember their contents and only allow matching stacks in them\nOpen tab to modify slot settings
+retro_sophisticated_backpacks.gui.memory_settings.tooltip_open_detail=Allows selecting slots that remember their contents and only allow matching stacks in them\nSelect all / Unselect all = buttons\nSelect slot = left click/drag\nUnselect slot = right click/drag
+retro_sophisticated_backpacks.gui.sorting_settings.tooltip=No Sort Slot Settings
+retro_sophisticated_backpacks.gui.sorting_settings.tooltip_detail=Allows selecting slots that are ignored by sorting\nOpen tab to modify slot settings
+retro_sophisticated_backpacks.gui.sorting_settings.tooltip_open_detail=Allows selecting slots that are ignored by sorting\nSelect all / Unselect all = buttons\nSelect slot = left click/drag\nUnselect slot = right click/drag
+
+# Tooltips and GUI text
+item.retro_sophisticated_backpacks.advanced_compacting_upgrade.tooltip=Kompaktuje przedmioty\nzarówno crafting 2x2 jak i 3x3 z większą ilością opcji filtrujących
+item.retro_sophisticated_backpacks.advanced_deposit_upgrade.name=Zaawansowane ulepszenie depozytu
+item.retro_sophisticated_backpacks.advanced_deposit_upgrade.tooltip=Umieszcza przedmioty z plecaka do wybranego inwentarza skradając się i klikając prawy przycisk myszy, trzymając plecak w ręce\nma więcej opcji filtrowania
+item.retro_sophisticated_backpacks.advanced_feeding_upgrade.tooltip=Karmi gracza jedzeniem z wyposażenia plecaka\nmożna wybrać kiedy karmi
+item.retro_sophisticated_backpacks.advanced_filter_upgrade.name=Zaawansowane ulepszenie filtra
+item.retro_sophisticated_backpacks.advanced_filter_upgrade.tooltip=Filtruje przedmioty przesłane do lub z plecaka\nma więcej opcjii filtrowania
+item.retro_sophisticated_backpacks.advanced_jukebox_upgrade.tooltip=Portable Jukebox with support for more music discs\nAlso more playback options
+item.retro_sophisticated_backpacks.advanced_magnet_upgrade.tooltip=Przyciąga przedmioty do plecaka z daleka\nma wiecej opcjii filtrowania
+item.retro_sophisticated_backpacks.advanced_mob_catcher_upgrade.name=Advanced Mob Catcher Upgrade
+item.retro_sophisticated_backpacks.advanced_mob_catcher_upgrade.tooltip=Captures passive and hostile mobs into backpack storage slots with sneak right-click
+item.retro_sophisticated_backpacks.advanced_pickup_upgrade.tooltip=Sprawia że plecak podnosi przedmioty\nma więcej filtrów
+item.retro_sophisticated_backpacks.advanced_pump_upgrade.tooltip=Pompuje płyny między ulepszeniem zbiornika a pobliskimi blokami\ndziała z pojemnikami na płyn trzymanymi w ręce i blokami płynów w świecie\nPozwala na wybranie które płyny są pompowane
+item.retro_sophisticated_backpacks.advanced_refill_upgrade.tooltip=Utrzymuje uzupełnianie stosu wybranych przedmiotów w ekwipunku gracza\nUmożliwia precyzyjniejszy wybór docelowego slotu\nUmożliwia również wybieranie bloków z plecaka za pomocą środkowego przycisku myszki
+item.retro_sophisticated_backpacks.advanced_restock_upgrade.name=Zaawansowane ulepszenie uzupełnienia
+item.retro_sophisticated_backpacks.advanced_restock_upgrade.tooltip=Przerzuca rzeczy z wyposażenia gracza do wyposażenia plecaka jeżeli trzymany w ręce przy prawym kliknięciu i skradając się\nma więcej opcji filtrowania
+item.retro_sophisticated_backpacks.advanced_tool_swapper_upgrade.tooltip=Automatycznie zamienia przedmiot w ręce gracza na skuteczny dla bloku/bytu przy kliknięciu lewym przyciskiem\nMa opcje filtrowania i dodatkową obsługę interakcji
+item.retro_sophisticated_backpacks.advanced_void_upgrade.tooltip=Wyrzuca, wybrane w filtrze przedmioty do pustki\nma więcej opcjii filtrowania
+item.retro_sophisticated_backpacks.anvil_upgrade.tooltip=Kowadło w rubryce ulepszenia
+item.retro_sophisticated_backpacks.battery_upgrade.tooltip=Zamienia część inwentarza plecaka na magazyn energii
+item.retro_sophisticated_backpacks.compacting_upgrade.tooltip=Kompaktuje przedmioty\ntylko crafting 2x2
+item.retro_sophisticated_backpacks.crafting_upgrade.tooltip=Stół Rzemieślniczy w rubryce ulepszenia
+item.retro_sophisticated_backpacks.deposit_upgrade.name=Ulepszenie depozytu
+item.retro_sophisticated_backpacks.deposit_upgrade.tooltip=Umieszcza przedmioty z plecaka do wybranego inwentarza skradając się i klikając prawy przycisk myszy, trzymając plecak w ręce.
+item.retro_sophisticated_backpacks.everlasting_upgrade.tooltip=Plecak staje się nieznisczalny\nnie może zniknąć ani wpaść do pustki
+item.retro_sophisticated_backpacks.feeding_upgrade.tooltip=Karmi gracza jedzeniem z wyposażenia plecaka
+item.retro_sophisticated_backpacks.filter_upgrade.name=Ulepszenia filtra
+item.retro_sophisticated_backpacks.filter_upgrade.tooltip=Filtruje przedmioty przesłane do lub z plecaka
+item.retro_sophisticated_backpacks.inception_upgrade.tooltip=Umożliwia umieszczanie plecaków w plecakach
+item.retro_sophisticated_backpacks.jukebox_upgrade.tooltip=Przenośna szafa grająca
+item.retro_sophisticated_backpacks.magnet_upgrade.tooltip=Przyciąga przedmioty do plecaka
+item.retro_sophisticated_backpacks.mob_catcher_upgrade.name=Mob Catcher Upgrade
+item.retro_sophisticated_backpacks.mob_catcher_upgrade.tooltip=Captures passive mobs into backpack storage slots with sneak right-click
+item.retro_sophisticated_backpacks.pickup_upgrade.tooltip=Sprawia że plecak podnosi przedmioty
+item.retro_sophisticated_backpacks.pump_upgrade.tooltip=Pompuje płyny między ulepszeniem zbiornika a pobliskimi blokami
+item.retro_sophisticated_backpacks.refill_upgrade.tooltip=Uzupełnia stack przedmiotów w ekwipunku gracza
+item.retro_sophisticated_backpacks.restock_upgrade.name=Ulepszenie uzupełnienia
+item.retro_sophisticated_backpacks.restock_upgrade.tooltip=Przerzuca rzeczy z wyposażenia gracza do wyposażenia plecaka jeżeli trzymany w ręce przy prawym kliknięciu i skradając się
+item.retro_sophisticated_backpacks.stack_upgrade_starter_tier.tooltip=Mnoży liczbę stosów mieszczących się w slocie przez %s
+item.retro_sophisticated_backpacks.stack_upgrade_tier_1.tooltip=Mnoży liczbę stosów mieszczących się w slocie przez %s
+item.retro_sophisticated_backpacks.stack_upgrade_tier_2.tooltip=Mnoży liczbę stosów mieszczących się w slocie przez %s
+item.retro_sophisticated_backpacks.stack_upgrade_tier_3.tooltip=Mnoży liczbę stosów mieszczących się w slocie przez %s
+item.retro_sophisticated_backpacks.stack_upgrade_tier_4.tooltip=Mnoży liczbę stosów mieszczących się w slocie przez %s
+item.retro_sophisticated_backpacks.exponential_stack_upgrade.tooltip=Mnożniki stosów będą się łączyć przez mnożenie zamiast dodawania
+item.retro_sophisticated_backpacks.tank_upgrade.tooltip=Zamienia część inwentarza plecaka na zbiornik na płyny
+item.retro_sophisticated_backpacks.tool_swapper_upgrade.tooltip=Automatycznie zamienia przedmiot w ręku gracza na ten, który jest skuteczny na bloku/przedmiocie, gdy te zostaną kliknięte lewym przyciskiem myszy.
+item.retro_sophisticated_backpacks.void_upgrade.tooltip=Wyrzuca, wybrane w filtrze przedmioty do pustki
+retro_sophisticated_backpacks.gui.advanced_deposit_settings=Zaaw. depozyt
+retro_sophisticated_backpacks.gui.advanced_filter_settings=Adv. Filter
+retro_sophisticated_backpacks.gui.advanced_restock_settings=Zaaw. uzupełnienie
+retro_sophisticated_backpacks.gui.backpack_settings=Ustawienia plecaka
+retro_sophisticated_backpacks.gui.backpack_settings.tooltip=Ustawienia plecaka
+retro_sophisticated_backpacks.gui.crafting_settings=Craft
+retro_sophisticated_backpacks.gui.deposit_settings=Depozyt
+retro_sophisticated_backpacks.gui.filter_settings=Filter
+retro_sophisticated_backpacks.gui.inception_settings=Incepcja
+retro_sophisticated_backpacks.gui.input=Input
+retro_sophisticated_backpacks.gui.input_output=Input & Output
+retro_sophisticated_backpacks.gui.item_display_settings=Item Disp.
+retro_sophisticated_backpacks.gui.item_display_settings.tooltip=Item Display Settings
+retro_sophisticated_backpacks.gui.item_display_settings.tooltip_detail=Allows selecting a slot that will be used to show its item on top of storage
+retro_sophisticated_backpacks.gui.item_display_settings.tooltip_open_detail=Allows selecting a slot that will be used to show its item on top of storage\nSelect slot = left click/drag\nUnselect slot = right click/drag
+retro_sophisticated_backpacks.gui.lock_all_sort=Select All Slots
+retro_sophisticated_backpacks.gui.match_durability=Match Durability
+retro_sophisticated_backpacks.gui.match_nbt=Match NBT
+retro_sophisticated_backpacks.gui.memorize_all=Select All Slots
+retro_sophisticated_backpacks.gui.memory_settings=Memory
+retro_sophisticated_backpacks.gui.mob_catcher.click_to_release=Click to release
+retro_sophisticated_backpacks.gui.output=Output
+retro_sophisticated_backpacks.gui.pump_no_fluid_handlers=Do Not Interact With Tanks & Pipes
+retro_sophisticated_backpacks.gui.pump_no_hand=Do Not Interact With\nFluid Container in Hand
+retro_sophisticated_backpacks.gui.pump_no_world=Do Not Interact With World
+retro_sophisticated_backpacks.gui.pump_output=Output
+retro_sophisticated_backpacks.gui.restock_settings=Uzupełnienie
+retro_sophisticated_backpacks.gui.search=Click to search
+retro_sophisticated_backpacks.gui.search_detail=@ prefix to search by mod name
+retro_sophisticated_backpacks.gui.settings_button.another_player_can_open.off=Inny gracz NIE może otworzyć
+retro_sophisticated_backpacks.gui.settings_button.another_player_can_open.off.tooltip=Plecak nie może być otwarty przez innego gracza po kliknięciu prawym przyciskiem myszy na plecy tego gracza.
+retro_sophisticated_backpacks.gui.settings_button.another_player_can_open.on=Inny gracz może otworzyć
+retro_sophisticated_backpacks.gui.settings_button.another_player_can_open.on.tooltip=Kiedy ten plecak jest noszony i widoczny, inny gracz może go otworzyć, klikając prawym przyciskiem myszy na plecach tego gracza
+retro_sophisticated_backpacks.gui.settings_button.context_backpack=Plecak
+retro_sophisticated_backpacks.gui.settings_button.context_backpack.tooltip=Ustawienia Tego plecaka
+retro_sophisticated_backpacks.gui.settings_button.context_backpack.tooltip_detail=Odziedziczone od gracza lub nadpisane dla tego plecaka
+retro_sophisticated_backpacks.gui.settings_button.context_player=Player
+retro_sophisticated_backpacks.gui.settings_button.context_player.tooltip=Player level settings
+retro_sophisticated_backpacks.gui.settings_button.context_player.tooltip_detail=Apply to all backpacks/storages unless overriden
+retro_sophisticated_backpacks.gui.settings_button.display_side_front=Show on Front
+retro_sophisticated_backpacks.gui.settings_button.display_side_left=Show on Left side
+retro_sophisticated_backpacks.gui.settings_button.display_side_right=Show on Right side
+retro_sophisticated_backpacks.gui.settings_button.item_display_color=Toggle Color
+retro_sophisticated_backpacks.gui.settings_button.item_display_color_detail=Next = Left Click\nPrevious = Right Click
+retro_sophisticated_backpacks.gui.settings_button.keep_search_phrase.off=Keep Search Phrase: OFF
+retro_sophisticated_backpacks.gui.settings_button.keep_search_phrase.off.tooltip=Backpack / Storage gui clears the search phrase when closed and shows all unfiltered item when open again
+retro_sophisticated_backpacks.gui.settings_button.keep_search_phrase.on=Keep Search Phrase: ON
+retro_sophisticated_backpacks.gui.settings_button.keep_search_phrase.on.tooltip=Backpack / Storage gui keeps the search phrase and prefills it / filters by it when open again
+retro_sophisticated_backpacks.gui.settings_button.keep_tab_open.off=Keep Tab Open: OFF
+retro_sophisticated_backpacks.gui.settings_button.keep_tab_open.off.tooltip=Open upgrade tab gets closed when the backpack/storage gui is closed and when the gui is next open all of the tabs are closed
+retro_sophisticated_backpacks.gui.settings_button.keep_tab_open.on=Keep Tab Open: ON
+retro_sophisticated_backpacks.gui.settings_button.keep_tab_open.on.tooltip=On close of its gui the backpack/storage records which upgrade tab was last open and opens it when the gui is open next time
+retro_sophisticated_backpacks.gui.settings_button.rotate=Rotate
+retro_sophisticated_backpacks.gui.settings_button.rotate_detail=Clockwise = Left Click\nCounter-Clockwise = Right Click
+retro_sophisticated_backpacks.gui.settings_button.shift_click_open_tab.off=Shift Click Into Inventory First
+retro_sophisticated_backpacks.gui.settings_button.shift_click_open_tab.off.tooltip=Shift click from storage/inventory will first try to put the stack in inventory/storage and only then into an open tab.
+retro_sophisticated_backpacks.gui.settings_button.shift_click_open_tab.on=Shift Click Into Open Tab First
+retro_sophisticated_backpacks.gui.settings_button.shift_click_open_tab.on.tooltip=Shift click from storage/inventory will first try to put the stack in an open tab and only then into inventory/storage.
+retro_sophisticated_backpacks.gui.sort_by_count=By Count
+retro_sophisticated_backpacks.gui.sort_by_mod_id=By Mod
+retro_sophisticated_backpacks.gui.sort_by_name=By Name
+retro_sophisticated_backpacks.gui.sort_by_ore_dict=By Tags
+retro_sophisticated_backpacks.gui.sort_inventory=Sort Inventory
+retro_sophisticated_backpacks.gui.sorting_settings=No Sort
+retro_sophisticated_backpacks.gui.status.mob_catcher_blocklisted=That mob is blocked from capture
+retro_sophisticated_backpacks.gui.status.mob_catcher_boss_blocked=Bosses cannot be captured
+retro_sophisticated_backpacks.gui.status.mob_catcher_captured=Captured %s
+retro_sophisticated_backpacks.gui.status.mob_catcher_contains_mobs=Release captured mobs before removing Mob Catcher Upgrade
+retro_sophisticated_backpacks.gui.status.mob_catcher_hostile_needs_advanced=Hostile mobs require Advanced Mob Catcher Upgrade
+retro_sophisticated_backpacks.gui.status.mob_catcher_invalid_entity=That mob cannot be captured
+retro_sophisticated_backpacks.gui.status.mob_catcher_inventory_blocked=Mobs with inventories cannot be captured
+retro_sophisticated_backpacks.gui.status.mob_catcher_mobs_need_advanced=Captured mobs require Advanced Mob Catcher Upgrade
+retro_sophisticated_backpacks.gui.status.mob_catcher_no_release_space=No valid release space there
+retro_sophisticated_backpacks.gui.status.mob_catcher_no_space=No empty %sx%s slot area available
+retro_sophisticated_backpacks.gui.status.mob_catcher_no_upgrade=Backpack has no Mob Catcher Upgrade
+retro_sophisticated_backpacks.gui.status.mob_catcher_not_owner=Only the owner can capture that mob
+retro_sophisticated_backpacks.gui.status.mob_catcher_only_one_allowed=Only one Mob Catcher Upgrade is allowed per backpack
+retro_sophisticated_backpacks.gui.status.mob_catcher_passengers_blocked=Mobs with passengers or vehicles cannot be captured
+retro_sophisticated_backpacks.gui.status.mob_catcher_players_blocked=Players cannot be captured
+retro_sophisticated_backpacks.gui.status.mob_catcher_release_failed=Could not release mob there
+retro_sophisticated_backpacks.gui.status.mob_catcher_released=Released %s
+retro_sophisticated_backpacks.gui.status.mob_catcher_too_large=Mob needs %s slots, more than this upgrade allows (%s)
+retro_sophisticated_backpacks.gui.tooltip.stack_count=Count: %s
+retro_sophisticated_backpacks.gui.transfer_to_backpack_inv=Transfer to Storage
+retro_sophisticated_backpacks.gui.transfer_to_backpack_inv_matched_1=Transfer Matching to Storage
+retro_sophisticated_backpacks.gui.transfer_to_backpack_inv_matched_2=Shift To Transfer All
+retro_sophisticated_backpacks.gui.transfer_to_player_inv=Transfer to Inventory
+retro_sophisticated_backpacks.gui.transfer_to_player_inv_matched_1=Transfer Matching to Inventory
+retro_sophisticated_backpacks.gui.transfer_to_player_inv_matched_2=Shift To Transfer All
+retro_sophisticated_backpacks.gui.unlock_all_sort=Unselect All Slots
+retro_sophisticated_backpacks.gui.unmemorize_all=Unselect All Slots
+
+# Fallbacks for keys used by current code
+retro_sophisticated_backpacks.gui.backpack_settings.tooltip_detail=Allows configuring backpack behavior\nOpen tab to modify backpack settings
+retro_sophisticated_backpacks.gui.backpack_settings.tooltip_open_detail=Allows configuring backpack behavior\nContext = choose whether changes apply to player or backpack\nToggle buttons change shift-click, tab, search, and access behavior
+retro_sophisticated_backpacks.gui.settings_button.display_side_detail=Left click selects next side\nRight click selects previous side
+retro_sophisticated_backpacks.gui.stack_size_extra=Count: %s / %s
+retro_sophisticated_backpacks.gui.ore_dict_input_help.pro_tip=Protip: You can hover item onto entry\n to check if the entry is applicable,\nor hover on textfield to see available entries.
+retro_sophisticated_backpacks.gui.ore_dict_list_entries=Available ore dict:
+retro_sophisticated_backpacks.gui.none=(None)
+retro_sophisticated_backpacks.gui.craft_into_backpack=Shift Click Result Into Backpack
+retro_sophisticated_backpacks.gui.craft_into_player_inventory=Shift Click Result Into Player's Inventory
+retro_sophisticated_backpacks.gui.settings=Settings
+retro_sophisticated_backpacks.gui.configuration_tab=Configuration Tab
+retro_sophisticated_backpacks.gui.memorized_slot=Memorized Slot
+retro_sophisticated_backpacks.gui.no_sorting_slot=No Sorting Slot
+retro_sophisticated_backpacks.gui.pump_input_detail=Pull fluids into the backpack tank
+retro_sophisticated_backpacks.gui.pump_output_detail=Push fluids out of the backpack tank
+retro_sophisticated_backpacks.gui.pump_fluid_handlers_detail=Allows moving fluid through adjacent fluid handlers
+retro_sophisticated_backpacks.gui.pump_no_fluid_handlers_detail=Prevents moving fluid through adjacent fluid handlers
+retro_sophisticated_backpacks.gui.pump_world_detail=Allows placing or draining fluids in the world
+retro_sophisticated_backpacks.gui.pump_no_world_detail=Prevents placing or draining fluids in the world
+retro_sophisticated_backpacks.gui.pump_hand_detail=Allows filling or draining containers held by the player
+retro_sophisticated_backpacks.gui.pump_no_hand_detail=Prevents filling or draining containers held by the player
+retro_sophisticated_backpacks.gui.pump_fluid_filter_detail=Click with a fluid container to set this filter\nClick with an empty cursor to clear it

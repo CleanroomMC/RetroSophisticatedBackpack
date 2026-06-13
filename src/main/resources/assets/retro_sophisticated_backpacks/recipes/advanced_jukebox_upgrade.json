@@ -1,0 +1,22 @@
+{
+  "type": "retro_sophisticated_backpacks:upgrade_shaped",
+  "key": {
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "J": {
+      "item": "retro_sophisticated_backpacks:jukebox_upgrade"
+    }
+  },
+  "pattern": [
+    " D ",
+    "RJR",
+    " R "
+  ],
+  "result": {
+    "item": "retro_sophisticated_backpacks:advanced_jukebox_upgrade"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "retro_sophisticated_backpacks:upgrade_shaped",
+  "key": {
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "S": {
+      "item": "minecraft:iron_sword"
+    },
+    "T": {
+      "item": "retro_sophisticated_backpacks:tool_swapper_upgrade"
+    }
+  },
+  "pattern": [
+    " D ",
+    "STS",
+    " D "
+  ],
+  "result": {
+    "item": "retro_sophisticated_backpacks:advanced_tool_swapper_upgrade"
+  }
+}

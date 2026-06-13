@@ -26,7 +26,7 @@ class PlayerInventoryGuiData(
         }
     } else {
         val chestStack = targetEntity.getItemStackFromSlot(EntityEquipmentSlot.CHEST)
-        
+
         if (chestStack.item !is BackpackItem) ItemStack.EMPTY
         else chestStack
     }

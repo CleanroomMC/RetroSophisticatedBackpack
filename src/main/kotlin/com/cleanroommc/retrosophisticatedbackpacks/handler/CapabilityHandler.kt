@@ -3,6 +3,8 @@ package com.cleanroommc.retrosophisticatedbackpacks.handler
 import com.cleanroommc.retrosophisticatedbackpacks.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.*
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.mobcatcher.MobCatcherUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.config.Config
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import net.minecraft.nbt.NBTBase
@@ -102,6 +104,119 @@ object CapabilityHandler {
             ::AdvancedFilterUpgradeWrapper
         )
 
+        instance.register(
+            MagnetUpgradeWrapper::class.java,
+            CapabilityStorageProvider<MagnetUpgradeWrapper>(),
+            ::MagnetUpgradeWrapper
+        )
+
+        instance.register(
+            AdvancedMagnetUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AdvancedMagnetUpgradeWrapper>(),
+            ::AdvancedMagnetUpgradeWrapper
+        )
+
+        instance.register(
+            VoidUpgradeWrapper::class.java,
+            CapabilityStorageProvider<VoidUpgradeWrapper>(),
+            ::VoidUpgradeWrapper
+        )
+
+        instance.register(
+            AdvancedVoidUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AdvancedVoidUpgradeWrapper>(),
+            ::AdvancedVoidUpgradeWrapper
+        )
+
+        instance.register(
+            RefillUpgradeWrapper::class.java,
+            CapabilityStorageProvider<RefillUpgradeWrapper>(),
+            ::RefillUpgradeWrapper
+        )
+
+        instance.register(
+            AdvancedRefillUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AdvancedRefillUpgradeWrapper>(),
+            ::AdvancedRefillUpgradeWrapper
+        )
+
+        instance.register(
+            CompactingUpgradeWrapper::class.java,
+            CapabilityStorageProvider<CompactingUpgradeWrapper>(),
+            ::CompactingUpgradeWrapper
+        )
+
+        instance.register(
+            AdvancedCompactingUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AdvancedCompactingUpgradeWrapper>(),
+            ::AdvancedCompactingUpgradeWrapper
+        )
+
+        instance.register(
+            EverlastingUpgradeWrapper::class.java,
+            CapabilityStorageProvider<EverlastingUpgradeWrapper>(),
+            ::EverlastingUpgradeWrapper
+        )
+
+        instance.register(
+            ToolSwapperUpgradeWrapper::class.java,
+            CapabilityStorageProvider<ToolSwapperUpgradeWrapper>(),
+            ::ToolSwapperUpgradeWrapper
+        )
+
+        instance.register(
+            AdvancedToolSwapperUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AdvancedToolSwapperUpgradeWrapper>(),
+            ::AdvancedToolSwapperUpgradeWrapper
+        )
+
+        instance.register(
+            TankUpgradeWrapper::class.java,
+            CapabilityStorageProvider<TankUpgradeWrapper>(),
+            ::TankUpgradeWrapper
+        )
+
+        instance.register(
+            JukeboxUpgradeWrapper::class.java,
+            CapabilityStorageProvider<JukeboxUpgradeWrapper>(),
+            ::JukeboxUpgradeWrapper
+        )
+
+        instance.register(
+            AdvancedJukeboxUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AdvancedJukeboxUpgradeWrapper>(),
+            ::AdvancedJukeboxUpgradeWrapper
+        )
+
+        instance.register(
+            PumpUpgradeWrapper::class.java,
+            CapabilityStorageProvider<PumpUpgradeWrapper>(),
+            ::PumpUpgradeWrapper
+        )
+
+        instance.register(
+            AdvancedPumpUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AdvancedPumpUpgradeWrapper>(),
+            ::AdvancedPumpUpgradeWrapper
+        )
+
+        instance.register(
+            BatteryUpgradeWrapper::class.java,
+            CapabilityStorageProvider<BatteryUpgradeWrapper>(),
+            ::BatteryUpgradeWrapper
+        )
+
+        instance.register(
+            AnvilUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AnvilUpgradeWrapper>(),
+            ::AnvilUpgradeWrapper
+        )
+
+        instance.register(
+            MobCatcherUpgradeWrapper::class.java,
+            CapabilityStorageProvider<MobCatcherUpgradeWrapper>()
+        ) { MobCatcherUpgradeWrapper() }
+
         // Interfaces
         instance.register(
             UpgradeWrapper::class.java,
@@ -152,9 +267,73 @@ object CapabilityHandler {
             NOPCapabilityStorage<IFilterUpgrade>(),
             ::FilterUpgradeWrapper
         )
+
+        instance.register(
+            IMagnetUpgrade::class.java,
+            NOPCapabilityStorage<IMagnetUpgrade>(),
+            ::MagnetUpgradeWrapper
+        )
+
+        instance.register(
+            IVoidUpgrade::class.java,
+            NOPCapabilityStorage<IVoidUpgrade>(),
+            ::VoidUpgradeWrapper
+        )
+
+        instance.register(
+            IRefillUpgrade::class.java,
+            NOPCapabilityStorage<IRefillUpgrade>(),
+            ::RefillUpgradeWrapper
+        )
+
+        instance.register(
+            ICompactingUpgrade::class.java,
+            NOPCapabilityStorage<ICompactingUpgrade>(),
+            ::CompactingUpgradeWrapper
+        )
+
+        instance.register(
+            IEverlastingUpgrade::class.java,
+            NOPCapabilityStorage<IEverlastingUpgrade>(),
+            ::EverlastingUpgradeWrapper
+        )
+
+        instance.register(
+            IToolSwapperUpgrade::class.java,
+            NOPCapabilityStorage<IToolSwapperUpgrade>(),
+            ::ToolSwapperUpgradeWrapper
+        )
+
+        instance.register(
+            ITankUpgrade::class.java,
+            NOPCapabilityStorage<ITankUpgrade>()
+        ) { TankUpgradeWrapper() }
+
+        instance.register(
+            IJukeboxUpgrade::class.java,
+            NOPCapabilityStorage<IJukeboxUpgrade>()
+        ) { JukeboxUpgradeWrapper() }
+
+        instance.register(
+            IPumpUpgrade::class.java,
+            NOPCapabilityStorage<IPumpUpgrade>()
+        ) { PumpUpgradeWrapper() }
+
+        instance.register(
+            IBatteryUpgrade::class.java,
+            NOPCapabilityStorage<IBatteryUpgrade>()
+        ) { BatteryUpgradeWrapper() }
+
+        instance.register(
+            IAnvilUpgrade::class.java,
+            NOPCapabilityStorage<IAnvilUpgrade>()
+        ) { AnvilUpgradeWrapper() }
     }
 
     fun cacheBackpackInventory(backpackWrapper: BackpackWrapper) {
+        if (Config.tickDedupeLogicDisabled) {
+            return
+        }
         if (BACKPACK_INVENTORY_CACHE.containsKey(backpackWrapper.uuid)) {
             backpackWrapper.isCached = true
             return

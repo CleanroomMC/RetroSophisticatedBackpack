@@ -10,6 +10,7 @@ import com.cleanroommc.modularui.widget.SingleChildWidget
 import com.cleanroommc.modularui.widget.sizer.Unit
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.getThemeOrDefault
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.setEnabledIfAndEnabled
+import net.minecraft.client.renderer.GlStateManager
 
 class TabWidget(
     private val tabIndex: Int,
@@ -19,6 +20,8 @@ class TabWidget(
     SingleChildWidget<TabWidget>(), Interactable {
     companion object {
         val TAB_TEXTURE: TabTexture = GuiTextures.TAB_RIGHT
+        const val TAB_TOP_OFFSET = 0
+        const val TAB_VERTICAL_SPACE = 1
     }
 
     var showExpanded = false
@@ -27,6 +30,7 @@ class TabWidget(
             expandedWidget?.isEnabled = value
 
             field = value
+            markTooltipDirty()
         }
 
     var expandedWidget: ExpandedTabWidget? = null
@@ -43,12 +47,16 @@ class TabWidget(
             field = value
         }
     var tabIcon: IDrawable? = null
+    var onToggle: ((Boolean) -> Unit)? = null
 
     init {
-        size(TAB_TEXTURE.width, TAB_TEXTURE.height).top({ tabOrder * 30.0 }, Unit.Measure.PIXEL)
+        size(TAB_TEXTURE.width, TAB_TEXTURE.height)
+            .top({
+                (TAB_TOP_OFFSET + (tabOrder - 1).coerceAtLeast(0) * (TAB_TEXTURE.height + TAB_VERTICAL_SPACE)).toDouble()
+            }, Unit.Measure.PIXEL)
 
         when (expandDirection) {
-            ExpandDirection.LEFT -> left(-TAB_TEXTURE.width + 4)
+            ExpandDirection.LEFT -> left(-TAB_TEXTURE.width - 2)
             ExpandDirection.RIGHT -> right(-TAB_TEXTURE.width + 4)
         }
     }
@@ -57,12 +65,19 @@ class TabWidget(
         context.recipeViewerSettings.addExclusionArea(this)
     }
 
+    override fun dispose() {
+        if (isValid)
+            context.recipeViewerSettings.removeExclusionArea(this)
+        super.dispose()
+    }
+
     override fun onMousePressed(mouseButton: Int): Interactable.Result {
         if (!isEnabled || expandedWidget == null)
             return Interactable.Result.STOP
 
         if (mouseButton == 0) {
             expandedWidget?.updateTabState()
+            onToggle?.invoke(showExpanded)
             Interactable.playButtonClickSound()
             return Interactable.Result.SUCCESS
         }
@@ -76,7 +91,9 @@ class TabWidget(
         if (showExpanded)
             return
 
+        GlStateManager.color(1f, 1f, 1f, 1f)
         tabIcon?.draw(context, 8, 6, 16, 16, widgetTheme.getThemeOrDefault())
+        GlStateManager.color(1f, 1f, 1f, 1f)
     }
 
     override fun drawBackground(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {

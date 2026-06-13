@@ -7,24 +7,24 @@ tile.retro_sophisticated_backpacks.backpack_obsidian.name=黑曜石背包
 
 # Items
 item.retro_sophisticated_backpacks.upgrade_base.name=基礎升級
-item.retro_sophisticated_backpacks.stack_upgrade_starter_tier.name=初級堆疊升級
-item.retro_sophisticated_backpacks.stack_upgrade_tier_1.name=堆疊升級 T1
-item.retro_sophisticated_backpacks.stack_upgrade_tier_2.name=堆疊升級 T2
-item.retro_sophisticated_backpacks.stack_upgrade_tier_3.name=堆疊升級 T3
-item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=堆疊升級 T4
+item.retro_sophisticated_backpacks.stack_upgrade_starter_tier.name=Stack Upgrade Starter Tier
+item.retro_sophisticated_backpacks.stack_upgrade_tier_1.name=堆疊升級T1
+item.retro_sophisticated_backpacks.stack_upgrade_tier_2.name=堆疊升級T2
+item.retro_sophisticated_backpacks.stack_upgrade_tier_3.name=堆疊升級T3
+item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=堆疊升級T4
 item.retro_sophisticated_backpacks.exponential_stack_upgrade.name=指數堆疊升級
 item.retro_sophisticated_backpacks.crafting_upgrade.name=合成升級
 item.retro_sophisticated_backpacks.inception_upgrade.name=嵌套升級
 item.retro_sophisticated_backpacks.pickup_upgrade.name=拾取升級
-item.retro_sophisticated_backpacks.advanced_pickup_upgrade.name=進階拾取升級
+item.retro_sophisticated_backpacks.advanced_pickup_upgrade.name=高級拾取升級
 item.retro_sophisticated_backpacks.feeding_upgrade.name=餵食升級
-item.retro_sophisticated_backpacks.advanced_feeding_upgrade.name=進階餵食升級
+item.retro_sophisticated_backpacks.advanced_feeding_upgrade.name=高級餵食升級
 item.retro_sophisticated_backpacks.deposit_upgrade.name=卸貨升級
-item.retro_sophisticated_backpacks.advanced_deposit_upgrade.name=進階卸貨升級
+item.retro_sophisticated_backpacks.advanced_deposit_upgrade.name=高級卸貨升級
 item.retro_sophisticated_backpacks.restock_upgrade.name=取貨升級
-item.retro_sophisticated_backpacks.advanced_restock_upgrade.name=進階取貨升級
+item.retro_sophisticated_backpacks.advanced_restock_upgrade.name=高級取貨升級
 item.retro_sophisticated_backpacks.filter_upgrade.name=過濾升級
-item.retro_sophisticated_backpacks.advanced_filter_upgrade.name=進階過濾升級
+item.retro_sophisticated_backpacks.advanced_filter_upgrade.name=高級過濾升級
 
 # Creative Tabs
 itemGroup.retro_sophisticated_backpacks.creative_tab=復古精緻背包
@@ -36,82 +36,82 @@ retro_sophisticated_backpacks.key.category=復古精緻背包
 # Tooltips
 retro_sophisticated_backpacks.tooltip.backpack.inventory_size=背包容量: %d
 retro_sophisticated_backpacks.tooltip.backpack.upgrade_slots_size=升級插槽: %d
-retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> 當前堆疊倍率: %d %s
+retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=Stack Size Multiplier: %s
+retro_sophisticated_backpacks.tooltip.backpack.fluid=%s mB %s
+retro_sophisticated_backpacks.tooltip.backpack.fluid_empty=Empty tank
+retro_sophisticated_backpacks.tooltip.backpack.energy=%s FE
+retro_sophisticated_backpacks.tooltip.backpack.fluid_title=流體
+retro_sophisticated_backpacks.tooltip.backpack.energy_title=能量
+retro_sophisticated_backpacks.tooltip.backpack.upgrades_title=Upgrades
+retro_sophisticated_backpacks.tooltip.backpack.inventory_title=Inventory
+retro_sophisticated_backpacks.tooltip.backpack.empty=No Upgrades or Inventory Contents
+retro_sophisticated_backpacks.tooltip.backpack.press_for_contents=Press <%s> to View Contents
+retro_sophisticated_backpacks.tooltip.backpack.shift=Left Shift
 
-retro_sophisticated_backpacks.tooltip.upgrade_base=沒有效果！你大可放在升級插槽！
 
-retro_sophisticated_backpacks.tooltip.stack_upgrade=提供堆疊倍率 x%d
 
-retro_sophisticated_backpacks.tooltip.exponential_stack_upgrade=堆疊倍率會以相乘堆疊而非相加
 
-retro_sophisticated_backpacks.tooltip.crafting_upgrade=在背包旁增加額外的合成欄
 
-retro_sophisticated_backpacks.tooltip.inception_upgrade=允許將背包放入背包
 
-retro_sophisticated_backpacks.tooltip.pickup_upgrade=允許背包拾取並存入背包
 
-retro_sophisticated_backpacks.tooltip.advanced_pickup_upgrade=允許背包根據更多配置拾取並存入背包
 
-retro_sophisticated_backpacks.tooltip.feeding_upgrade=允許背包自動餵食玩家
 
-retro_sophisticated_backpacks.tooltip.advanced_feeding_upgrade=允許背包根據更多配置自動餵食玩家
 
-retro_sophisticated_backpacks.tooltip.deposit_upgrade=將背包物品卸貨至潛行右鍵的容器
 
-retro_sophisticated_backpacks.tooltip.advanced_deposit_upgrade=根據更多配置將背包物品卸貨至潛行右鍵的容器
 
-retro_sophisticated_backpacks.tooltip.restock_upgrade=將潛行右鍵的容器物品取貨至背包
 
-retro_sophisticated_backpacks.tooltip.advanced_restock_upgrade=根據更多配置將潛行右鍵的容器物品取貨至背包
 
-retro_sophisticated_backpacks.tooltip.filter_upgrade=當放置於世界時過濾輸入的物品
 
-retro_sophisticated_backpacks.tooltip.advanced_filter_upgrade=當放置於世界時根據更多配置過濾輸入的物品
 
-retro_sophisticated_backpacks.tooltip.shift_to_reveal=<按 Shift 顯示>
 
 # Gui Elements
 retro_sophisticated_backpacks.container.backpack=背包
 
-retro_sophisticated_backpacks.gui.pickup_settings=拾取設定
-retro_sophisticated_backpacks.gui.advanced_pickup_settings=進階拾取設定
+retro_sophisticated_backpacks.gui.pickup_settings=Pickup
+retro_sophisticated_backpacks.gui.advanced_pickup_settings=Adv. Pickup
 
-retro_sophisticated_backpacks.gui.feeding_settings=餵食設定
-retro_sophisticated_backpacks.gui.advanced_feeding_settings=進階餵食設定
+retro_sophisticated_backpacks.gui.feeding_settings=Feeding
+retro_sophisticated_backpacks.gui.advanced_feeding_settings=Adv. Feeding
 
-retro_sophisticated_backpacks.gui.deposit_settings=卸貨設定
-retro_sophisticated_backpacks.gui.advanced_deposit_settings=進階卸貨設定
+retro_sophisticated_backpacks.gui.deposit_settings=卸貨
+retro_sophisticated_backpacks.gui.advanced_deposit_settings=高級卸貨
 
-retro_sophisticated_backpacks.gui.restock_settings=取貨設定
-retro_sophisticated_backpacks.gui.advanced_restock_settings=進階取貨設定
+retro_sophisticated_backpacks.gui.restock_settings=取貨
+retro_sophisticated_backpacks.gui.advanced_restock_settings=高級取貨
 
-retro_sophisticated_backpacks.gui.filter_settings=過濾設定
-retro_sophisticated_backpacks.gui.advanced_filter_settings=進階過濾設定
+retro_sophisticated_backpacks.gui.filter_settings=Filter
+retro_sophisticated_backpacks.gui.advanced_filter_settings=Adv. Filter
 
-retro_sophisticated_backpacks.gui.crafting_settings=合成
+retro_sophisticated_backpacks.gui.crafting_settings=Craft
 
-retro_sophisticated_backpacks.gui.memory_settings=記憶設定
-retro_sophisticated_backpacks.gui.sorting_settings=整理設定
+retro_sophisticated_backpacks.gui.memory_settings=Memory
+retro_sophisticated_backpacks.gui.sorting_settings=No Sort
+retro_sophisticated_backpacks.gui.memory_settings.tooltip=Slot Memory Settings
+retro_sophisticated_backpacks.gui.memory_settings.tooltip_detail=Allows selecting slots that remember their contents and only allow matching stacks in them\nOpen tab to modify slot settings
+retro_sophisticated_backpacks.gui.memory_settings.tooltip_open_detail=Allows selecting slots that remember their contents and only allow matching stacks in them\nSelect all / Unselect all = buttons\nSelect slot = left click/drag\nUnselect slot = right click/drag
+retro_sophisticated_backpacks.gui.sorting_settings.tooltip=No Sort Slot Settings
+retro_sophisticated_backpacks.gui.sorting_settings.tooltip_detail=Allows selecting slots that are ignored by sorting\nOpen tab to modify slot settings
+retro_sophisticated_backpacks.gui.sorting_settings.tooltip_open_detail=Allows selecting slots that are ignored by sorting\nSelect all / Unselect all = buttons\nSelect slot = left click/drag\nUnselect slot = right click/drag
 
 # Gui Tooltips
 retro_sophisticated_backpacks.gui.stack_size_extra=數量: %s / %s
 retro_sophisticated_backpacks.gui.not_in_effect=未生效
 
-retro_sophisticated_backpacks.gui.whitelist=白名單
-retro_sophisticated_backpacks.gui.blacklist=黑名單
+retro_sophisticated_backpacks.gui.whitelist=Allow
+retro_sophisticated_backpacks.gui.blacklist=Block
 
-retro_sophisticated_backpacks.gui.match_item=根據物品屬性
-retro_sophisticated_backpacks.gui.match_mod_id=根據模組 ID
+retro_sophisticated_backpacks.gui.match_item=Match Item
+retro_sophisticated_backpacks.gui.match_mod_id=Match Mod
 retro_sophisticated_backpacks.gui.match_ore_dict=根據礦物詞典
 
 retro_sophisticated_backpacks.gui.craft_into_backpack=Shift 點擊合成結果轉移至背包
 retro_sophisticated_backpacks.gui.craft_into_player_inventory=Shift 點擊合成結果轉移至玩家物品欄
 
-retro_sophisticated_backpacks.gui.match_durability=考慮耐久
-retro_sophisticated_backpacks.gui.ignore_durability=無視耐久
+retro_sophisticated_backpacks.gui.match_durability=Match Durability
+retro_sophisticated_backpacks.gui.ignore_durability=Ignore Durability
 
-retro_sophisticated_backpacks.gui.match_nbt=考慮 NBT
-retro_sophisticated_backpacks.gui.ignore_nbt=無視 NBT
+retro_sophisticated_backpacks.gui.match_nbt=Match NBT
+retro_sophisticated_backpacks.gui.ignore_nbt=Ignore NBT
 
 retro_sophisticated_backpacks.gui.add_ore_dict_entry=新增礦物詞典
 retro_sophisticated_backpacks.gui.remove_ore_dict_entry=移除礦物詞典
@@ -120,37 +120,241 @@ retro_sophisticated_backpacks.gui.ore_dict_input_help.pro_tip=提示：你可以
 retro_sophisticated_backpacks.gui.ore_dict_list_entries=可用的礦物詞典:
 retro_sophisticated_backpacks.gui.none=(無)
 
-retro_sophisticated_backpacks.gui.complete_hunger=只在玩家夠餓時餵食\n不會浪費食物提供的任何飢餓值
-retro_sophisticated_backpacks.gui.half_hunger=只在玩家夠餓時餵食\n最多浪費食物提供的一半飢餓值
-retro_sophisticated_backpacks.gui.immediate_hunger=當玩家飢餓時立即餵食\n浪費食物提供的大部分飢餓值
+retro_sophisticated_backpacks.gui.complete_hunger=Only feed when player is hungry enough\nto not waste any hunger points of the food at all
+retro_sophisticated_backpacks.gui.half_hunger=Only feed when player is hungry enough\nto only waste half hunger points of the food at most
+retro_sophisticated_backpacks.gui.immediate_hunger=Feed as soon as player is tiny bit hungry\nwastes quite a few hunger points of the food
 
-retro_sophisticated_backpacks.gui.ignore_health=忽略生命值\n忽略玩家的生命值，僅基於飢餓值設定餵食玩家
-retro_sophisticated_backpacks.gui.consider_health=當玩家受傷時立即餵食\n在玩家生命值未滿時忽略飢餓值設定
+retro_sophisticated_backpacks.gui.ignore_health=Do not consider health\nIgnores player's health and only feeds based on hunger setting
+retro_sophisticated_backpacks.gui.consider_health=Feed player immediately when hurt\nIgnores hunger setting when player is not at max health
 
-retro_sophisticated_backpacks.gui.input_output=輸入 & 輸出
-retro_sophisticated_backpacks.gui.input=僅限輸入
-retro_sophisticated_backpacks.gui.output=僅限輸出
+retro_sophisticated_backpacks.gui.input_output=Input & Output
+retro_sophisticated_backpacks.gui.input=Input
+retro_sophisticated_backpacks.gui.output=Output
 
-retro_sophisticated_backpacks.gui.sort_inventory=整理背包
-retro_sophisticated_backpacks.gui.sort_by_name=根據名稱整理
-retro_sophisticated_backpacks.gui.sort_by_mod_id=根據模組 ID 整理
-retro_sophisticated_backpacks.gui.sort_by_count=根據數量整理
-retro_sophisticated_backpacks.gui.sort_by_ore_dict=根據礦物詞典整理
+retro_sophisticated_backpacks.gui.sort_inventory=Sort Inventory
+retro_sophisticated_backpacks.gui.sort_by_name=By Name
+retro_sophisticated_backpacks.gui.sort_by_mod_id=By Mod
+retro_sophisticated_backpacks.gui.sort_by_count=By Count
+retro_sophisticated_backpacks.gui.sort_by_ore_dict=By Tags
 
-retro_sophisticated_backpacks.gui.transfer_to_player_inv=轉移所有物品至玩家物品欄
-retro_sophisticated_backpacks.gui.transfer_to_player_inv_matched_1=轉移對應物品至玩家物品欄
-retro_sophisticated_backpacks.gui.transfer_to_player_inv_matched_2=Shift 以轉移全部
-retro_sophisticated_backpacks.gui.transfer_to_backpack_inv=轉移所有物品至背包物品欄
-retro_sophisticated_backpacks.gui.transfer_to_backpack_inv_matched_1=轉移對應物品至背包物品欄
-retro_sophisticated_backpacks.gui.transfer_to_backpack_inv_matched_2=Shift 以轉移全部
+retro_sophisticated_backpacks.gui.transfer_to_player_inv=Transfer to Inventory
+retro_sophisticated_backpacks.gui.transfer_to_player_inv_matched_1=Transfer Matching to Inventory
+retro_sophisticated_backpacks.gui.transfer_to_player_inv_matched_2=Shift To Transfer All
+retro_sophisticated_backpacks.gui.transfer_to_backpack_inv=Transfer to Storage
+retro_sophisticated_backpacks.gui.transfer_to_backpack_inv_matched_1=Transfer Matching to Storage
+retro_sophisticated_backpacks.gui.transfer_to_backpack_inv_matched_2=Shift To Transfer All
 
 retro_sophisticated_backpacks.gui.settings=設定
+retro_sophisticated_backpacks.gui.back_to_backpack.tooltip=返回背包
 retro_sophisticated_backpacks.gui.configuration_tab=設定介面
 
 retro_sophisticated_backpacks.gui.memorized_slot=記憶欄位
-retro_sophisticated_backpacks.gui.memorize_all=記憶所有欄位
-retro_sophisticated_backpacks.gui.unmemorize_all=遺忘所有欄位
+retro_sophisticated_backpacks.gui.memorize_all=Select All Slots
+retro_sophisticated_backpacks.gui.unmemorize_all=Unselect All Slots
 
 retro_sophisticated_backpacks.gui.no_sorting_slot=禁止整理欄位
-retro_sophisticated_backpacks.gui.lock_all_sort=禁止整理所有欄位
-retro_sophisticated_backpacks.gui.unlock_all_sort=允許整理所有欄位
+retro_sophisticated_backpacks.gui.lock_all_sort=Select All Slots
+retro_sophisticated_backpacks.gui.unlock_all_sort=Unselect All Slots
+
+item.retro_sophisticated_backpacks.magnet_upgrade.name=磁鐵升級
+item.retro_sophisticated_backpacks.advanced_magnet_upgrade.name=高級磁鐵升級
+item.retro_sophisticated_backpacks.void_upgrade.name=虛空升級
+item.retro_sophisticated_backpacks.advanced_void_upgrade.name=高級虛空升級
+item.retro_sophisticated_backpacks.refill_upgrade.name=補貨升級
+item.retro_sophisticated_backpacks.advanced_refill_upgrade.name=高級補貨升級
+item.retro_sophisticated_backpacks.compacting_upgrade.name=壓縮升級
+item.retro_sophisticated_backpacks.advanced_compacting_upgrade.name=高級壓縮升級
+retro_sophisticated_backpacks.gui.magnet_settings=Magnet
+retro_sophisticated_backpacks.gui.advanced_magnet_settings=Adv. Magnet
+retro_sophisticated_backpacks.gui.void_settings=Void
+retro_sophisticated_backpacks.gui.advanced_void_settings=Adv. Void
+retro_sophisticated_backpacks.gui.refill_settings=補貨
+retro_sophisticated_backpacks.gui.advanced_refill_settings=高級補貨
+retro_sophisticated_backpacks.gui.compacting_settings=Compa...
+retro_sophisticated_backpacks.gui.advanced_compacting_settings=Adv. Compacting
+retro_sophisticated_backpacks.gui.void_always=Void Always
+retro_sophisticated_backpacks.gui.void_slot_overflow=Void Slot Overflow
+retro_sophisticated_backpacks.gui.void_storage_overflow=Void Storage Overflow
+retro_sophisticated_backpacks.gui.refill_target_any=任何插槽
+retro_sophisticated_backpacks.gui.refill_target_main_hand=主手
+retro_sophisticated_backpacks.gui.refill_target_off_hand=副手
+retro_sophisticated_backpacks.gui.refill_target_hotbar_1=快捷欄插槽 1
+retro_sophisticated_backpacks.gui.refill_target_hotbar_2=快捷欄插槽 2
+retro_sophisticated_backpacks.gui.refill_target_hotbar_3=快捷欄插槽 3
+retro_sophisticated_backpacks.gui.refill_target_hotbar_4=快捷欄插槽 4
+retro_sophisticated_backpacks.gui.refill_target_hotbar_5=快捷欄插槽 5
+retro_sophisticated_backpacks.gui.refill_target_hotbar_6=快捷欄插槽 6
+retro_sophisticated_backpacks.gui.refill_target_hotbar_7=快捷欄插槽 7
+retro_sophisticated_backpacks.gui.refill_target_hotbar_8=快捷欄插槽 8
+retro_sophisticated_backpacks.gui.refill_target_hotbar_9=快捷欄插槽 9
+retro_sophisticated_backpacks.gui.allow=Allow
+retro_sophisticated_backpacks.gui.block=Block
+retro_sophisticated_backpacks.gui.match_backpack_contents=依照背包已有物品取出
+retro_sophisticated_backpacks.gui.pickup_items=Pickup Items
+retro_sophisticated_backpacks.gui.do_not_pickup_items=Do Not Pickup Items
+retro_sophisticated_backpacks.gui.compact_only_uncraftable=Compact Only Uncraftable
+retro_sophisticated_backpacks.gui.compact_anything=Compact Anything
+retro_sophisticated_backpacks.gui.only_automatic=Only works with other upgrades/automation
+retro_sophisticated_backpacks.gui.works_in_gui=Works in GUI as well
+retro_sophisticated_backpacks.gui.void_slot_overflow_detail=Allows single slot to be filled with the item\nand voids anything that overflows
+retro_sophisticated_backpacks.gui.void_storage_overflow_detail=Allows whole storage to be filled with the item\n and voids anything that overflows
+retro_sophisticated_backpacks.gui.refill_target_tooltip=補貨 %s
+retro_sophisticated_backpacks.gui.refill_scroll_tooltip=滾動以更改目標插槽
+item.retro_sophisticated_backpacks.everlasting_upgrade.name=永恆升級
+item.retro_sophisticated_backpacks.jukebox_upgrade.name=唱片機升級
+item.retro_sophisticated_backpacks.advanced_jukebox_upgrade.name=Advanced Jukebox Upgrade
+item.retro_sophisticated_backpacks.tool_swapper_upgrade.name=工具替換升級
+item.retro_sophisticated_backpacks.advanced_tool_swapper_upgrade.name=高級工具替換升級
+item.retro_sophisticated_backpacks.tank_upgrade.name=儲罐升級
+item.retro_sophisticated_backpacks.pump_upgrade.name=液泵升級
+item.retro_sophisticated_backpacks.advanced_pump_upgrade.name=高級液泵升級
+item.retro_sophisticated_backpacks.battery_upgrade.name=電池升級
+item.retro_sophisticated_backpacks.anvil_upgrade.name=Anvil Upgrade
+retro_sophisticated_backpacks.gui.everlasting_settings=永恆
+retro_sophisticated_backpacks.gui.jukebox_settings=Jukebox
+retro_sophisticated_backpacks.gui.advanced_jukebox_settings=Jukebox
+retro_sophisticated_backpacks.gui.tool_swapper_settings=工具替換
+retro_sophisticated_backpacks.gui.advanced_tool_swapper_settings=工具替換
+retro_sophisticated_backpacks.gui.tank_settings=Tank
+retro_sophisticated_backpacks.gui.pump_settings=Pump
+retro_sophisticated_backpacks.gui.advanced_pump_settings=Adv. Pump
+retro_sophisticated_backpacks.gui.battery_settings=Batt.
+retro_sophisticated_backpacks.gui.anvil_settings=Anvil
+retro_sophisticated_backpacks.gui.pump_input=Input
+retro_sophisticated_backpacks.gui.pump_fluid_handlers=Interact With Tanks & Pipes
+retro_sophisticated_backpacks.gui.pump_world=Interact With World
+retro_sophisticated_backpacks.gui.pump_hand=Interact With\nFluid Container in Hand
+retro_sophisticated_backpacks.gui.anvil_no_result=無結果
+retro_sophisticated_backpacks.gui.anvil_shift_click_storage=Shift 點擊背包儲存
+retro_sophisticated_backpacks.gui.jukebox_play=Play
+retro_sophisticated_backpacks.gui.jukebox_stop=Stop
+retro_sophisticated_backpacks.gui.jukebox_previous=Previous
+retro_sophisticated_backpacks.gui.jukebox_next=Next
+retro_sophisticated_backpacks.gui.jukebox_shuffle_disabled=Shuffle Disabled
+retro_sophisticated_backpacks.gui.jukebox_shuffle_enabled=Shuffle Enabled
+retro_sophisticated_backpacks.gui.jukebox_repeat_all=Repeat All
+retro_sophisticated_backpacks.gui.jukebox_repeat_one=Repeat One
+retro_sophisticated_backpacks.gui.jukebox_repeat_no=Repeat Disabled
+retro_sophisticated_backpacks.gui.tool_swapper_swap_weapon_disabled=Do Not Swap Weapons
+retro_sophisticated_backpacks.gui.tool_swapper_swap_weapon_enabled=Swap Weapons
+retro_sophisticated_backpacks.gui.tool_swapper_any=Swap Any Item
+retro_sophisticated_backpacks.gui.tool_swapper_only_tools=Only Swap Tools
+retro_sophisticated_backpacks.gui.tool_swapper_no_swap=Do Not Auto Swap Tools
+
+# Tooltips and GUI text
+item.retro_sophisticated_backpacks.advanced_compacting_upgrade.tooltip=將物品壓縮為對應的壓縮變體\n包括2x2，3x3配方以及更多的過濾選項
+item.retro_sophisticated_backpacks.advanced_deposit_upgrade.tooltip=手持背包 Shift 右擊容器卸載物品\n更多的過濾選項
+item.retro_sophisticated_backpacks.advanced_feeding_upgrade.tooltip=將背包內的食物餵給玩家\n更多的過濾選項
+item.retro_sophisticated_backpacks.advanced_filter_upgrade.tooltip=過濾輸入/輸出背包的物品\n更多的過濾選項
+item.retro_sophisticated_backpacks.advanced_jukebox_upgrade.tooltip=Portable Jukebox with support for more music discs\nAlso more playback options
+item.retro_sophisticated_backpacks.advanced_magnet_upgrade.tooltip=將更大範圍內的物品吸入背包\n更多的過濾選項
+item.retro_sophisticated_backpacks.advanced_mob_catcher_upgrade.name=高級生物捕捉升級
+item.retro_sophisticated_backpacks.advanced_mob_catcher_upgrade.tooltip=潛行右擊可將被動和敵對生物捕捉到背包儲存槽位中
+item.retro_sophisticated_backpacks.advanced_pickup_upgrade.tooltip=使背包撿起物品\n更多的過濾選項
+item.retro_sophisticated_backpacks.advanced_pump_upgrade.tooltip=在儲罐升級和相鄰方塊之間泵送流體\n適用於手持流體容器和世界中的流體方塊\n允許過濾泵送的流體
+item.retro_sophisticated_backpacks.advanced_refill_upgrade.tooltip=不斷補充玩家物品欄中選定物品的堆疊\n允許更精確的目標槽選擇\n還允許中鍵點擊從背包中拾取方塊
+item.retro_sophisticated_backpacks.advanced_restock_upgrade.tooltip=手持背包潛行右擊容器提取物品\n更多的過濾選項
+item.retro_sophisticated_backpacks.advanced_tool_swapper_upgrade.tooltip=左擊時自動將玩家手持物品替換為對應方塊/實體的挖掘或攻擊工具\n具有過濾選項和額外交互支援
+item.retro_sophisticated_backpacks.advanced_void_upgrade.tooltip=銷毀篩檢程式中選定的物品\n更多的過濾選項
+item.retro_sophisticated_backpacks.anvil_upgrade.tooltip=Anvil in an upgrade tab
+item.retro_sophisticated_backpacks.battery_upgrade.tooltip=將部分背包空間替換為能量存儲空間
+item.retro_sophisticated_backpacks.compacting_upgrade.tooltip=將物品壓縮為對應的壓縮變體\n僅2x2配方
+item.retro_sophisticated_backpacks.crafting_upgrade.tooltip=在升級標籤頁中添加一個合成台
+item.retro_sophisticated_backpacks.deposit_upgrade.tooltip=手持背包潛行右擊容器卸載物品
+item.retro_sophisticated_backpacks.everlasting_upgrade.tooltip=使背包變得堅不可摧\n不會消失及掉入虛空
+item.retro_sophisticated_backpacks.exponential_stack_upgrade.tooltip=堆疊倍率會以相乘堆疊而非相加
+item.retro_sophisticated_backpacks.feeding_upgrade.tooltip=將背包內的食物餵給玩家
+item.retro_sophisticated_backpacks.filter_upgrade.tooltip=過濾輸入/輸出背包的物品
+item.retro_sophisticated_backpacks.inception_upgrade.tooltip=使背包套背包成為可能
+item.retro_sophisticated_backpacks.jukebox_upgrade.tooltip=便攜式唱片機
+item.retro_sophisticated_backpacks.magnet_upgrade.tooltip=將一定範圍內的物品吸入背包
+item.retro_sophisticated_backpacks.mob_catcher_upgrade.name=生物捕捉升級
+item.retro_sophisticated_backpacks.mob_catcher_upgrade.tooltip=潛行右擊可將被動生物捕捉到背包儲存槽位中
+item.retro_sophisticated_backpacks.pickup_upgrade.tooltip=使背包撿起物品
+item.retro_sophisticated_backpacks.pump_upgrade.tooltip=在儲罐升級和相鄰方塊之間泵送流體
+item.retro_sophisticated_backpacks.refill_upgrade.tooltip=使所選物品在玩家物品欄中自動補充至一組
+item.retro_sophisticated_backpacks.restock_upgrade.tooltip=手持背包潛行右擊容器提取物品
+item.retro_sophisticated_backpacks.stack_upgrade_starter_tier.tooltip=單個槽位可容納的堆疊數乘以%s
+item.retro_sophisticated_backpacks.stack_upgrade_tier_1.tooltip=單個槽位可容納的堆疊數乘以%s
+item.retro_sophisticated_backpacks.stack_upgrade_tier_2.tooltip=單個槽位可容納的堆疊數乘以%s
+item.retro_sophisticated_backpacks.stack_upgrade_tier_3.tooltip=單個槽位可容納的堆疊數乘以%s
+item.retro_sophisticated_backpacks.stack_upgrade_tier_4.tooltip=單個槽位可容納的堆疊數乘以%s
+item.retro_sophisticated_backpacks.tank_upgrade.tooltip=將部分背包空間替換為流體存儲空間
+item.retro_sophisticated_backpacks.tool_swapper_upgrade.tooltip=左擊時自動將玩家手持物品替換為對應方塊/實體的挖掘或攻擊工具
+item.retro_sophisticated_backpacks.void_upgrade.tooltip=銷毀篩檢程式中選定的物品
+retro_sophisticated_backpacks.gui.backpack_settings=背包設置
+retro_sophisticated_backpacks.gui.backpack_settings.tooltip=背包設置
+retro_sophisticated_backpacks.gui.inception_settings=嵌套
+retro_sophisticated_backpacks.gui.item_display_settings=Item Disp.
+retro_sophisticated_backpacks.gui.item_display_settings.tooltip=Item Display Settings
+retro_sophisticated_backpacks.gui.item_display_settings.tooltip_detail=Allows selecting a slot that will be used to show its item on top of storage
+retro_sophisticated_backpacks.gui.item_display_settings.tooltip_open_detail=Allows selecting a slot that will be used to show its item on top of storage\nSelect slot = left click/drag\nUnselect slot = right click/drag
+retro_sophisticated_backpacks.gui.mob_catcher.click_to_release=點擊釋放
+retro_sophisticated_backpacks.gui.pump_no_fluid_handlers=Do Not Interact With Tanks & Pipes
+retro_sophisticated_backpacks.gui.pump_no_hand=Do Not Interact With\nFluid Container in Hand
+retro_sophisticated_backpacks.gui.pump_no_world=Do Not Interact With World
+retro_sophisticated_backpacks.gui.pump_output=Output
+retro_sophisticated_backpacks.gui.search=Click to search
+retro_sophisticated_backpacks.gui.search_detail=@ prefix to search by mod name
+retro_sophisticated_backpacks.gui.settings_button.another_player_can_open.off=其他玩家不可打開
+retro_sophisticated_backpacks.gui.settings_button.another_player_can_open.off.tooltip=即使該背包已被穿戴，其他玩家也無法通過對該玩家後背右擊打開它
+retro_sophisticated_backpacks.gui.settings_button.another_player_can_open.on=其他玩家可以打開
+retro_sophisticated_backpacks.gui.settings_button.another_player_can_open.on.tooltip=當該背包被穿戴且設置為可見時，其他玩家可以對該玩家後背右擊打開它
+retro_sophisticated_backpacks.gui.settings_button.context_backpack=背包設置
+retro_sophisticated_backpacks.gui.settings_button.context_backpack.tooltip=該背包的設置
+retro_sophisticated_backpacks.gui.settings_button.context_backpack.tooltip_detail=不受到玩家全局設置影響
+retro_sophisticated_backpacks.gui.settings_button.context_player=Player
+retro_sophisticated_backpacks.gui.settings_button.context_player.tooltip=Player level settings
+retro_sophisticated_backpacks.gui.settings_button.context_player.tooltip_detail=Apply to all backpacks/storages unless overriden
+retro_sophisticated_backpacks.gui.settings_button.display_side_front=Show on Front
+retro_sophisticated_backpacks.gui.settings_button.display_side_left=Show on Left side
+retro_sophisticated_backpacks.gui.settings_button.display_side_right=Show on Right side
+retro_sophisticated_backpacks.gui.settings_button.item_display_color=Toggle Color
+retro_sophisticated_backpacks.gui.settings_button.item_display_color_detail=Next = Left Click\nPrevious = Right Click
+retro_sophisticated_backpacks.gui.settings_button.keep_search_phrase.off=Keep Search Phrase: OFF
+retro_sophisticated_backpacks.gui.settings_button.keep_search_phrase.off.tooltip=Backpack / Storage gui clears the search phrase when closed and shows all unfiltered item when open again
+retro_sophisticated_backpacks.gui.settings_button.keep_search_phrase.on=Keep Search Phrase: ON
+retro_sophisticated_backpacks.gui.settings_button.keep_search_phrase.on.tooltip=Backpack / Storage gui keeps the search phrase and prefills it / filters by it when open again
+retro_sophisticated_backpacks.gui.settings_button.keep_tab_open.off=Keep Tab Open: OFF
+retro_sophisticated_backpacks.gui.settings_button.keep_tab_open.off.tooltip=Open upgrade tab gets closed when the backpack/storage gui is closed and when the gui is next open all of the tabs are closed
+retro_sophisticated_backpacks.gui.settings_button.keep_tab_open.on=Keep Tab Open: ON
+retro_sophisticated_backpacks.gui.settings_button.keep_tab_open.on.tooltip=On close of its gui the backpack/storage records which upgrade tab was last open and opens it when the gui is open next time
+retro_sophisticated_backpacks.gui.settings_button.rotate=Rotate
+retro_sophisticated_backpacks.gui.settings_button.rotate_detail=Clockwise = Left Click\nCounter-Clockwise = Right Click
+retro_sophisticated_backpacks.gui.settings_button.shift_click_open_tab.off=Shift Click Into Inventory First
+retro_sophisticated_backpacks.gui.settings_button.shift_click_open_tab.off.tooltip=Shift click from storage/inventory will first try to put the stack in inventory/storage and only then into an open tab.
+retro_sophisticated_backpacks.gui.settings_button.shift_click_open_tab.on=Shift Click Into Open Tab First
+retro_sophisticated_backpacks.gui.settings_button.shift_click_open_tab.on.tooltip=Shift click from storage/inventory will first try to put the stack in an open tab and only then into inventory/storage.
+retro_sophisticated_backpacks.gui.status.mob_catcher_blocklisted=該生物被禁止捕捉
+retro_sophisticated_backpacks.gui.status.mob_catcher_boss_blocked=不能捕捉Boss
+retro_sophisticated_backpacks.gui.status.mob_catcher_captured=已捕捉%s
+retro_sophisticated_backpacks.gui.status.mob_catcher_contains_mobs=釋放已捕捉的生物後才能移除生物捕捉升級
+retro_sophisticated_backpacks.gui.status.mob_catcher_hostile_needs_advanced=敵對生物需要高級生物捕捉升級
+retro_sophisticated_backpacks.gui.status.mob_catcher_invalid_entity=該生物不能被捕捉
+retro_sophisticated_backpacks.gui.status.mob_catcher_inventory_blocked=不能捕捉帶有物品欄的生物
+retro_sophisticated_backpacks.gui.status.mob_catcher_mobs_need_advanced=已捕捉的生物需要高級生物捕捉升級
+retro_sophisticated_backpacks.gui.status.mob_catcher_no_release_space=那裡沒有有效的釋放空間
+retro_sophisticated_backpacks.gui.status.mob_catcher_no_space=沒有空餘的%sx%s槽位區域
+retro_sophisticated_backpacks.gui.status.mob_catcher_no_upgrade=背包沒有生物捕捉升級
+retro_sophisticated_backpacks.gui.status.mob_catcher_not_owner=只有所有者可以捕捉該生物
+retro_sophisticated_backpacks.gui.status.mob_catcher_only_one_allowed=每個背包只能安裝一個生物捕捉升級
+retro_sophisticated_backpacks.gui.status.mob_catcher_passengers_blocked=不能捕捉帶有乘客或載具關係的生物
+retro_sophisticated_backpacks.gui.status.mob_catcher_players_blocked=不能捕捉玩家
+retro_sophisticated_backpacks.gui.status.mob_catcher_release_failed=無法在那裡釋放生物
+retro_sophisticated_backpacks.gui.status.mob_catcher_released=已釋放%s
+retro_sophisticated_backpacks.gui.status.mob_catcher_too_large=該生物需要%s個槽位，超過此升級允許的上限（%s）
+retro_sophisticated_backpacks.gui.tooltip.stack_count=Count: %s
+
+# Fallbacks for keys used by current code
+retro_sophisticated_backpacks.gui.backpack_settings.tooltip_detail=Allows configuring backpack behavior\nOpen tab to modify backpack settings
+retro_sophisticated_backpacks.gui.backpack_settings.tooltip_open_detail=Allows configuring backpack behavior\nContext = choose whether changes apply to player or backpack\nToggle buttons change shift-click, tab, search, and access behavior
+retro_sophisticated_backpacks.gui.settings_button.display_side_detail=Left click selects next side\nRight click selects previous side
+retro_sophisticated_backpacks.gui.pump_input_detail=Pull fluids into the backpack tank
+retro_sophisticated_backpacks.gui.pump_output_detail=Push fluids out of the backpack tank
+retro_sophisticated_backpacks.gui.pump_fluid_handlers_detail=Allows moving fluid through adjacent fluid handlers
+retro_sophisticated_backpacks.gui.pump_no_fluid_handlers_detail=Prevents moving fluid through adjacent fluid handlers
+retro_sophisticated_backpacks.gui.pump_world_detail=Allows placing or draining fluids in the world
+retro_sophisticated_backpacks.gui.pump_no_world_detail=Prevents placing or draining fluids in the world
+retro_sophisticated_backpacks.gui.pump_hand_detail=Allows filling or draining containers held by the player
+retro_sophisticated_backpacks.gui.pump_no_hand_detail=Prevents filling or draining containers held by the player
+retro_sophisticated_backpacks.gui.pump_fluid_filter_detail=Click with a fluid container to set this filter\nClick with an empty cursor to clear it

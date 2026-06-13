@@ -7,10 +7,11 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 
-abstract class BasicUpgradeWrapper<T> : UpgradeWrapper<T>(), IToggleable, IBasicFilterable where T : UpgradeItem {
+abstract class BasicUpgradeWrapper<T>(filterSlots: Int = 9, override val slotsInRow: Int = 3) :
+    UpgradeWrapper<T>(), IToggleable, IBasicFilterable where T : UpgradeItem {
     override var enabled = true
     override var filterType = IBasicFilterable.FilterType.WHITELIST
-    override val filterItems = ExposedItemStackHandler(9)
+    override val filterItems = ExposedItemStackHandler(filterSlots)
 
     override fun checkFilter(stack: ItemStack): Boolean =
         enabled && super.checkFilter(stack)
@@ -30,8 +31,11 @@ abstract class BasicUpgradeWrapper<T> : UpgradeWrapper<T>(), IToggleable, IBasic
 
     override fun deserializeNBT(nbt: NBTTagCompound) {
         super.deserializeNBT(nbt)
-        enabled = nbt.getBoolean(IToggleable.ENABLED_TAG)
-        filterItems.deserializeNBT(nbt.getCompoundTag(IBasicFilterable.FILTER_ITEMS_TAG))
-        filterType = IBasicFilterable.FilterType.entries[nbt.getByte(IBasicFilterable.FILTER_TYPE_TAG).toInt()]
+        if (nbt.hasKey(IToggleable.ENABLED_TAG))
+            enabled = nbt.getBoolean(IToggleable.ENABLED_TAG)
+        if (nbt.hasKey(IBasicFilterable.FILTER_ITEMS_TAG))
+            filterItems.deserializeNBT(nbt.getCompoundTag(IBasicFilterable.FILTER_ITEMS_TAG))
+        if (nbt.hasKey(IBasicFilterable.FILTER_TYPE_TAG))
+            filterType = IBasicFilterable.FilterType.entries.getOrElse(nbt.getByte(IBasicFilterable.FILTER_TYPE_TAG).toInt()) { filterType }
     }
 }

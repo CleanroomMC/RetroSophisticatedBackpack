@@ -3,6 +3,7 @@ package com.cleanroommc.retrosophisticatedbackpacks.item
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackTier
 import com.cleanroommc.retrosophisticatedbackpacks.block.Blocks
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.*
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.mobcatcher.MobCatcherUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.config.Config
 import net.minecraft.item.Item
 
@@ -19,8 +20,8 @@ object Items {
     val backpackLeather = BackpackItem(
         "backpack_leather",
         Blocks.leatherBackpack,
-        Config.leatherBackpack::slots,
-        Config.leatherBackpack::upgradeSlots,
+        Config.leatherBackpack::inventorySlotCount,
+        Config.leatherBackpack::upgradeSlotCount,
         BackpackTier.LEATHER
     )
 
@@ -28,8 +29,8 @@ object Items {
     val backpackIron = BackpackItem(
         "backpack_iron",
         Blocks.ironBackpack,
-        Config.ironBackpack::slots,
-        Config.ironBackpack::upgradeSlots,
+        Config.ironBackpack::inventorySlotCount,
+        Config.ironBackpack::upgradeSlotCount,
         BackpackTier.IRON
     )
 
@@ -37,8 +38,8 @@ object Items {
     val backpackGold = BackpackItem(
         "backpack_gold",
         Blocks.goldBackpack,
-        Config.goldBackpack::slots,
-        Config.goldBackpack::upgradeSlots,
+        Config.goldBackpack::inventorySlotCount,
+        Config.goldBackpack::upgradeSlotCount,
         BackpackTier.GOLD
     )
 
@@ -46,8 +47,8 @@ object Items {
     val backpackDiamond = BackpackItem(
         "backpack_diamond",
         Blocks.diamondBackpack,
-        Config.diamondBackpack::slots,
-        Config.diamondBackpack::upgradeSlots,
+        Config.diamondBackpack::inventorySlotCount,
+        Config.diamondBackpack::upgradeSlotCount,
         BackpackTier.DIAMOND
     )
 
@@ -55,8 +56,8 @@ object Items {
     val backpackObsidian = BackpackItem(
         "backpack_obsidian",
         Blocks.obsidianBackpack,
-        Config.obsidianBackpack::slots,
-        Config.obsidianBackpack::upgradeSlots,
+        Config.obsidianBackpack::inventorySlotCount,
+        Config.obsidianBackpack::upgradeSlotCount,
         BackpackTier.OBSIDIAN
     )
 
@@ -117,4 +118,64 @@ object Items {
 
     @JvmField
     val advancedFilterUpgrade = FilterUpgradeItem("advanced_filter_upgrade", ::AdvancedFilterUpgradeWrapper)
+
+    @JvmField
+    val magnetUpgrade = MagnetUpgradeItem("magnet_upgrade", ::MagnetUpgradeWrapper)
+
+    @JvmField
+    val advancedMagnetUpgrade = MagnetUpgradeItem("advanced_magnet_upgrade", ::AdvancedMagnetUpgradeWrapper)
+
+    @JvmField
+    val voidUpgrade = VoidUpgradeItem("void_upgrade", ::VoidUpgradeWrapper)
+
+    @JvmField
+    val advancedVoidUpgrade = VoidUpgradeItem("advanced_void_upgrade", ::AdvancedVoidUpgradeWrapper)
+
+    @JvmField
+    val refillUpgrade = RefillUpgradeItem("refill_upgrade", ::RefillUpgradeWrapper)
+
+    @JvmField
+    val advancedRefillUpgrade = RefillUpgradeItem("advanced_refill_upgrade", ::AdvancedRefillUpgradeWrapper)
+
+    @JvmField
+    val compactingUpgrade = CompactingUpgradeItem("compacting_upgrade", ::CompactingUpgradeWrapper)
+
+    @JvmField
+    val advancedCompactingUpgrade = CompactingUpgradeItem("advanced_compacting_upgrade", ::AdvancedCompactingUpgradeWrapper)
+
+    @JvmField
+    val everlastingUpgrade = EverlastingUpgradeItem("everlasting_upgrade", ::EverlastingUpgradeWrapper)
+
+    @JvmField
+    val jukeboxUpgrade = JukeboxUpgradeItem("jukebox_upgrade", ::JukeboxUpgradeWrapper)
+
+    @JvmField
+    val advancedJukeboxUpgrade = JukeboxUpgradeItem("advanced_jukebox_upgrade", ::AdvancedJukeboxUpgradeWrapper)
+
+    @JvmField
+    val toolSwapperUpgrade = ToolSwapperUpgradeItem("tool_swapper_upgrade", ::ToolSwapperUpgradeWrapper)
+
+    @JvmField
+    val advancedToolSwapperUpgrade = ToolSwapperUpgradeItem("advanced_tool_swapper_upgrade", ::AdvancedToolSwapperUpgradeWrapper, hasTab = true)
+
+    @JvmField
+    val tankUpgrade = TankUpgradeItem("tank_upgrade", ::TankUpgradeWrapper)
+
+    @JvmField
+    val pumpUpgrade = PumpUpgradeItem("pump_upgrade", ::PumpUpgradeWrapper)
+
+    @JvmField
+    val advancedPumpUpgrade = PumpUpgradeItem("advanced_pump_upgrade", ::AdvancedPumpUpgradeWrapper)
+
+    @JvmField
+    val batteryUpgrade = BatteryUpgradeItem("battery_upgrade", ::BatteryUpgradeWrapper)
+
+    @JvmField
+    val anvilUpgrade = AnvilUpgradeItem("anvil_upgrade", ::AnvilUpgradeWrapper)
+
+    @JvmField
+    val mobCatcherUpgrade = MobCatcherUpgradeItem("mob_catcher_upgrade", false, ::MobCatcherUpgradeWrapper)
+
+    @JvmField
+    val advancedMobCatcherUpgrade = MobCatcherUpgradeItem("advanced_mob_catcher_upgrade", true, ::MobCatcherUpgradeWrapper)
 }

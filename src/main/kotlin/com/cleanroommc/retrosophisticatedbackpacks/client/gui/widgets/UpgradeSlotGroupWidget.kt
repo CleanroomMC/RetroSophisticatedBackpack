@@ -2,11 +2,9 @@ package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets
 
 import com.cleanroommc.modularui.api.value.ISyncOrValue
 import com.cleanroommc.modularui.api.widget.Interactable
-import com.cleanroommc.modularui.drawable.GuiDraw
 import com.cleanroommc.modularui.drawable.UITexture
 import com.cleanroommc.modularui.screen.viewport.ModularGuiContext
 import com.cleanroommc.modularui.theme.WidgetThemeEntry
-import com.cleanroommc.modularui.utils.Color
 import com.cleanroommc.modularui.widget.Widget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
@@ -18,18 +16,16 @@ import com.cleanroommc.retrosophisticatedbackpacks.sync.UpgradeSlotSH
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.getThemeOrDefault
 import net.minecraft.item.ItemStack
 
-class UpgradeSlotGroupWidget(panel: BackpackPanel, private val slotSize: Int) : SlotGroupWidget() {
+class UpgradeSlotGroupWidget(private val panel: BackpackPanel, private val slotSize: Int) : SlotGroupWidget() {
     companion object {
+        private val GUI_CONTROLS =
+            UITexture.fullImage(Tags.MOD_ID, "gui/gui_controls.png")
         private val UPPER_TAB_TEXTURE =
             UITexture.builder().location(Tags.MOD_ID, "gui/gui_controls.png").imageSize(256, 256)
-                .xy(0, 0, 25, 5).build()
-        private val SLOT_SURROUNDING_TEXTURE =
-            UITexture.builder().location(Tags.MOD_ID, "gui/gui_controls.png").imageSize(256, 256)
-                .xy(0, 5, 25, 18).build()
+                .xy(0, 0, 26, 4).build()
         private val LOWER_TAB_TEXTURE =
             UITexture.builder().location(Tags.MOD_ID, "gui/gui_controls.png").imageSize(256, 256)
-                .xy(0, 199, 25, 5).build()
-        private val SLOT_HOVERING_COLOR = Color.withAlpha(Color.WHITE.main, 0x50)
+                .xy(0, 198, 25, 6).build()
     }
 
     val toggleWidgets: List<UpgradeToggleWidget>
@@ -51,18 +47,31 @@ class UpgradeSlotGroupWidget(panel: BackpackPanel, private val slotSize: Int) : 
         context.recipeViewerSettings.addExclusionArea(this)
     }
 
-    override fun draw(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
-        super.draw(context, widgetTheme)
-        var y = 5
+    override fun dispose() {
+        if (isValid)
+            context.recipeViewerSettings.removeExclusionArea(this)
+        super.dispose()
+    }
 
-        UPPER_TAB_TEXTURE.draw(context, 0, 0, 25, 5, widgetTheme.getThemeOrDefault())
+    override fun drawBackground(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
+        super.drawBackground(context, widgetTheme)
 
-        for (i in 0 until slotSize) {
-            SLOT_SURROUNDING_TEXTURE.draw(context, 0, y, 25, 18, widgetTheme.getThemeOrDefault())
-            y += 18
-        }
+        val heightWithoutBottom = 6 + slotSize * 16
 
-        LOWER_TAB_TEXTURE.draw(context, 0, y, 25, 5, widgetTheme.getThemeOrDefault())
+        UPPER_TAB_TEXTURE.draw(context, 0, 0, 26, 4, widgetTheme.getThemeOrDefault())
+        GUI_CONTROLS.drawSubArea(
+            0f,
+            4f,
+            25f,
+            (heightWithoutBottom - 4).toFloat(),
+            0f,
+            4f / 256f,
+            25f / 256f,
+            heightWithoutBottom / 256f,
+            widgetTheme.getThemeOrDefault()
+        )
+        LOWER_TAB_TEXTURE.draw(context, 0, heightWithoutBottom, 25, 6, widgetTheme.getThemeOrDefault())
+
     }
 
     class UpgradeToggleWidget(private val panel: BackpackPanel, private val slotIndex: Int) :
@@ -74,7 +83,22 @@ class UpgradeSlotGroupWidget(panel: BackpackPanel, private val slotSize: Int) : 
             private val BACKGROUND_TAB_TEXTURE = UITexture.builder()
                 .location(Tags.MOD_ID, "gui/gui_controls.png")
                 .imageSize(256, 256)
-                .xy(0, 204, WIDTH, HEIGHT)
+                .xy(0, 204, 7, HEIGHT)
+                .build()
+            private val CONNECTED_BACKGROUND_TAB_TEXTURE = UITexture.builder()
+                .location(Tags.MOD_ID, "gui/gui_controls.png")
+                .imageSize(256, 256)
+                .xy(0, 205, 7, HEIGHT - 1)
+                .build()
+            private val SWITCH_BACKGROUND_TEXTURE = UITexture.builder()
+                .location(Tags.MOD_ID, "gui/gui_controls.png")
+                .imageSize(256, 256)
+                .xy(65, 0, 6, 12)
+                .build()
+            private val SWITCH_HOVERED_BACKGROUND_TEXTURE = UITexture.builder()
+                .location(Tags.MOD_ID, "gui/gui_controls.png")
+                .imageSize(256, 256)
+                .xy(71, 0, 6, 12)
                 .build()
         }
 
@@ -82,7 +106,7 @@ class UpgradeSlotGroupWidget(panel: BackpackPanel, private val slotSize: Int) : 
         private var slotSyncHandler: UpgradeSlotSH? = null
 
         init {
-            size(WIDTH, HEIGHT).left(-4).top(slotIndex * 18 + 4)
+            size(WIDTH, HEIGHT).left(-4).top(slotIndex * 16 + 5)
             isEnabled = false
 
             val wrapper = getWrapper()
@@ -117,7 +141,7 @@ class UpgradeSlotGroupWidget(panel: BackpackPanel, private val slotSize: Int) : 
             super.drawOverlay(context, widgetTheme)
 
             if (isHovering)
-                GuiDraw.drawRect(4f, 4f, 4f, 10f, SLOT_HOVERING_COLOR)
+                SWITCH_HOVERED_BACKGROUND_TEXTURE.draw(context, 3, 3, 6, 12, widgetTheme.getThemeOrDefault())
             
             if (isToggleEnabled)
                 RSBTextures.TOGGLE_ENABLE_ICON.draw(context, 4, 4, 4, 10, widgetTheme.getThemeOrDefault())
@@ -128,7 +152,14 @@ class UpgradeSlotGroupWidget(panel: BackpackPanel, private val slotSize: Int) : 
         override fun drawBackground(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
             super.drawBackground(context, widgetTheme)
 
-            BACKGROUND_TAB_TEXTURE.draw(context, 0, 0, WIDTH, HEIGHT, widgetTheme.getThemeOrDefault())
+            val previousHasSwitch = slotIndex > 0 &&
+                panel.backpackWrapper.upgradeItemStackHandler.getStackInSlot(slotIndex - 1)
+                    .getCapability(Capabilities.TOGGLEABLE_CAPABILITY, null) != null
+            if (previousHasSwitch)
+                CONNECTED_BACKGROUND_TAB_TEXTURE.draw(context, 0, 1, 7, HEIGHT - 1, widgetTheme.getThemeOrDefault())
+            else
+                BACKGROUND_TAB_TEXTURE.draw(context, 0, 0, 7, HEIGHT, widgetTheme.getThemeOrDefault())
+            SWITCH_BACKGROUND_TEXTURE.draw(context, 3, 3, 6, 12, widgetTheme.getThemeOrDefault())
         }
     }
 }
