@@ -18,7 +18,7 @@ class JukeboxSlotSH(slot: ModularSlot, private val wrapper: BackpackWrapper) : I
     override fun onSlotUpdate(stack: ItemStack, onlyAmountChanged: Boolean, client: Boolean, init: Boolean) {
         // Special handling for the initial update of slot, since the update does not actually change the record in the
         // slot
-        if (initialUpdated && (!isItemValid(stack) || Minecraft.getMinecraft().player.inventory.itemStack.item != stack.item))
+        if (initialUpdated)
             NetworkHandler.INSTANCE.sendToServer(C2CJukeboxUpgradePacket.Moving.stopPlaying(wrapper))
         else
             initialUpdated = true

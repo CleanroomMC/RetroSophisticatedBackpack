@@ -119,6 +119,12 @@ object CapabilityHandler {
             CapabilityStorageProvider<JukeboxUpgradeWrapper>(),
             ::JukeboxUpgradeWrapper
         )
+        
+        instance.register(
+            AdvancedJukeboxUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AdvancedJukeboxUpgradeWrapper>(),
+            ::AdvancedJukeboxUpgradeWrapper
+        )
 
         // Interfaces
         instance.register(

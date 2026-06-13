@@ -49,7 +49,7 @@ sealed class C2CJukeboxUpgradePacket : IRefinedMessage {
         ) : this() {
             this.action = action
             this.soundRegistryName = soundRegistryName ?: ""
-            this.backpackUUID = wrapper.uuid
+            this.backpackUUID = wrapper.uuid!!
             this.entityID = entityID
         }
 

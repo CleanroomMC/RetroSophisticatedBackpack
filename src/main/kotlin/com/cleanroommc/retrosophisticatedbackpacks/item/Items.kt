@@ -126,4 +126,7 @@ object Items {
     
     @JvmField
     val jukeboxUpgrade = JukeboxUpgradeItem("jukebox_upgrade", ::JukeboxUpgradeWrapper)
+    
+    @JvmField
+    val advancedJukeboxUpgrade = JukeboxUpgradeItem("advanced_jukebox_upgrade", ::AdvancedJukeboxUpgradeWrapper)
 }

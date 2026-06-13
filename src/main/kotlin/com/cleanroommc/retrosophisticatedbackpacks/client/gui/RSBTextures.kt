@@ -49,8 +49,15 @@ object RSBTextures {
     val NONE_FOUR_SLOT_ICON = icon("none_in_four_slot", 48, 80)
     val BACK_ICON = icon("back", 64, 80)
     val WORKS_IN_GUI_ICON = icon("works_in_gui", 80, 80)
+    val SHUFFLE_ICON = icon("reshuffle", 96, 80)
+    val NO_SHUFFLE_ICON = icon("no_reshuffle", 112, 80)
+    val REPEAT_ICON = icon("repeat", 128, 80)
+    val REPEAT_ONE_ICON = icon("repeat_one", 144, 80)
+    val NO_REPEAT_ICON = icon("no_repeat", 160, 80)
 
     val SETTING_ICON = icon("setting", 16, 96)
+    val SKIP_FORWARD_ICON = icon("skip_forward", 32, 96)
+    val SKIP_BACKWARD_ICON = icon("skip_backward", 48, 96)
     val NOT_WORK_IN_GUI_ICON = icon("not_work_in_gui", 80, 96)
 
     val MATCH_ORE_DICT_ICON = icon("consider_ore_dict", 112, 96)

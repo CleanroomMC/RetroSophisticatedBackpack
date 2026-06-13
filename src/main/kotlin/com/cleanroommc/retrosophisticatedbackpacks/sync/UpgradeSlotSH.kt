@@ -26,6 +26,7 @@ class UpgradeSlotSH(slot: ModularSlot, private val wrapper: BackpackWrapper) : I
         const val UPDATE_FILTER_WAY = 11
         const val UPDATE_CRAFTING_DESTINATION = 12
         const val UPDATE_VOID = 13
+        const val UPDATE_ADVANCED_JUKEBOX = 14
     }
 
     private var initialUpdated = false
@@ -51,6 +52,7 @@ class UpgradeSlotSH(slot: ModularSlot, private val wrapper: BackpackWrapper) : I
             UPDATE_FILTER_WAY -> updateFilterUpgrade(buf)
             UPDATE_CRAFTING_DESTINATION -> updateCraftingDestination(buf)
             UPDATE_VOID -> updateVoidUpgrade(buf)
+            UPDATE_ADVANCED_JUKEBOX -> updateAdvancedJukeboxUpgrade(buf)
         }
     }
 
@@ -113,5 +115,13 @@ class UpgradeSlotSH(slot: ModularSlot, private val wrapper: BackpackWrapper) : I
 
         wrapper.transferSource = buf.readEnumValue(IVoidUpgrade.TransferSource::class.java)
         wrapper.voidType = buf.readEnumValue(IVoidUpgrade.VoidType::class.java)
+    }
+    
+    private fun updateAdvancedJukeboxUpgrade(buf: PacketBuffer) {
+        val wrapper = slot.stack.getCapability(Capabilities.ADVANCED_JUKEBOX_UPGRADE_CAPABILITY, null) ?: return
+        
+        wrapper.currentPlayingIndex = buf.readInt()
+        wrapper.playByShuffle = buf.readBoolean()
+        wrapper.playRepeat = buf.readEnumValue(AdvancedJukeboxUpgradeWrapper.RepeatType::class.java)
     }
 }

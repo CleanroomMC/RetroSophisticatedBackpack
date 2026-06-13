@@ -8,15 +8,11 @@ import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.CraftingUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IAdvancedFilterable
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IBasicFilterable
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.JukeboxUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IJukeboxUpgrade
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.CraftingSlotInfo
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.IndexedModularCraftingSlot
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularFilterSlot
-import com.cleanroommc.retrosophisticatedbackpacks.sync.DelegatedCraftingStackHandlerSH
-import com.cleanroommc.retrosophisticatedbackpacks.sync.DelegatedStackHandlerSH
-import com.cleanroommc.retrosophisticatedbackpacks.sync.FilterSlotSH
-import com.cleanroommc.retrosophisticatedbackpacks.sync.FoodFilterSlotSH
-import com.cleanroommc.retrosophisticatedbackpacks.sync.JukeboxSlotSH
+import com.cleanroommc.retrosophisticatedbackpacks.sync.*
 
 class UpgradeSlotUpdateGroup(
     private val panel: BackpackPanel,
@@ -40,7 +36,7 @@ class UpgradeSlotUpdateGroup(
     val craftingOutputSlot: ModularCraftingSlot
 
     val craftingInfo: CraftingSlotInfo
-    
+
     // Jukebox slots
     val jukeboxStackHandler = DelegatedStackHandlerSH(wrapper, slotIndex, 12)
     var jukeboxSlots: Array<ModularSlot>
@@ -176,8 +172,8 @@ class UpgradeSlotUpdateGroup(
         craftingStackHandler.setDelegatedStackHandler(wrapper::craftMatrix)
         craftingStackHandler.syncToServer(DelegatedCraftingStackHandlerSH.UPDATE_CRAFTING)
     }
-    
-    fun updateJukeboxDelegate(wrapper: JukeboxUpgradeWrapper) {
+
+    fun updateJukeboxDelegate(wrapper: IJukeboxUpgrade) {
         jukeboxStackHandler.setDelegatedStackHandler(wrapper::records)
         jukeboxStackHandler.syncToServer(DelegatedStackHandlerSH.UPDATE_JUKEBOX)
     }

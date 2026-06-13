@@ -52,7 +52,7 @@ class ModularUpgradeSlot(
     override fun isItemValid(stack: ItemStack): Boolean = when (val item = stack.item) {
         is StackUpgradeItem -> wrapper.canAddStackUpgrade(item.multiplier())
         is ExponentialStackUpgradeItem -> wrapper.canAddExponentialStackUpgrade()
-        is JukeboxUpgradeItem -> wrapper.canAddJukeboxUpgrade()
+        is JukeboxUpgradeItem -> wrapper.canAddJukeboxUpgrade() || this.stack.item is JukeboxUpgradeItem
         else -> item is UpgradeItem
     }
 }

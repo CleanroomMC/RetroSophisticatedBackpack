@@ -1,6 +1,9 @@
 package com.cleanroommc.retrosophisticatedbackpacks.capability
 
+import com.azul.crs.client.Utils.uuid
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.SortType
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedJukeboxUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IJukeboxUpgrade
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IVoidUpgrade
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.BackpackItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.UpgradeItemStackHandler
@@ -23,7 +26,6 @@ import java.util.*
 class BackpackWrapper(
     var backpackInventorySize: () -> Int = { 27 },
     var upgradeSlotsSize: () -> Int = { 1 },
-    var uuid: UUID = UUID.randomUUID(),
 ) : IItemHandler, ISidelessCapabilityProvider, INBTSerializable<NBTTagCompound> {
     companion object {
         private const val BACKPACK_INVENTORY_TAG = "BackpackInventory"
@@ -45,7 +47,10 @@ class BackpackWrapper(
         const val DEFAULT_ACCENT_COLOR: Int = -0x9dd1e6
     }
 
+
+    var uuid: UUID? = null
     var isCached: Boolean = false
+    
     var backpackItemStackHandler = BackpackItemStackHandler(backpackInventorySize(), this)
     var upgradeItemStackHandler = UpgradeItemStackHandler(upgradeSlotsSize())
     var sortType: SortType = SortType.BY_NAME
@@ -190,6 +195,9 @@ class BackpackWrapper(
 
         return currentStack
     }
+    
+    fun getJukeboxUpgrade(): IJukeboxUpgrade? =
+        gatherCapabilityUpgrades(Capabilities.IJUKEBOX_UPGRADE_CAPABILITY).firstOrNull()
 
     // Setting related
 
@@ -270,6 +278,8 @@ class BackpackWrapper(
         nbt.setTag(UPGRADE_SLOTS_TAG, upgradesNbt)
         nbt.setInteger(BACKPACK_INVENTORY_SIZE_TAG, backpackInventorySize())
         nbt.setInteger(UPGRADE_SLOTS_SIZE_TAG, upgradeSlotsSize())
+        if (uuid != null)
+            nbt.setUniqueId(UUID_TAG, uuid!!)
 
         nbt.setInteger(MAIN_COLOR_TAG, mainColor)
         nbt.setInteger(ACCENT_COLOR_TAG, accentColor)
@@ -289,7 +299,6 @@ class BackpackWrapper(
             backpackItemStackHandler.sortLockedSlots.map { if (it) 1 else 0 }.map(Int::toByte).toByteArray()
         )
 
-        nbt.setUniqueId(UUID_TAG, uuid)
         return nbt
     }
 
@@ -299,7 +308,8 @@ class BackpackWrapper(
         if (nbt.hasKey(UPGRADE_SLOTS_SIZE_TAG))
             upgradeSlotsSize = { nbt.getInteger(UPGRADE_SLOTS_SIZE_TAG) }
 
-        uuid = nbt.getUniqueId(UUID_TAG)!!
+        if (nbt.hasUniqueId(UUID_TAG))
+            uuid = nbt.getUniqueId(UUID_TAG)
 
         backpackItemStackHandler = BackpackItemStackHandler(backpackInventorySize(), this)
         upgradeItemStackHandler = UpgradeItemStackHandler(upgradeSlotsSize())

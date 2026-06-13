@@ -50,6 +50,11 @@ object BackpackSoundManager {
     }
 
     private fun registerAndPlay(wrapper: BackpackWrapper, sound: ISound) {
+        val previousSound = activeSounds[wrapper.uuid]
+
+        if (previousSound != null)
+            Minecraft.getMinecraft().soundHandler.stopSound(previousSound)
+
         activeSounds[wrapper.uuid] = sound
         Minecraft.getMinecraft().soundHandler.playSound(sound)
     }
@@ -58,5 +63,15 @@ object BackpackSoundManager {
         val sound = activeSounds.remove(wrapper.uuid) ?: return
 
         Minecraft.getMinecraft().soundHandler.stopSound(sound)
+    }
+
+    fun isPlaying(wrapper: BackpackWrapper): Boolean {
+        val sound = activeSounds[wrapper.uuid] ?: return false
+
+        return Minecraft.getMinecraft().soundHandler.isSoundPlaying(sound)
+    }
+
+    fun clear() {
+        activeSounds.clear()
     }
 }

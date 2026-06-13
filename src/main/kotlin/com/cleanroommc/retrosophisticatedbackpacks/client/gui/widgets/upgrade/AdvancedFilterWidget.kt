@@ -212,7 +212,7 @@ class AdvancedFilterWidget(
         val slotGroup = SlotGroupWidget().name("${syncKey}s")
         slotGroup.coverChildren().leftRel(0.5f)
         slotGroup.disableSortButtons()
-        filterSlots = mutableListOf<PhantomItemSlot>()
+        filterSlots = mutableListOf()
 
         for (i in 0 until 16) {
             val slot =

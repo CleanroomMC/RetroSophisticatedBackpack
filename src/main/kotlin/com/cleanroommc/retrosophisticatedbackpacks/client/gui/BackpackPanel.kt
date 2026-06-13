@@ -520,6 +520,22 @@ class BackpackPanel(
                         tabWidget.expandedWidget = VoidUpgradeWidget(slotIndex, wrapper)
                 }
 
+                is AdvancedJukeboxUpgradeWrapper -> {
+                    upgradeSlotGroup.updateJukeboxDelegate(wrapper)
+                    if (updateAndCheckRecreation<AdvancedJukeboxUpgradeWidget, AdvancedJukeboxUpgradeWrapper>(
+                            tabWidget.expandedWidget,
+                            wrapper
+                        )
+                    )
+                        tabWidget.expandedWidget = AdvancedJukeboxUpgradeWidget(
+                            slotIndex,
+                            backpackWrapper,
+                            wrapper,
+                            player,
+                            tileEntity,
+                        )
+                }
+
                 is JukeboxUpgradeWrapper -> {
                     upgradeSlotGroup.updateJukeboxDelegate(wrapper)
                     if (updateAndCheckRecreation<JukeboxUpgradeWidget, JukeboxUpgradeWrapper>(

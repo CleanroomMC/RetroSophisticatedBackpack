@@ -52,6 +52,9 @@ public final class Capabilities {
     
     @CapabilityInject(JukeboxUpgradeWrapper.class)
     public static final @NotNull Capability<JukeboxUpgradeWrapper> JUKEBOX_UPGRADE_CAPABILITY = null;
+    
+    @CapabilityInject(AdvancedJukeboxUpgradeWrapper.class)
+    public static final @NotNull Capability<AdvancedJukeboxUpgradeWrapper> ADVANCED_JUKEBOX_UPGRADE_CAPABILITY = null;
 
     // Abstract capabilities
     @CapabilityInject(UpgradeWrapper.class)
