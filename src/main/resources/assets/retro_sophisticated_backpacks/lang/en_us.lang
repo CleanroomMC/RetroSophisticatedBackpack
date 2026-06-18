@@ -41,6 +41,10 @@ retro_sophisticated_backpacks.key.category=Retro Sophisticated Backpacks
 retro_sophisticated_backpacks.tooltip.backpack.inventory_size=Inventory size: %d
 retro_sophisticated_backpacks.tooltip.backpack.upgrade_slots_size=Upgrade slots: %d
 retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> Stack multiplier: %d %s
+retro_sophisticated_backpacks.tooltip.backpack.upgrade_slot.toggleable=-> %s: %s
+retro_sophisticated_backpacks.tooltip.backpack.upgrade_slot.default=-> %s
+retro_sophisticated_backpacks.tooltip.upgrade.state.true=Enabled
+retro_sophisticated_backpacks.tooltip.upgrade.state.false=Disabled
 
 retro_sophisticated_backpacks.tooltip.upgrade_base=It does nothing! Feel free to put it in your upgrade slots!
 

@@ -41,6 +41,10 @@ retro_sophisticated_backpacks.key.category=復古精緻背包
 retro_sophisticated_backpacks.tooltip.backpack.inventory_size=背包容量: %d
 retro_sophisticated_backpacks.tooltip.backpack.upgrade_slots_size=升級插槽: %d
 retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> 當前堆疊倍率: %d %s
+retro_sophisticated_backpacks.tooltip.backpack.upgrade_slot.toggleable=-> %s: %s
+retro_sophisticated_backpacks.tooltip.backpack.upgrade_slot.default=-> %s
+retro_sophisticated_backpacks.tooltip.upgrade.state.true=已啟用
+retro_sophisticated_backpacks.tooltip.upgrade.state.false=已停用
 
 retro_sophisticated_backpacks.tooltip.upgrade_base=沒有效果！你大可放在升級插槽！
 

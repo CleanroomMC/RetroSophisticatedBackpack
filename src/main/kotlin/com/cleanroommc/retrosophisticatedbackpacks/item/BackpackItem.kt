@@ -14,6 +14,7 @@ import com.cleanroommc.retrosophisticatedbackpacks.backpack.BackpackTier
 import com.cleanroommc.retrosophisticatedbackpacks.block.BackpackBlock
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IToggleable
 import com.cleanroommc.retrosophisticatedbackpacks.client.BackpackBipedModel
 import com.cleanroommc.retrosophisticatedbackpacks.client.sound.BackpackSoundManager
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.BackpackContainer
@@ -284,6 +285,36 @@ class BackpackItem(
                     TextComponentString(stackHint).setStyle(Style().setColor(TextFormatting.RED)).formattedText
                 ).formattedText
             )
+
+            for (i in 0 until wrapper.upgradeSlotsSize()) {
+                val upgradeStack = wrapper.upgradeItemStackHandler.getStackInSlot(i)
+
+                if (upgradeStack.isEmpty)
+                    continue
+
+                val upgradeWrapper = upgradeStack.getCapability(Capabilities.UPGRADE_CAPABILITY, null) ?: continue
+
+                if (upgradeWrapper is IToggleable) {
+                    val toggledColor = if (upgradeWrapper.enabled) TextFormatting.GREEN else TextFormatting.RED
+
+                    tooltip.add(
+                        TextComponentTranslation(
+                            "tooltip.backpack.upgrade_slot.toggleable".asTranslationKey(),
+                            upgradeStack.displayName,
+                            TextComponentTranslation("tooltip.upgrade.state.${upgradeWrapper.enabled}".asTranslationKey()).setStyle(
+                                Style().setColor(toggledColor)
+                            ).formattedText
+                        ).setStyle(Style().setColor(TextFormatting.GRAY)).formattedText
+                    )
+                } else {
+                    tooltip.add(
+                        TextComponentTranslation(
+                            "tooltip.backpack.upgrade_slot.default".asTranslationKey(),
+                            upgradeStack.displayName
+                        ).setStyle(Style().setColor(TextFormatting.GRAY)).formattedText
+                    )
+                }
+            }
         } else {
             tooltip.add(TextComponentTranslation("tooltip.shift_to_reveal".asTranslationKey()).formattedText)
         }
