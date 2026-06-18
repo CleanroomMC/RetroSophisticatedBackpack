@@ -26,24 +26,25 @@ class AdvancedJukeboxUpgradeWrapper : UpgradeWrapper<JukeboxUpgradeItem>(), IJuk
     fun getNextRecordForPlaying(): ItemStack {
         val records = records.inventory
         val indices = records.indices
+        val predicate = { i: Int -> !records[i].isEmpty }
 
         val nextIndex = if (playByShuffle && playRepeat != RepeatType.ONE) {
-            indices.filter { !records[it].isEmpty }.randomOrNull() ?: -1
+            indices.filter(predicate).randomOrNull() ?: -1
         } else {
             when (playRepeat) {
                 RepeatType.NONE -> {
-                    indices.drop(currentPlayingIndex + 1).find { !records[it].isEmpty } ?: -1
+                    indices.drop(currentPlayingIndex + 1).find(predicate) ?: -1
                 }
 
                 RepeatType.ALL -> {
-                    indices.drop(currentPlayingIndex + 1).find { !records[it].isEmpty }
-                        ?: indices.take(currentPlayingIndex + 1).find { !records[it].isEmpty } ?: -1
+                    indices.drop(currentPlayingIndex + 1).find(predicate)
+                        ?: indices.take(currentPlayingIndex + 1).find(predicate) ?: -1
                 }
 
                 RepeatType.ONE -> {
                     if (!records[currentPlayingIndex].isEmpty) currentPlayingIndex
-                    else indices.drop(currentPlayingIndex + 1).find { !records[it].isEmpty }
-                        ?: indices.take(currentPlayingIndex + 1).find { !records[it].isEmpty } ?: -1
+                    else indices.drop(currentPlayingIndex + 1).find(predicate)
+                        ?: indices.take(currentPlayingIndex + 1).find(predicate) ?: -1
                 }
             }
         }
@@ -61,21 +62,22 @@ class AdvancedJukeboxUpgradeWrapper : UpgradeWrapper<JukeboxUpgradeItem>(), IJuk
     // Gets previous record to play and respects shuffle and repeat settings, calling this method will advance the playing index
     fun getPreviousRecordForPlaying(): ItemStack {
         val records = records.inventory
+        val predicate = { i: Int -> !records[i].isEmpty }
 
         val prevIndex = when (playRepeat) {
             RepeatType.NONE -> {
-                (currentPlayingIndex - 1 downTo 0).find { !records[it].isEmpty } ?: -1
+                (currentPlayingIndex - 1 downTo 0).find(predicate) ?: -1
             }
 
             RepeatType.ALL -> {
-                (currentPlayingIndex - 1 downTo 0).find { !records[it].isEmpty }
-                    ?: (records.size - 1 downTo 0).find { !records[it].isEmpty } ?: -1
+                (currentPlayingIndex - 1 downTo 0).find(predicate)
+                    ?: (records.size - 1 downTo 0).find(predicate) ?: -1
             }
 
             RepeatType.ONE -> {
                 if (!records[currentPlayingIndex].isEmpty) currentPlayingIndex
-                else (currentPlayingIndex - 2 downTo 0).find { !records[it].isEmpty }
-                    ?: (records.size - 1 downTo currentPlayingIndex).find { !records[it].isEmpty } ?: -1
+                else (currentPlayingIndex - 2 downTo 0).find(predicate)
+                    ?: (records.size - 1 downTo currentPlayingIndex).find(predicate) ?: -1
             }
         }
 
