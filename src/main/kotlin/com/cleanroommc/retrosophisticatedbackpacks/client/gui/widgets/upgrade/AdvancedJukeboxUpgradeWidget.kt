@@ -2,6 +2,7 @@ package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.upgrade
 
 import com.cleanroommc.modularui.api.drawable.IKey
 import com.cleanroommc.modularui.drawable.GuiDraw
+import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.utils.Color
 import com.cleanroommc.modularui.widgets.ButtonWidget
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
@@ -119,6 +120,10 @@ class AdvancedJukeboxUpgradeWidget(
                 }
             }
             .overlay(RSBTextures.SKIP_BACKWARD_ICON).name("previous_button")
+            .tooltipStatic {
+                it.addLine(IKey.lang("gui.previous".asTranslationKey()))
+                    .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+            }
         stopButton = ButtonWidget()
             .onMousePressed {
                 if (tileEntity != null) {
@@ -134,6 +139,10 @@ class AdvancedJukeboxUpgradeWidget(
                 true
             }
             .overlay(RSBTextures.STOP_ICON).name("stop_button")
+            .tooltipStatic {
+                it.addLine(IKey.lang("gui.stop".asTranslationKey()))
+                    .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+            }
         playButton = ButtonWidget()
             .onMousePressed {
                 var record = wrapper.records.getStackInSlot(wrapper.currentPlayingIndex)
@@ -168,6 +177,10 @@ class AdvancedJukeboxUpgradeWidget(
                 }
             }
             .overlay(RSBTextures.PLAY_ICON).name("play_button")
+            .tooltipStatic {
+                it.addLine(IKey.lang("gui.play".asTranslationKey()))
+                    .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+            }
         nextButton = ButtonWidget()
             .onMousePressed {
                 val record = wrapper.getNextRecordForPlaying()
@@ -187,6 +200,10 @@ class AdvancedJukeboxUpgradeWidget(
                 }
             }
             .overlay(RSBTextures.SKIP_FORWARD_ICON).name("next_button")
+            .tooltipStatic {
+                it.addLine(IKey.lang("gui.next".asTranslationKey()))
+                    .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+            }
 
         topButtonRow.child(previousButton)
             .child(stopButton)

@@ -1,6 +1,9 @@
 package com.cleanroommc.retrosophisticatedbackpacks.client.gui.widgets.upgrade
 
+import com.cleanroommc.modularui.api.drawable.IKey
+import com.cleanroommc.modularui.screen.RichTooltip
 import com.cleanroommc.modularui.widgets.ButtonWidget
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
 import com.cleanroommc.modularui.widgets.SlotGroupWidget
 import com.cleanroommc.modularui.widgets.layout.Row
 import com.cleanroommc.modularui.widgets.slot.ItemSlot
@@ -65,6 +68,10 @@ class JukeboxUpgradeWidget(
                 true
             }
             .overlay(RSBTextures.STOP_ICON)
+            .tooltipStatic {
+                it.addLine(IKey.lang("gui.stop".asTranslationKey()))
+                    .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+            }
         playButton = ButtonWidget().name("play_button")
             .onMousePressed {
                 val record = wrapper.records.getStackInSlot(0)
@@ -95,6 +102,10 @@ class JukeboxUpgradeWidget(
                 true
             }
             .overlay(RSBTextures.PLAY_ICON)
+            .tooltipStatic {
+                it.addLine(IKey.lang("gui.play".asTranslationKey()))
+                    .pos(RichTooltip.Pos.NEXT_TO_MOUSE)
+            }
 
         buttonRow.child(stopButton)
             .child(playButton)
