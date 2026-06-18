@@ -213,8 +213,10 @@ class BackpackItem(
         default: ModelBiped
     ): ModelBiped? {
         if (armorSlot == EntityEquipmentSlot.CHEST) {
-            val model = if (cachedBipedModel != null) cachedBipedModel
-            else {
+            val model = if (cachedBipedModel != null) {
+                cachedBipedModel!!.backpackItemStack = itemStack
+                cachedBipedModel
+            } else {
                 cachedBipedModel = BackpackBipedModel(itemStack)
                 cachedBipedModel
             }
