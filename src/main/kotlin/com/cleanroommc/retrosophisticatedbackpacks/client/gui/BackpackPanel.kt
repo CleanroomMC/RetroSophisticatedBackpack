@@ -407,15 +407,21 @@ class BackpackPanel(
 
             if (wrapper.isTabOpened) {
                 if (openedTabIndex != null) {
-                    wrapper.isTabOpened = false
-                    upgradeSlotSyncHandlers[slotIndex].syncToServer(UpgradeSlotSH.UPDATE_UPGRADE_TAB_STATE) {
-                        it.writeBoolean(false)
+                    val toCloseIndex = if (slotIndex == index) openedTabIndex else slotIndex
+                    val toCloseWrapper =
+                        upgradeSlotWidgets[toCloseIndex].slot.stack.getCapability(Capabilities.UPGRADE_CAPABILITY, null)
+                    if (toCloseWrapper != null) {
+                        toCloseWrapper.isTabOpened = false
+                        upgradeSlotSyncHandlers[toCloseIndex].syncToServer(UpgradeSlotSH.UPDATE_UPGRADE_TAB_STATE) {
+                            it.writeBoolean(false)
+                        }
                     }
-
-                    return
+                    if (toCloseIndex == openedTabIndex) {
+                        openedTabIndex = slotIndex
+                    }
+                } else {
+                    openedTabIndex = slotIndex
                 }
-
-                openedTabIndex = slotIndex
             }
         }
         // Shifted forward to account for settings tab.
@@ -587,8 +593,8 @@ class BackpackPanel(
                 tabWidgets.size
             )
 
-            for (tabIndex in openedTabIndex + 1 until upperboundIndex) {
-                tabWidgets[tabIndex].isEnabled = false
+            for (tIndex in openedTabIndex + 1 until upperboundIndex) {
+                tabWidgets[tIndex].isEnabled = false
             }
         }
 
