@@ -29,6 +29,7 @@ Here is a list of implemented feature and considered features to be implemented:
 - [ ] Lockable by player
 - [x] Backpack model render on player's back when equipped
   - Supported on vanilla and Bauble, BaubleEx is not supported yet.
+  - Supported to be opened by other players when equipped.
 - [x] Dyeing
 
 ### Upgrades

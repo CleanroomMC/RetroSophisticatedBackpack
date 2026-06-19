@@ -3,11 +3,7 @@ package com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.client.gui.BackpackPanel
-import com.cleanroommc.retrosophisticatedbackpacks.item.ExponentialStackUpgradeItem
-import com.cleanroommc.retrosophisticatedbackpacks.item.InceptionUpgradeItem
-import com.cleanroommc.retrosophisticatedbackpacks.item.JukeboxUpgradeItem
-import com.cleanroommc.retrosophisticatedbackpacks.item.StackUpgradeItem
-import com.cleanroommc.retrosophisticatedbackpacks.item.UpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.item.*
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 
@@ -50,9 +46,10 @@ class ModularUpgradeSlot(
         1
 
     override fun isItemValid(stack: ItemStack): Boolean = when (val item = stack.item) {
-        is StackUpgradeItem -> wrapper.canAddStackUpgrade(item.multiplier())
-        is ExponentialStackUpgradeItem -> wrapper.canAddExponentialStackUpgrade()
-        is JukeboxUpgradeItem -> wrapper.canAddJukeboxUpgrade() || this.stack.item is JukeboxUpgradeItem
+        is StackUpgradeItem -> wrapper.canAddStackUpgrade(item.multiplier()) || this.stack.item::class.java == item::class.java
+        is ExponentialStackUpgradeItem -> wrapper.canAddExponentialStackUpgrade() || this.stack.item is ExponentialStackUpgradeItem
+        is EverlastingUpgradeItem -> !wrapper.hasEverlastingJukeboxUpgrade() || this.stack.item is EverlastingUpgradeItem
+        is JukeboxUpgradeItem -> !wrapper.hasJukeboxUpgrade() || this.stack.item is JukeboxUpgradeItem
         else -> item is UpgradeItem
     }
 }

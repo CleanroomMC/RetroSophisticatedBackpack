@@ -13,6 +13,7 @@ item.retro_sophisticated_backpacks.stack_upgrade_tier_2.name=Stack Upgrade Tier 
 item.retro_sophisticated_backpacks.stack_upgrade_tier_3.name=Stack Upgrade Tier 3
 item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=Stack Upgrade Tier 4
 item.retro_sophisticated_backpacks.exponential_stack_upgrade.name=Exponential Stack Upgrade
+item.retro_sophisticated_backpacks.everlasting_upgrade.name=Everlasting Upgrade
 item.retro_sophisticated_backpacks.crafting_upgrade.name=Crafting Upgrade
 item.retro_sophisticated_backpacks.inception_upgrade.name=Inception Upgrade
 item.retro_sophisticated_backpacks.pickup_upgrade.name=Pickup Upgrade
@@ -51,6 +52,8 @@ retro_sophisticated_backpacks.tooltip.upgrade_base=It does nothing! Feel free to
 retro_sophisticated_backpacks.tooltip.stack_upgrade=Multiplies stack size by %d
 
 retro_sophisticated_backpacks.tooltip.exponential_stack_upgrade=Stack multipliers will stack by multiplying instead of adding
+
+retro_sophisticated_backpacks.tooltip.everlasting_upgrade=Makes your backpack undestructible!
 
 retro_sophisticated_backpacks.tooltip.crafting_upgrade=Adds additional crafting grid to side of backpack
 

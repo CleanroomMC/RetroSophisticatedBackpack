@@ -26,6 +26,8 @@ import com.cleanroommc.retrosophisticatedbackpacks.handler.CapabilityHandler
 import com.cleanroommc.retrosophisticatedbackpacks.handler.RegistryHandler
 import com.cleanroommc.retrosophisticatedbackpacks.util.IModelRegister
 import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.asTranslationKey
+import net.minecraft.block.BlockLiquid
+import net.minecraft.block.state.IBlockState
 import net.minecraft.client.model.ModelBiped
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.client.util.ITooltipFlag
@@ -47,6 +49,7 @@ import net.minecraft.util.text.TextComponentTranslation
 import net.minecraft.util.text.TextFormatting
 import net.minecraft.world.World
 import net.minecraftforge.common.capabilities.ICapabilityProvider
+import net.minecraftforge.fluids.IFluidBlock
 import net.minecraftforge.fml.common.Optional
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
@@ -60,6 +63,13 @@ class BackpackItem(
     val numberOfUpgradeSlots: () -> Int,
     val tier: BackpackTier,
 ) : ItemBlock(backpackBlock), IModelRegister, IGuiHolder<PlayerInventoryGuiData>, IBauble, IRenderBauble {
+    companion object {
+        private const val FLOATING_HEIGHT = 0.25
+
+        private fun isFluid(state: IBlockState): Boolean =
+            state.material.isLiquid || state.block is BlockLiquid || state.block is IFluidBlock
+    }
+
     // FIXME: Later when adding tank upgrade and its corresponding model, we should change this implementation to
     // hashmap, and the key would depends on the count of tanks upgrades
     private var cachedBipedModel: BackpackBipedModel? = null
@@ -193,9 +203,57 @@ class BackpackItem(
     }
 
     override fun onEntityItemUpdate(entityItem: EntityItem): Boolean {
+        val wrapper = entityItem.item.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return false
+
         if (entityItem.world.isRemote) {
-            val wrapper = entityItem.item.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return false
             BackpackSoundManager.transferPlayingOwnership(entityItem, null, wrapper)
+        }
+
+        if (wrapper.hasEverlastingJukeboxUpgrade()) {
+            // Tries to levitate the item to the top of the void / fluid
+            val pos = BlockPos(entityItem.posX, entityItem.posY, entityItem.posZ)
+            val posBelow = BlockPos(entityItem.posX, entityItem.posY - 0.1, entityItem.posZ)
+            var targetY: Double? = null
+
+            if (entityItem.posY <= FLOATING_HEIGHT) {
+                targetY = FLOATING_HEIGHT
+            } else if (isFluid(entityItem.world.getBlockState(pos)) || isFluid(entityItem.world.getBlockState(posBelow))) {
+                var topFluidPos = if (isFluid(entityItem.world.getBlockState(pos))) pos else posBelow
+                while (isFluid(entityItem.world.getBlockState(topFluidPos.up()))) {
+                    topFluidPos = topFluidPos.up()
+                    if (topFluidPos.y >= 256) break
+                }
+                targetY = topFluidPos.y.toDouble() + 1.0
+            }
+
+            if (targetY != null) {
+                entityItem.setNoGravity(true)
+                if (entityItem.posY < targetY) {
+                    entityItem.motionY = 0.08
+                }
+                if (entityItem.posY + entityItem.motionY >= targetY) {
+                    if (targetY == FLOATING_HEIGHT) {
+                        entityItem.setPosition(entityItem.posX, targetY, entityItem.posZ)
+                        entityItem.motionX = .0
+                        entityItem.motionY = .0
+                        entityItem.motionZ = .0
+                    } else {
+                        entityItem.setPosition(entityItem.posX, targetY, entityItem.posZ)
+                        entityItem.motionY = .0
+                    }
+                }
+            } else {
+                entityItem.setNoGravity(false)
+            }
+
+            // Spawns villager happy particles to indicate the everlasting upgrade is active
+            if (entityItem.world.isRemote && entityItem.world.rand.nextInt(8) == 0) {
+                val x = entityItem.posX + (entityItem.world.rand.nextDouble() - .5) * .6
+                val y = entityItem.posY + entityItem.world.rand.nextDouble() * .6
+                val z = entityItem.posZ + (entityItem.world.rand.nextDouble() - .5) * .6
+
+                entityItem.world.spawnParticle(EnumParticleTypes.VILLAGER_HAPPY, x, y, z, .0, .0, .0)
+            }
         }
 
         return super.onEntityItemUpdate(entityItem)
@@ -292,7 +350,7 @@ class BackpackItem(
                 if (upgradeStack.isEmpty)
                     continue
 
-                val upgradeWrapper = upgradeStack.getCapability(Capabilities.UPGRADE_CAPABILITY, null) ?: continue
+                val upgradeWrapper = upgradeStack.getCapability(Capabilities.UPGRADE_CAPABILITY, null)
 
                 if (upgradeWrapper is IToggleable) {
                     val toggledColor = if (upgradeWrapper.enabled) TextFormatting.GREEN else TextFormatting.RED
@@ -306,7 +364,7 @@ class BackpackItem(
                             ).formattedText
                         ).setStyle(Style().setColor(TextFormatting.GRAY)).formattedText
                     )
-                } else {
+                } else if (upgradeStack.item is UpgradeItem) {
                     tooltip.add(
                         TextComponentTranslation(
                             "tooltip.backpack.upgrade_slot.default".asTranslationKey(),

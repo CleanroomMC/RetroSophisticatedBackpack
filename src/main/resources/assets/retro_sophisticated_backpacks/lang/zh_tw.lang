@@ -13,6 +13,7 @@ item.retro_sophisticated_backpacks.stack_upgrade_tier_2.name=堆疊升級 T2
 item.retro_sophisticated_backpacks.stack_upgrade_tier_3.name=堆疊升級 T3
 item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=堆疊升級 T4
 item.retro_sophisticated_backpacks.exponential_stack_upgrade.name=指數堆疊升級
+item.retro_sophisticated_backpacks.everlasting_upgrade.name=永恆升級
 item.retro_sophisticated_backpacks.crafting_upgrade.name=合成升級
 item.retro_sophisticated_backpacks.inception_upgrade.name=嵌套升級
 item.retro_sophisticated_backpacks.pickup_upgrade.name=拾取升級
@@ -51,6 +52,8 @@ retro_sophisticated_backpacks.tooltip.upgrade_base=沒有效果！你大可放�
 retro_sophisticated_backpacks.tooltip.stack_upgrade=提供堆疊倍率 x%d
 
 retro_sophisticated_backpacks.tooltip.exponential_stack_upgrade=堆疊倍率會以相乘堆疊而非相加
+
+retro_sophisticated_backpacks.tooltip.everlasting_upgrade=讓你的背包堅不可摧！
 
 retro_sophisticated_backpacks.tooltip.crafting_upgrade=在背包旁增加額外的合成欄
 

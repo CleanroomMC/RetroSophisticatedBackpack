@@ -81,6 +81,9 @@ object Items {
 
     @JvmField
     val stackUpgradeTier4 = StackUpgradeItem("stack_upgrade_tier_4", Config.stackUpgrade::obsidianMultiplier)
+    
+    @JvmField
+    val everlastingUpgrade = EverlastingUpgradeItem("everlasting_upgrade")
 
     @JvmField
     val craftingUpgrade = CraftingUpgradeItem("crafting_upgrade")

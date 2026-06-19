@@ -1,13 +1,12 @@
 package com.cleanroommc.retrosophisticatedbackpacks.capability
 
-import com.azul.crs.client.Utils.uuid
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.SortType
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.AdvancedJukeboxUpgradeWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IJukeboxUpgrade
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IVoidUpgrade
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.BackpackItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.UpgradeItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
+import com.cleanroommc.retrosophisticatedbackpacks.item.EverlastingUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.ExponentialStackUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.InceptionUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.JukeboxUpgradeItem
@@ -21,6 +20,7 @@ import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.INBTSerializable
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
+import net.minecraftforge.fml.common.FMLCommonHandler
 import java.util.*
 
 class BackpackWrapper(
@@ -49,6 +49,12 @@ class BackpackWrapper(
 
 
     var uuid: UUID? = null
+        get() {
+            if (field == null && FMLCommonHandler.instance().effectiveSide.isServer) {
+                field = UUID.randomUUID()
+            }
+            return field
+        }
     var isCached: Boolean = false
     
     var backpackItemStackHandler = BackpackItemStackHandler(backpackInventorySize(), this)
@@ -136,9 +142,13 @@ class BackpackWrapper(
         return true
     }
     
-    fun canAddJukeboxUpgrade(): Boolean =
+    fun hasJukeboxUpgrade(): Boolean =
         upgradeItemStackHandler.inventory.map(ItemStack::getItem).filterIsInstance<JukeboxUpgradeItem>()
-            .isEmpty()
+            .isNotEmpty()
+    
+    fun hasEverlastingJukeboxUpgrade(): Boolean =
+        upgradeItemStackHandler.inventory.map(ItemStack::getItem).filterIsInstance<EverlastingUpgradeItem>()
+            .isNotEmpty()
 
     fun canNestBackpack(): Boolean =
         upgradeItemStackHandler.inventory.map(ItemStack::getItem).filterIsInstance<InceptionUpgradeItem>().any()

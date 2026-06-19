@@ -20,6 +20,7 @@ import net.minecraft.block.properties.PropertyDirection
 import net.minecraft.block.state.BlockFaceShape
 import net.minecraft.block.state.BlockStateContainer
 import net.minecraft.block.state.IBlockState
+import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.init.SoundEvents
@@ -29,6 +30,7 @@ import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.*
 import net.minecraft.util.math.AxisAlignedBB
 import net.minecraft.util.math.BlockPos
+import net.minecraft.world.Explosion
 import net.minecraft.world.IBlockAccess
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.Optional
@@ -46,7 +48,7 @@ class BackpackBlock(
         val RIGHT_TANK: PropertyBool = PropertyBool.create("right_tank")
         val BATTERY: PropertyBool = PropertyBool.create("battery")
         val FACING: PropertyDirection = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL)
-        const val BEDROCK_RESISTANCE = 3600000
+        const val BEDROCK_RESISTANCE = 6000000.0F
 
         private val BOOL_PROPERTIES = arrayOf(LEFT_TANK, RIGHT_TANK, BATTERY)
     }
@@ -157,7 +159,17 @@ class BackpackBlock(
     }
 
     override fun getPushReaction(state: IBlockState): EnumPushReaction =
-        EnumPushReaction.DESTROY
+        EnumPushReaction.NORMAL
+
+    override fun getExplosionResistance(world: World, pos: BlockPos, exploder: Entity?, explosion: Explosion): Float {
+        val wrapper = world.getTileEntity(pos)?.getCapability(Capabilities.BACKPACK_CAPABILITY, null)
+
+        if (wrapper != null && wrapper.hasEverlastingJukeboxUpgrade()) {
+            return BEDROCK_RESISTANCE
+        }
+        
+        return super.getExplosionResistance(world, pos, exploder, explosion)
+    }
 
     override fun hasComparatorInputOverride(state: IBlockState): Boolean =
         true

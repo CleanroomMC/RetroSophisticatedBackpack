@@ -11,7 +11,9 @@ import com.cleanroommc.retrosophisticatedbackpacks.common.gui.PlayerInventoryGui
 import com.cleanroommc.retrosophisticatedbackpacks.config.Config
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.Items
+import com.cleanroommc.retrosophisticatedbackpacks.mixin.EntityAccessor
 import com.cleanroommc.retrosophisticatedbackpacks.network.C2CJukeboxUpgradePacket
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.cast
 import net.minecraft.entity.EntityList
 import net.minecraft.entity.EntityLiving
 import net.minecraft.entity.EntityLivingBase
@@ -21,6 +23,7 @@ import net.minecraft.inventory.EntityEquipmentSlot
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumActionResult
 import net.minecraft.util.SoundCategory
+import net.minecraftforge.event.entity.EntityJoinWorldEvent
 import net.minecraftforge.event.entity.living.LivingSpawnEvent
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent
 import net.minecraftforge.event.entity.player.PlayerInteractEvent
@@ -246,6 +249,27 @@ object EntityEventHandler {
 
                         return
                     }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    @JvmStatic
+    fun onEntityJoinWorld(event: EntityJoinWorldEvent) {
+        val entity = event.entity
+
+        if (entity is EntityItem) {
+            val stack = entity.item
+            val item = stack.item
+
+            if (item is BackpackItem) {
+                val wrapper = stack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return
+
+                if (wrapper.hasEverlastingJukeboxUpgrade()) {
+                    entity.setEntityInvulnerable(true)
+                    entity.lifespan = Integer.MAX_VALUE
+                    entity.cast<EntityAccessor>().`rsb$setIsImmuneToFire`(true)
                 }
             }
         }
