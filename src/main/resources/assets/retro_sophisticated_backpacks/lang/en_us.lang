@@ -13,6 +13,7 @@ item.retro_sophisticated_backpacks.stack_upgrade_tier_2.name=Stack Upgrade Tier 
 item.retro_sophisticated_backpacks.stack_upgrade_tier_3.name=Stack Upgrade Tier 3
 item.retro_sophisticated_backpacks.stack_upgrade_tier_4.name=Stack Upgrade Tier 4
 item.retro_sophisticated_backpacks.exponential_stack_upgrade.name=Exponential Stack Upgrade
+item.retro_sophisticated_backpacks.everlasting_upgrade.name=Everlasting Upgrade
 item.retro_sophisticated_backpacks.crafting_upgrade.name=Crafting Upgrade
 item.retro_sophisticated_backpacks.inception_upgrade.name=Inception Upgrade
 item.retro_sophisticated_backpacks.pickup_upgrade.name=Pickup Upgrade
@@ -25,6 +26,10 @@ item.retro_sophisticated_backpacks.restock_upgrade.name=Restock Upgrade
 item.retro_sophisticated_backpacks.advanced_restock_upgrade.name=Advanced Restock Upgrade
 item.retro_sophisticated_backpacks.filter_upgrade.name=Filter Upgrade
 item.retro_sophisticated_backpacks.advanced_filter_upgrade.name=Advanced Filter Upgrade
+item.retro_sophisticated_backpacks.void_upgrade.name=Void Upgrade
+item.retro_sophisticated_backpacks.advanced_void_upgrade.name=Advanced Void Upgrade
+item.retro_sophisticated_backpacks.jukebox_upgrade.name=Jukebox Upgrade
+item.retro_sophisticated_backpacks.advanced_jukebox_upgrade.name=Advanced Jukebox Upgrade
 
 # Creative Tabs
 itemGroup.retro_sophisticated_backpacks.creative_tab=Retro Sophisticated Backpacks
@@ -37,12 +42,18 @@ retro_sophisticated_backpacks.key.category=Retro Sophisticated Backpacks
 retro_sophisticated_backpacks.tooltip.backpack.inventory_size=Inventory size: %d
 retro_sophisticated_backpacks.tooltip.backpack.upgrade_slots_size=Upgrade slots: %d
 retro_sophisticated_backpacks.tooltip.backpack.stack_multiplier=-> Stack multiplier: %d %s
+retro_sophisticated_backpacks.tooltip.backpack.upgrade_slot.toggleable=-> %s: %s
+retro_sophisticated_backpacks.tooltip.backpack.upgrade_slot.default=-> %s
+retro_sophisticated_backpacks.tooltip.upgrade.state.true=Enabled
+retro_sophisticated_backpacks.tooltip.upgrade.state.false=Disabled
 
 retro_sophisticated_backpacks.tooltip.upgrade_base=It does nothing! Feel free to put it in your upgrade slots!
 
 retro_sophisticated_backpacks.tooltip.stack_upgrade=Multiplies stack size by %d
 
 retro_sophisticated_backpacks.tooltip.exponential_stack_upgrade=Stack multipliers will stack by multiplying instead of adding
+
+retro_sophisticated_backpacks.tooltip.everlasting_upgrade=Makes your backpack undestructible!
 
 retro_sophisticated_backpacks.tooltip.crafting_upgrade=Adds additional crafting grid to side of backpack
 
@@ -68,6 +79,14 @@ retro_sophisticated_backpacks.tooltip.filter_upgrade=Filters inserted items when
 
 retro_sophisticated_backpacks.tooltip.advanced_filter_upgrade=Filters inserted items when placing in world with more configurations
 
+retro_sophisticated_backpacks.tooltip.void_upgrade=Voids items selected in filter
+
+retro_sophisticated_backpacks.tooltip.advanced_void_upgrade=Voids items selected in filter with more configurations
+
+retro_sophisticated_backpacks.tooltip.jukebox_upgrade=Plays disc in your backpack!
+
+retro_sophisticated_backpacks.tooltip.advanced_jukebox_upgrade=Plays discs in your backpack with more options!
+
 retro_sophisticated_backpacks.tooltip.shift_to_reveal=<Shift to reveal>
 
 # Gui Elements
@@ -88,7 +107,12 @@ retro_sophisticated_backpacks.gui.advanced_restock_settings=Adv. Restock Setting
 retro_sophisticated_backpacks.gui.filter_settings=Filter Settings
 retro_sophisticated_backpacks.gui.advanced_filter_settings=Adv. Filter Settings
 
+retro_sophisticated_backpacks.gui.void_settings=Void Settings
+retro_sophisticated_backpacks.gui.advanced_void_settings=Adv. Void Settings
+
 retro_sophisticated_backpacks.gui.crafting_settings=Crafting
+
+retro_sophisticated_backpacks.gui.jukebox_settings=Jukebox Interface
 
 retro_sophisticated_backpacks.gui.memory_settings=Memory Settings
 retro_sophisticated_backpacks.gui.sorting_settings=Sorting Settings
@@ -128,6 +152,11 @@ retro_sophisticated_backpacks.gui.input_output=Input & Output
 retro_sophisticated_backpacks.gui.input=Input Only
 retro_sophisticated_backpacks.gui.output=Output Only
 
+retro_sophisticated_backpacks.gui.upgrade_or_world_interaction=Only works with upgrade or in-world interactions
+retro_sophisticated_backpacks.gui.any_interaction=Works with any interactions (including GUI)
+retro_sophisticated_backpacks.gui.void_any=Voids applicable items
+retro_sophisticated_backpacks.gui.void_overflow=Only voids if there's more than a stack
+
 retro_sophisticated_backpacks.gui.sort_inventory=Sort Backpack Inventory
 retro_sophisticated_backpacks.gui.sort_by_name=Sort By Name
 retro_sophisticated_backpacks.gui.sort_by_mod_id=Sort By Mod ID
@@ -136,6 +165,16 @@ retro_sophisticated_backpacks.gui.sort_by_ore_dict=Sort By Ore Dictionary
 
 retro_sophisticated_backpacks.gui.craft_into_backpack=Shift Click Result Into Backpack
 retro_sophisticated_backpacks.gui.craft_into_player_inventory=Shift Click Result Into Player's Inventory
+
+retro_sophisticated_backpacks.gui.play=Play
+retro_sophisticated_backpacks.gui.stop=Stop
+retro_sophisticated_backpacks.gui.previous=Previous Track
+retro_sophisticated_backpacks.gui.next=Next Track
+retro_sophisticated_backpacks.gui.no_shuffle=No Shuffle
+retro_sophisticated_backpacks.gui.shuffle=Shuffle
+retro_sophisticated_backpacks.gui.no_repeat=No Repeat
+retro_sophisticated_backpacks.gui.repeat=Repeat
+retro_sophisticated_backpacks.gui.repeat_one=Repeat One
 
 retro_sophisticated_backpacks.gui.transfer_to_player_inv=Transfer All Items to Player Inventory
 retro_sophisticated_backpacks.gui.transfer_to_player_inv_matched_1=Transfer Matched Items to Player Inventory

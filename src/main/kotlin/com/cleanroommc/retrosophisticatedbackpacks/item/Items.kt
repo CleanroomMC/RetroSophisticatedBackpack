@@ -81,6 +81,9 @@ object Items {
 
     @JvmField
     val stackUpgradeTier4 = StackUpgradeItem("stack_upgrade_tier_4", Config.stackUpgrade::obsidianMultiplier)
+    
+    @JvmField
+    val everlastingUpgrade = EverlastingUpgradeItem("everlasting_upgrade")
 
     @JvmField
     val craftingUpgrade = CraftingUpgradeItem("crafting_upgrade")
@@ -117,4 +120,16 @@ object Items {
 
     @JvmField
     val advancedFilterUpgrade = FilterUpgradeItem("advanced_filter_upgrade", ::AdvancedFilterUpgradeWrapper)
+
+    @JvmField
+    val voidUpgrade = VoidUpgradeItem("void_upgrade", ::VoidUpgradeWrapper)
+
+    @JvmField
+    val advancedVoidUpgrade = VoidUpgradeItem("advanced_void_upgrade", ::AdvancedVoidUpgradeWrapper)
+    
+    @JvmField
+    val jukeboxUpgrade = JukeboxUpgradeItem("jukebox_upgrade", ::JukeboxUpgradeWrapper)
+    
+    @JvmField
+    val advancedJukeboxUpgrade = JukeboxUpgradeItem("advanced_jukebox_upgrade", ::AdvancedJukeboxUpgradeWrapper)
 }

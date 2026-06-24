@@ -1,6 +1,7 @@
 package com.cleanroommc.retrosophisticatedbackpacks.inventory
 
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IVoidUpgrade
 import com.cleanroommc.retrosophisticatedbackpacks.config.Config
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
 import net.minecraft.item.ItemStack
@@ -22,6 +23,16 @@ class BackpackItemStackHandler(size: Int, private val wrapper: BackpackWrapper) 
     override fun getStackLimit(slotIndex: Int, stack: ItemStack): Int =
         stacks[slotIndex].maxStackSize * wrapper.getTotalStackMultiplier()
 
+    fun prioritizedInsertionRespectVoid(
+        slotIndex: Int,
+        stack: ItemStack,
+        simulate: Boolean,
+        transferSource: IVoidUpgrade.TransferSource
+    ): ItemStack {
+        val stack = wrapper.tryVoid(stack, transferSource)
+        return prioritizedInsertion(slotIndex, stack, simulate)
+    }
+
     /**
      * Prioritize insertion by tries inserting on memorized slot first.
      *
@@ -29,8 +40,13 @@ class BackpackItemStackHandler(size: Int, private val wrapper: BackpackWrapper) 
      * gui-based interaction get unexpected insertion result.
      */
     fun prioritizedInsertion(slotIndex: Int, stack: ItemStack, simulate: Boolean): ItemStack {
-        val stack = insertItemToMemorySlots(stack, simulate)
+        val stack = insertItemToMemorySlotsRespectVoid(stack, simulate)
         return insertItem(slotIndex, stack, simulate)
+    }
+    
+    fun insertItemToMemorySlotsRespectVoid(stack: ItemStack, simulate: Boolean): ItemStack {
+        val stack = wrapper.tryVoid(stack, IVoidUpgrade.TransferSource.UPGRADE_OR_WORLD_INTERACTION)
+        return insertItemToMemorySlots(stack, simulate)
     }
 
     fun insertItemToMemorySlots(stack: ItemStack, simulate: Boolean): ItemStack {
@@ -50,6 +66,8 @@ class BackpackItemStackHandler(size: Int, private val wrapper: BackpackWrapper) 
     }
 
     override fun insertItem(slot: Int, stack: ItemStack, simulate: Boolean): ItemStack {
+        val stack = wrapper.tryVoid(stack, IVoidUpgrade.TransferSource.UPGRADE_OR_WORLD_INTERACTION)
+        
         if (stack.isEmpty)
             return ItemStack.EMPTY
 

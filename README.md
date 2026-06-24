@@ -29,12 +29,12 @@ Here is a list of implemented feature and considered features to be implemented:
 - [ ] Lockable by player
 - [x] Backpack model render on player's back when equipped
   - Supported on vanilla and Bauble, BaubleEx is not supported yet.
+  - Supported to be opened by other players when equipped.
 - [x] Dyeing
 
 ### Upgrades
 
 - [x] stack upgrade
-  - [x] exponential stack upgrade (RSB exclusive)
 - [x] inception upgrade
 - [x] pickup upgrade (b/a)
 - [x] feeding upgrade (b/a)
@@ -42,10 +42,27 @@ Here is a list of implemented feature and considered features to be implemented:
 - [x] restock upgrade (b/a)
 - [x] filter upgrade (b/a)
 - [ ] magnet upgrade (b/a)
-- [ ] void upgrade (b/a)
+- [x] void upgrade (b/a)
 - [x] crafting upgrade
 - [ ] everlasting upgrade
-- [ ] jukebox upgrade (low priority)
+- [x] jukebox upgrade (b/a)
+- [ ] refill upgrade (b/a)
+- [ ] compacting upgrade (b/a)
+- [ ] tool swapper upgrade (b/a)
+- [ ] pump upgrade (b/a)
+- [ ] experience pump upgrade
+- [ ] tank upgrade
+- [ ] battery upgrade
+- [ ] anvil upgrade
+
+## RSB Exclusive Features
+
+### Upgrades
+
+- [x] exponential stack upgrade  
+  - Changes behavior of stack upgrade to be exponentially increasing.
+- [ ] armor plate upgrade (from leather to diamond)
+  - Adds armor value to the backpack when equipped.
 
 ## Disclaimer
 

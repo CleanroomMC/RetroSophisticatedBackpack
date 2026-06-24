@@ -2,6 +2,7 @@ package com.cleanroommc.retrosophisticatedbackpacks.backpack
 
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IVoidUpgrade
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
 import net.minecraft.entity.Entity
 import net.minecraft.inventory.IInventory
@@ -135,7 +136,7 @@ object BackpackInventoryHelper {
             }
 
             for (j in 0 until wrapper.backpackInventorySize()) {
-                stack = wrapper.backpackItemStackHandler.insertItemToMemorySlots(stack, false)
+                stack = wrapper.backpackItemStackHandler.insertItemToMemorySlotsRespectVoid(stack, false)
 
                 if (transferMatched && wrapper.getStackInSlot(j).isEmpty)
                     continue
@@ -220,23 +221,30 @@ object BackpackInventoryHelper {
         if (source !is IItemHandlerModifiable)
             return false
 
-        if (isFull(backpackInventory))
-            return false
-
         for (i in 0 until source.slots) {
             val sourceStack = source.getStackInSlot(i)
 
             if (sourceStack.isEmpty)
                 continue
 
-            var copiedSourceStack = sourceStack.copy()
+            if (wrapper.canRestock(sourceStack)) {
+                val processedStack =
+                    wrapper.tryVoid(sourceStack.copy(), IVoidUpgrade.TransferSource.UPGRADE_OR_WORLD_INTERACTION)
 
-            if (wrapper.canRestock(copiedSourceStack)) {
-                copiedSourceStack = ItemHandlerHelper.insertItemStacked(backpackInventory, copiedSourceStack, false)
-
-                if (!ItemStack.areItemStacksEqual(sourceStack, copiedSourceStack)) {
+                if (processedStack.count < sourceStack.count) {
                     transferred = true
-                    source.setStackInSlot(i, copiedSourceStack)
+                }
+
+                if (processedStack.isEmpty) {
+                    source.setStackInSlot(i, ItemStack.EMPTY)
+                    continue
+                }
+
+                val remainder = ItemHandlerHelper.insertItemStacked(backpackInventory, processedStack, false)
+
+                if (!ItemStack.areItemStacksEqual(sourceStack, remainder)) {
+                    transferred = true
+                    source.setStackInSlot(i, remainder)
                 }
             }
         }

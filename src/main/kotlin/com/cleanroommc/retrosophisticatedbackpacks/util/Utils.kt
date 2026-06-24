@@ -50,4 +50,12 @@ object Utils {
 
     fun WidgetThemeEntry<out WidgetTheme>?.getThemeOrDefault(): WidgetTheme =
         this?.theme ?: WidgetTheme.getDefault().theme
+
+    @Suppress("UNCHECKED_CAST")
+    fun <R> Any.unsafeCast(): R? =
+        this as? R
+
+    @Suppress("UNCHECKED_CAST")
+    fun <R> Any.cast(): R =
+        this as R
 }

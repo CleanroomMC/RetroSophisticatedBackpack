@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
 @SideOnly(Side.CLIENT)
-class BackpackBipedModel(private val backpackItemStack: ItemStack) : ModelBiped() {
+class BackpackBipedModel(var backpackItemStack: ItemStack) : ModelBiped() {
     companion object {
         fun renderBackpack(backpackItemStack: ItemStack, entityIn: Entity) {
             GlStateManager.translate(0.0, 0.3, 0.15)
