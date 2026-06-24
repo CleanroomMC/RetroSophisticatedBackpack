@@ -179,7 +179,7 @@ class BackpackBlock(
         tileEntity.wrapper.deserializeNBT(backpackInventory.serializeNBT())
 
         if (stack.hasDisplayName())
-            tileEntity.setCustomName(stack.displayName)
+            tileEntity.customName = stack.displayName
     }
 
     override fun onBlockActivated(
