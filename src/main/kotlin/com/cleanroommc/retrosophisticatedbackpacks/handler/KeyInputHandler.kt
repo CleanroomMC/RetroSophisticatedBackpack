@@ -2,6 +2,7 @@ package com.cleanroommc.retrosophisticatedbackpacks.handler
 
 import baubles.api.BaublesApi
 import baubles.common.container.SlotBauble
+import com.cleanroommc.modularui.api.IMuiScreen
 import com.cleanroommc.modularui.screen.ClientScreenHandler
 import com.cleanroommc.retrosophisticatedbackpacks.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
@@ -12,7 +13,9 @@ import com.cleanroommc.retrosophisticatedbackpacks.proxy.RSBProxy
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.inventory.GuiContainer
 import net.minecraft.item.ItemStack
+import net.minecraftforge.client.event.GuiScreenEvent
 import net.minecraftforge.fml.common.Mod
+import net.minecraftforge.fml.common.eventhandler.EventPriority
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.gameevent.InputEvent
 import net.minecraftforge.fml.relauncher.Side
@@ -66,6 +69,14 @@ object KeyInputHandler {
                 )
             }
         }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGHEST)
+    @JvmStatic
+    fun onKeyInputInDisposedScreen(event: GuiScreenEvent.KeyboardInputEvent.Pre) {
+        val gui = event.gui
+        if (gui is IMuiScreen && gui.screen.panelManager.isDisposed)
+            event.isCanceled = true
     }
 
     @JvmStatic
