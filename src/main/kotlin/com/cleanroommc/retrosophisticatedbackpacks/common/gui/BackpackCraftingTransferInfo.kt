@@ -23,9 +23,10 @@ class BackpackCraftingTransferInfo : IRecipeTransferInfo<BackpackContainer> {
     }
 
     private fun getPanel(container: BackpackContainer): BackpackPanel? {
-        val screen = container.getScreen()
-        if (!container.isInitialized || screen.panelManager.mainPanel !is BackpackPanel) return null
-        return screen.panelManager.mainPanel as BackpackPanel
+        if (!container.isInitialized) return null
+        val panelManager = container.getScreen().panelManager
+        if (panelManager.isDisposed) return null
+        return panelManager.mainPanel as? BackpackPanel
     }
 
     private fun getCraftingInterfaceIndex(container: BackpackContainer): Int? {
