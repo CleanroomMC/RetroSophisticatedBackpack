@@ -44,6 +44,18 @@ public final class Capabilities {
     @CapabilityInject(AdvancedFilterUpgradeWrapper.class)
     public static final @NotNull Capability<AdvancedFilterUpgradeWrapper> ADVANCED_FILTER_UPGRADE_WRAPPER_CAPABILITY = null;
 
+    @CapabilityInject(VoidUpgradeWrapper.class)
+    public static final @NotNull Capability<VoidUpgradeWrapper> VOID_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(AdvancedVoidUpgradeWrapper.class)
+    public static final @NotNull Capability<AdvancedVoidUpgradeWrapper> ADVANCED_VOID_UPGRADE_CAPABILITY = null;
+    
+    @CapabilityInject(JukeboxUpgradeWrapper.class)
+    public static final @NotNull Capability<JukeboxUpgradeWrapper> JUKEBOX_UPGRADE_CAPABILITY = null;
+    
+    @CapabilityInject(AdvancedJukeboxUpgradeWrapper.class)
+    public static final @NotNull Capability<AdvancedJukeboxUpgradeWrapper> ADVANCED_JUKEBOX_UPGRADE_CAPABILITY = null;
+
     // Abstract capabilities
     @CapabilityInject(UpgradeWrapper.class)
     public static final @NotNull Capability<UpgradeWrapper<?>> UPGRADE_CAPABILITY = null;
@@ -71,4 +83,10 @@ public final class Capabilities {
 
     @CapabilityInject(IFilterUpgrade.class)
     public static final @NotNull Capability<IFilterUpgrade> IFILTER_UPGRADE_CAPABILITY = null;
+
+    @CapabilityInject(IVoidUpgrade.class)
+    public static final @NotNull Capability<IVoidUpgrade> IVOID_UPGRADE_CAPABILITY = null;
+    
+    @CapabilityInject(IJukeboxUpgrade.class)
+    public static final @NotNull Capability<IJukeboxUpgrade> IJUKEBOX_UPGRADE_CAPABILITY = null;
 }

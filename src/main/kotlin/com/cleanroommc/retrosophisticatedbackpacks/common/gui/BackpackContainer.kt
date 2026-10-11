@@ -8,6 +8,7 @@ import com.cleanroommc.modularui.utils.Platform
 import com.cleanroommc.modularui.widgets.slot.ModularSlot
 import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.CraftingUpgradeWrapper
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IVoidUpgrade
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.IndexedInventoryCraftingWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.IndexedModularCraftingSlot
 import com.cleanroommc.retrosophisticatedbackpacks.common.gui.slot.ModularBackpackSlot
@@ -26,7 +27,7 @@ import kotlin.math.min
 class BackpackContainer(private val wrapper: BackpackWrapper, private val backpackSlotIndex: Int?) :
     ModularContainer() {
     companion object {
-        private val DROP_TO_WORLD: Int = -999
+        private const val DROP_TO_WORLD: Int = -999
         private const val LEFT_MOUSE: Int = 0
         private const val RIGHT_MOUSE: Int = 1
     }
@@ -68,13 +69,23 @@ class BackpackContainer(private val wrapper: BackpackWrapper, private val backpa
 
     override fun slotClick(slotId: Int, mouseButton: Int, clickTypeIn: ClickType, player: EntityPlayer): ItemStack {
         val playerInventory = player.inventory
-        val heldStack = playerInventory.itemStack
+        var heldStack = playerInventory.itemStack
 
         if (clickTypeIn == ClickType.PICKUP &&
             (mouseButton == LEFT_MOUSE || mouseButton == RIGHT_MOUSE) &&
             (slotId != DROP_TO_WORLD && slotId >= 0)
         ) {
             val clickedSlot = getSlot(slotId)
+
+            if (clickedSlot is ModularBackpackSlot && !heldStack.isEmpty) {
+                heldStack = wrapper.tryVoid(heldStack, IVoidUpgrade.TransferSource.UPGRADE_OR_WORLD_INTERACTION)
+                playerInventory.itemStack = heldStack
+                if (heldStack.isEmpty) {
+                    detectAndSendChanges()
+                    return ItemStack.EMPTY
+                }
+            }
+
             val slotStack = clickedSlot.stack
 
             if (clickedSlot is ModularBackpackSlot && !slotStack.isEmpty && heldStack.isEmpty) {
@@ -191,6 +202,7 @@ class BackpackContainer(private val wrapper: BackpackWrapper, private val backpa
         fromStack: ItemStack,
         vararg slotFilters: (ModularSlot) -> Boolean
     ): ItemStack {
+        val fromStack = wrapper.tryVoid(fromStack, IVoidUpgrade.TransferSource.UPGRADE_OR_WORLD_INTERACTION)
         val fromSlotGroup = fromSlot.slotGroup
         for (slotFilter in slotFilters) {
             val memorizedSlots = shiftClickSlots.filter(slotFilter)
@@ -261,6 +273,7 @@ class BackpackContainer(private val wrapper: BackpackWrapper, private val backpa
         fromStack: ItemStack,
         slotFilter: (ModularSlot) -> Boolean
     ): ItemStack {
+        val fromStack = wrapper.tryVoid(fromStack, IVoidUpgrade.TransferSource.UPGRADE_OR_WORLD_INTERACTION)
         val fromSlotGroup = fromSlot.slotGroup
         val memorizedSlots = shiftClickSlots.filter(slotFilter)
 

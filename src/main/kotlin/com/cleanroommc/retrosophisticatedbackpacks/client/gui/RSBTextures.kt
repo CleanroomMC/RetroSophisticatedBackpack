@@ -26,6 +26,9 @@ object RSBTextures {
     val HALF_HEART_ICON = icon("half_heart", 96, 16)
     val IGNORE_HALF_HEART_ICON = icon("ignore_half_heart", 112, 16)
 
+    val VOID_ANY_ICON = icon("void", 208, 16)
+    val VOID_OVERFLOW_ICON = icon("void_overflow", 224, 16)
+
     val BY_MOD_ID_ICON = icon("by_mod_id", 32, 16)
     val BY_ITEM_ICON = ItemDrawable(ItemStack(Items.APPLE))
 
@@ -36,13 +39,26 @@ object RSBTextures {
     val ADD_ICON = icon("add", 96, 32)
     val REMOVE_ICON = icon("remove", 112, 32)
     val BRAIN_ICON = icon("brain", 128, 32)
+    
+    val STOP_ICON = icon("stop", 0, 64)
+    val PLAY_ICON = icon("play", 16, 64)
 
     val ONE_IN_FOUR_SLOT_ICON = icon("one_in_four_slot", 0, 80)
     val ALL_FOUR_SLOT_ICON = icon("all_in_four_slot", 16, 80)
     val NO_SORT_ICON = icon("no_sort", 32, 80)
     val NONE_FOUR_SLOT_ICON = icon("none_in_four_slot", 48, 80)
+    val BACK_ICON = icon("back", 64, 80)
+    val WORKS_IN_GUI_ICON = icon("works_in_gui", 80, 80)
+    val SHUFFLE_ICON = icon("reshuffle", 96, 80)
+    val NO_SHUFFLE_ICON = icon("no_reshuffle", 112, 80)
+    val REPEAT_ICON = icon("repeat", 128, 80)
+    val REPEAT_ONE_ICON = icon("repeat_one", 144, 80)
+    val NO_REPEAT_ICON = icon("no_repeat", 160, 80)
 
     val SETTING_ICON = icon("setting", 16, 96)
+    val SKIP_FORWARD_ICON = icon("skip_forward", 32, 96)
+    val SKIP_BACKWARD_ICON = icon("skip_backward", 48, 96)
+    val NOT_WORK_IN_GUI_ICON = icon("not_work_in_gui", 80, 96)
 
     val MATCH_ORE_DICT_ICON = icon("consider_ore_dict", 112, 96)
     val IGNORE_ORE_DICT_ICON = icon("ignore_ore_dict", 128, 96)

@@ -1,9 +1,11 @@
 package com.cleanroommc.retrosophisticatedbackpacks.crafting
 
 import com.cleanroommc.retrosophisticatedbackpacks.Tags
+import com.cleanroommc.retrosophisticatedbackpacks.capability.BackpackWrapper
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
 import com.cleanroommc.retrosophisticatedbackpacks.mixin.EnumDyeColorAccessor
+import com.cleanroommc.retrosophisticatedbackpacks.util.Utils.cast
 import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.IRecipe
@@ -35,16 +37,11 @@ object DyeingRecipeRegistry {
         mainColor: EnumDyeColor?,
         accentColor: EnumDyeColor?
     ): IRecipe? {
-        if (mainColor == null && accentColor == null)
-            return null
-
         val backpackStack = ItemStack(backpackItem, 1)
         val backpackWrapper = backpackStack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return null
 
-        if (mainColor is EnumDyeColorAccessor)
-            backpackWrapper.mainColor = mainColor.`rsb$getColorValue`()
-        if (accentColor is EnumDyeColorAccessor)
-            backpackWrapper.accentColor = accentColor.`rsb$getColorValue`()
+        backpackWrapper.mainColor = mainColor?.cast<EnumDyeColorAccessor>()?.`rsb$getColorValue`() ?: BackpackWrapper.DEFAULT_MAIN_COLOR
+        backpackWrapper.accentColor = accentColor?.cast<EnumDyeColorAccessor>()?.`rsb$getColorValue`() ?: BackpackWrapper.DEFAULT_ACCENT_COLOR
 
         return if (mainColor != null && accentColor != null) {
             constructRecipe(
@@ -87,7 +84,17 @@ object DyeingRecipeRegistry {
                 'D',
                 "dye${DYES[accentColor.dyeDamage]}",
             )
-        } else null
+        } else {
+            constructRecipe(
+                ResourceLocation(Tags.MOD_ID, "${backpackItem.registryName?.path}_dye_none"),
+                backpackStack,
+                "   ",
+                " B ",
+                "   ",
+                'B',
+                ItemStack(backpackItem, 1),
+            )
+        }
     }
 
     fun constructRecipe(name: ResourceLocation, output: ItemStack, vararg params: Any): IRecipe {

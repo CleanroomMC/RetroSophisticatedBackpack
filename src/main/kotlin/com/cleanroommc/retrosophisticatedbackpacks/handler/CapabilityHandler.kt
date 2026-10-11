@@ -102,6 +102,30 @@ object CapabilityHandler {
             ::AdvancedFilterUpgradeWrapper
         )
 
+        instance.register(
+            VoidUpgradeWrapper::class.java,
+            CapabilityStorageProvider<VoidUpgradeWrapper>(),
+            ::VoidUpgradeWrapper
+        )
+
+        instance.register(
+            AdvancedVoidUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AdvancedVoidUpgradeWrapper>(),
+            ::AdvancedVoidUpgradeWrapper
+        )
+        
+        instance.register(
+            JukeboxUpgradeWrapper::class.java,
+            CapabilityStorageProvider<JukeboxUpgradeWrapper>(),
+            ::JukeboxUpgradeWrapper
+        )
+        
+        instance.register(
+            AdvancedJukeboxUpgradeWrapper::class.java,
+            CapabilityStorageProvider<AdvancedJukeboxUpgradeWrapper>(),
+            ::AdvancedJukeboxUpgradeWrapper
+        )
+
         // Interfaces
         instance.register(
             UpgradeWrapper::class.java,
@@ -152,28 +176,39 @@ object CapabilityHandler {
             NOPCapabilityStorage<IFilterUpgrade>(),
             ::FilterUpgradeWrapper
         )
+
+        instance.register(
+            IVoidUpgrade::class.java,
+            NOPCapabilityStorage<IVoidUpgrade>(),
+            ::VoidUpgradeWrapper
+        )
+        
+        instance.register(
+            IJukeboxUpgrade::class.java,
+            NOPCapabilityStorage<IJukeboxUpgrade>(),
+            ::JukeboxUpgradeWrapper
+        )
     }
 
     fun cacheBackpackInventory(backpackWrapper: BackpackWrapper) {
-        if (BACKPACK_INVENTORY_CACHE.containsKey(backpackWrapper.uuid)) {
+        val uuid = backpackWrapper.uuid ?: return
+
+        if (BACKPACK_INVENTORY_CACHE.containsKey(uuid)) {
             backpackWrapper.isCached = true
             return
         }
 
-        BACKPACK_INVENTORY_CACHE.put(backpackWrapper.uuid, backpackWrapper)
+        BACKPACK_INVENTORY_CACHE[uuid] = backpackWrapper
         backpackWrapper.isCached = true
-        RetroSophisticatedBackpacks.LOGGER.info("Backpack ${backpackWrapper.uuid} is cached")
+        RetroSophisticatedBackpacks.LOGGER.info("Backpack $uuid is cached")
     }
 
     fun updateBackpackInventory(backpackWrapper: BackpackWrapper) {
-        val backpack = BACKPACK_INVENTORY_CACHE[backpackWrapper.uuid]
-
-        if (backpack == null) {
-            return
-        }
+        val uuid = backpackWrapper.uuid ?: return
+        val backpack = BACKPACK_INVENTORY_CACHE[uuid] ?: return
 
         backpack.deserializeNBT(backpackWrapper.serializeNBT())
-        RetroSophisticatedBackpacks.LOGGER.info("Backpack ${backpackWrapper.uuid} is updated")
+        RetroSophisticatedBackpacks.LOGGER.info("Backpack $uuid is updated")
     }
 
     private interface RefinedStorage<T> : Capability.IStorage<T> {

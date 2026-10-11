@@ -51,7 +51,9 @@ class BackpackPanel(
     internal val player: EntityPlayer,
     internal val tileEntity: BackpackTileEntity?,
     internal val syncManager: PanelSyncManager,
-    internal val backpackWrapper: BackpackWrapper
+    internal val backpackWrapper: BackpackWrapper,
+    internal val inventoryType: PlayerInventoryGuiData.InventoryType?,
+    internal val backpackSlotIndex: Int?,
 ) : ModularPanel("backpack_gui") {
     companion object {
         private const val SLOT_SIZE = 18
@@ -88,10 +90,11 @@ class BackpackPanel(
             wrapper: BackpackWrapper,
             width: Int,
             height: Int,
+            inventoryType: PlayerInventoryGuiData.InventoryType? = null,
             backpackSlotIndex: Int? = null,
         ): BackpackPanel {
             val panel =
-                BackpackPanel(player, tileEntity, syncManager, wrapper)
+                BackpackPanel(player, tileEntity, syncManager, wrapper, inventoryType, backpackSlotIndex)
                     .size(width, height) as BackpackPanel
 
             syncManager.bindPlayerInventory(player)
@@ -138,7 +141,7 @@ class BackpackPanel(
                 backpackWrapper,
                 it
             ).slotGroup("upgrade_inventory")
-            val syncHandler = UpgradeSlotSH(upgradeSlot)
+            val syncHandler = UpgradeSlotSH(upgradeSlot, backpackWrapper)
             val index = it
             upgradeSlot.changeListener { lastStack, _, isClient, init ->
                 if (isClient)
@@ -404,15 +407,21 @@ class BackpackPanel(
 
             if (wrapper.isTabOpened) {
                 if (openedTabIndex != null) {
-                    wrapper.isTabOpened = false
-                    upgradeSlotSyncHandlers[slotIndex].syncToServer(UpgradeSlotSH.UPDATE_UPGRADE_TAB_STATE) {
-                        it.writeBoolean(false)
+                    val toCloseIndex = if (slotIndex == index) openedTabIndex else slotIndex
+                    val toCloseWrapper =
+                        upgradeSlotWidgets[toCloseIndex].slot.stack.getCapability(Capabilities.UPGRADE_CAPABILITY, null)
+                    if (toCloseWrapper != null) {
+                        toCloseWrapper.isTabOpened = false
+                        upgradeSlotSyncHandlers[toCloseIndex].syncToServer(UpgradeSlotSH.UPDATE_UPGRADE_TAB_STATE) {
+                            it.writeBoolean(false)
+                        }
                     }
-
-                    return
+                    if (toCloseIndex == openedTabIndex) {
+                        openedTabIndex = slotIndex
+                    }
+                } else {
+                    openedTabIndex = slotIndex
                 }
-
-                openedTabIndex = slotIndex
             }
         }
         // Shifted forward to account for settings tab.
@@ -497,6 +506,58 @@ class BackpackPanel(
                         tabWidget.expandedWidget = FilterUpgradeWidget(slotIndex, wrapper)
                 }
 
+                is AdvancedVoidUpgradeWrapper -> {
+                    upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
+                    if (updateAndCheckRecreation<AdvancedVoidUpgradeWidget, AdvancedVoidUpgradeWrapper>(
+                            tabWidget.expandedWidget,
+                            wrapper
+                        )
+                    )
+                        tabWidget.expandedWidget = AdvancedVoidUpgradeWidget(slotIndex, wrapper)
+                }
+
+                is VoidUpgradeWrapper -> {
+                    upgradeSlotGroup.updateFilterDelegate(wrapper)
+                    if (updateAndCheckRecreation<VoidUpgradeWidget, VoidUpgradeWrapper>(
+                            tabWidget.expandedWidget,
+                            wrapper
+                        )
+                    )
+                        tabWidget.expandedWidget = VoidUpgradeWidget(slotIndex, wrapper)
+                }
+
+                is AdvancedJukeboxUpgradeWrapper -> {
+                    upgradeSlotGroup.updateJukeboxDelegate(wrapper)
+                    if (updateAndCheckRecreation<AdvancedJukeboxUpgradeWidget, AdvancedJukeboxUpgradeWrapper>(
+                            tabWidget.expandedWidget,
+                            wrapper
+                        )
+                    )
+                        tabWidget.expandedWidget = AdvancedJukeboxUpgradeWidget(
+                            slotIndex,
+                            backpackWrapper,
+                            wrapper,
+                            player,
+                            tileEntity,
+                        )
+                }
+
+                is JukeboxUpgradeWrapper -> {
+                    upgradeSlotGroup.updateJukeboxDelegate(wrapper)
+                    if (updateAndCheckRecreation<JukeboxUpgradeWidget, JukeboxUpgradeWrapper>(
+                            tabWidget.expandedWidget,
+                            wrapper
+                        )
+                    )
+                        tabWidget.expandedWidget = JukeboxUpgradeWidget(
+                            slotIndex,
+                            backpackWrapper,
+                            wrapper,
+                            player,
+                            tileEntity,
+                        )
+                }
+
                 is IAdvancedFilterable -> {
                     upgradeSlotGroup.updateAdvancedFilterDelegate(wrapper)
                     if (updateAndCheckRecreation<AdvancedExpandedTabWidget<*>>(tabWidget.expandedWidget, wrapper))
@@ -532,8 +593,8 @@ class BackpackPanel(
                 tabWidgets.size
             )
 
-            for (tabIndex in openedTabIndex + 1 until upperboundIndex) {
-                tabWidgets[tabIndex].isEnabled = false
+            for (tIndex in openedTabIndex + 1 until upperboundIndex) {
+                tabWidgets[tIndex].isEnabled = false
             }
         }
 

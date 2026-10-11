@@ -48,16 +48,14 @@ class CyclicVariantButtonWidget(
 
     override fun draw(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
         if (hasCustomTexture) {
-            if (isHovering) {
-                hoveredTexture.draw(context, 0, 0, buttonWidth, buttonHeight, widgetTheme.getThemeOrDefault())
-            } else {
-                notHoveredTexture.draw(context, 0, 0, buttonWidth, buttonHeight, widgetTheme.getThemeOrDefault())
-            }
+            val texture = if (isHovering) hoveredTexture else notHoveredTexture
+            
+            texture.draw(context, 0, 0, buttonWidth, buttonHeight, widgetTheme.getThemeOrDefault())
         }
         super.draw(context, widgetTheme)
     }
 
-    override fun drawOverlay(context: ModularGuiContext?, widgetTheme: WidgetThemeEntry<*>?) {
+    override fun drawOverlay(context: ModularGuiContext, widgetTheme: WidgetThemeEntry<*>?) {
         super.drawOverlay(context, widgetTheme)
 
         val drawable = variants[index].drawable

@@ -1,12 +1,15 @@
 package com.cleanroommc.retrosophisticatedbackpacks.capability
 
 import com.cleanroommc.retrosophisticatedbackpacks.backpack.SortType
-import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IToggleable
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IJukeboxUpgrade
+import com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade.IVoidUpgrade
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.BackpackItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.UpgradeItemStackHandler
 import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
+import com.cleanroommc.retrosophisticatedbackpacks.item.EverlastingUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.ExponentialStackUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.InceptionUpgradeItem
+import com.cleanroommc.retrosophisticatedbackpacks.item.JukeboxUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.item.StackUpgradeItem
 import com.cleanroommc.retrosophisticatedbackpacks.util.BackpackItemStackHelper
 import net.minecraft.entity.player.EntityPlayer
@@ -17,12 +20,12 @@ import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.common.util.INBTSerializable
 import net.minecraftforge.items.CapabilityItemHandler
 import net.minecraftforge.items.IItemHandler
+import net.minecraftforge.fml.common.FMLCommonHandler
 import java.util.*
 
 class BackpackWrapper(
     var backpackInventorySize: () -> Int = { 27 },
     var upgradeSlotsSize: () -> Int = { 1 },
-    var uuid: UUID = UUID.randomUUID(),
 ) : IItemHandler, ISidelessCapabilityProvider, INBTSerializable<NBTTagCompound> {
     companion object {
         private const val BACKPACK_INVENTORY_TAG = "BackpackInventory"
@@ -44,7 +47,16 @@ class BackpackWrapper(
         const val DEFAULT_ACCENT_COLOR: Int = -0x9dd1e6
     }
 
+
+    var uuid: UUID? = null
+        get() {
+            if (field == null && FMLCommonHandler.instance().effectiveSide.isServer) {
+                field = UUID.randomUUID()
+            }
+            return field
+        }
     var isCached: Boolean = false
+    
     var backpackItemStackHandler = BackpackItemStackHandler(backpackInventorySize(), this)
     var upgradeItemStackHandler = UpgradeItemStackHandler(upgradeSlotsSize())
     var sortType: SortType = SortType.BY_NAME
@@ -129,6 +141,14 @@ class BackpackWrapper(
 
         return true
     }
+    
+    fun hasJukeboxUpgrade(): Boolean =
+        upgradeItemStackHandler.inventory.map(ItemStack::getItem).filterIsInstance<JukeboxUpgradeItem>()
+            .isNotEmpty()
+    
+    fun hasEverlastingJukeboxUpgrade(): Boolean =
+        upgradeItemStackHandler.inventory.map(ItemStack::getItem).filterIsInstance<EverlastingUpgradeItem>()
+            .isNotEmpty()
 
     fun canNestBackpack(): Boolean =
         upgradeItemStackHandler.inventory.map(ItemStack::getItem).filterIsInstance<InceptionUpgradeItem>().any()
@@ -163,7 +183,6 @@ class BackpackWrapper(
 
     fun canInsert(stack: ItemStack): Boolean {
         val filterUpgrades = gatherCapabilityUpgrades(Capabilities.IFILTER_UPGRADE_CAPABILITY)
-            .filter { it.enabled }
 
         return filterUpgrades.isEmpty() || filterUpgrades.any { it.canInsert(stack) }
     }
@@ -171,10 +190,24 @@ class BackpackWrapper(
     fun canExtract(slotIndex: Int): Boolean {
         val stack = getStackInSlot(slotIndex)
         val filterUpgrades = gatherCapabilityUpgrades(Capabilities.IFILTER_UPGRADE_CAPABILITY)
-            .filter { it.enabled }
 
         return filterUpgrades.isEmpty() || filterUpgrades.any { it.canExtract(stack) }
     }
+
+    fun tryVoid(stack: ItemStack, transferSource: IVoidUpgrade.TransferSource): ItemStack {
+        var currentStack = stack
+        val upgrades = gatherCapabilityUpgrades(Capabilities.IVOID_UPGRADE_CAPABILITY)
+
+        for (upgrade in upgrades) {
+            currentStack = upgrade.tryVoid(this, backpackItemStackHandler, currentStack, transferSource)
+            if (currentStack.isEmpty) return currentStack
+        }
+
+        return currentStack
+    }
+    
+    fun getJukeboxUpgrade(): IJukeboxUpgrade? =
+        gatherCapabilityUpgrades(Capabilities.IJUKEBOX_UPGRADE_CAPABILITY).firstOrNull()
 
     // Setting related
 
@@ -255,6 +288,8 @@ class BackpackWrapper(
         nbt.setTag(UPGRADE_SLOTS_TAG, upgradesNbt)
         nbt.setInteger(BACKPACK_INVENTORY_SIZE_TAG, backpackInventorySize())
         nbt.setInteger(UPGRADE_SLOTS_SIZE_TAG, upgradeSlotsSize())
+        if (uuid != null)
+            nbt.setUniqueId(UUID_TAG, uuid!!)
 
         nbt.setInteger(MAIN_COLOR_TAG, mainColor)
         nbt.setInteger(ACCENT_COLOR_TAG, accentColor)
@@ -274,7 +309,6 @@ class BackpackWrapper(
             backpackItemStackHandler.sortLockedSlots.map { if (it) 1 else 0 }.map(Int::toByte).toByteArray()
         )
 
-        nbt.setUniqueId(UUID_TAG, uuid)
         return nbt
     }
 
@@ -284,7 +318,8 @@ class BackpackWrapper(
         if (nbt.hasKey(UPGRADE_SLOTS_SIZE_TAG))
             upgradeSlotsSize = { nbt.getInteger(UPGRADE_SLOTS_SIZE_TAG) }
 
-        uuid = nbt.getUniqueId(UUID_TAG)!!
+        if (nbt.hasUniqueId(UUID_TAG))
+            uuid = nbt.getUniqueId(UUID_TAG)
 
         backpackItemStackHandler = BackpackItemStackHandler(backpackInventorySize(), this)
         upgradeItemStackHandler = UpgradeItemStackHandler(upgradeSlotsSize())
