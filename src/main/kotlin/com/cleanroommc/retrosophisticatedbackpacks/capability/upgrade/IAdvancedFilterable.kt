@@ -1,11 +1,13 @@
 package com.cleanroommc.retrosophisticatedbackpacks.capability.upgrade
 
+import com.cleanroommc.retrosophisticatedbackpacks.RetroSophisticatedBackpacks
 import com.cleanroommc.retrosophisticatedbackpacks.capability.Capabilities
 import com.cleanroommc.retrosophisticatedbackpacks.inventory.ExposedItemStackHandler
 import net.minecraft.item.ItemStack
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.common.capabilities.Capability
 import net.minecraftforge.oredict.OreDictionary
+import java.util.regex.PatternSyntaxException
 
 interface IAdvancedFilterable : IBasicFilterable {
     companion object {
@@ -62,13 +64,17 @@ interface IAdvancedFilterable : IBasicFilterable {
         val stackOreDictionaries = OreDictionary.getOreIDs(stack).map { OreDictionary.getOreName(it) }
 
         for (oreDictEntry in oreDictEntries) {
-            val regex = Regex(oreDictEntry)
-            val matchResult = stackOreDictionaries.any { regex.matches(it) }
+            try {
+                val regex = Regex(oreDictEntry)
+                val matchResult = stackOreDictionaries.any { regex.matches(it) }
 
-            if (filterType == IBasicFilterable.FilterType.WHITELIST && matchResult)
-                return true
-            if (filterType == IBasicFilterable.FilterType.BLACKLIST && matchResult)
-                return false
+                if (filterType == IBasicFilterable.FilterType.WHITELIST && matchResult)
+                    return true
+                if (filterType == IBasicFilterable.FilterType.BLACKLIST && matchResult)
+                    return false
+            } catch (e: PatternSyntaxException) {
+                RetroSophisticatedBackpacks.LOGGER.warn("Invalid regex ${oreDictEntry}: ${e.message}")
+            }
         }
 
         return false
