@@ -11,10 +11,7 @@ import net.minecraft.util.ResourceLocation
 import net.minecraftforge.common.crafting.CraftingHelper
 
 @Suppress("UNCHECKED_CAST")
-private fun <R> Any?.cast(): R = this as R
-
-private val EnumDyeColor.mixinColorValue: Int
-    get() = this.cast<EnumDyeColorAccessor>().`rsb$getColorValue`()
+private fun <R> Any?.cast(): R? = this as? R
 
 object DyeingRecipeRegistry {
     private val DYES: Array<String> = arrayOf(
@@ -47,8 +44,8 @@ object DyeingRecipeRegistry {
         val backpackStack = ItemStack(backpackItem, 1)
         val backpackWrapper = backpackStack.getCapability(Capabilities.BACKPACK_CAPABILITY, null) ?: return null
 
-        mainColor?.let { backpackWrapper.mainColor = it.mixinColorValue }
-        accentColor?.let { backpackWrapper.accentColor = it.mixinColorValue }
+        mainColor.cast<EnumDyeColorAccessor>()?.let { backpackWrapper.mainColor = it.`rsb$getColorValue`() }
+        accentColor.cast<EnumDyeColorAccessor>()?.let { backpackWrapper.accentColor = it.`rsb$getColorValue`() }
 
         return if (mainColor != null && accentColor != null) {
             constructRecipe(
