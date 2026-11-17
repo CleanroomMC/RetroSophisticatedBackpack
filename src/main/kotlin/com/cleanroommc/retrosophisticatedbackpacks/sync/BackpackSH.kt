@@ -20,7 +20,7 @@ class BackpackSH(private val playerInv: PlayerMainInvWrapper, private val wrappe
     override fun readOnServer(id: Int, buf: PacketBuffer) {
         when (id) {
             UPDATE_SET_SORT_TYPE -> setSortType(buf)
-            UPDATE_SORT_INV -> sortInventory(buf)
+            UPDATE_SORT_INV -> sortInventory()
             UPDATE_TRANSFER_TO_BACKPACK_INV -> transferToBackpack(buf)
             UPDATE_TRANSFER_TO_PLAYER_INV -> transferToPlayerInventory(buf)
             else -> {}
@@ -35,15 +35,10 @@ class BackpackSH(private val playerInv: PlayerMainInvWrapper, private val wrappe
         wrapper.sortType = sortType
     }
 
-    // Must sort on client then send sort result to server side
-    fun sortInventory(buf: PacketBuffer) {
-        val size = wrapper.backpackInventorySize()
-
-        for (i in 0 until size) {
-            val stack = buf.readItemStack()
-
-            wrapper.backpackItemStackHandler.setStackInSlot(i, stack)
-        }
+    // Sorted on the server, from the server's own contents. The client's copy of the backpack can be out of
+    // date (or tampered with), so it must never be written into the backpack; the slots sync the result back.
+    fun sortInventory() {
+        BackpackInventoryHelper.sortInventory(wrapper)
     }
 
     fun transferToBackpack(transferMatched: Boolean) {
