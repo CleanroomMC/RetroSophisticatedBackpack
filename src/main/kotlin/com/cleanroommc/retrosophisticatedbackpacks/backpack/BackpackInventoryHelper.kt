@@ -6,7 +6,9 @@ import com.cleanroommc.retrosophisticatedbackpacks.item.BackpackItem
 import net.minecraft.entity.Entity
 import net.minecraft.inventory.IInventory
 import net.minecraft.inventory.ISidedInventory
+import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
+import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.tileentity.TileEntity
 import net.minecraft.util.EnumFacing
 import net.minecraftforge.items.IItemHandler
@@ -20,6 +22,10 @@ import kotlin.math.min
 
 object BackpackInventoryHelper {
     fun sortInventory(wrapper: BackpackWrapper) {
+        data class StackKey(val item: Item, val meta: Int, val nbt: NBTTagCompound?)
+
+        fun ItemStack.key() = StackKey(item, metadata, tagCompound)
+
         fun compareLists(list1: List<String>, list2: List<String>): Int {
             for (i in 0 until min(list1.size, list2.size)) {
                 val item1 = list1[i]
@@ -75,6 +81,17 @@ object BackpackInventoryHelper {
             }
         }
 
+        val stackMultiplier = wrapper.getTotalStackMultiplier()
+        val totals: Map<StackKey, Long> = sorted
+            .filter { !it.isEmpty }
+            .groupingBy { it.key() }
+            .fold(0L) { acc, s -> acc + s.count }
+
+        fun stacksOf(stack: ItemStack): Long {
+            val max = (stack.maxStackSize * stackMultiplier).toLong()
+            return (totals.getValue(stack.key()) + max - 1) / max   // ceil(total / max)
+        }
+
         sorted.sortWith { stack1, stack2 ->
             val item1 = stack1.item
             val item2 = stack2.item
@@ -93,6 +110,24 @@ object BackpackInventoryHelper {
                 }
 
                 SortType.BY_COUNT -> {
+                    val stackable1 = stack1.maxStackSize > 1
+                    val stackable2 = stack2.maxStackSize > 1
+                    if (stackable1 != stackable2)
+                        return@sortWith if (stackable1) -1 else 1
+
+                    var c = stacksOf(stack2).compareTo(stacksOf(stack1))
+                    if (c != 0) return@sortWith c
+
+                    c = totals.getValue(stack2.key()).compareTo(totals.getValue(stack1.key()))
+                    if (c != 0) return@sortWith c
+
+                    c = item2.registryName.toString().compareTo(item1.registryName.toString())
+                    if (c != 0) return@sortWith c
+                    c = stack2.metadata.compareTo(stack1.metadata)
+                    if (c != 0) return@sortWith c
+                    c = (stack2.tagCompound?.hashCode() ?: 0).compareTo(stack1.tagCompound?.hashCode() ?: 0)
+                    if (c != 0) return@sortWith c
+
                     stack2.count.compareTo(stack1.count)
                 }
 
